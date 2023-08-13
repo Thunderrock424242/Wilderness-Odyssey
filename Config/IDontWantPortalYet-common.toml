@@ -1,0 +1,49 @@
+
+[Configs]
+	"Is portal enabled" = true
+	"Is End portal enabled" = true
+	#time is equal to one tick, if you want to disable timer set value to -1 (or anything below 0)
+	"Time to enable nether portal" = -1
+	"Message after timer for nether reach 0" = "nether portal is now enabled!"
+	"Time to enable end portal" = -1
+	"Message after timer for end reach 0" = "end portal is now enabled!"
+
+	[Configs."Mods portals configs"]
+		#Deeper and Darker
+		"Is otherside portal enabled" = true
+		"Time to enable otherside portal" = -1
+		"Message after timer for otherside reach 0" = "otherside portal is now enabled!"
+		#Twilight Forest
+		"Is Twilight portal enabled" = true
+		"Time to enable twilight portal" = -1
+		"Message after timer for twilight reach 0" = "twilight portal is now enabled!"
+		#Blue Skies
+		"Is Everbright portal enabled" = true
+		"Time to enable Everbright portal" = -1
+		"Message after timer for Everbright reach 0" = "Everbright portal is now enabled!"
+		"Is Everdawn portal enabled" = true
+		"Time to enable Everdawn portal" = -1
+		"Message after timer for Everdawn reach 0" = "Everdawn portal is now enabled!"
+		#Divine rpg
+		"Is Iceika portal enabled" = true
+		"Time to enable Iceika portal" = -1
+		"Message after timer for Iceika reach 0" = "Iceika portal is now enabled!"
+		"Is Eden portal enabled" = true
+		"Time to enable Eden portal" = -1
+		"Message after timer for Eden reach 0" = "Eden portal is now enabled!"
+		"Is Wildwood portal enabled" = true
+		"Time to enable Wildwood portal" = -1
+		"Message after timer for Wildwood reach 0" = "Wildwood portal is now enabled!"
+		"Is Apalachia portal enabled" = true
+		"Time to enable Apalachia portal" = -1
+		"Message after timer for Apalachia reach 0" = "Apalachia portal is now enabled!"
+		"Is Skythern portal enabled" = true
+		"Time to enable Skythern portal" = -1
+		"Message after timer for Skythern reach 0" = "Skythern portal is now enabled!"
+		"Is Mortum portal enabled" = true
+		"Time to enable Mortum portal" = -1
+		"Message after timer for Mortum reach 0" = "Mortum portal is now enabled!"
+		"Is Vethea portal enabled" = true
+		"Time to enable Vethea portal" = -1
+		"Message after timer for Vethea reach 0" = "Vethea portal is now enabled!"
+

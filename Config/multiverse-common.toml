@@ -1,0 +1,7 @@
+
+[multiverse]
+	#Smoldering blocks create a smoke tower.
+	smolderingBlockSuperMode = false
+	#Cluckshroom eggs create 64 adult chickens.
+	cluckshroomEggCracked = false
+
