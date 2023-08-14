@@ -219,7 +219,7 @@
 		interaction_mode = "BOTH"
 
 	[building.timber_frame]
-		enabled = true
+		enabled = false
 		#Allow placing a timber frame directly on a block by holding shift
 		swap_on_shift = false
 		#Allows axes to remove a framed block leaving the contained block intact
@@ -228,7 +228,7 @@
 		replace_daub = true
 
 	[building.iron_gate]
-		enabled = true
+		enabled = false
 		#Allows two iron gates to be opened simultaneously when on top of the other
 		double_opening = true
 		#Makes iron (ang gold) gates behave like their door counterpart so for example iron gates will only be openable by redstone
