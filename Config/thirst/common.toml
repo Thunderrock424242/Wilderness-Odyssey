@@ -19,7 +19,7 @@
 	#Y level below which water has 1 more level of purification by default (i.e Caves) (for aquatic biomes, this number will be decreased by 32)
 	cavesY = 48
 	#How many levels of purification does running water have compared to still water
-	runningWaterPurificationAmount = 1
+	runningWaterPurificationAmount = 2
 
 ["Purity-related Effects"]
 	#Whether player should gain hydration even if they recieved a purity-related debuff
