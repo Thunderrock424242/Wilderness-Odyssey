@@ -3,7 +3,7 @@
 	#Stack size for water bottles
 	waterBottleStacksize = 64
 	#Whether players can drink by shift-right-clicking water with an empty hand
-	canDrinkByHand = false
+	canDrinkByHand = true
 	#If the keyword config should be taken into consideration
 	enableKeywordConfig = false
 	#How much the player is hydrated when drinking by hand
