@@ -3,7 +3,7 @@
 	"Is portal enabled" = true
 	"Is End portal enabled" = true
 	#time is equal to one tick, if you want to disable timer set value to -1 (or anything below 0)
-	"Time to enable nether portal" = -1
+	"Time to enable nether portal" = 72000
 	"Message after timer for nether reach 0" = "nether portal is now enabled!"
 	"Time to enable end portal" = -1
 	"Message after timer for end reach 0" = "end portal is now enabled!"
