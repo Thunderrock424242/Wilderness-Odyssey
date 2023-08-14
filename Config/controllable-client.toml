@@ -23,7 +23,7 @@
 		#Adjusts the camera sensitivity when looking through a spyglass
 		spyglassSensitivity = 0.2
 		#The thumbstick to use when scrolling items in the radial menu
-		radialThumbstick = "RIGHT"
+		radialThumbstick = "LEFT"
 		#If enabled, allows you to craft quickly when clicking an item in the recipe book
 		quickCraft = true
 		#Draws a transparent background behind the text of the button hint
@@ -47,7 +47,7 @@
 		#The scale of the mouse speed when hovering a widget or item slot
 		hoverModifier = 0.6
 		#The thumbstick that controls moving the cursor
-		cursorThumbstick = "LEFT"
+		cursorThumbstick = "RIGHT"
 		#How much the trigger has to be pressed before it's input is registered. This fixes issues with triggers not being completely released to zero
 		triggerDeadZone = 0.05
 		#If enabled, some gameplay elements will cause the controller to rumble
