@@ -1,3 +1,3 @@
 # Wilderness-Odyssey.
 this project is in its alpha phase almost beta
-its a exploratioon/adventure modpack.
+its a exploration/adventure modpack.
