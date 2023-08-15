@@ -17,6 +17,6 @@
   },
   "autoremovethreshold": {
     "desc:": "Set the amount of stacked items being automatically removed, default: 120",
-    "autoremovethreshold": 120
+    "autoremovethreshold": 200 
   }
 }
