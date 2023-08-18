@@ -5,7 +5,10 @@ Change log 1.0.0 notes.
 Make sure to create a backup of your world before updating.
 
 added:
-- 
+- better jukeboxes
+- redirector to help with game performance
+- culling less leaves for perforamnce
+- fletching table actually has a use now.
 
 changes:
 - mother of maze in the ice maze area can now swim a little faster 
