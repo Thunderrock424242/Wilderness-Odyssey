@@ -10,6 +10,7 @@ added:
 - culling less leaves for perforamnce
 - fletching table actually has a use now.
 - valkerin skys 
+- delete worlds now go to the trash so you can restore later
 
 changes:
 - mother of maze in the ice maze area can now swim a little faster 
