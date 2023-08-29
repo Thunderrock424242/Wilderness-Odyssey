@@ -1,0 +1,32 @@
+{
+  "allow_one_block_mining": true,
+  "whitelisted_log_blocks": [
+    "minecraft:mushroom_stem"
+  ],
+  "whitelisted_log_block_tags": [
+    "minecraft:logs"
+  ],
+  "whitelisted_leaves_blocks": [
+    "minecraft:red_mushroom_block",
+    "minecraft:brown_mushroom_block"
+  ],
+  "whitelisted_leaves_block_tags": [
+    "minecraft:leaves",
+    "minecraft:wart_blocks"
+  ],
+  "blacklisted_log_blocks": [],
+  "blacklisted_leaves_blocks": [],
+  "food_exhaustion_multiplier": 1.0,
+  "item_damage_multiplier": 1.0,
+  "tree_mining_speed_by_log_amount": true,
+  "tree_mining_speed_multiplier": 1.0,
+  "tree_limit": {
+    "tree_size_limit": 200,
+    "tree_limit_method": "LOGS",
+    "only_fall_on_tool_use": false
+  },
+  "sound_effect": true,
+  "sound_effect_volume": 1.0,
+  "one_block_mining_method": "CROUCH",
+  "is_mining_one_block": false
+}
