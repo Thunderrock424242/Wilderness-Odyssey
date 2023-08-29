@@ -1,9 +1,0 @@
-{
-  "Tooltip" : {
-    "massTooltipVisibility" : "ADVANCED",
-    "useImperialUnits" : false
-  },
-  "renderDebugText" : false,
-  "recommendSlugsInMcCommands" : true,
-  "$schema" : "schemas/vs_client.schema.json"
-}
