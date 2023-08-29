@@ -35,6 +35,7 @@ changes:
 - cooking for block heads now requires a pipe for the sink for water
 - we now have a mod that allows us to use fabric mods hybrid aquatic is for fabric so this is a major update we have here
 - diabled rubbium and oculas to allow us to use fabric mods once. the mod that allows us to use fabric mods makes it compatible we will get rubbium and oculas back.
+- cleaned up the configs folder so its less storege to download beta relsse will be all cleaned out/
 
 
 Updated mods:
