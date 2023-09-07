@@ -4,8 +4,8 @@
 'feet' : '{Count:1b,id:"minecraft:leather_boots",tag:{Damage:0}}',
 0 : '{Count:1b,id:"minecraft:wooden_sword",tag:{Damage:0}}',
 1 : '{Count:10b,id:"minecraft:bread"}',
-2 : '{Count:1b,id:"bonfires:ash_bone_pile"}',
-3 : '{Count:1b,id:"bonfires:coiled_sword"}',
+2 : 
+3 : 
 4 : '{Count:1b,id:"minecraft:shield",tag:{Damage:0}}',
 5 : '',
 6 : '',
