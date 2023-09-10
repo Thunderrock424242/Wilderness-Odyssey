@@ -1,0 +1,40 @@
+{
+	"canAttack": true,
+	"health": 10.0,
+	"movementSpeed": 0.23,
+	"attackDamage": 2.0,
+	"maxSpawnedInChunk": 6,
+	"temptationItems": [
+		{
+			"item": "minecraft:wheat"
+		},
+		{
+			"item": "minecraft:apple"
+		},
+		{
+			"item": "minecraft:carrot"
+		},
+		{
+			"item": "minecraft:potato"
+		},
+		{
+			"item": "minecraft:beetroot"
+		}
+	],
+	"spawnBiomes": [
+		{
+			"weight": 16,
+			"minGroupSize": 2,
+			"maxGroupSize": 5,
+			"biomes": [
+				"minecraft:plains",
+				"minecraft:forest",
+				"minecraft:birch_forest",
+				"minecraft:old_growth_birch_forest",
+				"minecraft:sunflower_plains",
+				"minecraft:dark_forest",
+				"minecraft:flower_forest"
+			]
+		}
+	]
+}

@@ -1,0 +1,24 @@
+{
+	"health": 10.0,
+	"movementSpeed": 0.25,
+	"maxSpawnedInChunk": 6,
+	"temptationItems": [
+		{
+			"item": "minecraft:cod"
+		},
+		{
+			"item": "minecraft:salmon"
+		}
+	],
+	"spawnBiomes": [
+		{
+			"weight": 26,
+			"minGroupSize": 3,
+			"maxGroupSize": 6,
+			"biomes": [
+				"minecraft:river",
+				"minecraft:swamp"
+			]
+		}
+	]
+}
