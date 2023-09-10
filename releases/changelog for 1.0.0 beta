@@ -1,7 +1,6 @@
 Change log 1.0.0 notes.
 
 
-
 Make sure to create a backup of your world before updating.
 
 added:
@@ -24,10 +23,13 @@ added:
 - wolves of other furs (frabric)
 - into the multiverse
 - easy anvils
-log new mods after class
+- fox glow allows a food item when you eat it you can see mobs for a certin ammount of time (fabric)
+- explors composs
 - new logo
 - ftb quests
 - pollution, vents and treatment spray (change to only activate the mod when its earth day or national earth day or green day)
+- nether depths upgrade nether fish included find some in the lava
+- applied cooking
 
 
 
@@ -36,7 +38,7 @@ changes:
 - cooking for block heads now requires a pipe for the sink for water
 - we now have a mod that allows us to use fabric mods hybrid aquatic is for fabric so this is a major update we have here
 - diabled rubbium and oculas to allow us to use fabric mods once. the mod that allows us to use fabric mods makes it compatible we will get rubbium and oculas back.
-- cleaned up the configs folder so its less storege to download beta relsse will be all cleaned out/
+- cleaned up the configs folder so its less storege to download beta relsse will be all cleaned out.
 
 
 Updated mods:
