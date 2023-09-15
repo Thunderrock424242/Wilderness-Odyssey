@@ -1,0 +1,17 @@
+{
+  "enable_door_animation": true,
+  "enable_trap_door_animation": true,
+  "enable_fence_gate_animation": true,
+  "enable_lever_animation": true,
+  "enable_sign_tilt": true,
+  "door_animation_length": 0.4,
+  "trap_door_animation_length": 0.4,
+  "fence_gate_animation_length": 0.4,
+  "lever_animation_length": 0.4,
+  "sign_details": {
+    "pitch_tilt": 2.0,
+    "yaw_tilt": 5.0,
+    "roll_tilt": 5.0,
+    "random_tilt": true
+  }
+}
