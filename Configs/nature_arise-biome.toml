@@ -1,0 +1,15 @@
+
+["Biome Config for Nature Arise"]
+	"First region weight" = 10
+	"Second region weight" = 8
+	"Cave region weight" = 10
+	#Enable(true) or disable(false) biome generation
+	"Maple Forest" = true
+	"Mixed Forest" = true
+	"Fir Forest" = true
+	"Snowy Fir Forest" = true
+	"Old Growth Fir Forest" = true
+	"Flower Taiga" = true
+	"Boreal Forest" = true
+	"Frozen Caves" = true
+

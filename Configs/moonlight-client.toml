@@ -1,0 +1,3 @@
+#Merge all dynamic resource packs from all mods that use this library into a single pack
+merge_dynamic_packs = true
+
