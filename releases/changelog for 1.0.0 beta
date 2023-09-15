@@ -49,6 +49,7 @@ changes:
 - cleaned up the configs folder so its less storege to download beta relsse will be all cleaned out.
 - made the mothership boss not spawn as it was gameplay breaking.
 - when right clicking water or its shift+ right click you can now drink water
+- added mixin to hopefully reduce memory usage
 
 
 Updated mods:
