@@ -59,7 +59,7 @@
 	#Whether dehydration from regenerating health (if enabled above) should take into account temperature and humidity
 	healthRegenDehydrationIsBiomeDependent = true
 	#Whether players can drink by shift-right-clicking water with an empty hand
-	canDrinkByHand = false
+	canDrinkByHand = true
 	#How much the player is hydrated when drinking by hand
 	handDrinkingHydration = 3
 	#How much the player thirst is quenched when drinking by hand
