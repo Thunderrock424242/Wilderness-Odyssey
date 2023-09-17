@@ -52,6 +52,7 @@ changes:
 - made the mothership boss not spawn as it was gameplay breaking.
 - when right clicking water or its shift+ right click you can now drink water
 - added mixin to hopefully reduce memory usage
+- added aether and new supplmentry configs to the github
 
 
 Updated mods:
