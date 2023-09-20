@@ -11,7 +11,7 @@
 
 [Gui]
 	#Adds a button to the top right of the main menu screen to toggle between the Aether and vanilla menu
-	"Enables Aether menu button" = true
+	"Enables Aether menu button" = false
 	#Changes the background panorama into a preview of the latest played world
 	"Enables world preview" = false
 	#Adds a button to the top right of the main menu screen to toggle between the panorama and world preview
