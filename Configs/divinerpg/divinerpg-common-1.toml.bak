@@ -1,0 +1,16 @@
+
+["Common configs for DivineRPG"]
+	#Maximum stored arcana
+	#Range: 200 ~ 10000
+	maxArcana = 200
+	#Maximum amount of loaded mobs before the frosted allure stops working
+	#Range: 150 ~ 1000
+	allureMaxMobs = 300
+	#The amount of protected mob kills before the Kitra is spawned
+	#Range: 1 ~ 10000
+	kitraKills = 100
+	#Entities that count towards Kitra spawning
+	kitraProtected = ["minecraft:salmon", "minecraft:cod", "minecraft:pufferfish", "minecraft:squid", "minecraft:tadpole", "minecraft:turtle", "divinerpg:shark", "divinerpg:aequorea", "divinerpg:whale", "divinerpg:liopleurodon", "minecraft:glow_squid", "divinerpg:robbin"]
+	#Safer handling of the Vethean inventory
+	saferVetheanInventory = false
+

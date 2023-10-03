@@ -1,0 +1,13 @@
+
+["Client configs for DivineRPG"]
+	#Show welcome message
+	welcomeMessage = true
+	#Hide Arcana bar unless depleted
+	hideArcanaBar = true
+	#arcana x
+	#Range: 1 ~ 255
+	arcanaX = 111
+	#arcana y
+	#Range: 1 ~ 255
+	arcanaY = 18
+
