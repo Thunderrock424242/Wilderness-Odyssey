@@ -1,0 +1,18 @@
+
+#Server settings
+[Server]
+	#Sets the chance the water gets converted, higher = lower chance [1 out of X] [default: 16 = 6.25%]
+	#Range: > 1
+	convertChance = 16
+	#Sets the chunk radius around the player in which water gets converted [2 = 5*5=25 total chunks] [default: 2]
+	#Range: > 1
+	convertChunkRadius = 2
+	#The water level from which it will try to convert [0 = source, 15 = lowest puddle] [default: 4]
+	#Range: 1 ~ 15
+	waterLevelToConvert = 4
+	#Extra protection that's used to slow down the water checking [1 = no slow down, AT YOUR OWN RISK] [default: 10]
+	#Range: > 1
+	extraProtection = 10
+	#Stop water from turning into source above sea level [default: true]
+	seaLevelProtection = true
+
