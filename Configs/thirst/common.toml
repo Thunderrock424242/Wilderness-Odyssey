@@ -53,7 +53,7 @@
 	#Stack size for water bottles
 	waterBottleStacksize = 64
 	#Whether the player can't regenerate as fast when hydration isn't full (like hunger)
-	dehydrationHaltsHealthRegen = true
+	dehydrationHaltsHealthRegen = false
 	#Whether hydration depletes when the player's health is regenerating (like hunger)
 	healthRegenDepletesHydration = true
 	#Whether dehydration from regenerating health (if enabled above) should take into account temperature and humidity
