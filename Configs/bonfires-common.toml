@@ -1,7 +1,0 @@
-#Enable undead bone shard drops from blowing up a bonfire, default:true
-"Enable Undead Bone Shard drops" = true
-#Enable weapon/tool reinforcing, default:true
-"Enable reinforcing" = true
-#Disable specific items from being able to reinforce them
-"Reinforce item blacklist" = []
-
