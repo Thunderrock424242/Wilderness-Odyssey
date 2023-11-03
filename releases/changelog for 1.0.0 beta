@@ -72,6 +72,7 @@ changes:
 - changed ram to 8000 
 - changed fps ruducer hud to false cause we have other fps huds
 - fixed starter kit bug that was causing duplicate items on world creation.
+- diabled fabric support as its unstable and buggy right now
 
 
 Updated mods:
