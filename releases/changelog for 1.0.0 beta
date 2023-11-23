@@ -1,5 +1,6 @@
 Change log 1.0.0 notes.
 
+WORLD LOADING AND PERFORMANCE HAVE GREATLY IMPROVED WOOOOO.
 
 Make sure to create a backup of your world before updating.
 
@@ -59,6 +60,8 @@ add configs to the following
 - added deeper oceans
 - added alex's caves
 - added a mod that changes world presets to be much more interesting and cooler 
+- added create addons
+- added starter strucuture
 
 
 changes:
@@ -100,7 +103,8 @@ Updated mods:
 - alex's mobs
 - oculus
 - rubidium
-- updated forge to 47.2.0
+- updated forge to 47.2.6
+- updated many mods.
 
 
 
