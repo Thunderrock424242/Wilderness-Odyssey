@@ -12,6 +12,7 @@ added:
 
 changes:
 - changed starter strucutre to be better
+- players can now sleep when cold or hot
 
 Updated mods:
 - updated forge to 47.2.16
