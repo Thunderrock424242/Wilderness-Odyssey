@@ -1,0 +1,27 @@
+{
+	default_hide_dependency_lines: false
+	default_quest_shape: ""
+	filename: "welcome_to_wilderness_odyssey"
+	group: ""
+	id: "4E94C89E96C01902"
+	order_index: 0
+	quest_links: [ ]
+	quests: [{
+		id: "477139E63F7AB07A"
+		rewards: [{
+			id: "5A4DE2CE4D3AD68A"
+			type: "xp"
+			xp: 10
+		}]
+		tasks: [{
+			advancement: "minecraft:story/root"
+			criterion: ""
+			id: "6161C44029EB7AB9"
+			title: "Welcome to Wilderness Odyssey"
+			type: "advancement"
+		}]
+		x: -0.5d
+		y: 2.5d
+	}]
+	title: "welcome to Wilderness Odyssey"
+}
