@@ -75,14 +75,14 @@
 	[embeddiumplus.performance]
 		#Toggles JREI item rendering until searching
 		#Increases performance a little bit and cleans your screen when you don't want to use it
-		hideJREI = false
+		hideJREI = true
 		#Toggles Minecraft Fonts shadows
 		#Depending of the case may increase performance
 		#Gives a flat style text
 		fontShadows = false
 		#Toggles FastChest feature
 		#Without flywheel installed or using any backend, it increases FPS significatly on chest rooms
-		fastChests = false
+		fastChests = true
 		#Toggles FastBeds feature
 		fastBeds = true
 
