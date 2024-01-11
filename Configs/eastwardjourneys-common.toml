@@ -1,0 +1,31 @@
+
+#------ Eastward Journeys General Settings ------
+[eastward_journeys]
+
+	[eastward_journeys.biomes]
+		#Whether stone forest biomes should spawn
+		stoneForestBiomes = true
+		#Whether black pine tree biomes should spawn
+		blackPineBiomes = true
+		#Whether maple tree biomes should spawn
+		mapleBiomes = true
+		#Whether cherry blossom biomes should spawn
+		cherryBlossomBiomes = true
+		#Whether hinoki biomes should spawn
+		hinokiBiomes = true
+		#Whether water fir biomes should spawn
+		waterFirBiomes = true
+		#Whether shrubland biomes should spawn
+		shrublandBiomes = true
+		#The chance a falling leaf will spawn from a cherry or maple leaves block. The higher the number, the slower the falling leaf particles will spawn, and therefore the slower leaf piles will accumulate underneath
+		#Range: 1 ~ 1000000
+		fallingLeafParticleSpawnChance = 32
+		#The chance a falling leaf particle has of spawning a leaf pile on the ground for cherry and maple trees. The higher the number, the slower the leaf piles will accumulate. Combines with fallingLeafParticleSpawnChance
+		#Range: 1 ~ 1000000
+		leafPileSpawnChance = 500
+
+	[eastward_journeys.weapons]
+		#Maximum number of times that the katana can be folded
+		#Range: 1 ~ 1000000
+		folds = 1000
+
