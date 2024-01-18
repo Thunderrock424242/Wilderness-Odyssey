@@ -2663,7 +2663,7 @@
 	#Spawning options for monsterplus:crystal_zombie
 	[monsterplus.crystal_zombie]
 		#Should the entity be allowed to spawn normally?
-		allowNormalSpawning = true
+		allowNormalSpawning = false
 		#Should spawners be able to spawn the entity?
 		allowSpawners = true
 		#Should spawn eggs be able to spawn the entity?
