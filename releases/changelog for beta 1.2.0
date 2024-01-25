@@ -7,6 +7,7 @@ when creating a new world for this update its gonna ask you to spawn a structure
 added:
 - realm rpg sea dwellers
 - seamless loading screen
+- added dimensional threading this makes it so each dimension had its own core/thread so performance should greTly improve 
 
 changes:
 - 
