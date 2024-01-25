@@ -7,7 +7,8 @@ when creating a new world for this update its gonna ask you to spawn a structure
 added:
 - realm rpg sea dwellers
 - seamless loading screen
-- added dimensional threading this makes it so each dimension had its own core/thread so performance should greTly improve 
+- added dimensional threading this makes it so each dimension had its own core/thread so performance should greTly improve.
+- added my own mod to make a boss/endgame for the modpack bosses will be out when this pack is not in beta anymore.
 
 changes:
 - 
