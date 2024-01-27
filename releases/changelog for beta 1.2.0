@@ -7,8 +7,9 @@ when creating a new world for this update its gonna ask you to spawn a structure
 added:
 - realm rpg sea dwellers
 - seamless loading screen
-- added dimensional threading this makes it so each dimension had its own core/thread so performance should greTly improve.
+- added dimensional threading this makes it so each dimension had its own core/thread so performance should greTly improve. (buggy rn)
 - added my own mod to make a boss/endgame for the modpack bosses will be out when this pack is not in beta anymore.
+- territh (world gen mod)
 
 changes:
 - fixed some server errros
@@ -39,4 +40,4 @@ dev note:
 
 note: 
 -I decided i will post the full mod list when release happens so everything is set in place.
-- github reporsitory link is here and you can see updates in the work by reading the changelogs.
+- github reporsitory link is here and you can see updates in the work by reading the changelogs. and report bugs
