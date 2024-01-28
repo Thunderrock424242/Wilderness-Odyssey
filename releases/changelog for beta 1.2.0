@@ -10,6 +10,7 @@ added:
 - added dimensional threading this makes it so each dimension had its own core/thread so performance should greTly improve. (buggy rn)
 - added my own mod to make a boss/endgame for the modpack bosses will be out when this pack is not in beta anymore.
 - territh (world gen mod)
+- command mod i made can tp you to dimensions for server owners and single player worlds 
 
 changes:
 - fixed some server errros
