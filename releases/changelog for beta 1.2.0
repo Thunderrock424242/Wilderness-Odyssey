@@ -35,6 +35,7 @@ changes:
 - fixed some server errros
 - starter strucutre will turn into a village (work in progress.)
 - fixed tree chopping bug.
+- disabled mvs scructures for now so i can edit which structures can spawn as some give op loot.
 
 Updated mods:
 - tons of mods have been updated
