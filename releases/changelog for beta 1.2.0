@@ -26,6 +26,7 @@ added:
 - weather 
 - added distant horizins since iris/oculas will be getting support for that soon.
 - added some more visual enhancments.
+- added my own wilderness oddesy api for all of my mods this will add utilities and some of things to track modpacks that use my mods. you need this or else your game will crash.
 
 
 changes:
