@@ -24,9 +24,11 @@ added:
 - and addons for this ^ 
 - better weathering 
 - weather 
-- added distant horizins since iris/oculas will be getting support for that soon.
+- added distant horizins since iris/oculas will be getting support for that soon. turned off and on through updates
 - added some more visual enhancments.
 - added my own wilderness oddesy api for all of my mods this will add utilities and some of things to track modpacks that use my mods. you need this or else your game will crash.
+- added some backend optomizations to fix a lot of issues.
+side not bassicly this update makes this modpack its own game.
 
 
 changes:
