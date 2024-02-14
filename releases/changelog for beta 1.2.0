@@ -29,6 +29,7 @@ added:
 - added my own wilderness oddesy api for all of my mods this will add utilities and some of things to track modpacks that use my mods. you need this or else your game will crash.
 - added some backend optomizations to fix a lot of issues.
 side note bassicly this update makes this modpack its own game. cause of all the things it adds its still minecraft just not like basic minecraft
+- revamped the ingame config system.
 
 
 changes:
