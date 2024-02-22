@@ -36,6 +36,7 @@ side note bassicly this update makes this modpack its own game. cause of all the
 - added carry on shift right click to pick up blocks and move them around.
 - added a new dimension its where the deep dark came from. 
 - got new dungon system
+- added create back for structures will make sure it does not lag the game.
 
 
 changes:
@@ -48,13 +49,11 @@ Updated mods:
 - tons of mods have been updated
 - solas shader had a major update
 - embedium had a major update 
--ocuals major update coming soon.
 
 
 
 
 removed:
-- removed all create addons
 -removed craft tweaker 
 - removed rare ice as it causes fps drops
 - removed starter structure as i added my own
