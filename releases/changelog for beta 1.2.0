@@ -14,7 +14,6 @@ added:
 - midnight dimension
 - added quark
 - added temppad (easter egg)
-- added stargate (easter egg)
 - added nuclear reactors for more energy.
 - the dawn era 
 - piglet structures 
@@ -23,15 +22,15 @@ added:
 - added mechinizm 
 - and addons for this ^ 
 - better weathering 
-- weather 
-- added distant horizins since iris/oculas will be getting support for that soon. turned off and on through updates
+- weather 2
+- added distant horizins since iris/oculas will be getting support for that soon. turned off and on tbis will most likely come when we port to neo forge
 - added some more visual enhancments.
 - added my own wilderness oddesy api for all of my mods this will add utilities and some of things to track modpacks that use my mods. you need this or else your game will crash.
 - added some backend optomizations to fix a lot of issues.
 side note bassicly this update makes this modpack its own game. cause of all the things it adds its still minecraft just not like basic minecraft
 - revamped the ingame config system.
 - added some scary things for friday the 13th and halloween.
-- added valkerin skies once again.
+- added valkerin skies once again. will be off for now cause of bugs
 - removed farsight and added in its place bobby this is just like farsight except it saves chunk data
 - added carry on shift right click to pick up blocks and move them around.
 - added a new dimension its where the deep dark came from. 
@@ -71,7 +70,7 @@ dev note:
 -beta traillers will be realessed when beta is smooth prob around 1..5.0 so when we advertize it it would be stable.
 - it is recomended to create a new world so less bugs happen but you can use a old world just not to old.
 - i have 2 updates for the future no cubes for april fools. and pollution of the relms for earth day
-- i don't want this pack to be all about exploring the main thing is that i will try to add small things like create nuclear wepaons and reactions and etc.
+- i don't want this pack to be all about exploring the main thing is that i will try to add small things like create nuclear wepaons and reactors and etc.
 
 note: 
 -I decided i will post the full mod list when release happens so everything is set in place.
