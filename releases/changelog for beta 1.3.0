@@ -1,1 +1,44 @@
+Change log 1.3.0 notes.
 
+Make sure to create a backup of your world before updating.
+
+
+Added:
+- tectonic 
+- minor quality of life mods
+
+
+
+Updated mods:
+- tons of mods have been updated
+- structures and dungeons have been overhauled and fixed.
+- wilderness api the mod that i am working on i have put the crawl on demand features in it. And some lazy dfu and memory fixes into it. also i starter structure
+
+
+
+Changes:
+- some performance and crash fixes
+- I also changed winter to be not that cold to be in the start and end in the middle, though it will be bad. The same goes for summer.
+- changed for ad astra for no tempature damage. hopefully that works.
+
+Removed:
+- crawl on demand 
+- starter kit
+
+
+Known issues:
+- Terrain is a little messy. It will be adjusted and fixed throughout beta.
+- buildings and blocks out of place. Will be fixed during beta.
+- error f_91074 is known 
+- fps issues
+
+dev note: 
+-beta trailers will be realised when the beta is smooth prob around 1..5.0, so when we advertise it, would be stable.
+- it is recommended to create a new world so fewer bugs happen, but you can use an old world, just not too old.
+- i have 2 updates for the future no cubes for april fools. and pollution of the relms for earth day
+- eternal tales adds a story to the game i am gonna try to intagrate it with the modpack that will be in 1.2.0
+- i don't want this pack to be all about exploring the main thing is that i will try to add small things like create nuclear wepaons and reactions and etc.
+
+note: 
+-I decided i will post the full mod list when release happens so everything is set in place.
+- github reporsitory link is here and you can see updates in the work by reading the changelogs.
