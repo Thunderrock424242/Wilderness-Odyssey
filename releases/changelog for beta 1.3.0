@@ -6,13 +6,14 @@ Make sure to create a backup of your world before updating.
 Added:
 - tectonic 
 - minor quality of life mods
+- some magic and structure mods
 
 
 
 Updated mods:
 - tons of mods have been updated
 - structures and dungeons have been overhauled and fixed.
-- wilderness api the mod that i am working on i have put the crawl on demand features in it. And some lazy dfu and memory fixes into it. also i starter structure
+- wilderness api the mod that i am working on i have put the crawl on demand features in it. And some lazy dfu and memory fixes into it.
 
 
 
@@ -24,6 +25,7 @@ Changes:
 Removed:
 - crawl on demand 
 - starter kit
+- remove reloading screeen.
 
 
 Known issues:
