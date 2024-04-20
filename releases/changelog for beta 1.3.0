@@ -14,35 +14,33 @@ Added:
 Updated mods:
 - tons of mods have been updated
 - structures and dungeons have been overhauled and fixed.
-- wilderness api the mod that i am working on i have put the crawl on demand features in it. And some lazy dfu and memory fixes into it.
+- Wilderness API, the mod that I am working on, I have put the crawl-on-demand features in it. And some lazy dfu and memory fixes into it.
 
 
 
 Changes:
 - some performance and crash fixes
-- I also changed winter to be not that cold to be in the start and end in the middle, though it will be bad. The same goes for summer.
-- changed for ad astra for no tempature damage. hopefully that works.
-- other changes i made but did not document them.
+- I also changed winter to be not that cold in the start and end in the middle, though it will be bad. The same goes for summer.
+- changed for ad astra for no temperature damage. hopefully, that works.
+- other changes I made but did not document them.
 
 Removed:
 - crawl on demand 
 - starter kit
-- remove reloading screeen.
+- remove reloading screen.
 
 
 Known issues:
-- Terrain is a little messy. It will be adjusted and fixed throughout beta.
-- buildings and blocks out of place. Will be fixed during beta.
+-the terrain is a little messy. It will be adjusted and fixed throughout the beta.
+- buildings and blocks out of place. It will be fixed during beta.
 - error f_91074 is known 
 - fps issues
 
-dev note: 
--beta trailers will be realised when the beta is smooth prob around 1..5.0, so when we advertise it, would be stable.
-- it is recommended to create a new world so fewer bugs happen, but you can use an old world, just not too old.
-- i have 2 updates for the future no cubes for april fools. and pollution of the relms for earth day
-- eternal tales adds a story to the game i am gonna try to intagrate it with the modpack that will be in 1.2.0
-- i don't want this pack to be all about exploring the main thing is that i will try to add small things like create nuclear wepaons and reactions and etc.
+Dev note: 
+-Beta trailers will be released when the beta is smooth, probably around 1..5.0, so when we advertise it, it will be stable.
+-It is recommended that you create a new world so fewer bugs happen, but you can use an old world, just not too old.
+- I have two updates for the future: no cubes for April Fools. and pollution of the realms for Earth Day
+- I don't want this pack to be all about exploring. The main thing is that. There will be RPG things, dungeons, and many other things to do. As development goes on, you will see more localized things.
 
-note: 
--I decided i will post the full mod list when release happens so everything is set in place.
-- github reporsitory link is here and you can see updates in the work by reading the changelogs.
+Note: 
+have fun that's all i have to say for now
