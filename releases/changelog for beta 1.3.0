@@ -6,28 +6,41 @@ Make sure to create a backup of your world before updating.
 Added:
 - tectonic 
 - minor quality of life mods
-- some magic and structure mods
 - fancy menu
+- drippy loading screen
+- some more structure mods
+- starter area
+- pizza cooking
+- lots of music related things have been added
+- jump over fences
+- dummy mod to test your attacking and combat
+- this rocks
+- nether portal spread
+- irons spell books
+- valkerin skies
 
 
 
 Updated mods:
 - tons of mods have been updated
 - structures and dungeons have been overhauled and fixed.
-- Wilderness API, the mod that I am working on, I have put the crawl-on-demand features in it. And some lazy dfu and memory fixes into it.
+- Wilderness API, the mod that I am working on, I have put the crawl-on-demand features in it. And some lazy DFU and memory fixes are included.
 
 
 
 Changes:
 - some performance and crash fixes
 - I also changed winter to be not that cold in the start and end in the middle, though it will be bad. The same goes for summer.
-- changed for ad astra for no temperature damage. hopefully, that works.
-- other changes I made but did not document them.
+- changed for ad astra for no temperature damage. Hopefully, that works.
 
 Removed:
 - crawl on demand 
 - starter kit
 - remove reloading screen.
+
+
+Fixed:
+- many crashes. ( remember to join the discord to report any crashes.)
 
 
 Known issues:
@@ -38,9 +51,9 @@ Known issues:
 
 Dev note: 
 -Beta trailers will be released when the beta is smooth, probably around 1..5.0, so when we advertise it, it will be stable.
--It is recommended that you create a new world so fewer bugs happen, but you can use an old world, just not too old.
-- I have two updates for the future: no cubes for April Fools. and pollution of the realms for Earth Day
+-It is recommended that you create a new world so fewer bugs happen, but you can use an old world, just not one that is too old.
+- I have two updates for the future: no cubes for April Fools. And pollution of the realms for Earth Day
 - I don't want this pack to be all about exploring. The main thing is that. There will be RPG things, dungeons, and many other things to do. As development goes on, you will see more localized things.
 
 Note: 
-have fun that's all i have to say for now
+Have fun that's all I have to say for now
