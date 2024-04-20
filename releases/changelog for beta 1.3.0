@@ -7,6 +7,7 @@ Added:
 - tectonic 
 - minor quality of life mods
 - some magic and structure mods
+- fancy menu
 
 
 
@@ -21,6 +22,7 @@ Changes:
 - some performance and crash fixes
 - I also changed winter to be not that cold to be in the start and end in the middle, though it will be bad. The same goes for summer.
 - changed for ad astra for no tempature damage. hopefully that works.
+- other changes i made but did not document them.
 
 Removed:
 - crawl on demand 
