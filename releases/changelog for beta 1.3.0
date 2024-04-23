@@ -32,6 +32,7 @@ Changes:
 - some performance and crash fixes
 - I also changed winter to be not that cold in the start and end in the middle, though it will be bad. The same goes for summer.
 - changed for ad astra for no temperature damage. Hopefully, that works.
+- removed some weather features for better performance
 
 Removed:
 - crawl on demand 
