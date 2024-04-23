@@ -24,7 +24,7 @@ Added:
 Updated mods:
 - tons of mods have been updated
 - structures and dungeons have been overhauled and fixed.
-- Wilderness API, the mod that I am working on, I have put the crawl-on-demand features in it. And some lazy DFU and memory fixes are included.
+- Wilderness API, the mod that I am working on, I have put the crawl-on-demand features in it. Some lazy DFU and memory fixes are included.
 
 
 
@@ -38,7 +38,7 @@ Removed:
 - crawl on demand 
 - starter kit
 - remove reloading screen.
-- biomes o plenty
+- biomes o plenty 
 
 
 Fixed:
