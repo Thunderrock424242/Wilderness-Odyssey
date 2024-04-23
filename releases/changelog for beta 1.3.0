@@ -42,7 +42,14 @@ Removed:
 
 
 Fixed:
-- many crashes. ( remember to join the discord to report any crashes.)
+- many crashes. ( remember to join the discord to report any crashes and report on github.)
+
+Minium requirements                                                                    e Recomended requiorments 
+CPU: intel I5                                                                          e CPU: intel I7
+GPU: Nivida 1060+                                                                      e GPU: Nivida 4070+
+RAM: 8 GIGS+                                                                           e RAM: 32 GIGS
+SSD: 4 GIGS                                                                            e SSD: 8 GIGS
+
 
 
 Known issues:
