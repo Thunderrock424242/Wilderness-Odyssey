@@ -18,7 +18,9 @@ Added:
 - nether portal spread
 - irons spell books
 - valkerin skies
+- better chunk loading
 - chunk pregen
+
 
 
 
@@ -34,12 +36,16 @@ Changes:
 - I also changed winter to be not that cold in the start and end in the middle, though it will be bad. The same goes for summer.
 - changed for ad astra for no temperature damage. Hopefully, that works.
 - removed some weather features for better performance
+- added some more optimizations
+- updated the starter structure.
+- updated starter items.
 
 Removed:
 - crawl on demand 
 - starter kit
 - remove reloading screen.
 - biomes o plenty 
+- others that caused negitive performance
 
 
 Fixed:
@@ -48,7 +54,7 @@ Fixed:
 Minimum requirements                                                                  Recommended requirements 
  CPU: intel I5                                                                          CPU: intel I7
  GPU: Nivida 1060+                                                                      GPU: Nivida 4070+
- RAM: 8 GIGS+                                                                           RAM: 32 GIGS
+ RAM: 9 GIGS+                                                                           RAM: 32 GIGS
  SSD: 4 GIGS                                                                            SSD: 8 GIGS
 
 
@@ -58,6 +64,7 @@ Known issues:
 - buildings and blocks out of place. It will be fixed during beta.
 - error f_91074 is known 
 - fps issues
+- small lag spikes
 
 Dev note: 
 -Beta trailers will be released when the beta is smooth, probably around 1..5.0, so when we advertise it, it will be stable.
