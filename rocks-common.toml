@@ -1,0 +1,8 @@
+
+#General settings
+[General]
+	#Setting this to false disables the levitation effect from Geysers (Default: true)
+	geyserLevitation = true
+	#Setting this to false disables the damage from Nether Geysers (Default: true)
+	netherGeyserDamage = true
+
