@@ -1,0 +1,5 @@
+
+[Worldgen]
+	#The weighting of Ancient Aether regions in the Aether
+	"Ancient Aether Region Weight" = 30
+

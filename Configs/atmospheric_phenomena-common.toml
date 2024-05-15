@@ -1,0 +1,63 @@
+#Settings for meteors spawning in the Overworld.
+#The first integer represents the The 1 in X chance per tick for a meteor to spawn in a loaded chunk. Set to 0 to disable meteor spawning. Default: 800000
+#The second integer represents the Y-level that meteors spawn at in the Overworld.. Default: 350
+#The third integer represents the minimum spawn size of a meteor. Default: 300
+#The fourth integer represents the maximum spawn size of a meteor. Default: 1000
+#The fifth integer represents the rate at which a meteor decreases in size per tick. Default: 2
+overworldMeteorSpawnSettings = [800000, 350, 300, 1000, 2]
+#Meteors spawn in with a random velocity. Set the lower and upper bounds to configure the direction and speed of new meteors.
+#The first double represents the minimum bound in the X axis . Default: -1.0
+#The second double represents the minimum bound in the Y axis . Default: -1.5
+#The third double represents the minimum bound in the Z axis . Default: -1.0
+#The fourth double represents the maximum bound in the X axis . Default: 1.0
+#The fifth double represents the maximum bound in the Y axis . Default: -0.5
+#The sixth double represents the maximum bound in the Z axis . Default: 1.0
+overworldMeteorVelocity = [-0.5, -1.5, -0.5, 0.5, -0.5, 0.5]
+#Settings for comets spawning in the Overworld.
+#The first integer represents the The 1 in X chance per tick for a comet to spawn in a loaded chunk. Set to 0 to disable comet spawning. Default: 800000
+#The second integer represents the Y-level that comets spawn at in the Overworld.. Default: 350
+#The third integer represents the minimum spawn size of a comet. Default: 200
+#The fourth integer represents the maximum spawn size of a comet. Default: 500
+#The fifth integer represents the rate at which a comet decreases in size per tick. Default: 3
+overworldCometSpawnSettings = [800000, 350, 200, 500, 3]
+#Comets spawn in with a random velocity. Set the lower and upper bounds to configure the direction and speed of new comets.
+#The first double represents the minimum bound in the X axis . Default: -1.0
+#The second double represents the minimum bound in the Y axis . Default: -0.3
+#The third double represents the minimum bound in the Z axis . Default: -1.0
+#The fourth double represents the maximum bound in the X axis . Default: 1.0
+#The fifth double represents the maximum bound in the Y axis . Default: -0.0
+#The sixth double represents the maximum bound in the Z axis . Default: 1.0
+overworldCometVelocity = [-0.5, -0.8, -0.5, 0.5, -0.3, 0.5]
+#Defines if meteorite features destroy all blocks. If false, the feature only replaces blocks from #atmospheric_phenomena:valid_meteorite_spawn.
+meteoriteDestroyAll = true
+#The chance for a meteor to spawn with a capsule. Affects generation of capsules when gamerule createImpactCraters is false.
+#Range: 0.0 ~ 1.0
+meteoriteCapsuleSpawnChance = 0.5
+#The chance for a meteorite to generate with no core blocks.
+#Range: 0.0 ~ 1.0
+solidCoreMeteoriteChance = 0.2
+#The chance to determine the frequency of magma blocks in the crater wall of an impact crater.
+#Range: 0.0 ~ 1.0
+magmaBlockFrequency = 0.2
+#The chance to determine the frequency of blocks in #atmospheric_phenomena:strewn_blocks to generate in the crater wall.
+#Range: 0.0 ~ 1.0
+strewnBlockFrequency = 0.2
+#Determines the rarity of meteorite blocks selected for meteorite generation. Blocks from all of the meteorite tags are added to a collection.
+#The first integer represents the weight of each item in #atmospheric_phenomena:common_meteorite_blocks. Default: 30
+#The second integer represents the weight of each item in #atmospheric_phenomena:uncommon_meteorite_blocks. Default: 10
+#The third integer represents the weight of each item in #atmospheric_phenomena:rare_meteorite_blocks. Default: 3
+#The third integer represents the weight of each item in #atmospheric_phenomena:very_rare_meteorite_blocks. Default: 1
+meteorBlocksRarity = [30, 10, 3, 1]
+#Determines the rarity of meteorite core blocks selected for meteorite generation. Blocks from all of the meteorite tags are added to a collection.
+#The first integer represents the weight of each item in #atmospheric_phenomena:common_meteorite_core_blocks. Default: 30
+#The second integer represents the weight of each item in #atmospheric_phenomena:uncommon_meteorite_core_blocks. Default: 10
+#The third integer represents the weight of each item in #atmospheric_phenomena:rare_meteorite_core_blocks. Default: 3
+#The third integer represents the weight of each item in #atmospheric_phenomena:very_rare_meteorite_core_blocks. Default: 1
+meteorCoreBlocksRarity = [30, 10, 3, 1]
+#The maximum number of blocks that can be converted by a lightning strike
+#Range: > 0
+lightningMaxBlocksConverted = 80
+#The chance for a burning log to spawn fire around it.
+#Range: 0.0 ~ 1.0
+burningLogSpawnFire = 0.05
+

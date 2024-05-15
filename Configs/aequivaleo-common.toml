@@ -1,0 +1,27 @@
+
+#aequivaleo.config.networking.comment
+[networking]
+
+	[networking.batch]
+		#aequivaleo.config.batch.size.comment
+		#Range: > -2147483648
+		size = 1000
+
+#aequivaleo.config.analysis.comment
+[analysis]
+
+	#aequivaleo.config.dimensions.comment
+	[analysis.dimensions]
+		#aequivaleo.config.blacklist.comment
+		blacklist = []
+
+	#aequivaleo.config.log.comment
+	[analysis.log]
+		#aequivaleo.config.debug.comment
+		debug = false
+
+	#aequivaleo.config.export.comment
+	[analysis.export]
+		#aequivaleo.config.json.comment
+		json = false
+

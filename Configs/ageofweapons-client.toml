@@ -1,0 +1,15 @@
+
+#General
+[general]
+	#Activate the Update-Checker
+	update-checker = true
+	#Enable that tools/weapons to be added to the mod tabs of the correct epoch
+	add_vanilla_items_to_mod_tabs = true
+
+#Items
+[items]
+	#Should the weapon perks be displayed on the item tooltips?
+	show_perks = true
+	#Should the weapon perks be displayed in JEI?
+	show_perks_in_jei = true
+
