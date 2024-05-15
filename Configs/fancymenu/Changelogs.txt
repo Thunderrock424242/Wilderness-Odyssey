@@ -1,0 +1,77 @@
+Change log 1.3.0 notes.
+
+Make sure to create a backup of your world before updating.
+
+
+Added:
+- tectonic 
+- minor quality of life mods
+- fancy menu
+- drippy loading screen
+- some more structure mods
+- starter area
+- pizza cooking
+- lots of music related things have been added
+- jump over fences
+- dummy mod to test your attacking and combat
+- this rocks
+- nether portal spread
+- irons spell books
+- valkerin skies
+- better chunk loading
+- chunk pregen
+
+
+
+
+Updated mods:
+- tons of mods have been updated
+- structures and dungeons have been overhauled and fixed.
+- Wilderness API, the mod that I am working on, I have put the crawl-on-demand features in it. Some lazy DFU and memory fixes are included.
+
+
+
+Changes:
+- some performance and crash fixes
+- I also changed winter to be not that cold in the start and end in the middle, though it will be bad. The same goes for summer.
+- changed for ad astra for no temperature damage. Hopefully, that works.
+- removed some weather features for better performance
+- added some more optimizations
+- updated the starter structure.
+- updated starter items.
+
+Removed:
+- crawl on demand 
+- starter kit
+- remove reloading screen.
+- biomes o plenty 
+- saturn
+- others that caused negitive performance
+
+
+Fixed:
+- many crashes. (Remember to join Discord to report any crashes and report them on GitHub.)
+
+Minimum requirements                                                                  Recommended requirements 
+ CPU: intel I5                                                                          CPU: intel I7
+ GPU: Nivida 1060+                                                                      GPU: Nivida 4070+
+ RAM: 9 GIGS+                                                                           RAM: 32 GIGS
+ SSD: 4 GIGS                                                                            SSD: 8 GIGS
+
+
+
+Known issues:
+-the terrain is a little messy. It will be adjusted and fixed throughout the beta.
+- buildings and blocks out of place. It will be fixed during beta.
+- error f_91074 is known 
+- fps issues
+- small lag spikes
+
+Dev note: 
+-Beta trailers will be released when the beta is smooth, probably around 1..5.0, so when we advertise it, it will be stable.
+-It is recommended that you create a new world so fewer bugs happen, but you can use an old world, just not one that is too old.
+- I have two updates for the future: no cubes for April Fools. And pollution of the realms for Earth Day
+- I don't want this pack to be all about exploring. The main thing is that. There will be RPG things, dungeons, and many other things to do. As development goes on, you will see more localized things.
+
+Note: 
+Have fun that's all I have to say for now
