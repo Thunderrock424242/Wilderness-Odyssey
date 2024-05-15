@@ -1,0 +1,17 @@
+/*
+Vinery Config
+
+
+===========
+Discord: https://discord.gg/Vqu6wYZwdZ
+CurseForge: https://www.curseforge.com/minecraft/mc-mods/lets-do-wine
+Modrinth: https://modrinth.com/mod/vinery
+*/
+{
+	// How many % of the normal wandering traders should be an wandering wine trader?
+	"wine_trader_chance": 50,
+	// Length of a year (in days).
+	"year_length_in_days": 16,
+	// Whether or not the wine maker armor should give a set bonus, which makes your bone meal infinite.
+	"enable_wine_maker_set_bonus": true
+}
