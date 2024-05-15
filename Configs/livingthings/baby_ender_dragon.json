@@ -1,0 +1,11 @@
+{
+	"canAttack": true,
+	"health": 10.0,
+	"movementSpeed": 0.3,
+	"flyingSpeed": 0.5,
+	"canSpawn": true,
+	"maxSpawnedInChunk": 5,
+	"temptationItems": {
+		"item": "minecraft:chorus_fruit"
+	}
+}
