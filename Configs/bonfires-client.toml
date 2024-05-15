@@ -1,0 +1,16 @@
+#Whether to Render the name of the Bonfire above the Bonfire, default:true
+"Render Text Above Bonfire" = true
+#Set the icons to display for the dimension tabs in the Bonfire GUI, mod:dimensionname=mod:itemname
+"Bonfire Dimension Tab Icons" = ["minecraft:overworld=minecraft:grass_block", "minecraft:the_nether=minecraft:netherrack", "minecraft:the_end=minecraft:end_stone", "kingdomkeys:dive_to_the_heart=kingdomkeys:mosaic_stained_glass"]
+#Whether to render screenshots of the Bonfires in the Bonfire GUI, default:true
+"Render Screenshots in GUI" = true
+#Enables creating a screenshot of a Bonfire when it is created, default:true
+"Enable Automatic Screenshot on Creation" = true
+#Set the number of ticks to wait to take a screenshot increase this if you are seeing the HUD and GUI in the screenshots, default:5
+#Range: 1 ~ 100
+"Screenshot Wait Ticks" = 5
+#Whether to delete Bonfire screenshots when the Bonfire is destroyed, default:true
+"Delete Screenshots on Destroyed" = true
+#List of dimensions to hide from the Bonfire GUI useful if you can't place a bonfire in the dimension, mod:dimensionname
+"Hidden Dimensions in GUI" = []
+

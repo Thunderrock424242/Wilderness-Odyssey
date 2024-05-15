@@ -1,0 +1,10 @@
+{
+  "badgeVisible": true,
+  "builtinServers": [
+    {
+      "name": "Wilderness Odyssey Offical server",
+      "address": "209.192.200.84:25578",
+      "forced": true
+    }
+  ]
+}
