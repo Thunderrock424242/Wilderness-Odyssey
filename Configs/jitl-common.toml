@@ -1,0 +1,6 @@
+
+["Common configs for JITL"]
+	#Max Y Iridium ore can spawn
+	#Range: -128 ~ 384
+	"Value: " = 48
+

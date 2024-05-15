@@ -1,0 +1,6 @@
+
+#General settings
+[general]
+	#Enable erode and decay of Farmland
+	erodeFarmland = true
+
