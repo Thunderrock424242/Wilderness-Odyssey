@@ -1,0 +1,81 @@
+
+#Format: [["dimension_1", temperature1, *units], ["dimension_2", temperature2, *units]... etc]
+#Common dimension IDs: minecraft:overworld, minecraft:the_nether, minecraft:the_end
+[Dimensions]
+	#Applies an offset to the world's temperature across an entire dimension
+	"Dimension Temperature Offsets" = [["DimensionType[fixedTime=OptionalLong[18000], hasSkyLight=false, hasCeiling=true, ultraWarm=true, natural=false, coordinateScale=8.0, bedWorks=false, respawnAnchorWorks=true, minY=0, height=256, logicalHeight=128, infiniburn=TagKey[minecraft:block / minecraft:infiniburn_nether], effectsLocation=minecraft:the_nether, ambientLight=0.1, monsterSettings=MonsterSettings[piglinSafe=true, hasRaids=false, monsterSpawnLightTest=7, monsterSpawnBlockLightLimit=15]]", 1.0, "MC"], ["DimensionType[fixedTime=OptionalLong[6000], hasSkyLight=false, hasCeiling=false, ultraWarm=false, natural=false, coordinateScale=1.0, bedWorks=false, respawnAnchorWorks=false, minY=0, height=256, logicalHeight=256, infiniburn=TagKey[minecraft:block / minecraft:infiniburn_end], effectsLocation=minecraft:the_end, ambientLight=0.0, monsterSettings=MonsterSettings[piglinSafe=false, hasRaids=true, monsterSpawnLightTest=[0-7], monsterSpawnBlockLightLimit=0]]", -0.1, "MC"]]
+	#Overrides existing dimension temperatures & offsets
+	#Also overrides temperatures of all biomes in the dimension
+	"Dimension Temperatures" = []
+
+#Format: [["biome_1", tempLow, tempHigh, *units], ["biome_2", tempLow, tempHigh, *units]... etc]
+#temp-low: The temperature of the biome at midnight
+#temp-high: The temperature of the biome at noon
+#units: Optional. The units of the temperature ("C" or "F". Defaults to MC units)
+[Biomes]
+	#Applies an offset to the temperature of a biome
+	"Biome Temperature Offsets" = []
+	#Defines the temperature of a biome, overriding existing biome temperatures & offsets.
+	"Biome Temperatures" = [["minecraft:savanna_plateau", 76.0, 98.0, "F"], ["minecraft:taiga", 44.0, 62.0, "F"], ["minecraft:eroded_badlands", 88.0, 120.0, "F"], ["minecraft:savanna", 70.0, 95.0, "F"], ["minecraft:swamp", 72.0, 84.0, "F"], ["minecraft:bamboo_jungle", 76.0, 87.0, "F"], ["minecraft:frozen_peaks", 15.0, 33.0, "F"], ["minecraft:old_growth_spruce_taiga", 48.0, 62.0, "F"], ["minecraft:snowy_beach", 38.0, 52.0, "F"], ["minecraft:deep_dark", 63.0, 63.0, "F"], ["minecraft:warm_ocean", 67.0, 76.0, "F"], ["minecraft:windswept_forest", 48.0, 66.0, "F"], ["minecraft:jungle", 76.0, 87.0, "F"], ["minecraft:snowy_slopes", 24.0, 38.0, "F"], ["minecraft:stony_shore", 50.0, 64.0, "F"], ["minecraft:soul_sand_valley", 53.0, 53.0, "F"], ["minecraft:old_growth_birch_forest", 58.0, 72.0, "F"], ["minecraft:desert", 48.0, 115.0, "F"], ["minecraft:snowy_taiga", 19.0, 48.0, "F"], ["minecraft:badlands", 84.0, 120.0, "F"], ["minecraft:deep_frozen_ocean", 56.0, 65.0, "F"], ["minecraft:river", 60.0, 70.0, "F"], ["minecraft:old_growth_pine_taiga", 48.0, 62.0, "F"], ["minecraft:windswept_savanna", 67.0, 90.0, "F"], ["minecraft:wooded_badlands", 80.0, 108.0, "F"]]
+
+["Block Temperature"]
+	#Allows for adding simple BlockTemps without the use of Java mods
+	#Format (All temperatures are in Minecraft units):
+	#[["block-ids", <temperature>, <range (max 7)>, <*true/false: falloff>, <*max effect>, <*predicates>], [etc...], [etc...]]
+	#(* = optional) (1 °MC = 42 °F/ 23.33 °C)
+	#
+	#Arguments:
+	#block-ids: multiple IDs can be used by separating them with commas (i.e: "minecraft:torch,minecraft:wall_torch")
+	#temperature: the temperature of the block, in Minecraft units
+	#falloff: the block is less effective as distance increases
+	#max effect: the maximum temperature change this block can cause to a player (even with multiple blocks)
+	#predicates: the state that the block has to be in for the temperature to be applied (lit=true for a campfire, for example).
+	#Multiple predicates can be used by separating them with commas (i.e: "lit=true,waterlogged=false")
+	BlockTemps = [["minecraft:soul_fire", -0.476, 7, true, 0.8], ["minecraft:fire", 0.476, 7, true, 0.8], ["minecraft:magma_block", 0.5, 3, true, 0.6], ["minecraft:soul_campfire", -0.476, 3, true, 0.6, "lit=true"], ["minecraft:ice", -0.15, 4, true, 0.5], ["minecraft:packed_ice", -0.25, 4, true, 1.0], ["minecraft:blue_ice", -0.35, 4, true, 1.0]]
+	#The maximum range of blocks' area of effect
+	#Note: This will not change anything unless blocks are configured to utilize the expanded range
+	#This value is capped at 16 for performance reasons
+	#Range: 1 ~ 16
+	"Block Range" = 7
+
+[Misc]
+	#The amount of temperature normalization from being deep underground
+	#0.0 = no insulation, 1.0 = full insulation
+	#Range: 0.0 ~ 1.0
+	"Cave Insulation Strength" = 1.0
+	#Overrides the world temperature when the player is within this structure
+	#Format: [["structure_1", temperature1, *units], ["structure_2", temperature2, *units]... etc]
+	#(* = optional)
+	"Structure Temperatures" = [["net.minecraft.world.level.levelgen.structure.structures.IglooStructure@7642bd43", 65.0, "F"]]
+	#List of blocks that will allow the player to sleep on them, regardless of the "Prevent Sleep When in Danger" setting
+	#Use this list if the player is not getting the temperature effect from sleeping on particular blocks
+	"Sleep Check Override Blocks" = ["#comforts:sleeping_bags"]
+	#Converts damage dealt by Soul Fire to cold damage (default: true)
+	#Does not affect the block's temperature
+	"Cold Soul Fire" = true
+	#When set to true, players cannot sleep if they are cold or hot enough to die
+	"Check Sleeping Conditions" = true
+	#Offsets the world temperature when the player is within this structure
+	#Format: [["structure_1", offset1, *units], ["structure_2", offset2, *units]... etc]
+	#(* = optional)
+	"Structure Temperature Offsets" = []
+
+#Format: [season-start, season-mid, season-end]
+#Applied as an offset to the world's temperature
+["Season Temperatures"]
+	Summer = [0.3, 0.6, 0.4]
+	Autumn = [0.3, 0, -0.2]
+	Winter = [-0.3, -0.6, -0.3]
+	Spring = [-0.2, 0, 0.2]
+
+[Hearth]
+	#How effective the hearth is at normalizing temperature
+	#Range: 0.0 ~ 1.0
+	"Hearth Strength" = 0.5
+	#List of additional blocks that the hearth can spread through
+	#Use this list if the hearth isn't spreading through particular blocks that it should
+	"Hearth Spread Whitelist" = ["minecraft:iron_bars", "mysticsbiomes:strawberry_blossoms", "gaiadimension:blue_agate_leaves", "enhancedfarming:olive_leaves", "twilightforest:twilight_oak_leaves", "deep_aether:yagroot_roots", "blue_skies:crystallized_leaves", "bloomingnature:swamp_cypress_leaves", "fruitsdelight:durian_leaves", "fruitsdelight:kiwi_leaves", "beachparty:palm_leaves", "mysticsbiomes:jacaranda_leaves", "tropicraft:grapefruit_leaves", "deserts_and_dunes:boojum_leaves", "undergarden:wigglewood_leaves", "fruitsdelight:peach_leaves", "blue_skies:maple_leaves", "forbidden_arcanus:nuggety_aurum_leaves", "ecologics:walnut_leaves", "quark:yellow_blossom_leaves", "croptopia:grapefruit_crop", "gaiadimension:burnt_agate_leaves", "fruitsdelight:persimmon_leaves", "enhancedfarming:orange_leaves", "regions_unexplored:enchanted_birch_leaves", "tropicraft:lime_leaves", "regions_unexplored:dead_leaves", "enhancedfarming:avocado_leaves", "minecraft:dark_oak_leaves", "sushigocrafting:avocado_leaves", "croptopia:banana_crop", "forbidden_arcanus:aurum_leaves", "deserts_and_dunes:yucca_leaves_no_grow", "mysticsbiomes:jacaranda_blossoms", "regions_unexplored:golden_larch_leaves", "theabyss:sal_shroom_leave", "fruitsdelight:mangosteen_leaves", "tropicraft:kapok_leaves", "twilightforest:time_leaves", "croptopia:cashew_crop", "minecraft:oak_leaves", "regions_unexplored:dead_pine_leaves", "croptopia:lime_crop", "truedarkness:darkness_spruce_leaves", "tropicraft:white_flowering_leaves", "croptopia:fig_crop", "simplefarming:pear_leaves", "twilightforest:rainbow_oak_leaves", "minecraft:spruce_leaves", "blue_skies:starlit_leaves", "deep_aether:flowering_roseroot_leaves", "biome_backlog:baobab_leaves", "truedarkness:bushy_grape_azalea_leaves", "simplefarming:plum_leaves", "deserts_and_dunes:yucca_leaves", "ecologics:coconut_leaves", "tropicraft:lemon_leaves", "fruitsdelight:orange_leaves", "mysticsbiomes:white_cherry_blossoms", "minecraft:mangrove_leaves", "croptopia:avocado_crop", "fruitsdelight:hawberry_leaves", "croptopia:coconut_crop", "blue_skies:lunar_leaves", "regions_unexplored:flowering_leaves", "fruitsdelight:lychee_leaves", "tropicraft:red_mangrove_leaves", "blue_skies:dusk_leaves", "tropicraft:blue_flowering_leaves", "gaiadimension:golden_leaves", "tropicraft:purple_flowering_leaves", "theabyss:blaru_leaves", "gaiadimension:aura_leaves", "twilightforest:beanstalk_leaves", "bloomingnature:ebony_leaves", "regions_unexplored:orange_maple_leaves", "minecraft:jungle_leaves", "twilightforest:dark_leaves", "mysticsbiomes:orange_maple_leaves", "croptopia:cherry_crop", "deeperdarker:echo_leaves", "regions_unexplored:eucalyptus_leaves", "aether:decorated_holiday_leaves", "twilightforest:thorn_leaves", "twilightforest:canopy_leaves", "gaiadimension:fossilized_leaves", "vinery:apple_leaves", "croptopia:peach_crop", "croptopia:apple_crop", "regions_unexplored:white_magnolia_leaves", "tropicraft:yellow_flowering_leaves", "bloomingnature:chestnut_leaves", "bloomingnature:baobab_leaves", "croptopia:almond_crop", "tropicraft:tall_mangrove_leaves", "regions_unexplored:baobab_leaves", "simplefarming:olive_leaves", "pizzacraft:fruit_olive_leaves", "croptopia:pecan_crop", "croptopia:apricot_crop", "truedarkness:cyan_petal", "ad_astra:glacian_leaves", "croptopia:mango_crop", "biome_backlog:palm_leaves", "pizzacraft:olive_leaves", "croptopia:pear_crop", "fruitsdelight:fig_leaves", "croptopia:plum_crop", "tropicraft:red_flowering_leaves", "regions_unexplored:silver_birch_leaves", "theabyss:vigilant_leaves", "bloomingnature:aspen_leaves", "deep_aether:conberry_leaves", "regions_unexplored:willow_leaves", "minecraft:acacia_leaves", "regions_unexplored:socotra_leaves", "tropicraft:tea_mangrove_leaves", "twilightforest:sorting_leaves", "various_world:sculk_leaves", "tropicraft:mahogany_leaves", "bloomingnature:larch_leaves", "fruitsdelight:mango_leaves", "regions_unexplored:alpha_leaves", "bloomingnature:swamp_oak_leaves", "blue_skies:frostbright_leaves", "aether:crystal_leaves", "fruitsdelight:apple_leaves", "regions_unexplored:blackwood_leaves", "gaiadimension:fire_agate_leaves", "deep_aether:roseroot_leaves", "regions_unexplored:brimwood_leaves", "truedarkness:grape_azalea_leaves", "regions_unexplored:red_maple_leaves", "regions_unexplored:magnolia_leaves", "regions_unexplored:cypress_leaves", "mysticsbiomes:yellow_maple_leaves", "enhancedfarming:lemon_leaves", "deep_aether:yagroot_leaves", "twilightforest:mangrove_leaves", "regions_unexplored:larch_leaves", "mysticsbiomes:peony_leaves", "quark:ancient_leaves", "aether:holiday_leaves", "various_world:crystal_leaves", "deep_aether:sunroot_leaves", "minecraft:birch_leaves", "enhancedfarming:mango_leaves", "tropicraft:orange_leaves", "croptopia:kumquat_crop", "aether:crystal_fruit_leaves", "regions_unexplored:redwood_leaves", "tropicraft:fruit_leaves", "minecraft:flowering_azalea_leaves", "regions_unexplored:cobalt_webbing", "bloomingnature:palm_leaves", "regions_unexplored:ashen_leaves", "regions_unexplored:kapok_leaves", "regions_unexplored:small_oak_leaves", "theabyss:jungle_leaves", "regions_unexplored:joshua_leaves", "bloomingnature:fir_leaves", "deserts_and_dunes:palo_verde_leaves", "simplefarming:cherry_leaves", "simplefarming:mango_leaves", "tropicraft:black_mangrove_leaves", "quark:lavender_blossom_leaves", "various_world:sakura_leaves", "gaiadimension:purple_agate_leaves", "snifferplus:stone_pine_leaves", "regions_unexplored:bamboo_leaves", "croptopia:nutmeg_crop", "regions_unexplored:mauve_leaves", "croptopia:persimmon_crop", "twilightforest:mining_leaves", "deserts_and_dunes:joshua_leaves", "tropicraft:palm_leaves", "theabyss:frozen_leaves", "twilightdelight:ironwood_leaves", "blue_skies:comet_leaves", "regions_unexplored:maple_leaves", "simplefarming:orange_leaves", "regions_unexplored:blue_magnolia_leaves", "croptopia:walnut_crop", "simplefarming:apple_leaves", "gaiadimension:corrupted_leaves", "simplefarming:apricot_leaves", "aether:skyroot_leaves", "fruitsdelight:pear_leaves", "theabyss:bog_shroom_leave", "enhancedfarming:cherry_leaves", "deep_aether:blue_roseroot_leaves", "regions_unexplored:palm_leaves", "twilightforest:transformation_leaves", "enhancedfarming:banana_leaves", "mysticsbiomes:pink_cherry_blossoms", "minecraft:azalea_leaves", "croptopia:nectarine_crop", "quark:orange_blossom_leaves", "regions_unexplored:apple_oak_leaves", "croptopia:starfruit_crop", "simplefarming:banana_leaves", "croptopia:date_crop", "blue_skies:crescent_fruit_leaves", "croptopia:dragonfruit_crop", "mysticsbiomes:budding_peony_leaves", "quark:blue_blossom_leaves", "mysticsbiomes:maple_leaves", "mysticsbiomes:citrus_leaves", "minecraft:cherry_leaves", "croptopia:lemon_crop", "blue_skies:bluebright_leaves", "quark:red_blossom_leaves", "vinery:cherry_leaves", "alexscaves:ancient_leaves", "croptopia:cinnamon_leaves", "gaiadimension:pink_agate_leaves", "vinery:grapevine_leaves", "undergarden:grongle_leaves", "aether:golden_oak_leaves", "enhancedfarming:apple_leaves", "regions_unexplored:pink_magnolia_leaves", "truedarkness:fake_leaves", "fruitsdelight:bayberry_leaves", "gaiadimension:green_agate_leaves", "tropicraft:papaya_leaves", "undergarden:smogstem_leaves", "deserts_and_dunes:fan_palm_leaves", "enhancedfarming:pear_leaves", "deep_aether:flowering_blue_roseroot_leaves", "croptopia:orange_crop", "regions_unexplored:pine_leaves", "deep_aether:cruderoot_leaves"]
+	#List of additional blocks that the hearth cannot spread through
+	#Use this list if the hearth is spreading through particular blocks that it shouldn't
+	"Hearth Spread Blacklist" = []
+
