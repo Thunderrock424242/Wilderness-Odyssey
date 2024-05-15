@@ -1,0 +1,20 @@
+
+#Flood settings
+[Flood]
+	#The chance the water gets converted (1.0 = 100%, 0.5 = 50%) [default: 0.0625 = 6.25%]
+	#Range: 0.0 ~ 1.0
+	convertChance = 0.0625
+	#Sets the chunk radius around the player in which water gets converted [2 = 5*5=25 total chunks] [default: 2]
+	#Range: > 1
+	convertChunkRadius = 2
+	#The water level from which it will try to convert [1 = lowest puddle, 8 = source] [default: 4]
+	#Range: 1 ~ 8
+	waterLevelToConvert = 7
+	#Extra protection that's used to slow down the water checking [1 = no slow down, AT YOUR OWN RISK] [default: 10]
+	#Range: > 1
+	extraProtection = 10
+	#Stop water from turning into source above sea level [default: true]
+	seaLevelProtection = true
+	#The dimensions in which the mod affects the water during rain [default: ["minecraft:overworld"]]
+	dimensions = ["minecraft:overworld"]
+

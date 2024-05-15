@@ -1,0 +1,279 @@
+["Enderium Config"]
+    # Define Toughness Value for Enderium Armor. Default = 145
+    # Allowed range: 0 ~ 2147483647 - Default: 145
+    toughnessValueEnderiumArmor = 145
+
+    # Define Enchantment Value for Enderium Armor. Default = 85
+    # Allowed range: 0 ~ 2147483647 - Default: 85
+    enchantmentValueEnderiumArmor = 85
+
+    # Define Knockback Resistance Value for Enderium Armor. Default = 1
+    # Allowed range: 0 ~ 2147483647 - Default: 1
+    knockbackResistanceValueEnderiumArmor = 1
+
+    # Define Protection Value for Enderium Boots. Default = 14
+    # Allowed range: 0 ~ 2147483647 - Default: 14
+    protectionValueEnderiumBoots = 14
+
+    # Define Protection Value for Enderium Leggings. Default = 20
+    # Allowed range: 0 ~ 2147483647 - Default: 20
+    protectionValueEnderiumLeggings = 20
+
+    # Define Protection Value for Enderium Chestplate. Default = 26
+    # Allowed range: 0 ~ 2147483647 - Default: 26
+    protectionValueEnderiumChestplate = 26
+
+    # Define Protection Value for Enderium Helmet. Default = 14
+    # Allowed range: 0 ~ 2147483647 - Default: 14
+    protectionValueEnderiumHelmet = 14
+
+    # Define Speed Value for Enderium Tier. Default = 40
+    # Allowed range: 1 ~ 2147483647 - Default: 40
+    speedEnderiumTier = 40
+
+    # Define Enchantment Value for Enderium Bow. Default = 5
+    # Allowed range: 1 ~ 2147483647 - Default: 5
+    enchantmentValueEnderiumBow = 5
+
+    # Define Damage Value for Enderium Bow. Default = 8
+    # Allowed range: 1 ~ 2147483647 - Default: 8
+    damageEnderiumBow = 8
+
+    # Define Attack Damage Bonus Value for Enderium Tier. Default = 11
+    # Allowed range: 1 ~ 2147483647 - Default: 11
+    attackDamageBonusEnderiumTier = 11
+
+    # Define Enchantment Value for Enderium Tier. Default = 85
+    # Allowed range: 1 ~ 2147483647 - Default: 85
+    enchantmentValueEnderiumTier = 85
+
+    # Define Attack Damage Value for Enderium Pickaxe. Default = 10
+    # Allowed range: 1 ~ 2147483647 - Default: 10
+    attackDamageEnderiumPickaxe = 10
+
+    # Define Attack Damage Value for Enderium Axe. Default = 13
+    # Allowed range: 1 ~ 2147483647 - Default: 13
+    attackDamageEnderiumAxe = 13
+
+    # Define Attack Damage Value for Enderium Shovel. Default = 11
+    # Allowed range: 1 ~ 2147483647 - Default: 11
+    attackDamageEnderiumShovel = 11
+
+    # Define Attack Damage Value for Enderium Sword. Default = 12
+    # Allowed range: 1 ~ 2147483647 - Default: 12
+    attackDamageEnderiumSword = 12
+
+    # Define Attack Damage Value for Enderium Hoe. Default = 7
+    # Allowed range: 1 ~ 2147483647 - Default: 7
+    attackDamageEnderiumHoe = 7
+
+    # Define Attack Damage Value for Enderium Paxel. Default = 18
+    # Allowed range: 1 ~ 2147483647 - Default: 18
+    attackDamageEnderiumPaxel = 18
+
+    # Define Attack Damage Value for Enderium Hammer. Default = 15
+    # Allowed range: 1 ~ 2147483647 - Default: 15
+    attackDamageEnderiumHammer = 15
+
+    # Define Attack Damage Value for Enderium Excavator. Default = 15
+    # Allowed range: 1 ~ 2147483647 - Default: 15
+    attackDamageEnderiumExcavator = 15
+
+    # Define Protection Value for Enderium Horse Armor. Default = 18
+    # Allowed range: 1 ~ 2147483647 - Default: 18
+    protectionEnderiumHorseArmor = 18
+
+    # Define How Many Enderium Ore Veins Spawn per Chunk. Default = 4
+    # Allowed range: 1 ~ 64 - Default: 4
+    VeinsPerChunkEnderium = 4
+
+    # Define How Many Enderium Ore Spawn per Vein. Default = 7
+    # Allowed range: 1 ~ 64 - Default: 4
+    OrePerVeinEnderium = 4
+
+["Vibranium Config"]
+    # Define Toughness Value for Vibranium Armor. Default = 293
+    # Allowed range: 0 ~ 2147483647 - Default: 293
+    toughnessValueVibraniumArmor = 293
+
+    # Define Enchantment Value for Vibranium Armor. Default = 85
+    # Allowed range: 0 ~ 2147483647 - Default: 85
+    enchantmentValueVibraniumArmor = 85
+
+    # Define Knockback Resistance Value for Vibranium Armor. Default = 2
+    # Allowed range: 0 ~ 2147483647 - Default: 2
+    knockbackResistanceValueVibraniumArmor = 2
+
+    # Define Protection Value for Vibranium Boots. Default = 26
+    # Allowed range: 0 ~ 2147483647 - Default: 26
+    protectionValueVibraniumBoots = 26
+
+    # Define Protection Value for Vibranium Leggings. Default = 40
+    # Allowed range: 0 ~ 2147483647 - Default: 40
+    protectionValueVibraniumLeggings = 40
+
+    # Define Protection Value for Vibranium Chestplate. Default = 53
+    # Allowed range: 0 ~ 2147483647 - Default: 53
+    protectionValueVibraniumChestplate = 53
+
+    # Define Protection Value for Vibranium Helmet. Default = 26
+    # Allowed range: 0 ~ 2147483647 - Default: 26
+    protectionValueVibraniumHelmet = 26
+
+    # Define Speed Value for Vibranium Tier. Default = 75
+    # Allowed range: 1 ~ 2147483647 - Default: 75
+    speedVibraniumTier = 75
+
+    # Define Enchantment Value for Vibranium Bow. Default = 5
+    # Allowed range: 1 ~ 2147483647 - Default: 5
+    enchantmentValueVibraniumBow = 5
+
+    # Define Damage Value for Vibranium Bow. Default = 12
+    # Allowed range: 1 ~ 2147483647 - Default: 12
+    damageVibraniumBow = 12
+
+    # Define Attack Damage Bonus Value for Vibranium Tier. Default = 20
+    # Allowed range: 1 ~ 2147483647 - Default: 20
+    attackDamageBonusVibraniumTier = 20
+
+    # Define Enchantment Value for Vibranium Tier. Default = 85
+    # Allowed range: 1 ~ 2147483647 - Default: 85
+    enchantmentValueVibraniumTier = 85
+
+    # Define Attack Damage Value for Vibranium Pickaxe. Default = 20
+    # Allowed range: 1 ~ 2147483647 - Default: 20
+    attackDamageVibraniumPickaxe = 20
+
+    # Define Attack Damage Value for Vibranium Axe. Default = 25
+    # Allowed range: 1 ~ 2147483647 - Default: 25
+    attackDamageVibraniumAxe = 25
+
+    # Define Attack Damage Value for Vibranium Shovel. Default = 21
+    # Allowed range: 1 ~ 2147483647 - Default: 21
+    attackDamageVibraniumShovel = 21
+
+    # Define Attack Damage Value for Vibranium Sword. Default = 24
+    # Allowed range: 1 ~ 2147483647 - Default: 24
+    attackDamageVibraniumSword = 24
+
+    # Define Attack Damage Value for Vibranium Hoe. Default = 13
+    # Allowed range: 1 ~ 2147483647 - Default: 13
+    attackDamageVibraniumHoe = 13
+
+    # Define Attack Damage Value for Vibranium Paxel. Default = 76
+    # Allowed range: 1 ~ 2147483647 - Default: 27
+    attackDamageVibraniumPaxel = 27
+
+    # Define Attack Damage Value for Vibranium Hammer. Default = 65
+    # Allowed range: 1 ~ 2147483647 - Default: 22
+    attackDamageVibraniumHammer = 22
+
+    # Define Attack Damage Value for Vibranium Excavator. Default = 65
+    # Allowed range: 1 ~ 2147483647 - Default: 22
+    attackDamageVibraniumExcavator = 22
+
+    # Define Protection Value for Vibranium Horse Armor. Default = 36
+    # Allowed range: 1 ~ 2147483647 - Default: 36
+    protectionVibraniumHorseArmor = 36
+
+    # Define How Many Vibranium Ore Veins Spawn per Chunk. Default = 4
+    # Allowed range: 1 ~ 64 - Default: 3
+    VeinsPerChunkVibranium = 3
+
+    # Define How Many Vibranium Ore Spawn per Vein. Default = 7
+    # Allowed range: 1 ~ 64 - Default: 3
+    OrePerVeinVibranium = 3
+
+["Vulpus Config"]
+    # Define Toughness Value for Vulpus Armor. Default = 880
+    # Allowed range: 0 ~ 2147483647 - Default: 880
+    toughnessValueVulpusArmor = 880
+
+    # Define Enchantment Value for Vulpus Armor. Default = 85
+    # Allowed range: 0 ~ 2147483647 - Default: 85
+    enchantmentValueVulpusArmor = 85
+
+    # Define Knockback Resistance Value for Vulpus Armor. Default = 3
+    # Allowed range: 0 ~ 2147483647 - Default: 6
+    knockbackResistanceValueVulpusArmor = 6
+
+    # Define Protection Value for Vulpus Boots. Default = 80
+    # Allowed range: 0 ~ 2147483647 - Default: 80
+    protectionValueVulpusBoots = 80
+
+    # Define Protection Value for Vulpus Leggings. Default = 120
+    # Allowed range: 0 ~ 2147483647 - Default: 120
+    protectionValueVulpusLeggings = 120
+
+    # Define Protection Value for Vulpus Chestplate. Default = 160
+    # Allowed range: 0 ~ 2147483647 - Default: 160
+    protectionValueVulpusChestplate = 160
+
+    # Define Protection Value for Vulpus Helmet. Default = 80
+    # Allowed range: 0 ~ 2147483647 - Default: 80
+    protectionValueVulpusHelmet = 80
+
+    # Define Speed Value for Vulpus Tier. Default = 115
+    # Allowed range: 1 ~ 2147483647 - Default: 115
+    speedVulpusTier = 115
+
+    # Define Enchantment Value for Vulpus Bow. Default = 5
+    # Allowed range: 1 ~ 2147483647 - Default: 5
+    enchantmentValueVulpusBow = 5
+
+    # Define Damage Value for Vulpus Bow. Default = 16
+    # Allowed range: 1 ~ 2147483647 - Default: 16
+    damageVulpusBow = 16
+
+    # Define Attack Damage Bonus Value for Vulpus Tier. Default = 35
+    # Allowed range: 1 ~ 2147483647 - Default: 35
+    attackDamageBonusVulpusTier = 35
+
+    # Define Enchantment Value for Vulpus Tier. Default = 85
+    # Allowed range: 1 ~ 2147483647 - Default: 85
+    enchantmentValueVulpusTier = 85
+
+    # Define Attack Damage Value for Vulpus Pickaxe. Default = 40
+    # Allowed range: 1 ~ 2147483647 - Default: 40
+    attackDamageVulpusPickaxe = 40
+
+    # Define Attack Damage Value for Vulpus Axe. Default = 51
+    # Allowed range: 1 ~ 2147483647 - Default: 51
+    attackDamageVulpusAxe = 51
+
+    # Define Attack Damage Value for Vulpus Shovel. Default = 42
+    # Allowed range: 1 ~ 2147483647 - Default: 42
+    attackDamageVulpusShovel = 42
+
+    # Define Attack Damage Value for Vulpus Sword. Default = 47
+    # Allowed range: 1 ~ 2147483647 - Default: 47
+    attackDamageVulpusSword = 47
+
+    # Define Attack Damage Value for Vulpus Hoe. Default = 27
+    # Allowed range: 1 ~ 2147483647 - Default: 27
+    attackDamageVulpusHoe = 27
+
+    # Define Attack Damage Value for Vulpus Paxel. Default = 55
+    # Allowed range: 1 ~ 2147483647 - Default: 55
+    attackDamageVulpusPaxel = 55
+
+    # Define Attack Damage Value for Vulpus Hammer. Default = 45
+    # Allowed range: 1 ~ 2147483647 - Default: 45
+    attackDamageVulpusHammer = 45
+
+    # Define Attack Damage Value for Vulpus Excavator. Default = 45
+    # Allowed range: 1 ~ 2147483647 - Default: 45
+    attackDamageVulpusExcavator = 45
+
+    # Define Protection Value for Vulpus Horse Armor. Default = 73
+    # Allowed range: 1 ~ 2147483647 - Default: 73
+    protectionVulpusHorseArmor = 73
+
+    # Define How Many Vulpus Ore Veins Spawn per Chunk. Default = 4
+    # Allowed range: 1 ~ 64 - Default: 2
+    VeinsPerChunkVulpus = 2
+
+    # Define How Many Vulpus Ore Spawn per Vein. Default = 7
+    # Allowed range: 1 ~ 64 - Default: 2
+    OrePerVeinVulpus = 2
+
