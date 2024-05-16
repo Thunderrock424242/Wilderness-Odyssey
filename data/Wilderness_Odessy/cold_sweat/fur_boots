@@ -1,0 +1,18 @@
+{
+
+    "required_mods": [
+      "curios",
+      "cold_sweat"
+    ],
+    "type": "armor",
+    "insulation": {
+      "heat": 10,
+      "cold": 0
+    },
+    "data": {
+      "items": [
+        "cold_sweat:fur_boots"
+      ]
+    }
+   
+  }
