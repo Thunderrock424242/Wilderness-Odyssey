@@ -41,6 +41,7 @@ Changes:
 - updated starter items.
 - added some security to the modpack a ARR license
 - seasons start at late winter when you create a world
+- datapack to fur armor to make the player warmer
 
 Removed:
 - crawl on demand 
@@ -68,6 +69,7 @@ Known issues:
 - error f_91074 is known 
 - fps issues
 - small lag spikes
+- the nether is laggy and extreammly hot i am gonna find a armor that is easy to get to make it very cold.
 
 Dev note: 
 -Beta trailers will be released when the beta is smooth, probably around 1..5.0, so when we advertise it, it will be stable.
