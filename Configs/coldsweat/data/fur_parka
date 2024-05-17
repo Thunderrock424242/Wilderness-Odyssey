@@ -1,7 +1,6 @@
 {
 
     "required_mods": [
-      "curios",
       "cold_sweat"
     ],
     "type": "armor",
