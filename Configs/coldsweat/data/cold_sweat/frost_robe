@@ -1,0 +1,18 @@
+{
+
+  "required_mods": [
+    "curios",
+    "ramcompat"
+  ],
+  "type": "armor",
+  "insulation": {
+    "heat": 0,
+    "cold": 10
+  },
+  "data": {
+    "items": [
+      "ramcompat:frost_robe"
+    ]
+  }
+ 
+}

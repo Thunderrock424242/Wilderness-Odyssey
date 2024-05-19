@@ -1,0 +1,21 @@
+#The minimum duration it takes for fish roe to hatch (default = 4800)
+"min duration" = 3600
+#The maximum duration it takes for fish roe to hatch (default = 8000)
+"max duration" = 12000
+#The minimum amount of cod that can hatch from cod roe (default = 2)
+"cod min amount" = 2
+#The maximum amount of cod that can hatch from cod roe (default = 4)
+"cod max amount" = 4
+#The minimum amount of pufferfish that can hatch from pufferfish roe (default = 1)
+"pufferfish min amount" = 1
+#The maximum amount of pufferfish that can hatch from pufferfish roe (default = 2)
+"pufferfish max amount" = 2
+#The minimum amount of salmon that can hatch from salmon roe (default = 2)
+"salmon min amount" = 2
+#The maximum amount of salmon that can hatch from salmon roe (default = 4)
+"salmon max amount" = 4
+#The minimum amount of tropical fish that can hatch from tropical fish roe (default = 2)
+"tropical fish min amount" = 2
+#The maximum amount of tropical fish that can hatch from tropical fish roe (default = 4)
+"tropical fish max amount" = 4
+
