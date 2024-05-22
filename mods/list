@@ -1,4 +1,4 @@
-ad_astra 1.15.18
+- ad_astra 1.15.18
 	- additional_lights 2.1.7
 	- additionalstructures 4.2.1
 	- adorabuild_structures 2.6.0
@@ -14,13 +14,13 @@ ad_astra 1.15.18
 	- almostunified 1.20.1-0.9.3
 	- alternate_current 1.7.0
 	- ambientenvironment 11.0.0.1
-	- amendments 1.20-1.1.27
+	- amendments 1.20-1.1.31
 	- animatica 1.20.1-0.1.3
 	- appleskin 2.5.1+mc1.20.1
 	- appliedcooking 4.0.0
 	- aquaculture 2.5.1
 	- aquamirae 6.API15
-	- aquatic_frontiers 1.4
+	- aquatic_frontiers 1.6
 	- aquatictorches 1.1.1
 	- architectury 9.2.14
 	- armortrimitemfix 1.0.2
@@ -54,7 +54,7 @@ ad_astra 1.15.18
 	- betteroceanmonuments 1.20-Forge-3.0.4
 	- bettersafebed 1.20-9
 	- bettertridents 8.0.1
-	- bigreactors 1.20.1-2.0.77
+	- bigreactors 1.20.1-2.0.78
 	- biome_backlog 1.3.0
 	- biomemusic 1.20.1-2.3
 	- blastcraft 1.20.1-0.4.0-2
@@ -83,7 +83,7 @@ ad_astra 1.15.18
 	- clienttweaks 11.1.0
 	- cloth_config 11.1.118
 	- clumps 12.0.0.4
-	- cold_sweat 2.3-b03c
+	- cold_sweat 2.3-b03d
 	- collective 7.57
 	- comforts 6.3.5+1.20.1
 		\-- spectrelib 0.13.15+1.20.1
@@ -93,7 +93,6 @@ ad_astra 1.15.18
 	- connectivity 1.20.1-5.5
 	- controllable 0.20.3
 	- cookingforblockheads 16.0.4
-	- cookyourfood 1.11
 	- corgilib 4.0.1.1
 	- coroutil 1.20.1-1.3.7
 	- corpse 1.20.1-1.0.12
@@ -122,7 +121,7 @@ ad_astra 1.15.18
 	- defaultoptions 18.0.1
 	- defaultworldtype 1.20.1-4.0.4
 	- deleteworldstotrash 8.0.0
-	- delightful 3.5.4
+	- delightful 3.5.5
 	- deserts_and_dunes 1.1.3
 	- deuf 1.20.1-1.3
 	- do_a_barrel_roll 3.5.6+1.20.1
@@ -144,7 +143,7 @@ ad_astra 1.15.18
 	- easymagic 8.0.1
 	- ecologics 2.2.0
 	- electrodynamics 1.20.1-0.9.0-3
-	- embeddium 0.3.18+mc1.20.1
+	- embeddium 0.3.19+mc1.20.1
 		\-- rubidium 0.7.1
 	- embeddiumplus 1.2.12
 	- emotecraft 2.2.7-b.build.50
@@ -169,7 +168,7 @@ ad_astra 1.15.18
 	- exposure 1.6.0
 	- extra_compat 1.5.0
 	- extremesoundmuffler 3.41-forge-1.20
-	- fabrication 3.4.15+1.20
+	- fabrication 3.4.17+1.20
 	- fancymenu 3.2.3
 	- farmersdelight 1.20.1-1.2.4
 	- farmingforblockheads 14.0.2
@@ -192,7 +191,7 @@ ad_astra 1.15.18
 	- ftbessentials 2001.2.2
 	- ftblibrary 2001.2.1
 	- ftbqoptimizer 2.0.1-1.20.1
-	- ftbquests 2001.4.2
+	- ftbquests 2001.4.3
 	- ftbranks 2001.1.3
 	- ftbteams 2001.3.0
 	- ftbxmodcompat 2.1.1
@@ -216,15 +215,15 @@ ad_astra 1.15.18
 	- hpm 2.6.4
 	- hugestructureblocks 1.0.9
 	- idas 1.9.3+1.20.1
-	- immediatelyfast 1.2.14+1.20.4
-	- immersive_aircraft 1.0.0+1.20.1
+	- immediatelyfast 1.2.15+1.20.4
+	- immersive_aircraft 1.0.1+1.20.1
 	- immersive_armors 1.6.1+1.20.1
 	- immersiveores 1.20.1-0.7
 	- impactfulweather 4.1.0
 	- imst 2.1.0
 	- integrated_api 1.5.1+1.20.1-forge
 	- integrated_stronghold 1.1.1+1.20.1-forge
-	- irons_spellbooks 1.20.1-3.1.5
+	- irons_spellbooks 1.20.1-3.1.6
 	- itemfilters 2001.1.0-build.59
 	- jade 11.9.2+forge
 	- jadeaddons 5.2.2
@@ -233,7 +232,7 @@ ad_astra 1.15.18
 	- jumpoverfences 1.3.1
 	- justenoughbreeding 1.2.1
 	- kambrik 6.1.1+1.20.1
-	- kiwi 11.8.0
+	- kiwi 11.8.5+forge
 	- konkrete 1.8.0
 	- kotlinforforge 4.10.0
 	- krypton 0.2.3
@@ -250,14 +249,14 @@ ad_astra 1.15.18
 	- logbegone 1.0.8
 	- logprot 1.4
 	- longerlogintimes 1.0.0
-	- lootintegrations 1.20.1-3.6
+	- lootintegrations 1.20.1-3.7
 	- lost_aether_content 1.2.3
 	- lucent 1.5.5
 	- lunar 0.1.10
-	- map_atlases 1.20-6.0.6
+	- map_atlases 1.20-6.0.7
 	- maxhealthfix 12.0.2
 	- mcwbridges 3.0.0
-	- meadow 1.3.13.1
+	- meadow 1.3.14
 		\-- mixinsquared 0.1.2-beta.5
 	- mekanism 10.4.6
 	- mekanismgenerators 10.4.6
@@ -272,11 +271,11 @@ ad_astra 1.15.18
 	- mm_cooking 2.1
 	- modernfix 5.17.0+mc1.20.1
 	- modernstartupqol 1.1-1.20.X
-	- modonomicon 1.71.0
+	- modonomicon 1.72.0
 	- monobank 1.1.4
 	- monolib 1.1.0
 	- monsterplus 1.0
-	- moonlight 1.20-2.11.18
+	- moonlight 1.20-2.11.28
 	- more_beautiful_torches 3.0.0
 	- moremobvariants 1.3.0.1
 	- mr_dungeons_andtaverns 3.0.3.f
@@ -317,7 +316,7 @@ ad_astra 1.15.18
 	- placebo 8.6.1
 	- playeranimator 1.0.2-rc1+1.20
 	- pneumaticcraft 6.0.15+mc1.20.1
-	- polylib 2000.0.3-build.133
+	- polylib 2000.0.3-build.143
 	- portallinkingcompass 1.0.1+mc1.20
 	- potacore 0.2.8-universal
 	- potionblender 3.1.1
@@ -326,7 +325,7 @@ ad_astra 1.15.18
 	- prism 1.0.5
 	- puzzleslib 8.1.19
 		\-- puzzlesaccessapi 8.0.7
-	- quark 4.0-442
+	- quark 4.0-443
 	- questsadditions 1.4.3a
 	- radium 0.12.3+git.50c5c33
 	- rainbegoneritual 3.2
@@ -340,7 +339,7 @@ ad_astra 1.15.18
 	- relics 0.6.5.1
 	- repurposed_structures 7.1.15+1.20.1-forge
 	- resourcefulconfig 2.1.2
-	- resourcefullib 2.1.24
+	- resourcefullib 2.1.25
 	- respawn_animals 2.0.0
 	- responsiveshields 2.3
 	- revampedcats 1.20.1-1.6.1
@@ -389,7 +388,7 @@ ad_astra 1.15.18
 	- starterkit 6.7
 	- starterstructure 3.6
 	- stellarview 0.2.2
-	- structory 1.3.4
+	- structory 1.3.5
 	- structure_gel 2.16.2
 	- structureessentials 1.20.1-3.3
 	- supermartijn642configlib 1.1.8
@@ -398,14 +397,14 @@ ad_astra 1.15.18
 	- sushigocrafting 0.5.2
 	- swampier_swamps 1.20-4.0.0
 	- t_and_t 0.0NONE
-	- tact 1.1.4
+	- tact 1.1.5
 	- taxva 1.1.1
 	- tectonic 2.3.4
 	- tempad 2.3.3
 	- temporalapi 1.6.2
 	- terrablender 3.0.1.6
-	- terralith 2.5.0
-	- the_bumblezone 7.3.7+1.20.1-forge
+	- terralith 2.5.1
+	- the_bumblezone 7.3.8+1.20.1-forge
 		\-- athena 3.1.1
 	- theabyss 1.0.0
 	- theurgy 1.17.1
@@ -413,7 +412,7 @@ ad_astra 1.15.18
 	- timestacker 1.1.3
 	- tinyskeletons 8.0.1
 	- tipsmod 12.0.5
-	- titanium 3.8.27
+	- titanium 3.8.28
 	- tlc 1.0.2
 	- toofast 0.4.3.5
 	- toolstats 16.0.8
@@ -458,7 +457,6 @@ ad_astra 1.15.18
 	- yungsapi 1.20-Forge-4.0.5
 	- yungsbridges 1.20-Forge-4.0.3
 	- yungsextras 1.20-Forge-4.0.3
-	- zerocore 1.20.1-2.1.41
+	- zerocore 1.20.1-2.1.42
 	- zeta 1.0-16
 	- zume 0.19.1
-
