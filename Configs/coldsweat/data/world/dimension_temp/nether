@@ -1,0 +1,13 @@
+{
+  "required_mods": [
+    "minecraft"
+  ]
+  "dimensions": [
+    "minecraft:the_nether"
+  ],
+  "temperature": 100,
+  
+  "units": "F",
+ 
+  "is_offset": true
+}
