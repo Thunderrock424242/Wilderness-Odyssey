@@ -1,0 +1,26 @@
+{
+    "required_mods": [
+      "thirst",
+      "create"
+    ],
+    "type": "armor",
+    "insulation": {
+      "heat": 6,
+      "cold": 4
+    },
+    "data": {
+      
+      "items": [
+        "minecraft:iron_chestplate"
+      ],
+      "enchantments": [
+        {
+          "enchantment": "minecraft:heat_resistance",
+          "levels": {
+            "min": 1,
+            "max": 2
+          }
+        }
+      ]
+    }
+  }
