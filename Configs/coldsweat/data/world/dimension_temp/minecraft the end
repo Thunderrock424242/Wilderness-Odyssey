@@ -1,0 +1,13 @@
+{
+  "required_mods": [
+    "cold_sweat"
+  ]
+  ,"dimensions": [
+    "minecraft:the_end"
+  ],
+  "temperature": 100,
+  
+  "units": "F",
+ 
+  "is_offset": true
+}
