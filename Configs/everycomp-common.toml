@@ -29,7 +29,8 @@
 				cherry = true
 				jacaranda = true
 				maple = true
-				citrus = true
+				peach = true
+				sea_foam = true
 
 			[general.types.wood_type.deserts_and_dunes]
 				fan_palm = true
@@ -188,6 +189,9 @@
 
 			[general.types.wood_type.pizzacraft]
 				olive = true
+
+			[general.types.wood_type.cataclysm]
+				chorus = true
 
 		[general.types.leaves_type]
 

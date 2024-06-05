@@ -55,6 +55,9 @@
 	automatic_slice_change = false
 	#Displays chunk coordinates
 	chunk_coordinate_text = false
+	#Scale multiplier for Map Markers text on the mini-map
+	#Range: 0.0 ~ 10.0
+	map_markers_text_scale = 1.0
 
 [world_map]
 	#Use bigger book like texture for worldmap view. Makes the view a bit bigger. Recommended to ebe used with map scale 1 (you might want to lower lectern one too if buttons dont show)
@@ -86,6 +89,9 @@
 	crossair = false
 	#Range: 0.0 ~ 10.0
 	zoom_scroll_speed = 1.0
+	#Scale multiplier for Map Markers text on the world-map
+	#Range: 0.0 ~ 10.0
+	map_markers_text_scale = 1.0
 
 [moonlight_integration]
 	#Enables moonlight compat, which allows to place map markers on map via a special pin button
@@ -112,10 +118,4 @@
 	#Render atlas like normal map when in hand
 	#Allowed Values: ON, NOT_LOCKED, OFF
 	in_hand_renderer = "NOT_LOCKED"
-	#Scale multiplier for Map Markers on the atlas
-	#Range: 0.0 ~ 10.0
-	map_markers_scale = 1.0
-	#Scale multiplier for Map Markers text on the atlas
-	#Range: 0.0 ~ 10.0
-	map_markers_text_scale = 1.0
 

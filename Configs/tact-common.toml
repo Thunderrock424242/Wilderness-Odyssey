@@ -203,3 +203,10 @@ applySpelunkeryCompatAdjustments = true
 	#Range: 0.0 ~ 1000.0
 	raygunGammaDamage = 2.0
 
+["Cloak of Darkness Options"]
+	#----------------------------------
+	#
+	# Whether Cloak of Darkness's ability should be usable anywhere. Including in bright light or sunlight.
+	#
+	AllowedCloakOfDarknessAbilityInLight = false
+

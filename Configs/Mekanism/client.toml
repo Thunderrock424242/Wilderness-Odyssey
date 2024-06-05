@@ -30,7 +30,7 @@
 	terRange = 256
 
 	#Particle Config
-	[client.particle] 
+	[client.particle]
 		#Set to false to prevent particle spam when loading multiblocks (notification message will display instead).
 		enableMultiblockFormationParticles = true
 		#Show particles when machines active.

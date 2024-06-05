@@ -43,6 +43,9 @@
 	[tools_and_abilities.sol_visage]
 		#Set to true for the Sol Visage to have limited durability.
 		breakable = false
+		#Maximum number of Umvuthana followers a player can summon at once using the Sol Visage
+		#Range: 0 ~ 300
+		max_followers = 10
 
 		[tools_and_abilities.sol_visage.armor_config]
 			#See official Minecraft Wiki for an explanation of how armor damage reduction works.
