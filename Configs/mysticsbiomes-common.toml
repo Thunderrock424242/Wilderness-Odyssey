@@ -4,7 +4,7 @@
 ["World Gen"]
 	#The higher the number, the more common the biomes will be.
 	#Default: 4
-	"Biome Region Weight" = 4
+	"Biome Region Weight" = 6
 	#Determines if each biome will generate or not.
 	"Strawberry Fields" = true
 	"Bamboo Blossom Forest" = true
