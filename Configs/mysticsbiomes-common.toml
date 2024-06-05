@@ -11,6 +11,7 @@
 	"Lavender Meadow" = true
 	"Autumnal Grove" = true
 	"Lush Oasis" = true
+	Lagoon = false
 
 ["Animal Spawns"]
 	#Biomes an animal can spawn in.
