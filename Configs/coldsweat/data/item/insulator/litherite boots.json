@@ -5,7 +5,7 @@
     ],
     "type": "armor",
     "insulation": {
-      "heat": 8,
+      "heat": 18,
       "cold": 0
     },
     "data": {
