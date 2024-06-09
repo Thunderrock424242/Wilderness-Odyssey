@@ -2,7 +2,7 @@
 	- additional_lights 2.1.7
 	- additionalstructures 4.2.1
 	- adorabuild_structures 2.6.0
-	- ae2 15.2.2
+	- ae2 15.2.3
 	- aeroblender 1.20.1-1.0.1-neoforge
 	- aether 1.20.1-1.4.2-neoforge
 		|-- cumulus_menus 1.20.1-1.0.0-neoforge
@@ -14,7 +14,7 @@
 	- almostunified 1.20.1-0.9.3
 	- alternate_current 1.7.0
 	- ambientenvironment 11.0.0.1
-	- amendments 1.20-1.2.3
+	- amendments 1.20-1.2.4
 	- animatica 1.20.1-0.1.3
 	- appleskin 2.5.1+mc1.20.1
 	- appliedcooking 4.0.0
@@ -72,7 +72,7 @@
 	- builtinservers 2.1+1.20
 	- caelus 3.2.0+1.20.1
 	- carryon 2.1.2.7
-	- cataclysm 1.99.4
+	- cataclysm 1.99.5
 	- catalogue 1.8.0
 	- celestisynth 1.20.1-1.2.2
 	- chalk 1.6.4
@@ -84,7 +84,7 @@
 	- clienttweaks 11.1.0
 	- cloth_config 11.1.118
 	- clumps 12.0.0.4
-	- cold_sweat 2.3-b03f
+	- cold_sweat 2.3-b04a
 	- collective 7.61
 	- comforts 6.3.5+1.20.1
 		\-- spectrelib 0.13.15+1.20.1
@@ -125,8 +125,9 @@
 	- delightful 3.5.5
 	- deserts_and_dunes 1.1.3
 	- deuf 1.20.1-1.3
+	- distanthorizons 2.1.0-a
 	- do_a_barrel_roll 3.5.6+1.20.1
-	- doapi 1.2.12
+	- doapi 1.2.13
 		\-- terraform 7.0.1
 	- doespotatotick 1.20.1-4.0.2
 	- doggytalents 1.18.15
@@ -144,7 +145,7 @@
 	- easymagic 8.0.1
 	- ecologics 2.2.0
 	- electrodynamics 1.20.1-0.9.0-3
-	- embeddium 0.3.19+mc1.20.1
+	- embeddium 0.3.20+mc1.20.1
 		\-- rubidium 0.7.1
 	- embeddiumplus 1.2.12
 	- emotecraft 2.2.7-b.build.50
@@ -163,7 +164,7 @@
 	- entityculling 1.6.5
 	- epherolib 0.1.2
 	- epicsamurai 0.0.44-1.20.1-neo
-	- everycomp 1.20-2.6.57
+	- everycomp 1.20-2.6.59
 	- explorerscompass 1.20.1-1.3.3-forge
 	- explorify 1.4.0
 	- exposure 1.6.0
@@ -235,7 +236,7 @@
 	- kambrik 6.1.1+1.20.1
 	- kiwi 11.8.8+forge
 	- konkrete 1.8.0
-	- kotlinforforge 4.10.0
+	- kotlinforforge 4.11.0
 	- krypton 0.2.3
 	- kubejs 2001.6.5-build.7
 	- lanserverproperties 1.11.1
@@ -258,7 +259,7 @@
 	- map_atlases 1.20-6.0.7
 	- maxhealthfix 12.0.3
 	- mcwbridges 3.0.0
-	- meadow 1.3.15
+	- meadow 1.3.16
 		\-- mixinsquared 0.1.2-beta.5
 	- mekanism 10.4.8
 	- mekanismgenerators 10.4.8
@@ -273,11 +274,11 @@
 	- mm_cooking 2.1
 	- modernfix 5.18.0+mc1.20.1
 	- modernstartupqol 1.1-1.20.X
-	- modonomicon 1.72.0
+	- modonomicon 1.72.2
 	- monobank 1.1.4
 	- monolib 1.1.0
 	- monsterplus 1.0
-	- moonlight 1.20-2.11.31
+	- moonlight 1.20-2.11.33
 	- more_beautiful_torches 3.0.0
 	- moremobvariants 1.3.0.1
 	- mowziesmobs 1.6.4
@@ -311,7 +312,7 @@
 	- paxi 1.20-Forge-4.0
 	- pehkui 3.8.2+1.20.1-forge
 	- phenomena 1.20.4-3.1
-	- philipsruins 3.9.1
+	- philipsruins 4.0
 	- pickupnotifier 8.0.0
 	- piglet_structures 1.247
 	- pigpen 15.0.2
@@ -370,7 +371,7 @@
 	- simplyswords 1.55.0-1.20.1
 	- skinlayers3d 1.6.5
 	- skunk 2.0.0
-	- skyvillages 1.0.3
+	- skyvillages 1.0.4
 	- sleep_tight 1.20-1.1.19
 	- smartbrainlib 1.14
 	- smarterfarmers 1.20-1.8.3
@@ -395,18 +396,18 @@
 	- structureessentials 1.20.1-3.4
 	- supermartijn642configlib 1.1.8
 	- supermartijn642corelib 1.1.17
-	- supplementaries 1.20-2.8.11
+	- supplementaries 1.20-2.8.14
 	- sushigocrafting 0.5.2
 	- swampier_swamps 1.20-4.0.0
 	- t_and_t 0.0NONE
-	- tact 1.1.5
+	- tact 1.1.6
 	- taxva 1.1.1
 	- tectonic 2.3.5a
 	- tempad 2.3.3
 	- temporalapi 1.6.2
 	- terrablender 3.0.1.7
 	- terralith 2.5.1
-	- the_bumblezone 7.4.1+1.20.1-forge
+	- the_bumblezone 7.4.2+1.20.1-forge
 		\-- athena 3.1.1
 	- theabyss 1.0.0
 	- theurgy 1.19.0
@@ -441,7 +442,7 @@
 	- verdantvibes 1.0.3-1.20.1
 	- villagesandpillages 1.0.0
 	- villainousfishai 1.1
-	- vinery 1.4.19
+	- vinery 1.4.21
 	- visuality 2.0.2
 	- visualworkbench 8.0.0
 	- vtweaks 4.0.13.fix1
