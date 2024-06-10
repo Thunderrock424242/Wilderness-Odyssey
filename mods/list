@@ -63,7 +63,7 @@
 	- blue_skies 1.3.31
 	- boatbreakfix 1.0.2
 	- bonfires 1.2.17
-	- bookshelf 20.1.11
+	- bookshelf 20.2.12
 	- born_in_chaos_v1 1.0.0
 	- botarium 2.3.3
 	- bottledair 2.3
@@ -164,7 +164,7 @@
 	- entityculling 1.6.5
 	- epherolib 0.1.2
 	- epicsamurai 0.0.44-1.20.1-neo
-	- everycomp 1.20-2.6.59
+	- everycomp 1.20-2.6.60
 	- explorerscompass 1.20.1-1.3.3-forge
 	- explorify 1.4.0
 	- exposure 1.6.0
@@ -234,7 +234,7 @@
 	- jumpoverfences 1.3.1
 	- justenoughbreeding 1.2.1
 	- kambrik 6.1.1+1.20.1
-	- kiwi 11.8.8+forge
+	- kiwi 11.8.9+forge
 	- konkrete 1.8.0
 	- kotlinforforge 4.11.0
 	- krypton 0.2.3
@@ -259,7 +259,7 @@
 	- map_atlases 1.20-6.0.7
 	- maxhealthfix 12.0.3
 	- mcwbridges 3.0.0
-	- meadow 1.3.16
+	- meadow 1.3.17
 		\-- mixinsquared 0.1.2-beta.5
 	- mekanism 10.4.8
 	- mekanismgenerators 10.4.8
@@ -442,7 +442,7 @@
 	- verdantvibes 1.0.3-1.20.1
 	- villagesandpillages 1.0.0
 	- villainousfishai 1.1
-	- vinery 1.4.21
+	- vinery 1.4.22
 	- visuality 2.0.2
 	- visualworkbench 8.0.0
 	- vtweaks 4.0.13.fix1
