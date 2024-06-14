@@ -1,5 +1,5 @@
-- ad_astra 1.15.18
-	- additional_lights 2.1.7
+    - ad_astra 1.15.18
+  	- additional_lights 2.1.7
 	- additionalstructures 4.2.1
 	- adorabuild_structures 2.6.0
 	- ae2 15.2.3
@@ -85,7 +85,7 @@
 	- clienttweaks 11.1.0
 	- cloth_config 11.1.118
 	- clumps 12.0.0.4
-	- cold_sweat 2.3-b04a
+	- cold_sweat 2.3-b04b
 	- collective 7.61
 	- comforts 6.3.5+1.20.1
 		\-- spectrelib 0.13.15+1.20.1
