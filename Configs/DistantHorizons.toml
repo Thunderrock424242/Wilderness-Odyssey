@@ -479,7 +479,7 @@ _version = 2
 			# CPU performance may suffer if Distant Horizons has a lot to load or generate. 
 			# This can be an issue when first loading into a world, when flying, and/or when generating new terrain.
 			# 
-			numberOfWorldGenerationThreads = 6
+			numberOfWorldGenerationThreads = 1
 			# If this value is less than 1.0, it will be treated as a percentage 
 			# of time each thread can run before going idle. 
 			# 
@@ -487,7 +487,7 @@ _version = 2
 			# is already set to 1 for the given option, or more finely 
 			# tune CPU performance.
 			# 
-			runTimeRatioForWorldGenerationThreads = "0.75"
+			runTimeRatioForWorldGenerationThreads = "0.25"
 			# How many threads should be used when reading/writing LOD data to/from disk? 
 			# 
 			# Increasing this number will cause LODs to load in faster, 
@@ -499,7 +499,7 @@ _version = 2
 			# CPU performance may suffer if Distant Horizons has a lot to load or generate. 
 			# This can be an issue when first loading into a world, when flying, and/or when generating new terrain.
 			# 
-			numberOfFileHandlerThreads = 5
+			numberOfFileHandlerThreads = 1
 			# If this value is less than 1.0, it will be treated as a percentage 
 			# of time each thread can run before going idle. 
 			# 
@@ -507,7 +507,7 @@ _version = 2
 			# is already set to 1 for the given option, or more finely 
 			# tune CPU performance.
 			# 
-			runTimeRatioForFileHandlerThreads = "1.0"
+			runTimeRatioForFileHandlerThreads = "0.5"
 			# How many threads should be used when building LODs? 
 			# 
 			# These threads run when terrain is generated, when
@@ -518,7 +518,7 @@ _version = 2
 			# CPU performance may suffer if Distant Horizons has a lot to load or generate. 
 			# This can be an issue when first loading into a world, when flying, and/or when generating new terrain.
 			# 
-			numberOfLodBuilderThreads = 5
+			numberOfLodBuilderThreads = 1
 			# If this value is less than 1.0, it will be treated as a percentage 
 			# of time each thread can run before going idle. 
 			# 
@@ -526,7 +526,7 @@ _version = 2
 			# is already set to 1 for the given option, or more finely 
 			# tune CPU performance.
 			# 
-			runTimeRatioForLodBuilderThreads = "0.75"
+			runTimeRatioForLodBuilderThreads = "0.1"
 			# Should only be disabled if deadlock occurs and LODs refuse to update. 
 			# This will cause CPU usage to drastically increase for the Lod Builder threads. 
 			# 
@@ -552,7 +552,7 @@ _version = 2
 			# CPU performance may suffer if Distant Horizons has a lot to load or generate. 
 			# This can be an issue when first loading into a world, when flying, and/or when generating new terrain.
 			# 
-			numberOfUpdatePropagatorThreads = 12
+			numberOfUpdatePropagatorThreads = 1
 			# If this value is less than 1.0, it will be treated as a percentage 
 			# of time each thread can run before going idle. 
 			# 
@@ -560,7 +560,7 @@ _version = 2
 			# is already set to 1 for the given option, or more finely 
 			# tune CPU performance.
 			# 
-			runTimeRatioForUpdatePropagatorThreads = "0.75"
+			runTimeRatioForUpdatePropagatorThreads = "0.25"
 
 		[client.advanced.buffers]
 			# What method should be used to upload geometry to the GPU? 

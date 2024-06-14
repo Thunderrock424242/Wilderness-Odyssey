@@ -187,7 +187,17 @@ applySpelunkeryCompatAdjustments = true
 	#Range: 1.0 ~ 1000000.0
 	tremorzillaMaxHealth = 500.0
 	#Range: 1.0 ~ 1000000.0
-	tremorzillaAttackDamage = 30.0
+	tremorzillaWeakStompDamage = 2.0
+	#Range: 1.0 ~ 1000000.0
+	tremorzillaStrongStompDamage = 10.0
+	#Range: 1.0 ~ 1000000.0
+	tremorzillaScratchAttackDamage = 10.0
+	#Range: 1.0 ~ 1000000.0
+	tremorzillaTailAttackDamage = 10.0
+	#Range: 1.0 ~ 1000000.0
+	tremorzillaBiteAttackDamage = 10.0
+	#Range: 1.0 ~ 1000000.0
+	tremorzillaBeamAttackDamage = 20.0
 
 ["Raygun Options"]
 	#----------------------------------

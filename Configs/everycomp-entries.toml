@@ -1,0 +1,497 @@
+
+#Disables certain types. Note that all these configs, like in any other mod, only hide stuff from tabs and disable their recipes
+[types]
+
+	[types.wood_type]
+
+		[types.wood_type.blue_skies]
+			crystallized = true
+			bluebright = true
+			starlit = true
+			frostbright = true
+			lunar = true
+			dusk = true
+			maple = true
+			comet = true
+
+		[types.wood_type.habitat]
+			fairy_ring_mushroom = true
+
+		[types.wood_type.ecologics]
+			flowering_azalea = true
+			azalea = true
+			coconut = true
+			walnut = true
+
+		[types.wood_type.quark]
+			azalea = true
+			ancient = true
+			blossom = true
+
+		[types.wood_type.atlantis]
+			palm = true
+			atlantean = true
+
+		[types.wood_type.organics]
+			hoaky = true
+
+		[types.wood_type.mysticsbiomes]
+			strawberry = true
+			cherry = true
+			peach = true
+			maple = true
+			sea_foam = true
+			jacaranda = true
+
+		[types.wood_type.truedarkness]
+			cyan = true
+			darkness_spruce = true
+			fake = true
+			glow = true
+
+		[types.wood_type.pizzacraft]
+			olive = true
+
+		[types.wood_type.ad_astra]
+			aeronos = true
+			strophar = true
+			glacian = true
+
+		[types.wood_type.deserts_and_dunes]
+			fan_palm = true
+			yucca = true
+			joshua = true
+			palo_verde = true
+			boojum = true
+
+		[types.wood_type.born_in_chaos_v1]
+			scorched = true
+
+		[types.wood_type.cataclysm]
+			chorus = true
+
+		[types.wood_type.undergarden]
+			smogstem = true
+			wigglewood = true
+			grongle = true
+
+		[types.wood_type.enlightened_end]
+			indigo = true
+			cerulean = true
+
+		[types.wood_type.betterarcheology]
+			rotten = true
+
+		[types.wood_type.theabyss]
+			blaru = true
+			jungle = true
+			slimed = true
+			frozen = true
+			rena = true
+			luna = true
+			vigilant = true
+
+		[types.wood_type.various_world]
+			crystalic_oak = true
+			sakura = true
+			sculk = true
+
+		[types.wood_type.tropicraft]
+			mahogany = true
+			palm = true
+			mangrove = true
+
+		[types.wood_type.aether]
+			skyroot = true
+
+		[types.wood_type.deep_aether]
+			roseroot = true
+			yagroot = true
+			cruderoot = true
+			conberry = true
+			sunroot = true
+
+		[types.wood_type.biome_backlog]
+			palm = true
+
+		[types.wood_type.twilightforest]
+			twilight_oak = true
+			canopy = true
+			mangrove = true
+			dark = true
+			time = true
+			transformation = true
+			mining = true
+			sorting = true
+
+		[types.wood_type.snifferplus]
+			stone_pine = true
+
+		[types.wood_type.deeperdarker]
+			echo = true
+
+		[types.wood_type.vinery]
+			dark_cherry = true
+
+		[types.wood_type.meadow]
+			pine = true
+
+		[types.wood_type.beachparty]
+			palm = true
+
+		[types.wood_type.bloomingnature]
+			larch = true
+			baobab = true
+			swamp_oak = true
+			aspen = true
+			fan_palm = true
+			fir = true
+			swamp_cypress = true
+			ebony = true
+			chestnut = true
+
+		[types.wood_type.alexscaves]
+			pewen = true
+			thornwood = true
+
+		[types.wood_type.regions_unexplored]
+			alpha = true
+			baobab = true
+			blackwood = true
+			blue_bioshroom = true
+			brimwood = true
+			cobalt = true
+			cypress = true
+			dead = true
+			eucalyptus = true
+			green_bioshroom = true
+			joshua = true
+			kapok = true
+			larch = true
+			magnolia = true
+			maple = true
+			mauve = true
+			palm = true
+			pine = true
+			pink_bioshroom = true
+			redwood = true
+			socotra = true
+			willow = true
+			yellow_bioshroom = true
+
+		[types.wood_type.forbidden_arcanus]
+			fungyss = true
+			aurum = true
+			edelwood = true
+
+	[types.leaves_type]
+
+		[types.leaves_type.blue_skies]
+			crystallized = true
+			crescent_fruit = true
+			bluebright = true
+			starlit = true
+			frostbright = true
+			lunar = true
+			dusk = true
+			maple = true
+			comet = true
+
+		[types.leaves_type.regions_unexplored]
+			bamboo = true
+			golden_larch = true
+			alpha = true
+			apple_oak = true
+			baobab = true
+			blackwood = true
+			magnolia = true
+			cypress = true
+			dead = true
+			dead_pine = true
+			eucalyptus = true
+			flowering = true
+			kapok = true
+			larch = true
+			maple = true
+			mauve = true
+			orange_maple = true
+			palm = true
+			pine = true
+			blue_magnolia = true
+			pink_magnolia = true
+			redwood = true
+			red_maple = true
+			brimwood = true
+			enchanted_birch = true
+			small_oak = true
+			silver_birch = true
+			socotra = true
+			white_magnolia = true
+			willow = true
+			ashen = true
+
+		[types.leaves_type.twilightforest]
+			beanstalk = true
+			thorn = true
+			twilight_oak = true
+			canopy = true
+			mangrove = true
+			dark = true
+			rainbow_oak = true
+			time = true
+			transformation = true
+			mining = true
+			sorting = true
+
+		[types.leaves_type.atlantis]
+			palm = true
+
+		[types.leaves_type.organics]
+			hoaky = true
+
+		[types.leaves_type.truedarkness]
+			darkness_spruce = true
+			grape_azalea = true
+			bushy_grape_azalea = true
+
+		[types.leaves_type.pizzacraft]
+			olive = true
+			fruit_olive = true
+
+		[types.leaves_type.fruitsdelight]
+			pear = true
+			hawberry = true
+			lychee = true
+			mango = true
+			persimmon = true
+			peach = true
+			orange = true
+			apple = true
+			mangosteen = true
+			bayberry = true
+			kiwi = true
+			fig = true
+			durian = true
+
+		[types.leaves_type.ad_astra]
+			glacian = true
+
+		[types.leaves_type.deserts_and_dunes]
+			palo_verde = true
+			boojum = true
+
+		[types.leaves_type.twilightdelight]
+			ironwood = true
+
+		[types.leaves_type.undergarden]
+			smogstem = true
+			wigglewood = true
+			grongle = true
+
+		[types.leaves_type.enhancedfarming]
+			apple = true
+			lemon = true
+			orange = true
+			cherry = true
+			pear = true
+			banana = true
+			avocado = true
+			mango = true
+			olive = true
+
+		[types.leaves_type.various_world]
+			sakura = true
+			sculk = true
+
+		[types.leaves_type.ecologics]
+			coconut = true
+			walnut = true
+
+		[types.leaves_type.croptopia]
+			cinnamon = true
+
+		[types.leaves_type.tropicraft]
+			mahogany = true
+			palm = true
+			kapok = true
+			fruit = true
+			grapefruit = true
+			lemon = true
+			lime = true
+			orange = true
+			papaya = true
+			white_flowering = true
+			red_flowering = true
+			blue_flowering = true
+			purple_flowering = true
+			yellow_flowering = true
+			red_mangrove = true
+			tall_mangrove = true
+			tea_mangrove = true
+			black_mangrove = true
+
+		[types.leaves_type.aether]
+			skyroot = true
+			golden_oak = true
+			crystal = true
+			crystal_fruit = true
+			holiday = true
+			decorated_holiday = true
+
+		[types.leaves_type.deep_aether]
+			roseroot = true
+			flowering_roseroot = true
+			blue_roseroot = true
+			flowering_blue_roseroot = true
+			yagroot = true
+			cruderoot = true
+			conberry = true
+			sunroot = true
+
+		[types.leaves_type.biome_backlog]
+			baobab = true
+			palm = true
+
+		[types.leaves_type.snifferplus]
+			stone_pine = true
+
+		[types.leaves_type.simplefarming]
+			apple = true
+			apricot = true
+			banana = true
+			cherry = true
+			mango = true
+			olive = true
+			orange = true
+			pear = true
+			plum = true
+
+		[types.leaves_type.gaiadimension]
+			pink_agate = true
+			blue_agate = true
+			green_agate = true
+			purple_agate = true
+			fossilized = true
+			corrupted = true
+			burnt_agate = true
+			fire_agate = true
+			aura = true
+			golden = true
+
+		[types.leaves_type.deeperdarker]
+			echo = true
+
+		[types.leaves_type.vinery]
+			grapevine = true
+			dark_cherry = true
+			apple = true
+
+		[types.leaves_type.meadow]
+			pine = true
+
+		[types.leaves_type.beachparty]
+			palm = true
+
+		[types.leaves_type.bloomingnature]
+			larch = true
+			baobab = true
+			orange = true
+			swamp_oak = true
+			aspen = true
+			fan_palm = true
+			swamp_cypress = true
+			ebony = true
+			chestnut = true
+
+		[types.leaves_type.alexscaves]
+			ancient = true
+
+		[types.leaves_type.forbidden_arcanus]
+			aurum = true
+			nuggety_aurum = true
+
+		[types.leaves_type.quark]
+			ancient = true
+			blue_blossom = true
+			lavender_blossom = true
+			orange_blossom = true
+			yellow_blossom = true
+			red_blossom = true
+
+	[types.cake]
+
+		[types.cake.mysticsbiomes]
+			strawberry_cake = true
+			pink_frosted_cake = true
+			orange_frosted_cake = true
+			yellow_frosted_cake = true
+			lime_frosted_cake = true
+			cyan_frosted_cake = true
+			purple_frosted_cake = true
+
+		[types.cake.blue_skies]
+			comet_berry_pie = true
+
+		[types.cake.simplefarming]
+			chocolate_cake = true
+			sprinkle_cake = true
+			cheese_wheel = true
+
+#Disables specific entries
+[entries]
+
+	[entries.wood_type]
+
+		[entries.wood_type.twilightforest]
+			hollow_log_horizontal = true
+			hollow_log_vertical = true
+			banister = true
+			hollow_log_climbable = true
+
+		[entries.wood_type.mcwbridges]
+			log_bridge_stair = true
+			rail_bridge = true
+			bridge_pier = true
+			rope_bridge = true
+			rope_bridge_stair = true
+			log_bridge_middle = true
+
+		[entries.wood_type.decorative_blocks]
+			beam = true
+			support = true
+			seat = true
+			palisade = true
+
+		[entries.wood_type.create]
+			window = true
+			window_pane = true
+
+		[entries.wood_type.farmersdelight]
+			cabinet = true
+
+		[entries.wood_type.quark]
+			hollow_log = true
+			vertical_planks = true
+			post = true
+			trapped_chest = true
+			bookshelf = true
+			chest = true
+			stripped_post = true
+			ladder = true
+
+		[entries.wood_type.hearth_and_home]
+			lattice = true
+			parquet = true
+			vertical_trim = true
+			trim = true
+			sanded_wood = true
+
+		[entries.wood_type.regions_unexplored]
+			branch = true
+
+	[entries.leaves_type]
+
+		[entries.leaves_type.quark]
+			hedge = true
+			leaf_carpet = true
+
