@@ -1,4 +1,4 @@
-    - ad_astra 1.15.18
+- ad_astra 1.15.18
 	- additional_lights 2.1.7
 	- additionalstructures 4.2.1
 	- adorabuild_structures 2.6.0
@@ -58,6 +58,7 @@
 	- bigreactors 1.20.1-2.0.78
 	- biome_backlog 1.3.0
 	- biomemusic 1.20.1-2.3
+	- biomespawnpoint 2.2
 	- blastcraft 1.20.1-0.4.0-2
 	- bloomingnature 1.0.7
 	- blue_skies 1.3.31
@@ -160,7 +161,7 @@
 	- enhancedfarming 2.1.1
 	- enlightened_end 5.0.14
 	- entity_model_features 2.0.2
-	- entity_texture_features 6.1
+	- entity_texture_features 6.1.1
 	- entityculling 1.6.5
 	- epherolib 0.1.2
 	- epicsamurai 0.0.44-1.20.1-neo
@@ -204,7 +205,7 @@
 	- gamemenumodoption 2.2.1
 	- geckoanimfix 1.0.0
 	- geckolib 4.4.6
-	- geophilic 2.2.0-mc1.20u1.20.2
+	- geophilic 2.4.0
 	- glore 1.2.0
 	- gpumemleakfix 1.20.1-1.8
 	- guardvillagers 1.20.1-1.6.6
@@ -279,7 +280,7 @@
 	- monobank 1.1.4
 	- monolib 1.1.0
 	- monsterplus 1.0
-	- moonlight 1.20-2.11.35
+	- moonlight 1.20-2.11.37
 	- more_beautiful_torches 3.0.0
 	- moremobvariants 1.3.0.1
 	- mowziesmobs 1.6.4
