@@ -1,5 +1,5 @@
-    - ad_astra 1.15.18
-  	- additional_lights 2.1.7
+   	- ad_astra 1.15.18
+	- additional_lights 2.1.7
 	- additionalstructures 4.2.1
 	- adorabuild_structures 2.6.0
 	- ae2 15.2.3
@@ -31,7 +31,7 @@
 	- awesomedungeonocean 3.3.0
 	- azurelib 2.0.25
 	- badmobs 19.0.2
-	- badoptimizations 2.1.3
+	- badoptimizations 2.1.4
 	- badpackets 0.4.3
 	- bagus_lib 1.20.1-4.6.0
 	- ballistix 1.20.1-0.7.0-3
@@ -55,7 +55,7 @@
 	- betteroceanmonuments 1.20-Forge-3.0.4
 	- bettersafebed 1.20-9
 	- bettertridents 8.0.1
-	- bigreactors 1.20.1-2.0.78
+	- bigreactors 1.20.1-2.0.80
 	- biome_backlog 1.3.0
 	- biomemusic 1.20.1-2.3
 	- biomespawnpoint 2.2
@@ -95,7 +95,7 @@
 	- connectivity 1.20.1-5.5
 	- controllable 0.20.3
 	- cookingforblockheads 16.0.6
-	- corgilib 4.0.1.1
+	- corgilib 4.0.1.2
 	- coroutil 1.20.1-1.3.7
 	- corpse 1.20.1-1.0.12
 	- craterlib 2.0.0
@@ -162,7 +162,7 @@
 	- enlightened_end 5.0.14
 	- entity_model_features 2.0.2
 	- entity_texture_features 6.1.1
-	- entityculling 1.6.5
+	- entityculling 1.6.6
 	- epherolib 0.1.2
 	- epicsamurai 0.0.44-1.20.1-neo
 	- everycomp 1.20-2.6.61
@@ -185,7 +185,7 @@
 	- ferritecore 6.0.1
 	- flood 0.2.0
 	- forbidden_arcanus 1.20.1-2.2.6
-	- forge 47.2.0
+	- forge 47.3.0
 	- forgeendertech 11.1.3.1
 	- fpsreducer 1.20-2.5
 	- framework 0.7.6
@@ -254,6 +254,7 @@
 	- logbegone 1.0.8
 	- logprot 1.4
 	- longerlogintimes 1.0.0
+	- loot_journal 3.1.1
 	- lootintegrations 1.20.1-3.7
 	- lost_aether_content 1.2.3
 	- lucent 1.5.5
@@ -276,7 +277,7 @@
 	- mm_cooking 2.1
 	- modernfix 5.18.1+mc1.20.1
 	- modernstartupqol 1.1-1.20.X
-	- modonomicon 1.72.2
+	- modonomicon 1.73.0
 	- monobank 1.1.4
 	- monolib 1.1.0
 	- monsterplus 1.0
@@ -285,7 +286,6 @@
 	- moremobvariants 1.3.0.1
 	- mowziesmobs 1.6.4
 	- mr_dungeons_andtaverns 3.0.3.f
-	- musicplayer 2.7.0.256
 	- mutantmonsters 8.0.7
 	- mvs 4.1.2-1.20-forge
 	- myserveriscompatible 1.0
@@ -298,7 +298,7 @@
 	- netherportalspread 8.1
 	- nightconfigfixes 8.0.0
 	- nocubesbetterfletchingtable 1.0.1
-	- notenoughanimations 1.7.3
+	- notenoughanimations 1.7.4
 	- notes 1.20.1-1.3.0-forge
 	- nuclearscience 1.20.1-0.6.0-2
 	- nyctophobia 1.6
@@ -315,7 +315,6 @@
 	- pehkui 3.8.2+1.20.1-forge
 	- phenomena 1.20.4-3.1
 	- philipsruins 4.0
-	- pickupnotifier 8.0.0
 	- piglet_structures 1.247
 	- pigpen 15.0.2
 	- pizzacraft 7.0.8
@@ -342,7 +341,7 @@
 	- refinedstorage 1.12.4
 	- refinedstorageaddons 0.10.0
 	- regions_unexplored 0.5.5
-	- relics 0.6.5.1
+	- relics 0.6.5.2
 	- repurposed_structures 7.1.15+1.20.1-forge
 	- resourcefulconfig 2.1.2
 	- resourcefullib 2.1.25
@@ -358,7 +357,7 @@
 	- scuba_gear 1.0.6
 	- seadwellers 2.9.9
 	- searchables 1.0.3
-	- seasonhud 1.8.4
+	- seasonhud 1.8.6
 	- sebastrnlib 4.0.0
 	- secondchanceforge 1.5.1
 	- securitycraft 1.9.10
@@ -371,7 +370,7 @@
 	- simplefarming 1.20.1-2.0.6
 	- simplerpc 3.3.0
 	- simplyswords 1.55.0-1.20.1
-	- skinlayers3d 1.6.5
+	- skinlayers3d 1.6.6
 	- skunk 2.0.0
 	- skyvillages 1.0.4
 	- sleep_tight 1.20-1.1.19
@@ -411,7 +410,7 @@
 	- the_bumblezone 7.4.3+1.20.1-forge
 		\-- athena 3.1.1
 	- theabyss 1.0.0
-	- theurgy 1.19.0
+	- theurgy 1.19.1
 	- thirst 1.20.1-1.3.7
 	- timestacker 1.1.3
 	- tinyskeletons 8.0.1
@@ -443,7 +442,7 @@
 	- verdantvibes 1.0.3-1.20.1
 	- villagesandpillages 1.0.0
 	- villainousfishai 1.1
-	- vinery 1.4.22
+	- vinery 1.4.23
 	- visuality 2.0.2
 	- visualworkbench 8.0.0
 	- vtweaks 4.0.13.fix1
@@ -461,6 +460,6 @@
 	- yungsapi 1.20-Forge-4.0.5
 	- yungsbridges 1.20-Forge-4.0.3
 	- yungsextras 1.20-Forge-4.0.3
-	- zerocore 1.20.1-2.1.42
+	- zerocore 1.20.1-2.1.44
 	- zeta 1.0-19
-	- zume 0.19.1
+	- zume 1.0.0
