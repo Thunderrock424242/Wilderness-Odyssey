@@ -33,7 +33,7 @@
 		#Replace Look Controller
 		[entity.mob.replace_look_controller]
 			#Replaces the default look controller with a version featuring cached tan math improving performance. Only works on vanilla style mobs, if a mod overrides the look controller it will skip.
-			replace_look_controller = true
+			replace_look_controller = true 
 			#Set this to true to apply this setting to all mobs on the filter list. Set this to false to NOT apply this to mobs on the filter list.
 			is_allowlist = false
 			#The list of mobs that is affected by this setting according to is_allowlist
