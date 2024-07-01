@@ -1,0 +1,7 @@
+
+["Client configs for The End of Herobrine Mod"]
+	#Should Herobrine's and possessed mobs' eyes glow?
+	eyeGlow = true
+	#Should show Herobrine's nametag?
+	showNametag = false
+

@@ -1,0 +1,37 @@
+{
+	"health": 4.0,
+	"movementSpeed": 0.1,
+	"maxSpawnedInChunk": 6,
+	"temptationItems": [
+		{
+			"item": "minecraft:carrot"
+		},
+		{
+			"item": "minecraft:apple"
+		}
+	],
+	"spawnBiomes": [
+		{
+			"weight": 12,
+			"minGroupSize": 3,
+			"maxGroupSize": 5,
+			"biomes": [
+				"minecraft:plains",
+				"minecraft:sunflower_plains",
+				"minecraft:swamp",
+				"minecraft:forest",
+				"minecraft:birch_forest",
+				"minecraft:flower_forest",
+				"minecraft:river"
+			]
+		},
+		{
+			"weight": 10,
+			"minGroupSize": 4,
+			"maxGroupSize": 6,
+			"biomes": [
+				"minecraft:mushroom_fields"
+			]
+		}
+	]
+}

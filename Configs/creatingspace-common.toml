@@ -1,0 +1,13 @@
+
+#.
+#Configure the spawn
+[rocketSpawn]
+	#.
+	#Configure the spawn height on a planet
+	#Range: 0 ~ 400
+	planetSpawnHeight = 200
+	#.
+	#Configure the spawn height in orbit
+	#Range: 0 ~ 400
+	spaceSpawnHeight = 64
+

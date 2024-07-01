@@ -1,0 +1,28 @@
+
+#General settings
+[general]
+	#Makes it so if you hold hot drinks for too long that you begin taking fire damage [Default: false]
+	hotBurnsPlayer = false
+	#Amount of seconds before you start taking fire damage when 'hotBurnsPlayer' is enabled [Default: 15]
+	#Range: > 1
+	hotTime = 15
+	#When enabled the fruity leaves have to be right-clicked to be harvested [Default: true]
+	rightClickFruitHarvest = true
+	#When enabled makes you able to get fruit from leaves that were placed after shearing [Default: false]
+	relocationAllowed = false
+	#The chance in which fruit drop from tree when "rightClickFruitHarvest" isn't enabled (1 in X chance) [Default: 20]
+	#Range: > 1
+	treeDropChance = 20
+	#When enabled allows the usage of bonemeal on the mods plants [Default: true]
+	bonemealGrow = true
+	#When enabled allows instant-growth using bonemeal on the mods plants [Default: false]
+	instantGrow = false
+	#Enables Crop to Seeds recipes [Default: true]
+	crop_to_seeds = true
+	#Enables rakes [Default: true]
+	enableRake = true
+	#When enabled makes seeds drop from grass [Default: false]
+	seedsFromGrass = false
+	#When enabled makes seeds drop from grass [Default: false]
+	saplingsFromGrass = false
+

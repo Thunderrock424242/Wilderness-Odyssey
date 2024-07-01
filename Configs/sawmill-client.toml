@@ -1,0 +1,5 @@
+
+[general]
+	#Allowed Values: OFF, ON, AUTOMATIC
+	search_mode = "AUTOMATIC"
+

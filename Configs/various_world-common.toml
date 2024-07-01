@@ -1,0 +1,13 @@
+#Determine if Sculk Valley have to be generated
+generate_sculk_valley = false
+#Determine if Crystalic Forest have to be generated
+generate_crystalic_forest = true
+#Determine if Peaceful Wasteland have to be generated
+generate_peaceful_wasteland = true
+#Determine if Shiny Valley have to be generated
+generate_shiny_valley = true
+#Determine if Caverns of Deep have to be generated
+generate_caverns_of_deep = true
+#Determine if Caverns of Magma Growth have to be generated
+generate_caverns_of_magma = true
+
