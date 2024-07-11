@@ -1,8 +1,8 @@
-   - ad_astra 1.15.18
+    - ad_astra 1.15.18
 	- additional_lights 2.1.7
 	- additionalstructures 4.2.1
-	- adorabuild_structures 2.6.0
-	- ae2 15.2.4
+	- adorabuild_structures 2.7.0
+	- ae2 15.2.8
 	- aeroblender 1.20.1-1.0.1-neoforge
 	- aether 1.20.1-1.4.2-neoforge
 		|-- cumulus_menus 1.20.1-1.0.0-neoforge
@@ -11,10 +11,10 @@
 	- aiimprovements 0.5.2
 	- alexscaves 1.1.4
 	- alexsmobs 1.22.8
-	- almostunified 1.20.1-0.9.3
+	- almostunified 1.20.1-0.9.4
 	- alternate_current 1.7.0
 	- ambientenvironment 11.0.0.1
-	- amendments 1.20-1.2.6
+	- amendments 1.20-1.2.8
 	- animatica 1.20.1-0.1.3
 	- appleskin 2.5.1+mc1.20.1
 	- appliedcooking 4.0.0
@@ -29,14 +29,14 @@
 	- atlantis 2024.6.11-1.20.1-6.2-forge
 	- attributefix 21.0.4
 	- awesomedungeonocean 3.3.0
-	- azurelib 2.0.26
+	- azurelib 2.0.30
 	- badmobs 19.0.2
 	- badoptimizations 2.1.4
 	- badpackets 0.4.3
 	- bagus_lib 1.20.1-4.6.0
 	- ballistix 1.20.1-0.7.0-4
-	- balm 7.3.4
-		\-- kuma_api 20.1.6
+	- balm 7.3.6
+		\-- kuma_api 20.1.8
 	- beachparty 1.1.5
 	- bedbenefits 13.0.3
 	- better_respawn 1.20.1-2.0.3
@@ -55,7 +55,7 @@
 	- betteroceanmonuments 1.20-Forge-3.0.4
 	- bettersafebed 1.20-9
 	- bettertridents 8.0.1
-	- bigreactors 1.20.1-2.0.80
+	- bigreactors 1.20.1-2.0.82
 	- biome_backlog 1.3.0
 	- biomemusic 1.20.1-2.3
 	- biomespawnpoint 2.2
@@ -63,10 +63,10 @@
 	- bloomingnature 1.0.7
 	- blue_skies 1.3.31
 	- boatbreakfix 1.0.2
-	- bonfires 1.2.17
+	- bonfires 1.2.18
 	- bookshelf 20.2.13
 	- born_in_chaos_v1 1.0.0
-	- botarium 2.3.3
+	- botarium 2.3.4
 	- bottledair 2.3
 	- bountiful 6.0.3+1.20.1
 	- brighter 0.2.3-1201
@@ -85,35 +85,35 @@
 	- clienttweaks 11.1.0
 	- cloth_config 11.1.118
 	- clumps 12.0.0.4
-	- cold_sweat 2.3-b04b
-	- collective 7.64
-	- comforts 6.3.5+1.20.1
+	- cold_sweat 2.3-b04f
+	- collective 7.70
+	- comforts 6.4.0+1.20.1
 		\-- spectrelib 0.13.15+1.20.1
-	- commonnetworking 1.0.4-1.20.1
+	- commonnetworking 1.0.5-1.20.1
 	- configured 2.2.3
 	- conjurer_illager 1.1.6
-	- connectivity 1.20.1-5.5
+	- connectivity 1.20.1-5.6
 	- controllable 0.20.3
 	- cookingforblockheads 16.0.6
 	- corgilib 4.0.1.3
 	- coroutil 1.20.1-1.3.7
 	- corpse 1.20.1-1.0.12
-	- craterlib 2.0.0
+	- craterlib 2.0.1
 	- create 0.5.1.f
 		\-- flywheel 0.6.10-7
 	- creatingspace 1.7.0b
-	- creativecore 2.11.30
+	- creativecore 2.11.31
 	- creeperoverhaul 3.0.2
 	- cristellib 1.1.5
 	- crittersandcompanions 1.20.1-2.1.6
 	- croptopia 3.0.4
-	- ctov 3.4.4
-	- cucumber 7.0.8
+	- ctov 3.4.5
+	- cucumber 7.0.9
 	- cuisinedelight 1.1.14
 	- culinaryconstruct 5.2.1+1.20.1
 	- cullleaves 3.2.0
 	- culllessleaves 1.20.1-1.0.5
-	- cupboard 1.20.1-2.6
+	- cupboard 1.20.1-2.7
 	- curios 5.9.1+1.20.1
 	- customportalapi 0.0.1-beta1-1.20
 	- darkpaintings 17.0.4
@@ -126,12 +126,12 @@
 	- delightful 3.5.6
 	- deserts_and_dunes 1.1.3
 	- deuf 1.20.1-1.3
-	- distanthorizons 2.1.0-a
+	- distanthorizons 2.1.2-a
 	- do_a_barrel_roll 3.5.6+1.20.1
-	- doapi 1.2.13
+	- doapi 1.2.15
 		\-- terraform 7.0.1
 	- doespotatotick 1.20.1-4.0.2
-	- doggytalents 1.18.18
+	- doggytalents 1.18.20
 	- drippyloadingscreen 3.0.1
 	- dungeoncrawl 2.3.14
 	- dungeonnowloading 1.5
@@ -139,14 +139,14 @@
 	- dungeons_enhanced 5.2.2
 	- dynmus 2.3.2+1.20
 	- dynview 2.3
-	- earthmobsmod 1.20.1-10.4.0
+	- earthmobsmod 1.20.1-10.5.0
 	- easier_sleeping 2.1.3
-	- easy_npc 4.5.1
+	- easy_npc 5.1.1
 	- easyanvils 8.0.2
 	- easymagic 8.0.1
 	- ecologics 2.2.0
-	- electrodynamics 1.20.1-0.9.0-4
-	- embeddium 0.3.21+mc1.20.1
+	- electrodynamics 1.20.1-0.9.1-0
+	- embeddium 0.3.25+mc1.20.1
 		\-- rubidium 0.7.1
 	- embeddiumplus 1.2.13
 	- emotecraft 2.2.7-b.build.50
@@ -160,18 +160,18 @@
 	- enhancedcelestials 5.0.0.4
 	- enhancedfarming 2.1.1
 	- enlightened_end 5.0.14
-	- entity_model_features 2.0.2
-	- entity_texture_features 6.1.1
+	- entity_model_features 2.1.3
+	- entity_texture_features 6.1.3
 	- entityculling 1.6.6
 	- epherolib 0.1.2
-	- epicsamurai 0.0.44-1.20.1-neo
-	- everycomp 1.20-2.6.63
+	- epicsamurai 0.0.46-1.20.1-neo
+	- everycomp 1.20-2.6.66
 	- expanded_ecosphere 3.2.4
 	- explorerscompass 1.20.1-1.3.3-forge
-	- explorify 1.5.0
-	- exposure 1.6.0
-	- extra_compat 1.5.0
-	- extremesoundmuffler 3.41-forge-1.20
+	- explorify 1.6.1
+	- exposure 1.7.2
+	- extra_compat 1.5.7
+	- extremesoundmuffler 3.48
 	- fabrication 3.4.18+1.20
 	- fancymenu 3.2.3
 	- farmersdelight 1.20.1-1.2.4
@@ -195,7 +195,7 @@
 	- ftbessentials 2001.2.2
 	- ftblibrary 2001.2.2
 	- ftbqoptimizer 2.0.3-1.20.1
-	- ftbquests 2001.4.6
+	- ftbquests 2001.4.7
 	- ftbranks 2001.1.3
 	- ftbteams 2001.3.0
 	- ftbxmodcompat 2.1.1
@@ -205,7 +205,7 @@
 	- gamemenumodoption 2.2.1
 	- geckoanimfix 1.0.0
 	- geckolib 4.4.7
-	- geophilic 2.4.1
+	- geophilic 2.4.3
 	- glore 1.2.0
 	- glowroot 1.0.6
 	- gpumemleakfix 1.20.1-1.8
@@ -219,7 +219,7 @@
 	- hopour 1.1.4
 	- hpm 2.6.4
 	- hugestructureblocks 1.0.9
-	- idas 1.9.3+1.20.1
+	- idas 1.10.0+1.20.1
 	- immediatelyfast 1.2.18+1.20.4
 	- immersive_aircraft 1.0.1+1.20.1
 	- immersive_armors 1.6.1+1.20.1
@@ -228,17 +228,17 @@
 	- imst 2.1.0
 	- integrated_api 1.5.1+1.20.1-forge
 	- integrated_stronghold 1.1.1+1.20.1-forge
-	- integrated_villages 1.0.0+1.20.1-forge
-	- irons_spellbooks 1.20.1-3.2.0
+	- integrated_villages 1.0.1+1.20.1-forge
+	- irons_spellbooks 1.20.1-3.2.1
 	- itemfilters 2001.1.0-build.59
-	- jade 11.9.3+forge
+	- jade 11.9.4+forge
 	- jadeaddons 5.2.2
 	- jei 15.3.0.8
 	- jeresources 1.4.0.247
 	- jumpoverfences 1.3.1
 	- justenoughbreeding 1.2.1
 	- kambrik 6.1.1+1.20.1
-	- kiwi 11.8.11+forge
+	- kiwi 11.8.12+forge
 	- konkrete 1.8.0
 	- kotlinforforge 4.11.0
 	- krypton 0.2.3
@@ -252,7 +252,6 @@
 	- lionfishapi 1.9
 	- lithereal 1.4.3
 	- lithostitched 1.1.5
-	- livingthings 1.20.1-2.0.2
 	- logbegone 1.0.8
 	- logprot 1.4
 	- longerlogintimes 1.0.0
@@ -264,7 +263,7 @@
 	- map_atlases 1.20-6.0.7
 	- maxhealthfix 12.0.3
 	- mcwbridges 3.0.0
-	- meadow 1.3.17
+	- meadow 1.3.18
 		\-- mixinsquared 0.1.2-beta.5
 	- mekanism 10.4.8
 	- mekanismgenerators 10.4.8
@@ -277,13 +276,13 @@
 	- minecraft 1.20.1
 	- mixininheaven 0.0NONE
 	- mm_cooking 2.1
-	- modernfix 5.18.1+mc1.20.1
+	- modernfix 5.18.6+mc1.20.1
 	- modernstartupqol 1.1-1.20.X
-	- modonomicon 1.73.0
+	- modonomicon 1.73.1
 	- monobank 1.1.4
 	- monolib 1.3.0
 	- monsterplus 1.0
-	- moonlight 1.20-2.12.2
+	- moonlight 1.20-2.12.6
 	- more_beautiful_torches 3.0.0
 	- moremobvariants 1.3.0.1
 	- mowziesmobs 1.6.4
@@ -302,7 +301,7 @@
 	- nocubesbetterfletchingtable 1.0.1
 	- notenoughanimations 1.7.4
 	- notes 1.20.1-1.3.0-forge
-	- nuclearscience 1.20.1-0.6.0-3
+	- nuclearscience 1.20.1-0.6.1-0
 	- nyctophobia 1.6
 	- obscure_api 15
 	- oceansdelight 1.0.2-1.20
@@ -330,7 +329,7 @@
 	- potionsmaster 0.6.0
 	- pots_and_mimics 1.0.2
 	- prism 1.0.5
-	- puzzleslib 8.1.20
+	- puzzleslib 8.1.21
 		\-- puzzlesaccessapi 8.0.7
 	- quark 4.0-458
 	- questsadditions 1.4.3a
@@ -354,12 +353,12 @@
 	- rhino 2001.2.2-build.18
 	- rocks 1.5.1
 	- runelic 18.0.2
-	- salt 1.2.5
-	- sawmill 1.20-1.4.2
+	- salt 1.2.6
+	- sawmill 1.20-1.4.3
 	- scuba_gear 1.0.6
 	- seadwellers 2.9.9
 	- searchables 1.0.3
-	- seasonhud 1.8.7
+	- seasonhud 1.8.9
 	- sebastrnlib 4.0.0
 	- secondchanceforge 1.5.1
 	- securitycraft 1.9.10
@@ -370,13 +369,13 @@
 	- servercore 1.5.1+1.20.1
 	- shrines 1.20.1-6.0.2
 	- simplefarming 1.20.1-2.0.6
-	- simplerpc 3.3.0
+	- simplerpc 3.3.2
 	- simplyswords 1.55.0-1.20.1
 	- skinlayers3d 1.6.6
 	- skunk 2.0.0
 	- skyvillages 1.0.4
 	- sleep_tight 1.20-1.1.19
-	- smartbrainlib 1.14
+	- smartbrainlib 1.14.2
 	- smarterfarmers 1.20-1.8.3
 	- smoothchunk 1.20.1-3.6
 	- snifferplus 0.3.0
@@ -391,7 +390,7 @@
 	- spititout 1.0.1
 	- splash_milk 2.1.0
 	- stackablepotions 1.0.0
-	- starterkit 6.7
+	- starterkit 7.0
 	- starterstructure 3.6
 	- stellarview 0.2.4
 	- structory 1.3.5
@@ -403,21 +402,21 @@
 	- sushigocrafting 0.5.2
 	- swampier_swamps 1.20-4.0.0
 	- t_and_t 0.0NONE
-	- tact 1.1.6
+	- tact 1.1.8
 	- taxva 1.1.1
-	- tempad 2.3.3
-	- temporalapi 1.6.2
+	- tempad 2.3.4
+	- temporalapi 1.6.7
 	- terrablender 3.0.1.7
-	- terralith 2.5.1
-	- the_bumblezone 7.4.7+1.20.1-forge
+	- terralith 2.5.4
+	- the_bumblezone 7.4.10+1.20.1-forge
 		\-- athena 3.1.1
 	- theabyss 1.0.0
-	- theurgy 1.19.2
+	- theurgy 1.19.3
 	- thirst 1.20.1-1.3.8
 	- timestacker 1.1.3
 	- tinyskeletons 8.0.1
-	- tipsmod 12.0.5
-	- titanium 3.8.28
+	- tipsmod 12.1.7
+	- titanium 3.8.32
 	- tlc 1.0.2
 	- toofast 0.4.3.5
 	- toolstats 16.0.8
@@ -428,9 +427,9 @@
 	- tropicraft 9.6.3
 	- truedarkness 2.2
 	- tumbleweed 0.5.5
-	- twilightdelight 2.0.11
+	- twilightdelight 2.0.12
 		\-- l2library 2.4.16
-	- twilightforest 4.3.2145
+	- twilightforest 4.3.2508
 	- umbral_skies 1.3
 	- undergarden 0.8.14
 	- underground_jungle 20.1.2
@@ -439,12 +438,12 @@
 	- uteamcore 5.1.4.299
 	- utility_qol_for_wilderness_mod 2.2.5
 	- valhelsia_core 1.1.2
-	- various_world 3.4
-	- veinmining 1.4.1+1.20.1
+	- various_world 3.5.1
+	- veinmining 1.5.0+1.20.1
 	- verdantvibes 1.0.3-1.20.1
 	- villagesandpillages 1.0.0
 	- villainousfishai 1.1
-	- vinery 1.4.24
+	- vinery 1.4.26
 	- visuality 2.0.2
 	- visualworkbench 8.0.0
 	- vtweaks 4.0.13.fix1
@@ -453,7 +452,7 @@
 	- watererosion 1.1.6
 	- weather2 1.20.1-2.8.3
 	- wilderness_oddesy_api 2.3.0
-	- world_preview 1.2.2
+	- world_preview 1.3.0
 	- xercamusic 1.20.1-1.0.1
 	- yawp 0.0.4.0-beta1
 	- ydms_redpanda 1.0.4
