@@ -62,7 +62,7 @@
 	# You can override this with FTB Ranks 'ftbchunks.max_claimed' permission
 	# Default: 200
 	# Range: -∞ ~ +∞
-	max_claimed_chunks: 200
+	max_claimed_chunks: 50
 	
 	# Max force loaded chunks.
 	# You can override this with FTB Ranks 'ftbchunks.max_force_loaded' permission
