@@ -26,7 +26,7 @@
 	"generatedStructureXPosition": 0,
 	// The exact y position for the generated structure. Used when shouldUseStructurePosition is enabled.
 	// min: -1000, max: 1000
-	"generatedStructureYPosition": 73,
+	"generatedStructureYPosition": 30,
 	// The exact z position for the generated structure. Used when shouldUseStructurePosition is enabled.
 	// min: -1E7, max: 1E7
 	"generatedStructureZPosition": 0,
