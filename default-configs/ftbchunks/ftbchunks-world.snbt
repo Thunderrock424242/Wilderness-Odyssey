@@ -40,7 +40,7 @@
 	# Hard limit for the number of chunks a team can claim, regardless of how many members. Default of 0 means no hard limit.
 	# Default: 200
 	# Range: 0 ~ 2147483647
-	hard_team_claim_limit: 200
+	hard_team_claim_limit: 50
 	
 	# Hard limit for the number of chunks a team can force-load, regardless of how many members. Default of 0 means no hard limit.
 	# Default: 50
@@ -62,7 +62,7 @@
 	# You can override this with FTB Ranks 'ftbchunks.max_claimed' permission
 	# Default: 200
 	# Range: -∞ ~ +∞
-	max_claimed_chunks: 50
+	max_claimed_chunks: 200
 	
 	# Max force loaded chunks.
 	# You can override this with FTB Ranks 'ftbchunks.max_force_loaded' permission
