@@ -42,6 +42,7 @@
 			maple = true
 			sea_foam = true
 			jacaranda = true
+			tropical = true
 
 		[types.wood_type.truedarkness]
 			cyan = true
@@ -183,6 +184,9 @@
 			fungyss = true
 			aurum = true
 			edelwood = true
+
+		[types.wood_type.netherdungeons]
+			ginger = true
 
 	[types.leaves_type]
 
@@ -428,6 +432,8 @@
 			lime_frosted_cake = true
 			cyan_frosted_cake = true
 			purple_frosted_cake = true
+			vanilla_cake = true
+			chocolate_cake = true
 
 		[types.cake.blue_skies]
 			comet_berry_pie = true
@@ -488,6 +494,23 @@
 
 		[entries.wood_type.regions_unexplored]
 			branch = true
+
+		[entries.wood_type.handcrafted]
+			counter = true
+			corner_trim = true
+			fancy_bed = true
+			desk = true
+			shelf = true
+			nightstand = true
+			cupboard = true
+			dining_bench = true
+			bench = true
+			couch = true
+			table = true
+			chair = true
+			drawer = true
+			pillar_trim = true
+			side_table = true
 
 	[entries.leaves_type]
 

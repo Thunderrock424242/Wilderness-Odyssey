@@ -4,19 +4,20 @@
 
 	[common.backpackSettings]
 		enableTierUpgrades = true
-		#Enables wearing backpack directly from ground
+		#Enables equipping the backpack on right-click from the ground
 		enableBackpackBlockWearable = true
-		#Enables unequipping the backpack when player clicks with empty hand on the ground
+		#Enables unequipping the backpack on right-click on the ground with empty hand
 		enableBackpackRightClickUnequip = false
 		#Backpack immune to any damage source (lava, fire), can't be destroyed, never disappears as floating item
 		invulnerableBackpack = true
 		toolSlotsAcceptSwords = true
-		#List of items that can be put in tool slots (Use registry names, for example: minecraft:apple, minecraft:flint)
+		#List of items that can be put in tool slots (Use registry names, for example: "minecraft:apple", "minecraft:flint")
 		toolSlotsAcceptableItems = []
-		#List of items that can't be put in backpack inventory (Use registry names, for example: minecraft:apple, minecraft:flint)
+		#List of items that can't be put in backpack inventory (Use registry names, for example: "minecraft:apple", "minecraft:flint")
 		blacklistedItems = []
+		#Allows putting shulker boxes and other items with inventory in backpack
 		allowShulkerBoxes = false
-		#Prevents backpack disappearing in void
+		#Prevents backpack disappearing in void, spawns floating backpack above minimum Y when player dies in void
 		voidProtection = true
 		#Places backpack at place where player died
 		backpackDeathPlace = true
@@ -27,11 +28,14 @@
 		#WARNING - Remember to TAKE OFF BACKPACK BEFORE enabling or disabling this integration!! - if not you'll lose your backpack
 		curiosIntegration = false
 		enableCraftingUpgrade = true
-		#New backpacks will have crafting grid by default
+		#Newly crafted backpacks will have crafting upgrade included by default
 		craftingUpgradeByDefault = false
+		#Whether crafting grid should save items
 		craftingSavesItems = true
 		#Tool slots accept any item
 		toolSlotsAcceptEverything = false
+		#Allows to use only equipped backpack
+		allowOnlyEquippedBackpack = false
 
 		#Leather Tier Backpack Settings
 		[common.backpackSettings.leatherTierBackpack]
@@ -114,6 +118,7 @@
 
 	[common.backpackAbilities]
 		enableBackpackAbilities = true
+		#Newly crafted backpacks will have ability enabled by default
 		forceAbilityEnabled = false
 		#List of backpacks that are allowed to have an ability. DO NOT ADD anything to this list, because the game will crash, remove entries if backpack should not have ability
 		allowedAbilities = ["travelersbackpack:netherite", "travelersbackpack:diamond", "travelersbackpack:gold", "travelersbackpack:emerald", "travelersbackpack:iron", "travelersbackpack:lapis", "travelersbackpack:redstone", "travelersbackpack:bookshelf", "travelersbackpack:sponge", "travelersbackpack:cake", "travelersbackpack:cactus", "travelersbackpack:melon", "travelersbackpack:pumpkin", "travelersbackpack:creeper", "travelersbackpack:dragon", "travelersbackpack:enderman", "travelersbackpack:blaze", "travelersbackpack:ghast", "travelersbackpack:magma_cube", "travelersbackpack:spider", "travelersbackpack:wither", "travelersbackpack:bat", "travelersbackpack:bee", "travelersbackpack:ocelot", "travelersbackpack:cow", "travelersbackpack:chicken", "travelersbackpack:squid"]

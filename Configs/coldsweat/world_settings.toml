@@ -18,26 +18,6 @@
 	#Defines the temperature of a biome, overriding existing biome temperatures & offsets.
 	"Biome Temperatures" = [["minecraft:savanna_plateau", 76.0, 98.0, "F"], ["minecraft:taiga", 44.0, 62.0, "F"], ["minecraft:eroded_badlands", 88.0, 120.0, "F"], ["minecraft:savanna", 70.0, 95.0, "F"], ["minecraft:swamp", 72.0, 84.0, "F"], ["minecraft:bamboo_jungle", 76.0, 87.0, "F"], ["minecraft:frozen_peaks", 15.0, 33.0, "F"], ["minecraft:old_growth_spruce_taiga", 48.0, 62.0, "F"], ["minecraft:snowy_beach", 38.0, 52.0, "F"], ["minecraft:deep_dark", 63.0, 63.0, "F"], ["minecraft:warm_ocean", 67.0, 76.0, "F"], ["minecraft:windswept_forest", 48.0, 66.0, "F"], ["minecraft:jungle", 76.0, 87.0, "F"], ["minecraft:snowy_slopes", 24.0, 38.0, "F"], ["minecraft:stony_shore", 50.0, 64.0, "F"], ["minecraft:soul_sand_valley", 53.0, 53.0, "F"], ["minecraft:old_growth_birch_forest", 58.0, 72.0, "F"], ["minecraft:desert", 48.0, 115.0, "F"], ["minecraft:snowy_taiga", 19.0, 48.0, "F"], ["minecraft:badlands", 84.0, 120.0, "F"], ["minecraft:deep_frozen_ocean", 56.0, 65.0, "F"], ["minecraft:river", 60.0, 70.0, "F"], ["minecraft:old_growth_pine_taiga", 48.0, 62.0, "F"], ["minecraft:windswept_savanna", 67.0, 90.0, "F"], ["minecraft:wooded_badlands", 80.0, 108.0, "F"]]
 
-["Block Temperature"]
-	#Allows for adding simple BlockTemps without the use of Java mods
-	#Format (All temperatures are in Minecraft units):
-	#[["block-ids", <temperature>, <range (max 7)>, <*true/false: falloff>, <*max effect>, <*predicates>], [etc...], [etc...]]
-	#(* = optional) (1 °MC = 42 °F/ 23.33 °C)
-	#
-	#Arguments:
-	#block-ids: multiple IDs can be used by separating them with commas (i.e: "minecraft:torch,minecraft:wall_torch")
-	#temperature: the temperature of the block, in Minecraft units
-	#falloff: the block is less effective as distance increases
-	#max effect: the maximum temperature change this block can cause to a player (even with multiple blocks)
-	#predicates: the state that the block has to be in for the temperature to be applied (lit=true for a campfire, for example).
-	#Multiple predicates can be used by separating them with commas (i.e: "lit=true,waterlogged=false")
-	BlockTemps = [["minecraft:soul_fire", -0.476, 7, true, 0.8], ["minecraft:fire", 0.476, 7, true, 0.8], ["minecraft:magma_block", 0.5, 3, true, 0.6], ["minecraft:soul_campfire", -0.476, 3, true, 0.6, "lit=true"], ["minecraft:ice", -0.15, 4, true, 0.5], ["minecraft:packed_ice", -0.25, 4, true, 1.0], ["minecraft:blue_ice", -0.35, 4, true, 1.0]]
-	#The maximum range of blocks' area of effect
-	#Note: This will not change anything unless blocks are configured to utilize the expanded range
-	#This value is capped at 16 for performance reasons
-	#Range: 1 ~ 16
-	"Block Range" = 7
-
 [Misc]
 	#The amount of temperature normalization from being deep underground
 	#0.0 = no insulation, 1.0 = full insulation
@@ -78,4 +58,24 @@
 	#List of additional blocks that the hearth cannot spread through
 	#Use this list if the hearth is spreading through particular blocks that it shouldn't
 	"Hearth Spread Blacklist" = []
+
+[Blocks]
+	#Allows for adding simple BlockTemps without the use of Java mods
+	#Format (All temperatures are in Minecraft units):
+	#[["block-ids", <temperature>, <range (max 7)>, <*true/false: falloff>, <*max effect>, <*predicates>], [etc...], [etc...]]
+	#(* = optional) (1 °MC = 42 °F/ 23.33 °C)
+	#
+	#Arguments:
+	#block-ids: multiple IDs can be used by separating them with commas (i.e: "minecraft:torch,minecraft:wall_torch")
+	#temperature: the temperature of the block, in Minecraft units
+	#falloff: the block is less effective as distance increases
+	#max effect: the maximum temperature change this block can cause to a player (even with multiple blocks)
+	#predicates: the state that the block has to be in for the temperature to be applied (lit=true for a campfire, for example).
+	#Multiple predicates can be used by separating them with commas (i.e: "lit=true,waterlogged=false")
+	"Block Temperatures" = [["minecraft:soul_fire", -0.476, 7, true, 0.8], ["minecraft:fire", 0.476, 7, true, 0.8], ["minecraft:magma_block", 0.5, 3, true, 0.6], ["minecraft:soul_campfire", -0.476, 7, true, 0.6, "lit=true"], ["minecraft:ice", -0.15, 4, true, 0.5], ["minecraft:packed_ice", -0.25, 4, true, 1.0], ["minecraft:blue_ice", -0.35, 4, true, 1.0], ["minecraft:lava_cauldron", 0.5, 7, true, 1.5]]
+	#The maximum range of blocks' area of effect
+	#Note: This will not change anything unless blocks are configured to utilize the expanded range
+	#This value is capped at 16 for performance reasons
+	#Range: 1 ~ 16
+	"Block Range" = 7
 

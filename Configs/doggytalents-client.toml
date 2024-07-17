@@ -78,4 +78,11 @@
 	#when rendering the Dog Status String located above the main
 	#Dog Name String.
 	dog_info_hunger_format = "%d"
+	#DTN's fun little world loading icon will occasionally
+	#show Ammy instead of Classical Pale. Disable this
+	#to force the icon to always show Classical Pale.
+	ammy_spinna = true
+	#Some special Dog Variants may display some special effects
+	#clientside. Set this to false to disable this behaviour.
+	dog_variant_client_effect = true
 

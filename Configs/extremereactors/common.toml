@@ -113,3 +113,14 @@
 		#Range: 1 ~ 16
 		benitoiteOrePerCluster = 5
 
+	#Define how Energizer works
+	[common.energizer]
+		#The maximum valid size of a Energizer in the Y dimension, in blocks.
+		#Lower this if your server's players are building ginormous Energizer.
+		#Range: 3 ~ 32
+		maxEnergizerHeight = 32
+		#The maximum valid size of a Energizer in the X/Z plane, in blocks.
+		#Lower this if your server's players are building ginormous Energizer.
+		#Range: 3 ~ 32
+		maxEnergizerSize = 32
+

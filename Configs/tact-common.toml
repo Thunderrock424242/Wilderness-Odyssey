@@ -149,8 +149,6 @@ applySpelunkeryCompatAdjustments = true
 	#Range: 1.0 ~ 1000000.0
 	teletorMaxHealth = 18.0
 	#Range: 1.0 ~ 1000000.0
-	teletorttackDamage = 2.0
-	#Range: 1.0 ~ 1000000.0
 	tremorsaurusMaxHealth = 150.0
 	#Range: 1.0 ~ 1000000.0
 	tremorsaurusAttackDamage = 14.0
@@ -198,6 +196,84 @@ applySpelunkeryCompatAdjustments = true
 	tremorzillaBiteAttackDamage = 10.0
 	#Range: 1.0 ~ 1000000.0
 	tremorzillaBeamAttackDamage = 20.0
+	#Range: 0.0 ~ 1000000.0
+	atlatitanArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	boundroidArmor = 20.0
+	#Range: 0.0 ~ 1000000.0
+	boundroidWrinchArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	brainiacArmor = 8.0
+	#Range: 0.0 ~ 1000000.0
+	corrodentArmor = 2.0
+	#Range: 0.0 ~ 1000000.0
+	deepOneArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	deepOneKnightArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	deepOneMageArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	ferrouslimeArmor = 0.0
+	#Range: 1.0 ~ 1000000.0
+	forsakenSonicBoomNormalAttackDamage = 4.0
+	#Range: 1.0 ~ 1000000.0
+	forsakenSonicBoomWeakTaggedAttackDamage = 45.0
+	#Range: 0.0 ~ 1000000.0
+	forsakenArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	gammaroachArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	gloomothArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	gossamerWormArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	grottoceratopsArmor = 8.0
+	#Range: 0.0 ~ 1000000.0
+	hullbreakerArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	lanternfishArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	luxtructosaurusArmor = 20.0
+	#Range: 1.0 ~ 1000000.0
+	luxtructosaurusFireBreathAttackDamage = 3.0
+	#Range: 0.0 ~ 1000000.0
+	magnetronArmor = 6.0
+	#Range: 0.0 ~ 1000000.0
+	mineGuardianArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	notorArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	nucleeperArmor = 4.0
+	#Range: 0.0 ~ 1000000.0
+	radgillArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	raycatArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	relicheirusArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	seaPigArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	subterranodonArmor = 0.0
+	#Range: 1.0 ~ 1000000.0
+	teletorAttackDamage = 2.0
+	#Range: 0.0 ~ 1000000.0
+	teletorArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	tremorsaurusArmor = 8.0
+	#Range: 0.0 ~ 1000000.0
+	tremorzillaArmor = 10.0
+	#Range: 0.0 ~ 1000000.0
+	trilocarisArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	tripodfishArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	underzealotArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	vallumraptorArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	vesperArmor = 0.0
+	#Range: 0.0 ~ 1000000.0
+	watcherArmor = 0.0
 
 ["Raygun Options"]
 	#----------------------------------

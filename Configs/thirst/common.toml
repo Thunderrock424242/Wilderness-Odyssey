@@ -12,6 +12,8 @@
 	#How much is hydration depletion in nether faster than overworld
 	#Range: 1.0 ~ 5.0
 	netherThirstDeletionModifier = 3.0
+	#Whether thirst depletes when player is nausea
+	depletesWhenNausea = true
 
 [World]
 	#Y level above which water has 1 more level of purification by default (i.e Mountains)
