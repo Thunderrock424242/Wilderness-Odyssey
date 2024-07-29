@@ -14,6 +14,10 @@
 	netherThirstDeletionModifier = 3.0
 	#Whether thirst depletes when player is nausea
 	depletesWhenNausea = true
+	#Whether hydration depletion in peaceful mode
+	thirstDepletionInPeace = false
+	#Whether players can drink rain water
+	DrinkRainWater = true
 
 [World]
 	#Y level above which water has 1 more level of purification by default (i.e Mountains)

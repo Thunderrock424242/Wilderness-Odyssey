@@ -188,6 +188,18 @@
 		[types.wood_type.netherdungeons]
 			ginger = true
 
+		[types.wood_type.biomesoplenty]
+			fir = true
+			redwood = true
+			mahogany = true
+			jacaranda = true
+			palm = true
+			willow = true
+			dead = true
+			magic = true
+			umbran = true
+			hellbark = true
+
 	[types.leaves_type]
 
 		[types.leaves_type.blue_skies]
@@ -422,6 +434,25 @@
 			yellow_blossom = true
 			red_blossom = true
 
+		[types.leaves_type.biomesoplenty]
+			origin = true
+			flowering_oak = true
+			maple = true
+			orange_autumn = true
+			yellow_autumn = true
+			rainbow_birch = true
+			snowblossom = true
+			fir = true
+			redwood = true
+			mahogany = true
+			jacaranda = true
+			palm = true
+			willow = true
+			dead = true
+			magic = true
+			umbran = true
+			hellbark = true
+
 	[types.cake]
 
 		[types.cake.mysticsbiomes]
@@ -517,4 +548,7 @@
 		[entries.leaves_type.quark]
 			hedge = true
 			leaf_carpet = true
+
+		[entries.leaves_type.regions_unexplored]
+			shrub = true
 

@@ -85,4 +85,8 @@
 	#Some special Dog Variants may display some special effects
 	#clientside. Set this to false to disable this behaviour.
 	dog_variant_client_effect = true
+	#Disable this to prevent Radio Collars from being rendered in case if
+	#the server requires those or Locator Orb to be present to be tracked
+	#using the Canine Tracker and you prefer to make the tracker invisible.
+	render_radio_collar = true
 
