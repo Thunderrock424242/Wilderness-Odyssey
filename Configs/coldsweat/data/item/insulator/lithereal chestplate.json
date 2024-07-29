@@ -13,5 +13,16 @@
         "lithereal:frozen_litherite_chestplate"
       ]
     }
-   
+     "attributes": {
+    "generic.movement_speed": 
+    [
+      {
+        "name": "super speed",
+        "amount": 0.3,
+        "operation": "addition"
+      }
+    ]
+  }
+  
+  
   }
