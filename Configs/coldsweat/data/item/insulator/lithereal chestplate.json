@@ -2,10 +2,11 @@
 
     "required_mods": [
       "lithereal"
+      "cold_sweat"
     ],
     "type": "armor",
     "insulation": {
-      "heat": 20,
+      "heat": 35,
       "cold": 0
     },
     "data": {
