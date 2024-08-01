@@ -9,7 +9,6 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-image: url('https://raw.githubusercontent.com/Thunderrock424242/Wilderness-Odyssey/Website/Website_pictures/background_image.PNG'); /* Replace with your image's raw URL */
             background-size: cover;
             background-position: center;
             color: #fff;
@@ -90,9 +89,9 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="#" onclick="showTab('about')">About the Modpack</a>
-        <a href="#" onclick="showTab('features')">Features</a>
-        <a href="#" onclick="showTab('lore')">Lore</a>
+        <a href="#" onclick="showTab('about', 'https://raw.githubusercontent.com/Thunderrock424242/Wilderness-Odyssey/Website/Website_pictures/about_image.PNG')">About the Modpack</a>
+        <a href="#" onclick="showTab('features', 'https://raw.githubusercontent.com/Thunderrock424242/Wilderness-Odyssey/Website/Website_pictures/features_image.PNG')">Features</a>
+        <a href="#" onclick="showTab('lore', 'https://raw.githubusercontent.com/Thunderrock424242/Wilderness-Odyssey/Website/Website_pictures/lore_image.PNG')">Lore</a>
     </div>
 
     <div class="content">
@@ -140,13 +139,14 @@
     </div>
 
     <script>
-        function showTab(tabName) {
+        function showTab(tabName, imageUrl) {
             var i, tabcontent;
             tabcontent = document.getElementsByClassName("tab-content");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].classList.remove("active");
             }
             document.getElementById(tabName).classList.add("active");
+            document.body.style.backgroundImage = 'url(' + imageUrl + ')';
         }
 
         function showSubTab(subTabName) {
@@ -158,8 +158,8 @@
             document.getElementById(subTabName).classList.add("active");
         }
 
-        // Default to show the 'About the Modpack' tab
-        showTab('about');
+        // Default to show the 'About the Modpack' tab and its background image
+        showTab('about', 'https://raw.githubusercontent.com/Thunderrock424242/Wilderness-Odyssey/Website/Website_pictures/about_image.PNG');
     </script>
 </body>
 </html>
