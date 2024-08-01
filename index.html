@@ -6,7 +6,7 @@
     <title>Wilderness Odyssey</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             background-image: url('background.jpg'); /* Replace 'background.jpg' with your image file */
@@ -17,17 +17,21 @@
         .navbar {
             display: flex;
             justify-content: center;
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.85);
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
         .navbar a {
             color: white;
             padding: 14px 20px;
             text-decoration: none;
             text-align: center;
+            font-weight: bold;
+            font-size: 16px;
         }
         .navbar a:hover {
-            background-color: #575757;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
         }
         .content {
             padding: 20px;
@@ -46,11 +50,11 @@
             display: block;
         }
         .container {
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            margin-top: 20px;
+            background-color: rgba(0, 0, 0, 0.85);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin: 20px auto;
             display: inline-block;
             width: 80%;
         }
@@ -60,12 +64,27 @@
         }
         .sub-tabs a {
             color: white;
-            padding: 10px;
+            padding: 10px 15px;
             text-decoration: none;
             display: block;
+            border-left: 3px solid transparent;
+            transition: 0.3s;
         }
         .sub-tabs a:hover {
-            background-color: #575757;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-left: 3px solid #007bff;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 2em;
+            margin-top: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -80,34 +99,41 @@
         <div id="about" class="tab-content">
             <div class="container">
                 <h1>About Wilderness Odyssey</h1>
-                <p>Information about the modpack...</p>
+                <p>Welcome to Wilderness Odyssey, a Minecraft modpack that transforms your survival experience into an epic journey through untamed landscapes. Explore vast wildernesses, encounter new biomes, and survive against the elements.</p>
             </div>
         </div>
         <div id="features" class="tab-content">
             <div class="container">
                 <h1>Features</h1>
-                <p>Details about the modpack features...</p>
+                <p>Wilderness Odyssey includes a range of features designed to enhance your gameplay experience:</p>
+                <ul>
+                    <li>New Biomes</li>
+                    <li>Custom Mobs</li>
+                    <li>Enhanced Crafting System</li>
+                    <li>Realistic Weather Effects</li>
+                    <li>Advanced Survival Mechanics</li>
+                </ul>
             </div>
         </div>
         <div id="lore" class="tab-content">
             <div class="container">
                 <h1>Lore</h1>
                 <div class="sub-tabs">
-                    <a href="#" onclick="showSubTab('chapter1')">Chapter 1</a>
-                    <a href="#" onclick="showSubTab('chapter2')">Chapter 2</a>
-                    <a href="#" onclick="showSubTab('chapter3')">Chapter 3</a>
+                    <a href="#" onclick="showSubTab('chapter1')">Chapter 1: The Awakening</a>
+                    <a href="#" onclick="showSubTab('chapter2')">Chapter 2: The Wilderness</a>
+                    <a href="#" onclick="showSubTab('chapter3')">Chapter 3: The Journey</a>
                 </div>
                 <div id="chapter1" class="sub-tab-content">
-                    <h2>Chapter 1</h2>
-                    <p>Details of chapter 1...</p>
+                    <h2>Chapter 1: The Awakening</h2>
+                    <p>In the beginning, you find yourself alone in an unfamiliar land. The sun rises over a dense forest, and the adventure begins...</p>
                 </div>
                 <div id="chapter2" class="sub-tab-content">
-                    <h2>Chapter 2</h2>
-                    <p>Details of chapter 2...</p>
+                    <h2>Chapter 2: The Wilderness</h2>
+                    <p>As you venture deeper into the wilderness, you encounter strange creatures and discover ancient ruins hidden among the trees...</p>
                 </div>
                 <div id="chapter3" class="sub-tab-content">
-                    <h2>Chapter 3</h2>
-                    <p>Details of chapter 3...</p>
+                    <h2>Chapter 3: The Journey</h2>
+                    <p>The journey takes you across vast landscapes, from snowy mountains to arid deserts, each with its own challenges and mysteries...</p>
                 </div>
             </div>
         </div>
