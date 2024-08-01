@@ -1,38 +1,139 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Minecraft Modpack</title>
+    <title>Wilderness Odyssey</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f0f0;
-            padding: 50px;
+            margin: 0;
+            padding: 0;
+            background-image: url('background.jpg'); /* Replace 'background.jpg' with your image file */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
         }
-        h1 {
-            color: #333;
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+        }
+        .navbar a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        .navbar a:hover {
+            background-color: #575757;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .sub-tab-content {
+            display: none;
+        }
+        .sub-tab-content.active {
+            display: block;
         }
         .container {
-            background-color: #fff;
+            background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
             display: inline-block;
-            margin-top: 50px;
+            width: 80%;
         }
-        a {
-            color: #007bff;
+        .sub-tabs {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .sub-tabs a {
+            color: white;
+            padding: 10px;
             text-decoration: none;
+            display: block;
+        }
+        .sub-tabs a:hover {
+            background-color: #575757;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to My Minecraft Modpack</h1>
-        <p>This is the official site for my Minecraft modpack. Stay tuned for updates and download links!</p>
-        <p><a href="https://github.com/Thunderrock424242/Wilderness-Odyssey">View on GitHub</a></p>
+    <div class="navbar">
+        <a href="#" onclick="showTab('about')">About the Modpack</a>
+        <a href="#" onclick="showTab('features')">Features</a>
+        <a href="#" onclick="showTab('lore')">Lore</a>
     </div>
+
+    <div class="content">
+        <div id="about" class="tab-content">
+            <div class="container">
+                <h1>About Wilderness Odyssey</h1>
+                <p>Information about the modpack...</p>
+            </div>
+        </div>
+        <div id="features" class="tab-content">
+            <div class="container">
+                <h1>Features</h1>
+                <p>Details about the modpack features...</p>
+            </div>
+        </div>
+        <div id="lore" class="tab-content">
+            <div class="container">
+                <h1>Lore</h1>
+                <div class="sub-tabs">
+                    <a href="#" onclick="showSubTab('chapter1')">Chapter 1</a>
+                    <a href="#" onclick="showSubTab('chapter2')">Chapter 2</a>
+                    <a href="#" onclick="showSubTab('chapter3')">Chapter 3</a>
+                </div>
+                <div id="chapter1" class="sub-tab-content">
+                    <h2>Chapter 1</h2>
+                    <p>Details of chapter 1...</p>
+                </div>
+                <div id="chapter2" class="sub-tab-content">
+                    <h2>Chapter 2</h2>
+                    <p>Details of chapter 2...</p>
+                </div>
+                <div id="chapter3" class="sub-tab-content">
+                    <h2>Chapter 3</h2>
+                    <p>Details of chapter 3...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            var i, tabcontent;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+        }
+
+        function showSubTab(subTabName) {
+            var i, subtabcontent;
+            subtabcontent = document.getElementsByClassName("sub-tab-content");
+            for (i = 0; i < subtabcontent.length; i++) {
+                subtabcontent[i].classList.remove("active");
+            }
+            document.getElementById(subTabName).classList.add("active");
+        }
+
+        // Default to show the 'About the Modpack' tab
+        showTab('about');
+    </script>
 </body>
 </html>
