@@ -1,0 +1,82 @@
+Change log 1.2.0 notes.
+
+Make sure to create a backup of your world before updating.
+
+when creating a new world for this update its gonna ask you to spawn a structure say no as it might mess up some things
+
+added:
+- realm rpg sea dwellers
+- seamless loading screen
+- added dimensional threading this makes it so each dimension had its own core/thread so performance should greTly improve. (buggy rn)
+- added my own mod to make a boss/endgame for the modpack bosses will be out when this pack is not in beta anymore.
+- territh (world gen mod)
+- command mod i made can tp you to dimensions for server owners and single player worlds 
+- midnight dimension
+- added quark
+- added temppad (easter egg)
+- added nuclear reactors for more energy.
+- the dawn era 
+- piglet structures 
+- lucky pot 
+- forge shot 
+- added mechinizm 
+- and addons for this ^ 
+- better weathering 
+- weather 2
+- added distant horizins since iris/oculas will be getting support for that soon. turned off and on tbis will most likely come when we port to neo forge
+- added some more visual enhancments.
+- added my own wilderness oddesy api for all of my mods this will add utilities and some of things to track modpacks that use my mods. you need this or else your game will crash.
+- added some backend optomizations to fix a lot of issues.
+side note bassicly this update makes this modpack its own game. cause of all the things it adds its still minecraft just not like basic minecraft
+- revamped the ingame config system.
+- added some scary things for friday the 13th and halloween.
+- added valkerin skies once again. will be off for now cause of bugs
+- removed farsight and added in its place bobby this is just like farsight except it saves chunk data
+- added carry on shift right click to pick up blocks and move them around.
+- added a new dimension its where the deep dark came from. 
+- got new dungon system
+- added create back for structures will make sure it does not lag the game.
+- added more optomizations from updates
+- vr support
+
+
+changes:
+- fixed some server errros
+- starter strucutre will turn into a village (work in progress.)
+- fixed tree chopping bug.
+- disabled mvs scructures for now so i can edit which structures can spawn as some give op loot.
+- cold damage tweaking in progress.
+
+Updated mods:
+- tons of mods have been updated
+- solas shader had a major update
+- embedium had a major update 
+- vr had a major update should work with shaders now.
+
+
+
+
+removed:
+-removed craft tweaker 
+- removed rare ice as it causes fps drops
+- removed starter structure as i added my own
+- removed mods optomizer causing server issues.
+- removed fps booster as it was a scam
+
+
+known issues:
+- Terrain a little messy. will be adjusted and fixed throughout beta.
+- buildings and blocks out of place. will be fixed during beta.
+- error f_91074 is known 
+- fps issues
+
+dev note: 
+-beta traillers will be realessed when beta is smooth prob around 1..5.0 so when we advertize it it would be stable.
+- it is recomended to create a new world so less bugs happen but you can use a old world just not to old.
+- i have 2 updates for the future no cubes for april fools. and pollution of the relms for earth day
+- i don't want this pack to be all about exploring the main thing is that i will try to add small things like create nuclear wepaons and reactors and etc.
+
+note: 
+-I decided i will post the full mod list when release happens so everything is set in place.
+- github reporsitory link is here and you can see updates in the work by reading the changelogs. and report bugs
+https://github.com/Thunderrock424242/Wilderness-Odyssey/blob/main/releases/changelog%20for%20beta%201.2.0

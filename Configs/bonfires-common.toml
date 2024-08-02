@@ -1,0 +1,11 @@
+#Enable undead bone shard drops from blowing up a bonfire, default:true
+"Enable Undead Bone Shard drops" = true
+#Enable weapon/tool reinforcing, default:true
+"Enable reinforcing" = true
+#Disable specific items from being able to reinforce them
+"Reinforce item blacklist" = []
+#The radius to check for Monsters around the Bonfire, set to 0 to disable, default:8.0
+"Bonfire Monster Check Radius" = 8.0
+#Repair tools and armour when using a Bonfire, default:false
+"Repair equipment" = false
+

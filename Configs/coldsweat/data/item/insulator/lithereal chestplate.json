@@ -1,0 +1,29 @@
+{
+
+    "required_mods": [
+      "lithereal"
+      "cold_sweat"
+    ],
+    "type": "armor",
+    "insulation": {
+      "heat": 35,
+      "cold": -10
+    },
+    "data": {
+      "items": [
+        "lithereal:frozen_litherite_chestplate"
+      ]
+    }
+     "attributes": {
+    "generic.movement_speed": 
+    [
+      {
+        "name": "super speed",
+        "amount": 0.3,
+        "operation": "addition"
+      }
+    ]
+  }
+  
+  
+  }
