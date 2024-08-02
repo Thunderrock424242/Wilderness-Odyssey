@@ -12,6 +12,7 @@
             background-size: cover;
             background-position: center;
             color: #fff;
+            transition: background-image 0.5s ease-in-out; /* Smooth transition for background change */
         }
         .navbar {
             display: flex;
@@ -89,9 +90,9 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="#" onclick="showTab('about', 'https://raw.githubusercontent.com/Thunderrock424242/Wilderness-Odyssey/Website/Website_pictures/about_image.PNG')">About the Modpack</a>
-        <a href="#" onclick="showTab('features', 'https://raw.githubusercontent.com/Thunderrock424242/Wilderness-Odyssey/Website/Website_pictures/features_image.PNG')">Features</a>
-        <a href="#" onclick="showTab('lore', 'https://raw.githubusercontent.com/Thunderrock424242/Wilderness-Odyssey/Website/Website_pictures/lore_image.PNG')">Lore</a>
+        <a href="#" onclick="showTab('about', 'https://raw.githubusercontent.com/Thunderrock424242/Wilderness-Odyssey/main/Website_pictures/about_image.PNG')">About the Modpack</a>
+        <a href="#" onclick="showTab('features', 'https://raw.githubusercontent.com/Thunderrock424242/Wilderness-Odyssey/main/Website_pictures/features_image.PNG')">Features</a>
+        <a href="#" onclick="showTab('lore', 'https://raw.githubusercontent.com/Thunderrock424242/Wilderness-Odyssey/main/Website_pictures/lore_image.PNG')">Lore</a>
     </div>
 
     <div class="content">
@@ -159,7 +160,7 @@
         }
 
         // Default to show the 'About the Modpack' tab and its background image
-        showTab('about', 'https://github.com/Thunderrock424242/Wilderness-Odyssey/blob/f2afbfcab36e71e9303ccf380b482e9e04cda08c/Website_pictures/background_image.PNG');
+        showTab('about', 'https://github.com/Thunderrock424242/Wilderness-Odyssey/blob/Website/Website_pictures/background_image.PNG?raw=true');
     </script>
 </body>
 </html>
