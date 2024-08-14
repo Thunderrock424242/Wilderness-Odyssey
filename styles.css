@@ -20,16 +20,18 @@ a:hover {
 /* Header Styling */
 header {
     background-color: #1f1f1f;
-    padding: 20px 10%;
+    padding: 20px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    flex-wrap: wrap;
 }
 
 header h1 {
     font-size: 24px;
     margin: 0;
+    flex: 1;
 }
 
 nav ul {
@@ -38,6 +40,8 @@ nav ul {
     margin: 0;
     display: flex;
     gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 nav ul li {
@@ -61,7 +65,7 @@ nav ul li a:hover {
     background-size: cover;
     background-position: center;
     text-align: center;
-    padding: 150px 20px;
+    padding: 100px 20px;
     position: relative;
 }
 
@@ -76,7 +80,7 @@ nav ul li a:hover {
 }
 
 .hero h2 {
-    font-size: 48px;
+    font-size: 36px;
     margin-bottom: 20px;
     color: #ff9800;
     position: relative;
@@ -84,7 +88,7 @@ nav ul li a:hover {
 }
 
 .hero p {
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 30px;
     position: relative;
     z-index: 1;
@@ -93,9 +97,9 @@ nav ul li a:hover {
 .btn {
     background-color: #ff9800;
     color: #fff;
-    padding: 15px 30px;
+    padding: 10px 20px;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 16px;
     border-radius: 25px;
     transition: background-color 0.3s ease;
     position: relative;
@@ -108,26 +112,26 @@ nav ul li a:hover {
 
 /* About, Features, Gallery, and Blog Sections */
 section {
-    padding: 60px 10%;
+    padding: 40px 5%;
     text-align: center;
 }
 
 h2 {
-    font-size: 36px;
+    font-size: 28px;
     margin-bottom: 20px;
     color: #ff9800;
 }
 
 p {
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 20px;
 }
 
 /* Gallery */
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
 }
 
 .gallery-grid img {
@@ -151,12 +155,12 @@ p {
 }
 
 .blog-post h3 {
-    font-size: 24px;
+    font-size: 22px;
     margin-bottom: 15px;
 }
 
 .blog-post p {
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .blog-post:hover {
@@ -166,9 +170,59 @@ p {
 /* Footer */
 footer {
     background-color: #1f1f1f;
-    padding: 20px 10%;
+    padding: 20px 5%;
     text-align: center;
     font-size: 14px;
     color: #ccc;
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Media Queries */
+@media (min-width: 768px) {
+    .hero h2 {
+        font-size: 48px;
+    }
+
+    .hero p {
+        font-size: 18px;
+    }
+
+    .btn {
+        font-size: 18px;
+        padding: 15px 30px;
+    }
+
+    h2 {
+        font-size: 36px;
+    }
+
+    p {
+        font-size: 18px;
+    }
+
+    .blog-post h3 {
+        font-size: 24px;
+    }
+
+    .blog-post p {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 1024px) {
+    header {
+        padding: 20px 10%;
+    }
+
+    .hero {
+        padding: 150px 20px;
+    }
+
+    section {
+        padding: 60px 10%;
+    }
+
+    footer {
+        padding: 20px 10%;
+    }
 }
