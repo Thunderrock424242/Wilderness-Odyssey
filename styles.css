@@ -3,23 +3,23 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #121212;
-    color: #f5f5f5;
+    background-color: #e0f7fa; /* Light Aqua */
+    color: #37474f; /* Dark Slate Grey */
     line-height: 1.6;
 }
 
 a {
-    color: #f5f5f5;
+    color: #00796b; /* Teal */
     text-decoration: none;
 }
 
 a:hover {
-    color: #ff9800;
+    color: #004d40; /* Dark Teal */
 }
 
 /* Header Styling */
 header {
-    background-color: #1f1f1f;
+    background-color: #004d40; /* Dark Teal */
     padding: 20px 5%;
     display: flex;
     justify-content: space-between;
@@ -31,6 +31,7 @@ header {
 header h1 {
     font-size: 24px;
     margin: 0;
+    color: #e0f7fa; /* Light Aqua */
     flex: 1;
 }
 
@@ -50,13 +51,14 @@ nav ul li {
 
 nav ul li a {
     padding: 10px 15px;
-    background-color: #333;
+    background-color: #00796b; /* Teal */
     border-radius: 5px;
     transition: background-color 0.3s ease;
+    color: #e0f7fa; /* Light Aqua */
 }
 
 nav ul li a:hover {
-    background-color: #555;
+    background-color: #004d40; /* Dark Teal */
 }
 
 /* Hero Section */
@@ -76,13 +78,13 @@ nav ul li a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 77, 64, 0.5); /* Dark Teal Overlay */
 }
 
 .hero h2 {
     font-size: 36px;
     margin-bottom: 20px;
-    color: #ff9800;
+    color: #b2dfdb; /* Soft Teal */
     position: relative;
     z-index: 1;
 }
@@ -92,11 +94,12 @@ nav ul li a:hover {
     margin-bottom: 30px;
     position: relative;
     z-index: 1;
+    color: #e0f7fa; /* Light Aqua */
 }
 
 .btn {
-    background-color: #ff9800;
-    color: #fff;
+    background-color: #00796b; /* Teal */
+    color: #e0f7fa; /* Light Aqua */
     padding: 10px 20px;
     text-decoration: none;
     font-size: 16px;
@@ -107,7 +110,7 @@ nav ul li a:hover {
 }
 
 .btn:hover {
-    background-color: #e67e22;
+    background-color: #004d40; /* Dark Teal */
 }
 
 /* About, Features, Gallery, and Blog Sections */
@@ -119,12 +122,13 @@ section {
 h2 {
     font-size: 28px;
     margin-bottom: 20px;
-    color: #ff9800;
+    color: #00796b; /* Teal */
 }
 
 p {
     font-size: 16px;
     margin-bottom: 20px;
+    color: #37474f; /* Dark Slate Grey */
 }
 
 /* Gallery */
@@ -142,16 +146,17 @@ p {
 
 .gallery-grid img:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 16px rgba(0, 77, 64, 0.3); /* Dark Teal Shadow */
 }
 
 /* Blog */
 .blog-post {
     margin-bottom: 30px;
-    background-color: #1f1f1f;
+    background-color: #b2dfdb; /* Soft Teal */
     padding: 20px;
     border-radius: 10px;
     transition: background-color 0.3s ease;
+    color: #37474f; /* Dark Slate Grey */
 }
 
 .blog-post h3 {
@@ -164,16 +169,16 @@ p {
 }
 
 .blog-post:hover {
-    background-color: #333;
+    background-color: #80cbc4; /* Lighter Soft Teal */
 }
 
 /* Footer */
 footer {
-    background-color: #1f1f1f;
+    background-color: #004d40; /* Dark Teal */
     padding: 20px 5%;
     text-align: center;
     font-size: 14px;
-    color: #ccc;
+    color: #e0f7fa; /* Light Aqua */
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
 }
 
