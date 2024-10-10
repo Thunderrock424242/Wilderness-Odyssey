@@ -1,0 +1,13 @@
+/*
+This config file makes it possible to switch off any structure from Towns and Towers. Big thanks to Cristelknight for making this all possible.
+To disable a structure, simply set the value of that structure to "false".
+o change the rarity of a structure category, use the other file in the config.
+
+LINKS
+=====
+Curseforge link: https://www.curseforge.com/minecraft/mc-mods/towns-and-towers
+Modrinth link: https://modrinth.com/mod/towns-and-towers
+PMC link: https://www.planetminecraft.com/data-pack/towns-amp-towers-structure-overhaul/
+GitHub Repository: [NEED TO MAKE ONE]
+*/
+{ }
