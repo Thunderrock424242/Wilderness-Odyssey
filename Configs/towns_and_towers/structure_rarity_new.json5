@@ -14,4 +14,30 @@ Modrinth link: https://modrinth.com/mod/towns-and-towers
 PMC link: https://www.planetminecraft.com/data-pack/towns-amp-towers-structure-overhaul/
 GitHub Repository: [NEED TO MAKE ONE]
 */
-{ }
+{
+	// Here you can find all pillager outposts.
+	"towers": {
+		// DEFAULT 48
+		"spacing": 48,
+		// DEFAULT 24
+		"separation": 12,
+		"frequency": 0.2,
+		"salt": 213742069
+	},
+	// Here you can find all structures that aren't villages or outposts.
+	"other": {
+		// DEFAULT 32
+		"spacing": 32,
+		// DEFAULT 16
+		"separation": 16,
+		"salt": 213742069
+	},
+	// Here you can find all villages.
+	"towns": {
+		// DEFAULT 48
+		"spacing": 51,
+		// DEFAULT 24
+		"separation": 12,
+		"salt": 213742069
+	}
+}

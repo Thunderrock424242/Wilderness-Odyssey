@@ -41,31 +41,14 @@
 #min_thunder_time is the minimum time interval between thunder events in ticks. Set to -1 to disable thunder.
 #max_thunder_time is the maximum time interval between thunder events in ticks. Set to -1 to disable thunder.
 [[season_properties]]
-	melt_percent = 8.33
-	max_rain_time = 180000
+	melt_percent = 6.25
+	max_rain_time = 96000
 	min_rain_time = 12000
-	season = "MID_AUTUMN"
+	season = "EARLY_SPRING"
 	melt_rolls = 1
 	max_thunder_time = 180000
-	biome_temp_adjustment = 0.0
+	biome_temp_adjustment = -0.25
 	min_thunder_time = 12000
-#melt_percent is the 0-1 percentage chance a snow or ice block will melt when chosen. (e.g. 100.0 = 100%, 50.0 = 50%)
-#melt_rolls is the number of blocks randomly picked in each chunk, each tick. (High number rolls is not recommended on servers)
-#melt_rolls should be 0 if blocks should not melt in that season.
-#biome_temp_adjustment is the amount to adjust the biome temperature by from -10.0 to 10.0.
-#min_rain_time is the minimum time interval between rain events in ticks. Set to -1 to disable rain.
-#max_rain_time is the maximum time interval between rain events in ticks. Set to -1 to disable rain.
-#min_thunder_time is the minimum time interval between thunder events in ticks. Set to -1 to disable thunder.
-#max_thunder_time is the maximum time interval between thunder events in ticks. Set to -1 to disable thunder.
-[[season_properties]]
-	melt_percent = 0.0
-	max_rain_time = 36000
-	min_rain_time = 12000
-	season = "MID_WINTER"
-	melt_rolls = 0
-	max_thunder_time = -1
-	biome_temp_adjustment = -0.8
-	min_thunder_time = -1
 #melt_percent is the 0-1 percentage chance a snow or ice block will melt when chosen. (e.g. 100.0 = 100%, 50.0 = 50%)
 #melt_rolls is the number of blocks randomly picked in each chunk, each tick. (High number rolls is not recommended on servers)
 #melt_rolls should be 0 if blocks should not melt in that season.
@@ -109,6 +92,23 @@
 #min_thunder_time is the minimum time interval between thunder events in ticks. Set to -1 to disable thunder.
 #max_thunder_time is the maximum time interval between thunder events in ticks. Set to -1 to disable thunder.
 [[season_properties]]
+	melt_percent = 0.0
+	max_rain_time = 36000
+	min_rain_time = 12000
+	season = "MID_WINTER"
+	melt_rolls = 0
+	max_thunder_time = -1
+	biome_temp_adjustment = -0.8
+	min_thunder_time = -1
+#melt_percent is the 0-1 percentage chance a snow or ice block will melt when chosen. (e.g. 100.0 = 100%, 50.0 = 50%)
+#melt_rolls is the number of blocks randomly picked in each chunk, each tick. (High number rolls is not recommended on servers)
+#melt_rolls should be 0 if blocks should not melt in that season.
+#biome_temp_adjustment is the amount to adjust the biome temperature by from -10.0 to 10.0.
+#min_rain_time is the minimum time interval between rain events in ticks. Set to -1 to disable rain.
+#max_rain_time is the maximum time interval between rain events in ticks. Set to -1 to disable rain.
+#min_thunder_time is the minimum time interval between thunder events in ticks. Set to -1 to disable thunder.
+#max_thunder_time is the maximum time interval between thunder events in ticks. Set to -1 to disable thunder.
+[[season_properties]]
 	melt_percent = 25.0
 	max_rain_time = 96000
 	min_rain_time = 12000
@@ -126,10 +126,61 @@
 #min_thunder_time is the minimum time interval between thunder events in ticks. Set to -1 to disable thunder.
 #max_thunder_time is the maximum time interval between thunder events in ticks. Set to -1 to disable thunder.
 [[season_properties]]
-	melt_percent = 12.5
+	melt_percent = 8.33
 	max_rain_time = 180000
 	min_rain_time = 12000
-	season = "EARLY_AUTUMN"
+	season = "MID_AUTUMN"
+	melt_rolls = 1
+	max_thunder_time = 180000
+	biome_temp_adjustment = 0.0
+	min_thunder_time = 12000
+#melt_percent is the 0-1 percentage chance a snow or ice block will melt when chosen. (e.g. 100.0 = 100%, 50.0 = 50%)
+#melt_rolls is the number of blocks randomly picked in each chunk, each tick. (High number rolls is not recommended on servers)
+#melt_rolls should be 0 if blocks should not melt in that season.
+#biome_temp_adjustment is the amount to adjust the biome temperature by from -10.0 to 10.0.
+#min_rain_time is the minimum time interval between rain events in ticks. Set to -1 to disable rain.
+#max_rain_time is the maximum time interval between rain events in ticks. Set to -1 to disable rain.
+#min_thunder_time is the minimum time interval between thunder events in ticks. Set to -1 to disable thunder.
+#max_thunder_time is the maximum time interval between thunder events in ticks. Set to -1 to disable thunder.
+[[season_properties]]
+	melt_percent = 6.25
+	max_rain_time = 180000
+	min_rain_time = 12000
+	season = "LATE_AUTUMN"
+	melt_rolls = 1
+	max_thunder_time = 180000
+	biome_temp_adjustment = -0.25
+	min_thunder_time = 12000
+#melt_percent is the 0-1 percentage chance a snow or ice block will melt when chosen. (e.g. 100.0 = 100%, 50.0 = 50%)
+#melt_rolls is the number of blocks randomly picked in each chunk, each tick. (High number rolls is not recommended on servers)
+#melt_rolls should be 0 if blocks should not melt in that season.
+#biome_temp_adjustment is the amount to adjust the biome temperature by from -10.0 to 10.0.
+#min_rain_time is the minimum time interval between rain events in ticks. Set to -1 to disable rain.
+#max_rain_time is the maximum time interval between rain events in ticks. Set to -1 to disable rain.
+#min_thunder_time is the minimum time interval between thunder events in ticks. Set to -1 to disable thunder.
+#max_thunder_time is the maximum time interval between thunder events in ticks. Set to -1 to disable thunder.
+[[season_properties]]
+	melt_percent = 0.0
+	max_rain_time = 36000
+	min_rain_time = 12000
+	season = "LATE_WINTER"
+	melt_rolls = 0
+	max_thunder_time = -1
+	biome_temp_adjustment = -0.8
+	min_thunder_time = -1
+#melt_percent is the 0-1 percentage chance a snow or ice block will melt when chosen. (e.g. 100.0 = 100%, 50.0 = 50%)
+#melt_rolls is the number of blocks randomly picked in each chunk, each tick. (High number rolls is not recommended on servers)
+#melt_rolls should be 0 if blocks should not melt in that season.
+#biome_temp_adjustment is the amount to adjust the biome temperature by from -10.0 to 10.0.
+#min_rain_time is the minimum time interval between rain events in ticks. Set to -1 to disable rain.
+#max_rain_time is the maximum time interval between rain events in ticks. Set to -1 to disable rain.
+#min_thunder_time is the minimum time interval between thunder events in ticks. Set to -1 to disable thunder.
+#max_thunder_time is the maximum time interval between thunder events in ticks. Set to -1 to disable thunder.
+[[season_properties]]
+	melt_percent = 8.33
+	max_rain_time = 96000
+	min_rain_time = 12000
+	season = "MID_SPRING"
 	melt_rolls = 1
 	max_thunder_time = 180000
 	biome_temp_adjustment = 0.0
@@ -177,62 +228,11 @@
 #min_thunder_time is the minimum time interval between thunder events in ticks. Set to -1 to disable thunder.
 #max_thunder_time is the maximum time interval between thunder events in ticks. Set to -1 to disable thunder.
 [[season_properties]]
-	melt_percent = 0.0
-	max_rain_time = 36000
+	melt_percent = 12.5
+	max_rain_time = 180000
 	min_rain_time = 12000
-	season = "LATE_WINTER"
-	melt_rolls = 0
-	max_thunder_time = -1
-	biome_temp_adjustment = -0.8
-	min_thunder_time = -1
-#melt_percent is the 0-1 percentage chance a snow or ice block will melt when chosen. (e.g. 100.0 = 100%, 50.0 = 50%)
-#melt_rolls is the number of blocks randomly picked in each chunk, each tick. (High number rolls is not recommended on servers)
-#melt_rolls should be 0 if blocks should not melt in that season.
-#biome_temp_adjustment is the amount to adjust the biome temperature by from -10.0 to 10.0.
-#min_rain_time is the minimum time interval between rain events in ticks. Set to -1 to disable rain.
-#max_rain_time is the maximum time interval between rain events in ticks. Set to -1 to disable rain.
-#min_thunder_time is the minimum time interval between thunder events in ticks. Set to -1 to disable thunder.
-#max_thunder_time is the maximum time interval between thunder events in ticks. Set to -1 to disable thunder.
-[[season_properties]]
-	melt_percent = 6.25
-	max_rain_time = 96000
-	min_rain_time = 12000
-	season = "EARLY_SPRING"
-	melt_rolls = 1
-	max_thunder_time = 180000
-	biome_temp_adjustment = -0.25
-	min_thunder_time = 12000
-#melt_percent is the 0-1 percentage chance a snow or ice block will melt when chosen. (e.g. 100.0 = 100%, 50.0 = 50%)
-#melt_rolls is the number of blocks randomly picked in each chunk, each tick. (High number rolls is not recommended on servers)
-#melt_rolls should be 0 if blocks should not melt in that season.
-#biome_temp_adjustment is the amount to adjust the biome temperature by from -10.0 to 10.0.
-#min_rain_time is the minimum time interval between rain events in ticks. Set to -1 to disable rain.
-#max_rain_time is the maximum time interval between rain events in ticks. Set to -1 to disable rain.
-#min_thunder_time is the minimum time interval between thunder events in ticks. Set to -1 to disable thunder.
-#max_thunder_time is the maximum time interval between thunder events in ticks. Set to -1 to disable thunder.
-[[season_properties]]
-	melt_percent = 8.33
-	max_rain_time = 96000
-	min_rain_time = 12000
-	season = "MID_SPRING"
+	season = "EARLY_AUTUMN"
 	melt_rolls = 1
 	max_thunder_time = 180000
 	biome_temp_adjustment = 0.0
-	min_thunder_time = 12000
-#melt_percent is the 0-1 percentage chance a snow or ice block will melt when chosen. (e.g. 100.0 = 100%, 50.0 = 50%)
-#melt_rolls is the number of blocks randomly picked in each chunk, each tick. (High number rolls is not recommended on servers)
-#melt_rolls should be 0 if blocks should not melt in that season.
-#biome_temp_adjustment is the amount to adjust the biome temperature by from -10.0 to 10.0.
-#min_rain_time is the minimum time interval between rain events in ticks. Set to -1 to disable rain.
-#max_rain_time is the maximum time interval between rain events in ticks. Set to -1 to disable rain.
-#min_thunder_time is the minimum time interval between thunder events in ticks. Set to -1 to disable thunder.
-#max_thunder_time is the maximum time interval between thunder events in ticks. Set to -1 to disable thunder.
-[[season_properties]]
-	melt_percent = 6.25
-	max_rain_time = 180000
-	min_rain_time = 12000
-	season = "LATE_AUTUMN"
-	melt_rolls = 1
-	max_thunder_time = 180000
-	biome_temp_adjustment = -0.25
 	min_thunder_time = 12000
