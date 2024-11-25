@@ -13,7 +13,7 @@
   },
   "teleportedRidden": {
     "desc:": "Teleport ridden entities too, default:true",
-    "teleportedRidden": true
+    "teleportedRidden": false
   },
   "teleportLeashed": {
     "desc:": "Teleport leashed entities too, default:true",
