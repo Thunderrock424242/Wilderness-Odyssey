@@ -21,7 +21,7 @@
   },
   "debuglogging": {
     "desc:": "Enable debug logging, default:false",
-    "debuglogging": false
+    "debuglogging": true
   },
   "dimensionconnections": [
     {
