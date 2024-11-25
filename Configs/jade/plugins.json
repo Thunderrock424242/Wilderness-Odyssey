@@ -50,6 +50,9 @@
     "painting": true,
     "chiseled_bookshelf": true
   },
+  "jadeaddons": {
+    "equipment_requirement": ""
+  },
   "jade_access": {
     "held_item": true,
     "sign": true,
@@ -71,6 +74,9 @@
     "registry_name": "OFF",
     "block_properties": false,
     "mod_name": true
+  },
+  "lootr": {
+    "info": true
   },
   "cookingforblockheads": {
     "fridge": true,
