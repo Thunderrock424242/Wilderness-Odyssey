@@ -5,15 +5,15 @@
   },
   "teleportCooldown": {
     "desc:": "Sets a delay before you can teleport again, default:15 seconds",
-    "teleportCooldown": 10
+    "teleportCooldown": 15
   },
   "instantTeleport": {
     "desc:": "Instantly teleports instead of notifying the user over time,(Note this causes some lag, due to loading chunks directly) default:false",
-    "instantTeleport": true
+    "instantTeleport": false
   },
   "teleportedRidden": {
     "desc:": "Teleport ridden entities too, default:true",
-    "teleportedRidden": false
+    "teleportedRidden": true
   },
   "teleportLeashed": {
     "desc:": "Teleport leashed entities too, default:true",
@@ -21,7 +21,7 @@
   },
   "debuglogging": {
     "desc:": "Enable debug logging, default:false",
-    "debuglogging": true
+    "debuglogging": false
   },
   "dimensionconnections": [
     {
@@ -45,6 +45,15 @@
       },
       "belowy": 0,
       "slowfallticks": 400
+    },
+    {
+      "from": "minecraft:the_nether",
+      "to": "minecraft:the_nether",
+      "teleporttype": {
+        "teleporttype": "CAVE",
+        "teleport_to_y": 4
+      },
+      "belowy": 0
     },
     {
       "from": "minecraft:the_nether",
