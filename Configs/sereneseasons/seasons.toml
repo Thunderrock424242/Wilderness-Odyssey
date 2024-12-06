@@ -112,7 +112,7 @@
 	melt_percent = 25.0
 	max_rain_time = 96000
 	min_rain_time = 12000
-	season = "LATE_SUMMER"
+	season = "LATE_WINTER"
 	melt_rolls = 1
 	max_thunder_time = 180000
 	biome_temp_adjustment = 0.0
