@@ -1,0 +1,13 @@
+#Specify the Strategy to be used when picking which Dog Custom Skin
+#could be set for a Dog. The texture's Hash Value is required to be
+#the entry for these lists, they can be obtained via the Show Info
+#page of Style > Skins at the Dog GUI.
+#0: Allow all
+#1: Allow all except blacklisted
+#2: Disallow all except whitelisted
+#Other: Defaulted to 0
+# Default: 0
+# Range: > -2147483648
+strategy = 0
+whitelisted_sha1 = []
+blacklisted_sha1 = []
