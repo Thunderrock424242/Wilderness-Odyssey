@@ -53,7 +53,7 @@
 		"biomeswevegone:ebony_woods": true,
 		"biomeswevegone:rose_fields": true,
 		"biomeswevegone:mojave_desert": true,
-		"biomeswevegone:eroded_borealis": true,
+		"biomeswevegone:eroded_borealis": false,
 	},
 	// How much each BWG region weighs. This weight applies to all 3 BWG Regions
 	"region_weight": 8,
