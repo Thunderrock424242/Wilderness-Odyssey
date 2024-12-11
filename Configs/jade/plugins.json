@@ -5,6 +5,7 @@
     "harvest_tool.show_unbreakable": false,
     "animal_owner": true,
     "harvest_tool.effective_tool": true,
+    "energy_storage.style": "PROGRESS_BAR",
     "item_storage.normal_amount": 9,
     "item_storage": true,
     "harvest_tool": true,
@@ -31,6 +32,7 @@
     "brewing_stand": true,
     "energy_storage.detailed": false,
     "note_block": true,
+    "fluid_storage.style": "PROGRESS_BAR",
     "beehive": true,
     "item_storage.detailed_amount": 54,
     "player_head": true,
@@ -63,6 +65,9 @@
   "twilightforest": {
     "chiseled_bookshelf_spawner": true,
     "quest_ram_wool": true
+  },
+  "supplementaries": {
+    "hat_stand": true
   },
   "jade": {
     "coordinates.rel": false,
