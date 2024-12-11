@@ -2,7 +2,7 @@
 #General Config Section. See https://readme.firstdarkdev.xyz/simple-rpc/introduction/
 [general]
 	#The Application ID of the Discord App to use
-	applicationID = 762726289341677668
+	applicationID = 1208551728782508082
 	#Enable/Disable the mod
 	enabled = true
 	#Enable/Disable debugging mode. WARNING: MAY CAUSE LOG SPAM!
@@ -23,7 +23,7 @@
 	#The second line of text under the app name
 	state = "Game Starting..."
 	#The Asset ID of the image to display as the large image
-	largeImageKey = ["mclogonew"]
+	largeImageKey = ["wilderness_odyssey2"]
 	#The text that gets displayed when the large image is hovered
 	largeImageText = "It's Minecraft %mcver%, but modded"
 	#The Asset ID of the image to display as the small image
@@ -42,7 +42,7 @@
 	#The seconds line of text under the app name
 	state = "Chilling in the menu"
 	#The Asset ID of the image to display as the large image
-	largeImageKey = ["mclogonew"]
+	largeImageKey = ["wilderness_odyssey2"]
 	#The text that gets displayed when the large image is hovered
 	largeImageText = "It's Minecraft %mcver%, but modded"
 	#The Asset ID of the image to display as the small image
@@ -55,7 +55,7 @@
 #The Server List event
 [server_list]
 	#Enable/Disable the Server List Event
-	enabled = true
+	enabled = false
 	#The first line of text under the app name
 	description = "%player% is looking for a server"
 	#The second line of text under the app name
@@ -74,7 +74,7 @@
 #The Realms Screen event
 [realms_list]
 	#Enable/Disable the Realms Screen Event
-	enabled = true
+	enabled = false
 	#The first line of text under the app name
 	description = "%player% is looking for a Realm"
 	#The second line of text under the app name
@@ -93,7 +93,7 @@
 #The Join Game Event
 [join_game]
 	#Enable/Disable the Join Game Event
-	enabled = true
+	enabled = false
 	#The first line of text under the app name
 	description = "%player% is joining a game"
 	#The second line of text under the app name
@@ -116,9 +116,9 @@
 	#The first line of text under the app name
 	description = "Currently In %world%"
 	#The second line of text under the app name
-	state = "Playing lonely mode"
+	state = "Playing exploration mode"
 	#The Asset ID of the image to display as the large image
-	largeImageKey = ["mclogonew"]
+	largeImageKey = ["wilderness_odyssey2"]
 	#The text that gets displayed when the large image is hovered
 	largeImageText = "It's Minecraft %mcver%, but modded"
 	#The Asset ID of the image to display as the small image
@@ -150,7 +150,7 @@
 #The Realms Game Event
 [realms]
 	#Enable/Disable the Realms Game Event
-	enabled = true
+	enabled = false
 	#The first line of text under the app name
 	description = "Playing on %realmname%"
 	#The second line of text under the app name
