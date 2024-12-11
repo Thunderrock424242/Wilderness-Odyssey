@@ -13,7 +13,7 @@
 		"biomeswevegone:tropical_rainforest": true,
 		"biomeswevegone:araucaria_savanna": true,
 		"biomeswevegone:white_mangrove_marshes": true,
-		"biomeswevegone:eroded_borealis": true,
+		"biomeswevegone:eroded_borealis": false,
 		"biomeswevegone:windswept_desert": true,
 		"biomeswevegone:red_rock_valley": true,
 		"biomeswevegone:sakura_grove": true,
