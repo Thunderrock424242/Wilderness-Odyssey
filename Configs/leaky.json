@@ -13,7 +13,7 @@
   },
   "autoremovethreshold": {
     "desc:": "Set the amount of stacked items being automatically removed, default: 160",
-    "autoremovethreshold": 160
+    "autoremovethreshold": 180
   },
   "reportInterval": {
     "desc:": "Set the amount of seconds between repeated notifications: default: 180",
