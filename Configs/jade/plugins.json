@@ -83,6 +83,9 @@
   "lootr": {
     "info": true
   },
+  "corpse": {
+    "corpse": true
+  },
   "cookingforblockheads": {
     "fridge": true,
     "oven": true,
