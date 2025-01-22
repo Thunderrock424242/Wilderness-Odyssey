@@ -1,0 +1,17 @@
+{
+
+    "required_mods": [
+      "lithereal"
+    ],
+    "type": "armor",
+    "insulation": {
+      "heat": 18,
+      "cold": 0
+    },
+    "data": {
+      "items": [
+        "lithereal:frozen_litherite_boots"
+      ]
+    }
+   
+  }
