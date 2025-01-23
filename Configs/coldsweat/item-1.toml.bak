@@ -57,9 +57,6 @@
 	#Defines wearable items that cannot be insulated
 	#Format: ["item_id", "item_id", ...etc]
 	"Insulation Blacklist" = []
-	#Defines the items that provide insulation when worn in a curio slot
-	#See Insulation Ingredients for formatting
-	"Insulating Curios" = []
 
 [Consumables]
 	#Defines items that affect the player's temperature when consumed
