@@ -124,6 +124,13 @@ globalExecutorParallelism = "default"
 	# thus improving compatibility with these contraptions.
 	# 
 	syncPlayerTickets = "default"
+	# (Default: true) Whether to turn fluid postprocessing into scheduled tick
+	# 
+	# Fluid post-processing is very expensive when loading in new chunks, and this can affect
+	# MSPT significantly. This option delays fluid post-processing to scheduled tick to hopefully
+	# mitigate this issue.
+	# 
+	fluidPostProcessingToScheduledTick = "default"
 
 [generalOptimizations]
 	# (Default: 100000) The task interval of mid-tick chunk tasks in nanoseconds (-1 to disable)  
