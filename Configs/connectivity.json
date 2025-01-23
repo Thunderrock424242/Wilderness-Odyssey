@@ -13,7 +13,7 @@
   },
   "debugPrintMessages": {
     "desc:": "Enable addition debug logging for networking errors. default:false",
-    "debugPrintMessages": false
+    "debugPrintMessages": true
   },
   "logintimeout": {
     "desc:": "Set the max login timeout in seconds. default = 120",
