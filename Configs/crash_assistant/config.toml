@@ -17,7 +17,7 @@
 	#Link which will be opened in browser on request_help_button pressed.
 	#If equals CHANGE_ME, will open Fabric/MinecraftForge/NeoForge discord link.
 	#Must start with 'https://' or 'www.'
-	help_link = "CHANGE_ME"
+	help_link = "https://github.com/Thunderrock424242/Wilderness-Odyssey/issues"
 
 #Here you can change text of lang placeHolders.
 #Also you can change any text in lang files.
