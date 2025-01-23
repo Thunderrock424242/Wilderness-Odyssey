@@ -55,7 +55,7 @@
 	auto_update = true
 	#If enabled, will add resourcepacks to modlist.json
 	#After filename where will be ' (resourcepack)' suffix.
-	add_resourcepacks = false
+	add_resourcepacks = true
 
 #Settings of '/crash_assistant crash' command feature.
 [crash_command]
