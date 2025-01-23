@@ -1,0 +1,18 @@
+{
+
+    "required_mods": [
+      "cold_sweat",
+      "twilightforest"
+    ],
+    "type": "armor",
+    "insulation": {
+      "heat": 0,
+      "cold": 18
+    },
+    "data": {
+      "items": [
+        "twilightforest:yeti_leggings"
+      ]
+    }
+   
+  }
