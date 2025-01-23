@@ -60,7 +60,7 @@
 #Settings of '/crash_assistant crash' command feature.
 [crash_command]
 	#Enable feature.
-	enabled = true
+	enabled = false
 	#To ensure the user really wants to crash the game, the command needs to be run again within this amount of seconds.
 	#Set to <= 0 to disable the confirmation.
 	seconds = 5
