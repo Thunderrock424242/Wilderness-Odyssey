@@ -159,7 +159,7 @@ globalExecutorParallelism = "default"
 [noTickViewDistance]
 	# (Default: true) Whether to enable no-tick view distance
 	enabled = "default"
-	# (Default: 30) No-tick view distance max concurrent chunk loads 
+	# (Default: 16) No-tick view distance max concurrent chunk loads 
 	#  Lower this for a better latency and higher this for a faster loading
 	maxConcurrentChunkLoads = "default"
 	# (Default: true) Whether to use compatibility mode to send chunks 
@@ -172,14 +172,3 @@ globalExecutorParallelism = "default"
 	# (Default: false) Whether to ensure correct chunks within normal render distance 
 	#  This will send chunks twice increasing network load
 	ensureChunkCorrectness = "default"
-	# (Default: 2048) Maximum view distance for no-tick view distance 
-	# 
-	# This allows you to specify the maximum view distance that no-tick view distance can support. 
-	# The maximum supported is 1073741823 and the minimum that make sense is 32, 
-	# This option is purely to save memory, as it needs to reserve memory for the maximum view distance 
-	# 
-	# Note: on the client side, `clientSideConfig.modifyMaxVDConfig.maxViewDistance` should also 
-	# be increased to actually expose the view distance in video settings 
-	# 
-	# 
-	maxViewDistance = "default"
