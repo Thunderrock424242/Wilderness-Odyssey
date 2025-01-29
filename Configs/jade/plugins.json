@@ -59,6 +59,9 @@
     "entity": true,
     "entity_variant": true
   },
+  "untitledduckmod": {
+    "lay_egg": true
+  },
   "twilightforest": {
     "chiseled_bookshelf_spawner": true,
     "quest_ram_wool": true
