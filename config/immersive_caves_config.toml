@@ -1,0 +1,41 @@
+["Biome Effects"]
+	#Toggles status effects in the liminal cave
+	liminal_cave_effects = true
+
+["Cave Gen (DOES NOT WORK/ IN TESTING)"]
+	#Toggles the generation of the iced cave
+	enable_cave_iced_cave = true
+	#Toggles the generation of the molten cave
+	enable_cave_molten_cave = true
+	#Toggles the generation of the obsidian reserve cave
+	enable_cave_obsidian_reserve = true
+	#Toggles the generation of the infested cave
+	enable_cave_infested_cave = true
+	#Toggles the generation of the explosive cave
+	enable_cave_explosive_cave = true
+	#Toggles the generation of the graveyard cave
+	enable_cave_graveyard_cave = true
+	#Toggles the generation of the spider den cave
+	enable_cave_spider_den_cave = true
+	#Toggles the generation of the amethyst cave
+	enable_cave_amethyst_cave = true
+	#Toggles the generation of the coal reserve cave
+	enable_cave_coal_reserve = true
+	#Toggles the generation of the nether cave
+	enable_cave_nether_cave = true
+	#Toggles the generation of the panda reserve cave
+	enable_cave_panda_reserve = true
+	#Toggles the generation of the endstone cave
+	enable_cave_endstone_cave = true
+	#Toggles the generation of the the depths cave
+	enable_cave_the_depths = true
+	#Toggles the generation of the glowstone reserve cave
+	enable_cave_glowstone_reserve = true
+	#Toggles the generation of the illager mine cave
+	enable_cave_illager_mine = true
+	#Toggles the generation of the radioactive cave
+	enable_cave_radioactive_cave = true
+	#Toggles the generation of the fungal caverns cave
+	enable_cave_fungal_caverns = true
+	#Toggles the generation of the liminal cave
+	enable_cave_liminal_cave = true
