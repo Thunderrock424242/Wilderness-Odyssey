@@ -7,17 +7,13 @@
     "modId": "adorabuild_structures",
     "version": "2.8.0"
   },
-  "aether-1.21.1-1.5.3-neoforge.jar": {
-    "modId": "aether",
-    "version": "1.5.3"
-  },
   "AI-Improvements-1.21-0.5.3.jar": {
     "modId": "aiimprovements",
     "version": "0.5.3"
   },
-  "alltheleaks-0.1.11-beta+1.21.1-neoforge.jar": {
+  "alltheleaks-0.1.12-beta+1.21.1-neoforge.jar": {
     "modId": "alltheleaks",
-    "version": "0.1.11-beta+1.21.1-neoforge"
+    "version": "0.1.12-beta+1.21.1-neoforge"
   },
   "almanac-1.21.x-neoforge-1.0.2.jar": {
     "modId": "almanac",
@@ -43,9 +39,9 @@
     "modId": "attributefix",
     "version": "21.1.2"
   },
-  "azurelib-neo-1.21.1-3.0.3.jar": {
+  "azurelib-neo-1.21.1-3.0.6.jar": {
     "modId": "azurelib",
-    "version": "3.0.3"
+    "version": "3.0.6"
   },
   "BadOptimizations-2.2.1-1.21.1.jar": {
     "modId": "badoptimizations",
@@ -75,9 +71,9 @@
     "modId": "bluemap",
     "version": "5.5"
   },
-  "bookshelf-neoforge-1.21.1-21.1.45.jar": {
+  "bookshelf-neoforge-1.21.1-21.1.48.jar": {
     "modId": "bookshelf",
-    "version": "21.1.45"
+    "version": "21.1.48"
   },
   "c2me-neoforge-mc1.21.1-0.3.0+alpha.0.53.jar": {
     "modId": "c2me",
@@ -120,9 +116,9 @@
     "modId": "corgilib",
     "version": "5.0.0.3"
   },
-  "crash_assistant-neoforge-1.3.2.jar": {
+  "crash_assistant-neoforge-1.3.3.jar": {
     "modId": "crash_assistant",
-    "version": "1.3.2"
+    "version": "1.3.3"
   },
   "CreeperOverhaul-neoforge-1.21.1-4.0.6.jar": {
     "modId": "creeperoverhaul",
@@ -148,10 +144,6 @@
     "modId": "curios",
     "version": "9.2.2+1.21.1"
   },
-  "deep_aether-1.21.1-1.1.0-beta.1.2.jar": {
-    "modId": "deep_aether",
-    "version": "1.1.0-beta.1.2"
-  },
   "deeperdarker-neoforge-1.21-1.3.4.jar": {
     "modId": "deeperdarker",
     "version": "1.3.4"
@@ -163,6 +155,10 @@
   "defaultoptions-neoforge-1.21.1-21.1.2.jar": {
     "modId": "defaultoptions",
     "version": "21.1.2"
+  },
+  "disconnect-packet-fix-neoforge-2.0.1.jar": {
+    "modId": "disconnect_packet_fix",
+    "version": "2.0.1"
   },
   "diversity-neoforge-1.21-2.2.2.jar": {
     "modId": "diversity",
@@ -324,10 +320,6 @@
     "modId": "letmedespawn",
     "version": "1.4.4"
   },
-  "lithereal-neoforge-1.5.2.jar": {
-    "modId": "lithereal",
-    "version": "1.5.2"
-  },
   "lithium-neoforge-0.14.7+mc1.21.1.jar": {
     "modId": "lithium",
     "version": "0.14.7+mc1.21.1"
@@ -360,7 +352,7 @@
     "modId": "memorysettings",
     "version": "5.9"
   },
-  "mobs_of_mythology-neoforge-1.21-2.1.0.jar": {
+  "mobs_of_mythology-neoforge-1.21.1-2.1.0.jar": {
     "modId": "mobs_of_mythology",
     "version": "2.1.0"
   },
@@ -368,9 +360,9 @@
     "modId": "modernfix",
     "version": "5.20.2+mc1.21.1"
   },
-  "moonlight-1.21-2.17.20-neoforge.jar": {
+  "moonlight-1.21-2.17.21-neoforge.jar": {
     "modId": "moonlight",
-    "version": "1.21-2.17.20"
+    "version": "1.21-2.17.21"
   },
   "more_babies-neoforge-1.21.1-2.0.0.jar": {
     "modId": "more_babies",
@@ -404,9 +396,9 @@
     "modId": "octolib",
     "version": "0.5.0.1"
   },
-  "Oh-The-Biomes-Weve-Gone-NeoForge-2.3.3.jar": {
+  "Oh-The-Biomes-Weve-Gone-NeoForge-2.3.4.jar": {
     "modId": "biomeswevegone",
-    "version": "2.3.3"
+    "version": "2.3.4"
   },
   "Oh-The-Trees-Youll-Grow-neoforge-1.21.1-5.0.6.jar": {
     "modId": "ohthetreesyoullgrow",
@@ -415,6 +407,10 @@
   "owo-lib-neoforge-0.12.15-beta.12+1.21.jar": {
     "modId": "owo",
     "version": "0.12.15-beta.12+1.21"
+  },
+  "packetfixer-neoforge-1.4.3-1.21-to-1.21.3.jar": {
+    "modId": "packetfixer",
+    "version": "1.4.3"
   },
   "pandalib-neoforge-0.4.2-1.21.jar": {
     "modId": "pandalib",
@@ -460,17 +456,17 @@
     "modId": "regions_unexplored",
     "version": "0.5.6.1"
   },
-  "relics-1.21.1-0.10.4.jar": {
+  "relics-1.21.1-0.10.5.jar": {
     "modId": "relics",
-    "version": "0.10.4"
+    "version": "0.10.5"
   },
   "repurposed_structures-7.5.13+1.21.1-neoforge.jar": {
     "modId": "repurposed_structures",
     "version": "7.5.13+1.21.1-neoforge"
   },
-  "resourcefulconfig-neoforge-1.21-3.0.8.jar": {
+  "resourcefulconfig-neoforge-1.21-3.0.9.jar": {
     "modId": "resourcefulconfig",
-    "version": "3.0.8"
+    "version": "3.0.9"
   },
   "resourcefullib-neoforge-1.21-3.0.11.jar": {
     "modId": "resourcefullib",

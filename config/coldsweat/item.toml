@@ -49,7 +49,7 @@
 	#Exponential: Number of slots increases rapidly with protection
 	#Logarithmic: Number of slots increases with protection, with diminishing returns
 	#- Format: [number, max-slots] (a positive integer or decimal; the rate of increase)
-	"Insulation Slots" = ["static", 4, 6, 5, 4, 0]
+	"Insulation Slots" = ["static", 4, 6, 5, 4]
 	#Defines the effectiveness of insulating items in protecting against temperature
 	# Default: 1.0
 	# Range: 0.0 ~ 1.7976931348623157E308
