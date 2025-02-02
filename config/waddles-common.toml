@@ -1,7 +1,0 @@
-[general]
-	#Enable that penguins drop fish (0 - 2 Raw Cod)
-	dropFish = true
-	#Penguins should drop experience?
-	dropExp = true
-	#Use the Darkosto skin variant by default?
-	darkostoDefault = false
