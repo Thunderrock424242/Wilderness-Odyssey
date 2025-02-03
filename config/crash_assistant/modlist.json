@@ -63,6 +63,10 @@
     "modId": "betterarcheology",
     "version": "1.3.1"
   },
+  "bettersafebed-neoforge-1.21-16.jar": {
+    "modId": "bettersafebed",
+    "version": "1.21-16"
+  },
   "blossom-blade-1.3.jar": {
     "modId": "mr_blossom_blade",
     "version": "1.3"
@@ -83,9 +87,17 @@
     "modId": "cameraoverhaulneoforge",
     "version": "1.1-1.21"
   },
+  "catalogue-neoforge-1.21.1-1.11.0.jar": {
+    "modId": "catalogue",
+    "version": "1.11.0"
+  },
   "Chunky-1.4.16.jar": {
     "modId": "chunky",
     "version": "1.4.16"
+  },
+  "clienttweaks-neoforge-1.21.1-21.1.1.jar": {
+    "modId": "clienttweaks",
+    "version": "21.1.1"
   },
   "cloth-config-15.0.140-neoforge.jar": {
     "modId": "cloth_config",
@@ -152,9 +164,13 @@
     "modId": "dsp",
     "version": "21.0.0"
   },
-  "defaultoptions-neoforge-1.21.1-21.1.2.jar": {
-    "modId": "defaultoptions",
-    "version": "21.1.2"
+  "DefaultSettings-1.20.x-4.0.8-NeoForge.jar": {
+    "modId": "defaultsettings",
+    "version": "4.0.8"
+  },
+  "desiredservers-neoforge-1.21.1-1.6.0.jar": {
+    "modId": "desiredservers",
+    "version": "1.6.0"
   },
   "disconnect-packet-fix-neoforge-2.0.1.jar": {
     "modId": "disconnect_packet_fix",
@@ -212,9 +228,9 @@
     "modId": "explorify",
     "version": "1.6.2"
   },
-  "FallingTree-1.21.1-1.21.1.2.jar": {
-    "modId": "fallingtree",
-    "version": "1.21.1.2"
+  "fallingtrees-neoforge-0.12.7-1.21.jar": {
+    "modId": "fallingtrees",
+    "version": "0.12.7"
   },
   "fancymenu_neoforge_3.3.2_MC_1.21.1.jar": {
     "modId": "fancymenu",
@@ -260,6 +276,10 @@
     "modId": "formations",
     "version": "1.0.3"
   },
+  "fzzy_config-0.6.4+1.21+neoforge.jar": {
+    "modId": "fzzy_config",
+    "version": "0.6.4+1.21+neoforge"
+  },
   "geckolib-neoforge-1.21.1-4.7.3.jar": {
     "modId": "geckolib",
     "version": "4.7.3"
@@ -300,6 +320,7 @@
     "modId": "jade",
     "version": "15.9.2+neoforge"
   },
+  "JCPlugin-1.20.x-4.0.4-NeoForge.jar": {},
   "jei-1.21.1-neoforge-19.21.0.247.jar": {
     "modId": "jei",
     "version": "19.21.0.247"
@@ -311,6 +332,11 @@
   "konkrete_neoforge_1.9.9_MC_1.21.jar": {
     "modId": "konkrete",
     "version": "1.9.9"
+  },
+  "kotlinforforge-5.7.0-all.jar": {},
+  "Ksyxis-1.3.2.jar": {
+    "modId": "ksyxis",
+    "version": "1.3.2"
   },
   "leaky-1.21-2.1.jar": {
     "modId": "leaky",
@@ -476,9 +502,17 @@
     "modId": "samurai_dynasty",
     "version": "0.1.4-1.21.1"
   },
+  "saturn-mc1.21.1-0.1.5.jar": {
+    "modId": "saturn",
+    "version": "0.1.5"
+  },
   "scorched-1.1.4a.jar": {
     "modId": "mr_scorched",
     "version": "1.1.4a"
+  },
+  "screenshot-to-clipboard-neoforge-1.0.10.jar": {
+    "modId": "screenshotclipboard",
+    "version": "1.0.10"
   },
   "SereneSeasons-neoforge-1.21.1-10.1.0.1.jar": {
     "modId": "sereneseasons",
@@ -548,6 +582,10 @@
     "modId": "structureessentials",
     "version": "4.2"
   },
+  "SubtleEffects-neoforge-1.21-1.8.0.jar": {
+    "modId": "subtle_effects",
+    "version": "1.8.0"
+  },
   "supplementaries-1.21-3.0.33-beta-neoforge.jar": {
     "modId": "supplementaries",
     "version": "1.21-3.0.33-beta"
@@ -555,6 +593,10 @@
   "t_and_t-neoforge-fabric-1.13.2.jar": {
     "modId": "t_and_t",
     "version": "1.13.2"
+  },
+  "tctcore-1.6-neoforge-1.21.1.jar": {
+    "modId": "tctcore",
+    "version": "1.5"
   },
   "TerraBlender-neoforge-1.21.1-4.1.0.8.jar": {
     "modId": "terrablender",
@@ -583,6 +625,10 @@
   "untitledduckmod-0.8.0-neoforge-1.21.1.jar": {
     "modId": "untitledduckmod",
     "version": "0.8.0"
+  },
+  "V6.6-Matmos-mod-1.21.1.jar": {
+    "modId": "matmos",
+    "version": "6.6"
   },
   "variantsandventures-neoforge-mc1.21.1-1.0.10.jar": {
     "modId": "variantsandventures",
