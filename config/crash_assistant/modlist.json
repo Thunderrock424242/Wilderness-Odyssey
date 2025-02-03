@@ -1,4 +1,8 @@
 {
+  "accessories-neoforge-1.1.0-beta.25+1.21.1.jar": {
+    "modId": "accessories",
+    "version": "1.1.0-beta.25+1.21.1"
+  },
   "AdditionalStructures-1.21-(v.6.0.1-NEO).jar": {
     "modId": "additionalstructures",
     "version": "6.0.1"
@@ -308,6 +312,10 @@
     "modId": "immediatelyfast",
     "version": "1.3.4+1.21.1"
   },
+  "immersivelanterns-neoforge-1.0.6-1.21.1.jar": {
+    "modId": "immersivelanterns",
+    "version": "1.0.6"
+  },
   "incontrol-1.21-10.0.5.jar": {
     "modId": "incontrol",
     "version": "1.21-10.0.5"
@@ -446,10 +454,6 @@
     "modId": "philipsruins",
     "version": "2.0"
   },
-  "Piglet_Structures_1.21.1(ver.1.455).jar": {
-    "modId": "piglet_structures",
-    "version": "1.455"
-  },
   "Ping-Wheel-1.10.1-neoforge-1.21.1.jar": {
     "modId": "pingwheel",
     "version": "1.10.1"
@@ -554,6 +558,14 @@
     "modId": "sodium",
     "version": "0.6.5+mc1.21.1"
   },
+  "sodiumdynamiclights-neoforge-1.0.10-1.21.1.jar": {
+    "modId": "sodiumdynamiclights",
+    "version": "1.0.9"
+  },
+  "sodiumoptionsapi-neoforge-1.0.10-1.21.1.jar": {
+    "modId": "sodiumoptionsapi",
+    "version": "1.0.10"
+  },
   "soul_incursion-1.1.3-neoforge-1.21.1.jar": {
     "modId": "soul_incursion",
     "version": "1.1.3"
@@ -609,6 +621,10 @@
   "twilightforest-1.21.1-4.6.3003-universal.jar": {
     "modId": "twilightforest",
     "version": "4.6.3003"
+  },
+  "txnilib-neoforge-1.0.22-1.21.1.jar": {
+    "modId": "txnilib",
+    "version": "1.0.21"
   },
   "u_desert-1.5.0+mc1.21.jar": {
     "modId": "u_desert",
