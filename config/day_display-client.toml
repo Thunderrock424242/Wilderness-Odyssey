@@ -1,0 +1,8 @@
+#X position of the Day Display on screen
+# Default: 10
+# Range: > 0
+xPosition = 10
+#Y position of the Day Display on screen
+# Default: 10
+# Range: > 0
+yPosition = 10

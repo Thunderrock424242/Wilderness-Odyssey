@@ -16,7 +16,7 @@ version = 3
 #  Available variables: is_windows, is_j9vm, is_client, cpus, mem_gb
 # 
 defaultGlobalExecutorParallelismExpression = "default"
-# (Default: 17) Configures the parallelism of global executor
+# (Default: 18) Configures the parallelism of global executor
 globalExecutorParallelism = "default"
 # (Default: 4) Sets the thread priority for worker threads
 # 
@@ -57,7 +57,7 @@ threadPoolPriority = "default"
 	[clientSideConfig.modifyMaxVDConfig]
 		# (Default: true) Whether to modify maximum view distance
 		enabled = "default"
-		# (Default: 82) Max render distance allowed in game options
+		# (Default: 83) Max render distance allowed in game options
 		maxViewDistance = "default"
 		# (Default: true) Enable client-side support for extended render distance protocol (c2me:ext_render_distance_v1)
 		# This allows requesting render distances higher than 127 chunks from the server
@@ -162,7 +162,7 @@ threadPoolPriority = "default"
 [noTickViewDistance]
 	# (Default: true) Whether to enable no-tick view distance
 	enabled = "default"
-	# (Default: 18) No-tick view distance max concurrent chunk loads 
+	# (Default: 19) No-tick view distance max concurrent chunk loads 
 	#  Lower this for a better latency and higher this for a faster loading
 	maxConcurrentChunkLoads = "default"
 	# (Default: true) Whether to use compatibility mode to send chunks 

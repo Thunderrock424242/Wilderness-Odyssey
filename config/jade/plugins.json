@@ -52,6 +52,10 @@
     "painting": true,
     "chiseled_bookshelf": true
   },
+  "exposure": {
+    "lightroom": true,
+    "photograph_frame": true
+  },
   "jade_access": {
     "held_item": true,
     "sign": true,
@@ -79,5 +83,8 @@
     "registry_name": "OFF",
     "block_properties": false,
     "mod_name": true
+  },
+  "balm": {
+    "jade": true
   }
 }

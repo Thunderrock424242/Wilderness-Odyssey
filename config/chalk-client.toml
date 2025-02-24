@@ -1,0 +1,31 @@
+#Contents of the Chalk Box will be shown in item's tooltip.
+ChalkBoxTooltipContents = true
+#Information about using Chalk Box will be shown in the item's tooltip.
+ChalkBoxTooltipDetails = true
+
+#Rotation offsets (in degrees) for each mark.
+[SymbolOffsets]
+	# Default: 0
+	# Range: -360 ~ 360
+	CenterRotationOffset = 0
+	# Default: 0
+	# Range: -360 ~ 360
+	ArrowRotationOffset = 0
+	# Default: 45
+	# Range: -360 ~ 360
+	CrossRotationOffset = 45
+	# Default: 45
+	# Range: -360 ~ 360
+	CheckRotationOffset = 45
+	# Default: 0
+	# Range: -360 ~ 360
+	SkullRotationOffset = 0
+	# Default: 0
+	# Range: -360 ~ 360
+	HouseRotationOffset = 0
+	# Default: 0
+	# Range: -360 ~ 360
+	HeartRotationOffset = 0
+	# Default: 0
+	# Range: -360 ~ 360
+	PickaxeRotationOffset = 0

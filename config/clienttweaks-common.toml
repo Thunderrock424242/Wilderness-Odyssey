@@ -39,6 +39,8 @@
 	preventAccidentalMining = false
 	#This option will increase the hitbox of random-offset blocks in creative mode, making it easier to break them quickly.
 	creativeBreakingSupport = true
+	#This option will disable paving when holding a block in your offhand.
+	disablePavingWithBlockInOffhand = true
 
 [customization]
 	#Items that count as torches for the offhand-torch tweak options.

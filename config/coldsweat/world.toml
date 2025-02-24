@@ -100,6 +100,11 @@
 		# Default: 10
 		# Range: 0 ~ 10
 		"Hearth Effect Strength" = 10
+		#How often the hearth consumes fuel (in ticks)
+		#Lower numbers mean fuel is consumed faster. Setting to 0 disables fuel consumption
+		# Default: 40
+		# Range: > 0
+		"Hearth Fuel Consumption Interval" = 40
 
 	["Thermal Sources".Boiler]
 		#Allows the boiler to automatically turn on/off based on nearby players' temperature
@@ -125,6 +130,11 @@
 		# Default: 5
 		# Range: 0 ~ 10
 		"Boiler Warmth Strength" = 5
+		#How often the boiler consumes fuel (in ticks)
+		#Lower numbers mean fuel is consumed faster. Setting to 0 disables fuel consumption
+		# Default: 40
+		# Range: > 0
+		"Boiler Fuel Consumption Interval" = 40
 
 	["Thermal Sources".Icebox]
 		#Allows the icebox to automatically turn on/off based on nearby players' temperature
@@ -150,6 +160,11 @@
 		# Default: 5
 		# Range: 0 ~ 10
 		"Icebox Chill Strength" = 5
+		#How often the icebox consumes fuel (in ticks)
+		#Lower numbers mean fuel is consumed faster. Setting to 0 disables fuel consumption
+		# Default: 40
+		# Range: > 0
+		"Icebox Fuel Consumption Interval" = 40
 
 #Format: [season-start, season-mid, season-end, *units]
 #First 3 parameters: The temperature offset at the start, middle, and end of the season
