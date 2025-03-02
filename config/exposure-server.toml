@@ -12,6 +12,12 @@
 	#Right-clicking Camera in GUI with attachment item will insert/swap it.
 	#Default: true
 	right_click_hotswap = true
+	#Camera distance in thirdperson-front mode. Default: 1.75
+	# Default: 1.75
+	# Range: 0.1 ~ 4.0
+	selfie_camera_distance = 1.75
+	#Shifts viewfinder view down to match waist-level camera position. Default: false.
+	waist_level_viewfinder = false
 
 [capture]
 	#Default size of an exposure image. High values take more disk space and can cause lag. Default: 320

@@ -32,8 +32,6 @@
 	#Allows opening camera controls without dismounting from a vehicle - and keeping controls on sneak or other button as well.
 	#Default: true
 	middle_click_controls = true
-	#Shifts view down to match waist-level camera position. Default: false.
-	waist_level_viewfinder = false
 	#How much zooming influences mouse sensitivity.
 	#0 - no change to sensitivity. 1 - full effect.
 	#Default: 0.75
@@ -59,7 +57,7 @@
 	# Range: 1 ~ 8
 	flash_capture_delay_ticks = 4
 	#Force legacy (pre 1.21) capturing method for taking images. Enable if you experiencing issues with resulting images.
-	#If Iris or Oculus is installed legacy method will be used regardless of this setting.
+	#Direct method will be used regardless of this setting if any of the following mods is installed: [iris, oculus, effective]
 	#Default: false
 	force_direct_capture = false
 	#Delay in frames before capturing an image if 'direct_capture' method is in use (or if Oculus or Iris is installed).
