@@ -3,13 +3,11 @@
     "hotfixesFormat": null,
     "versions": [
     {
-        "id": "1.0.0",
-        "releasedAt": 209384093820,
+        "id": "0.0.2",
+        "releasedAt": 1734105662000,
         "promotions": {
             "downloads": {
-                "modrinth": "https://modrinth.com/",
-                "curseforge": "https://www.curseforge.com/minecraft/modpacks/wilderness-odyssey",
-                "generic": "https://example.com/"
+                "curseforge": "https://www.curseforge.com/minecraft/modpacks/wilderness-odyssey"
             }
         }
     }

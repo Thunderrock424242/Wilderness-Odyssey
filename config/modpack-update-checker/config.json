@@ -1,10 +1,10 @@
 {
   "schemaVersion": 9,
-  "currentVersion": "1.0.0",
+  "currentVersion": "0.0.2",
   "modpackName": "Wilderness Odyssey",
   "modpackAuthor": "thunderrock424242",
   "modpackReleaseType": "alpha",
-  "updateCheckerId": "https://raw.githubusercontent.com/Modpack-Update-Checker/example-update-checker/main/",
+  "updateCheckerId": "https://raw.githubusercontent.com/Thunderrock424242/Wilderness-Odyssey/refs/heads/1.21-neoforge/version-info/meta.json",
   "advanced": {
     "bccEnabled": false,
     "expandButton": false,
