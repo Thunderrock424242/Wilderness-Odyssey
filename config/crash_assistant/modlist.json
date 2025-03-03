@@ -15,6 +15,10 @@
     "modId": "achiopt",
     "version": "2.0.0"
   },
+  "additional_lights-neoforge-1.21-2.1.9.jar": {
+    "modId": "additional_lights",
+    "version": "2.1.9"
+  },
   "AdditionalStructures-1.21-(v.6.0.1-NEO).jar": {
     "modId": "additionalstructures",
     "version": "6.0.1"
@@ -39,9 +43,9 @@
     "modId": "almanac",
     "version": "1.0.2"
   },
-  "amendments-1.21-1.2.23-neoforge.jar": {
+  "amendments-1.21-1.2.24-neoforge.jar": {
     "modId": "amendments",
-    "version": "1.21-1.2.23"
+    "version": "1.21-1.2.24"
   },
   "ApothicAttributes-1.21.1-2.6.2.jar": {
     "modId": "apothic_attributes",
@@ -166,9 +170,9 @@
     "modId": "cobweb",
     "version": "1.3.2"
   },
-  "ColdSweat-2.3.12.jar": {
+  "ColdSweat-2.4-b01a.jar": {
     "modId": "cold_sweat",
-    "version": "2.3.12"
+    "version": "2.4-b01a"
   },
   "collective-1.21.1-7.93.jar": {
     "modId": "collective",
@@ -625,6 +629,10 @@
     "modId": "pandalib",
     "version": "0.5.2"
   },
+  "particle_core-0.2.5+1.21+neoforge.jar": {
+    "modId": "particle_core",
+    "version": "0.2.5+1.21+neoforge"
+  },
   "Patchouli-1.21-88-NEOFORGE.jar": {
     "modId": "patchouli",
     "version": "1.21-88-NEOFORGE"
@@ -684,6 +692,10 @@
   "resourcefullib-neoforge-1.21-3.0.11.jar": {
     "modId": "resourcefullib",
     "version": "3.0.11"
+  },
+  "runelic-neoforge-1.21.1-21.1.3.jar": {
+    "modId": "runelic",
+    "version": "21.1.3"
   },
   "samurai_dynasty-0.1.4-1.21.1.jar": {
     "modId": "samurai_dynasty",
@@ -773,6 +785,10 @@
     "modId": "structory",
     "version": "1.3.9"
   },
+  "Structory_Towers_1.21.x_v1.0.10.jar": {
+    "modId": "structory_towers",
+    "version": "1.0.10"
+  },
   "structure_layout_optimizer-neoforge-1.0.10.jar": {
     "modId": "structure_layout_optimizer",
     "version": "1.0.10"
@@ -824,6 +840,10 @@
   "torch-hit-neoforge-1.21.1-7.0.0.jar": {
     "modId": "torch_hit",
     "version": "7.0.0"
+  },
+  "totw_modded-neoforge-1.21-1.0.5.jar": {
+    "modId": "totw_modded",
+    "version": "1.0.5"
   },
   "twilightforest-1.21.1-4.6.3003-universal.jar": {
     "modId": "twilightforest",

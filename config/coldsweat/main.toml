@@ -3,7 +3,7 @@
 	# Default: 2
 	# Range: 0 ~ 4
 	Difficulty = 1
-	Version = "2.3.12"
+	Version = "2.4-b01a"
 
 [Difficulty]
 	#Defines the minimum habitable temperature
