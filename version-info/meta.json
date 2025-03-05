@@ -5,6 +5,7 @@
     {
         "id": "0.0.2",
         "releasedAt": 1734105662000,
+        "updateType": "minor_breaking",
         "promotions": {
             "downloads": {
                 "curseforge": "https://www.curseforge.com/minecraft/modpacks/wilderness-odyssey"
