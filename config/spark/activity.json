@@ -37,31 +37,5 @@
       "type": "url",
       "value": "https://spark.lucko.me/21ihsfRS5J"
     }
-  },
-  {
-    "user": {
-      "type": "player",
-      "name": "CheerierBird61",
-      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
-    },
-    "time": 1735966222259,
-    "type": "Profiler",
-    "data": {
-      "type": "url",
-      "value": "https://spark.lucko.me/9AHLwCbrQ5"
-    }
-  },
-  {
-    "user": {
-      "type": "player",
-      "name": "CheerierBird61",
-      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
-    },
-    "time": 1735965534210,
-    "type": "Profiler (live)",
-    "data": {
-      "type": "url",
-      "value": "https://spark.lucko.me/TDAQzfYdDY"
-    }
   }
 ]
