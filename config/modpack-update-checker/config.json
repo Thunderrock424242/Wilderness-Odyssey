@@ -4,7 +4,7 @@
   "modpackName": "Wilderness Odyssey",
   "modpackAuthor": "thunderrock424242",
   "modpackReleaseType": "alpha",
-  "updateCheckerId": "https://raw.githubusercontent.com/Thunderrock424242/Wilderness-Odyssey/refs/heads/1.21-neoforge/version-info/meta.json",
+  "updateCheckerId": "https://raw.githubusercontent.com/Thunderrock424242/Wilderness-Odyssey/refs/heads/Versions/version-info/",
   "advanced": {
     "bccEnabled": true,
     "expandButton": false,
