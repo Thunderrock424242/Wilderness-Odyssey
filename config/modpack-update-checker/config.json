@@ -6,7 +6,7 @@
   "modpackReleaseType": "alpha",
   "updateCheckerId": "https://raw.githubusercontent.com/Thunderrock424242/Wilderness-Odyssey/refs/heads/Versions/version-info/",
   "advanced": {
-    "bccEnabled": true,
+    "bccEnabled": false,
     "expandButton": false,
     "updateCheckerType": 2,
     "retroWarning": false,

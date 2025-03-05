@@ -1,0 +1,22 @@
+#This mod is designed to make it easier for modded plant blocks to quickly support shaders effects, preventing them from awkwardly standing in swaying blossom.
+#Base settings
+#Tags or regular expressions are allowed. Tags must start with # and not use regex. Also ! to target class is available (use ~ if want to get more matches). Use % to add state check.
+[Base]
+	#List of small crops.
+	"Wheat Like" = ["~net.minecraft.world.level.block.CropBlock"]
+	#List of small flowers and grasses.
+	"Grass Like" = ["#minecraft:small_flowers", "regions_unexplored:clover", "biomesoplenty:clover", "natures_spirit:.*_grass", "regions_unexplored:.*_grass", "natures_spirit:.*_fern", "natures_spirit:sage_succulent"]
+	#List of small saplings.
+	"Sapling Like" = ["#minecraft:saplings", ".*berry_bush", "natures_spirit:.*_bearberries", "natures_spirit:.*_bitter_sprouts"]
+	#List of upper parts of double block plants.
+	"Double Block Plants Uppers" = ["#minecraft:tall_flowers%half:upper", "#regions_unexplored:shrubs%half:upper", "regions_unexplored:.*_tall_grass%half:upper", "natures_spirit:tall_.*_grass%half:upper", "natures_spirit:large_.*_fern%half:upper", "regions_unexplored:windswept_grass%half:upper", "regions_unexplored:cattail%half:upper"]
+	#List of lower parts of double block plants.
+	"Double Block Plants Lowers" = ["#minecraft:tall_flowers%half:lower", "#regions_unexplored:shrubs%half:lower", "regions_unexplored:.*_tall_grass%half:lower", "natures_spirit:tall_.*_grass%half:lower", "natures_spirit:large_.*_fern%half:lower", "regions_unexplored:windswept_grass%half:lower", "regions_unexplored:cattail%half:lower"]
+	#List of small vine-like plants.
+	"Vine Like" = ["atmospheric:passion_vine", "regions_unexplored:kapok_vines.*", "natures_spirit:.*_wisteria_vines.*"]
+	#List of small leaf-like plants.
+	"Leaf Like" = ["#minecraft:leaves", "#dynamictrees:foliage", "environmental:.*_hanging_wisteria_leaves", "environmental:cattail_stalk", "environmental:cattail"]
+	#List of small lily pad-like plants.
+	"Pad Like" = ["regions_unexplored:flowering_lily_pad", "biomesoplenty:huge_lily_pad", "environmental:giant_lily_pad", "environmental:large_lily_pad", "natures_spirit:helvola", "natures_spirit:lotus_flower", "natures_spirit:lotus_stem"]
+	#List of custom-like plants, use '@' to split template and targets, template string can get from F3+i at target blocks, such as minecraft:tall_grass[half=lower]@#minecraft:tall_flowers[half=lower].
+	"Custom Like" = ["minecraft:vine@teastory:rice_plant"]

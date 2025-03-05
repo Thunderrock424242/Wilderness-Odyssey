@@ -805,6 +805,10 @@
     "modId": "sushigocrafting",
     "version": "0.6.4"
   },
+  "swaying_garden-1.21.1-neoforge-1.0.4.jar": {
+    "modId": "swaying_garden",
+    "version": "1.0.4"
+  },
   "t_and_t-neoforge-fabric-1.13.2.jar": {
     "modId": "t_and_t",
     "version": "1.13.2"
