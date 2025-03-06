@@ -18,7 +18,7 @@
 		# Range: > 1
 		leafSearchRadius = 64
 		#If enabled, ChopDown will only work when the player is using the right tool for the log
-		rightToolRequired = false
+		rightToolRequired = true
 
 [entity]
 	#Prevents pets from being hit by friendly fire.
