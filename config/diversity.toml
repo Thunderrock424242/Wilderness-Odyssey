@@ -4,11 +4,12 @@
 "Brushable parrot/chicken" = true
 "Chicken egg try hatch on despawn" = true
 "Explosive sniffer" = true
+"Fox auto breed from berries" = true
 "Fox bury items" = true
 "Horse can seat on boat" = true
 "Pat you pets" = true
 "Piglin treats golden trimmed armor as golden armor" = true
-"No tamed horse wandering" = true
+"No saddled mobs wandering" = true
 "Rabbit breed after eats carrot crops" = true
 "Random size fishes/squid" = true
 "Silent nametag" = true
@@ -19,6 +20,7 @@
 
 [general]
 "Banner trophies" = true
+"Beacon extended" = true
 "Bigger radius bookshelf for enchanting table" = true
 "Bonemeal coral fan/block" = true
 "Bonemeal small flowers" = true
@@ -27,6 +29,7 @@
 "Click through sign/itemframe" = true
 "1 tick delay copper bulb" = false
 "Day counter" = "PER_1_DAY"
+"Ticks per day" = 24000
 "Deepslate generator" = true
 "Faster minecart" = true
 "Faster oxidization" = true
@@ -34,7 +37,6 @@
 "Invisible item frame" = true
 "Backup Enchantments" = true
 "No level limit anvil" = true
-"Enable permission system" = false
 "Prevent farmland trampling" = true
 "No set spawn on sleep" = true
 "Shulker label" = true
@@ -56,6 +58,16 @@
 "Shear prevents plant from growing" = true
 "Slime chunk detector" = true
 "Spyglass what is that?" = "ALL"			# [ALL, BLOCK_ONLY, ENTITY_ONLY, DISABLE]
+"Normal inspect range" = 5
+"Normal mode: Show block's name" = true
+"Normal mode: Show block's direction" = true
+"Normal mode: Show distance" = false
+"Normal mode: Show hidden infos" = true
+"Inspect range when zooming" = 32
+"Zoom mode: Show block's name" = true
+"Zoom mode: Show block's direction" = true
+"Zoom mode: Show distance" = true
+"Zoom mode: Show hidden infos" = true
 "Trident can call thunder storm" = true
 "Waxed copper indicator" = true
 
@@ -63,8 +75,12 @@
 "Bundle recipe" = true
 "Suspicious sand/gravel recipe" = true
 
+[compatibility]
+"EasyShulkerBoxes Compatibility Layer" = true
+
 [command]
 "Emote commands" = true
+"Enable permission system" = false
 
 [cursed]
 "End stone is cheese" = false

@@ -458,7 +458,7 @@ _version = 3
 			[client.advanced.debugging.openGl]
 				#
 				# Requires a reboot to change.
-				overrideVanillaGLLogger = true
+				overrideVanillaGLLogger = false
 				#
 				# Defines how OpenGL errors are handled. 
 				# May incorrectly catch OpenGL errors thrown by other mods. 
@@ -468,7 +468,7 @@ _version = 3
 				# LOG_THROW: write to the log and throw an exception. 
 				#            Warning: this should only be enabled when debugging the LOD renderer 
 				#            as it may break Minecraft's renderer when an exception is thrown.
-				glErrorHandlingMode = "LOG"
+				glErrorHandlingMode = "IGNORE"
 				#
 				# Massively reduces FPS. 
 				# Should only be used if mysterious EXCEPTION_ACCESS_VIOLATION crashes are happening in DH's rendering code for troubleshooting.
@@ -550,7 +550,7 @@ _version = 3
 		# CHAT 
 		# LOG 
 		# DISABLED
-		showGenerationProgress = "DISABLED"
+		showGenerationProgress = "OVERLAY"
 		#
 		# How often should the distant generator progress be displayed?
 		generationProgressDisplayIntervalInSeconds = 5

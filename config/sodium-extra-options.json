@@ -43,7 +43,7 @@
     "player_name_tag": true
   },
   "extra_settings": {
-    "overlay_corner": "TOP_LEFT",
+    "overlay_corner": "TOP_RIGHT",
     "text_contrast": "NONE",
     "show_fps": true,
     "show_f_p_s_extended": true,

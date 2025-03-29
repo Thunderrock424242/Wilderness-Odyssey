@@ -18,7 +18,7 @@
 		# Range: > 1
 		leafSearchRadius = 64
 		#If enabled, ChopDown will only work when the player is using the right tool for the log
-		rightToolRequired = true
+		rightToolRequired = false
 
 [entity]
 	#Prevents pets from being hit by friendly fire.
@@ -28,7 +28,7 @@
 	enablePetFriendlyFireTweak = "OWNER"
 	#Allows any #vtweaks:clear_glass, or glow ink sac, to be activated on an item frame while sneaking to make the item frame transparent or glowing respectively.
 	enableItemFrameTweak = true
-	#When any #forge:creepers explodes, all blocks destroyed will plop back into place after a few seconds
+	#When any #c:creepers explodes, all blocks destroyed will plop back into place after a few seconds
 	ungriefCreepers = true
 	#Allows use of datapacks to prevent a given types of entities from spawning in given biomes. The built-in datapack does not cull any entities.
 	#See https://mods.oitsjustjose.com/V-Tweaks/#entity-culling for datapack documentation.
@@ -43,14 +43,18 @@
 		# Default: 0.25
 		# Range: 0.0 ~ 1.0
 		globalChance = 0.25
+		#Enable colored particles for challenger mobs (respects the player's particle setting)
+		enableParticles = true
 
 	[entity.featherplucking]
-		#Allows feathers to be plucked from any #forge:chickens using any #forge:shears
+		#Allows feathers to be plucked from any #c:chickens using any #c:tools/shear
 		enabled = true
 		#The amount of time (in Milliseconds) between plucks. Defaults to 10 minutes.
 		# Default: 600000
 		# Range: 1 ~ 9223372036854775807
 		cooldownInMilliseconds = 600000
+		#Should baby #c:chickens be able to have feathers plucked from them?
+		worksOnBabies = false
 
 [player]
 	#Feather Falling IV or above redirects all fall damage the player's boots
@@ -91,3 +95,5 @@
 	enableSplashPotionTweak = true
 	#If enabled, items entities will no longer stack together like Minecraft Beta
 	enableNonStackingItemTweak = false
+	#If enabled, nothing will be able to sink into Powdered Snow blocks anymore
+	enableSolidPowderedSnow = false

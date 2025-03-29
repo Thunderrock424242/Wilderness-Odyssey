@@ -2,10 +2,6 @@
 		#Makes Bee entities half-sized (does not affect their hit-box)
 		enableSmallBees = true
 
-		[client.entity.challengers]
-			#Enable colored particles for challenger mobs (dependent on your particle setting as well)
-			enableParticles = true
-
 	[client.tooltips]
 		#Show tool durability on item hover
 		#Allowed Values: NEVER, WITH_SHIFT, ALWAYS

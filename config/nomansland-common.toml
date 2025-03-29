@@ -1,0 +1,81 @@
+[overrides]
+	#If grass or mycelium spread to nearby dirt.
+	grassSpreads = true
+	myceliumSpreads = true
+	#If monster spawners should produce malevolent (red) flames instead of regular flames.
+	malevolentSpawner = true
+	#If players and mobs can trample farmland
+	allowTrampling = false
+	#If torches can be extinguished through interactions like campfires.
+	torchExtinguishing = true
+
+[tap]
+	#Time is calculated in ticks. 20 ticks make 1 second.
+	#Multiplier on how fast taps should fill up cauldrons with resin. Set to 0.0 to disable.
+	# Default: 1.0
+	# Range: 0.0 ~ 10.0
+	fillingSpeedMultiplier = 1.0
+	#The time it takes to fill a cauldron with honey using a tap.
+	# Default: 80
+	# Range: 1 ~ 400
+	ticksToFillCauldron = 80
+
+[monster_anchor]
+	#The radius around the monster anchor where monsters are anchored.
+	# Default: 5
+	# Range: 1 ~ 50
+	resurrectionRadius = 5
+	#The time between each resurrection from a monster anchor.
+	# Default: 80
+	# Range: 78 ~ 400
+	ticksBetweenResurrections = 80
+
+[spike]
+	#Damage is dealt in hit points. 2 hit points make 1 heart.
+	#The continuous damage dealt to an entity as it stands on an active spike.
+	# Default: 1.5
+	# Range: 0.0 ~ 1.7976931348623157E308
+	pokingDamage = 1.5
+	#The added damage dealt to an entity when it falls on a spike from any height.
+	# Default: 2.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	fallingDamage = 2.0
+	#The damage dealt to an entity when an adjacent spike is activated.
+	# Default: 12.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	impalingDamage = 12.0
+	#The damage dealt to an entity when an active spike is pushed into it.
+	# Default: 12.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	skeweringDamage = 12.0
+
+[bombs]
+	#The radius of explosives' explosion.
+	# Default: 3.0
+	# Range: 0.25 ~ 1.7976931348623157E308
+	maxLadderPlacementLength = 3.0
+	#The radius of firebombs' explosion.
+	# Default: 2.0
+	# Range: 0.25 ~ 1.7976931348623157E308
+	maxRailPlacementLength = 2.0
+
+[bulk_placement]
+	#The maximum distance ladders can be placed like scaffolding. Set to 0 to disable.
+	# Default: 0
+	# Range: > 0
+	maxLadderPlacementLength = 0
+	#The maximum distance rails can be placed like scaffolding.
+	# Default: 24
+	# Range: > 1
+	maxRailPlacementLength = 24
+	#The maximum distance rails can be from a supported block before breaking.
+	# Default: 5
+	# Range: > 1
+	maxFloatingRails = 5
+
+[miscellaneous]
+	#The chance a buried is spawned upon brushing a remains block.
+	#This chance is multiplied by 4 when the block is broken and by 10 when the block falls.
+	# Default: 0.05
+	# Range: 0.0 ~ 1.0
+	buriedSpawningChance = 0.05

@@ -287,6 +287,14 @@
 	"Monstrosity's prevent attacks from far away Range" = 18.0
 	#Monstrosity's block breaking ignore the MobGriefing
 	monstrosityBlockBreaking = true
+	#Lava Bomb of Monstrosity's Duration
+	# Default: 350
+	# Range: 1 ~ 10000
+	LavaBombDuration = 350
+	#Lava Bomb of Monstrosity's additional random duration size
+	# Default: 150
+	# Range: 1 ~ 10000
+	LavaBombRandomDuration = 150
 
 ["Ender Golem"]
 	#Ender Golem's block breaking ignore the MobGriefing

@@ -88,3 +88,8 @@
 	#Increases item name length limit for Interplanar Projector to 150 characters. Vanilla limit: 50.
 	#Default: true
 	increase_interplanar_projector_name_limit = true
+
+#You wouldn't need to touch these settings most likely. They are there to help debug/fix some weird issues.
+[debug]
+	#Clean up data about timed-out expected exposure uploads on level/server save. Default: true
+	cleanup_timed_out_expected_uploads = true

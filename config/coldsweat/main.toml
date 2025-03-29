@@ -1,9 +1,12 @@
-#DO NOT EDIT THE SETTINGS IN THIS SECTION
 [Builtin]
+	#DO NOT CHANGE THIS SETTING
 	# Default: 2
 	# Range: 0 ~ 4
 	Difficulty = 1
-	Version = "2.4-b01a"
+	#The current version of Cold Sweat. This is used by the auto-updater
+	Version = "2.4-b02a"
+	#Allows Cold Sweat's configs to be automatically updated with new additions & formatting changes
+	"Auto Update" = true
 
 [Difficulty]
 	#Defines the minimum habitable temperature
@@ -81,3 +84,7 @@
 	# Default: 1.0
 	# Range: 0.1 ~ 1.0
 	"Modifier Tick Rate" = 1.0
+	#A multiplier to the speed at which wet players dry off
+	# Default: 1.0
+	# Range: 0.0 ~ Infinity
+	"Dryoff Speed" = 1.0

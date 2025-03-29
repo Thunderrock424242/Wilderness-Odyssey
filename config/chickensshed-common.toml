@@ -1,0 +1,10 @@
+#Toggle baby mob item dropping
+babiesDropItems = true
+#Determines how often the item will drop from a mob (percent chance per tick)
+# Default: 0.0385
+# Range: 0.01 ~ 100.0
+dropChance = 0.0385
+
+#Sets configured mobs to drop set items
+[mobDrops]
+	"minecraft:chicken" = "minecraft:feather"
