@@ -11,20 +11,22 @@ snowReduceFallDamage: true
 sustainGrassIfLayerMoreThanOne: true
 sneakSnowball: true
 fancySnowOnUpperSlab: true
+rightClickToggleFancySnow: true
 mobSpawningMaxLayers: 8
 snow-cover:
+  restoreOriginalBlocks: false
   replaceWorldgenFeature: true
   placeSnowOnBlock: true
-  retainOriginalBlocks: false
   placeNaturally: true
 accumulation:
   naturalMelting: true
+  smoothAccumulation: true
   snowAndIceMeltInWarmBiomes: false
-  maxLayers: 8
+  maxLayers: 6
   accumulatesDuringSnowstorm: true
   accumulatesDuringSnowfall: false
 integration:
   accumulationWinterOnly: false
 debug:
-  weatherTickSlowness: 16
+  forceVanillaIceSnowLogic: false
   mobSpawningCommand: false

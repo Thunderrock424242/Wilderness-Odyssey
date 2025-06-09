@@ -52,9 +52,8 @@
     "painting": true,
     "chiseled_bookshelf": true
   },
-  "exposure": {
-    "lightroom": true,
-    "photograph_frame": true
+  "jadeaddons": {
+    "equipment_requirement": ""
   },
   "jade_access": {
     "held_item": true,
@@ -62,16 +61,6 @@
     "block": true,
     "entity": true,
     "entity_variant": true
-  },
-  "untitledduckmod": {
-    "lay_egg": true
-  },
-  "twilightforest": {
-    "chiseled_bookshelf_spawner": true,
-    "quest_ram_wool": true
-  },
-  "supplementaries": {
-    "hat_stand": true
   },
   "jade": {
     "coordinates.rel": false,
@@ -83,27 +72,5 @@
     "registry_name": "OFF",
     "block_properties": false,
     "mod_name": true
-  },
-  "balm": {
-    "jade": true
-  },
-  "securitycraft": {
-    "showowner": true,
-    "showmodules": true,
-    "entity_info": true,
-    "block_info": true,
-    "showcustomname": true
-  },
-  "ae2": {
-    "part_icon": true,
-    "charger": true,
-    "debug": true,
-    "part_tooltip": true,
-    "grid_node_state": true,
-    "pattern_provider": true,
-    "part_mod_name": true,
-    "power_storage": true,
-    "crafting_monitor": true,
-    "part_name": true
   }
 }
