@@ -62,6 +62,13 @@
     "entity": true,
     "entity_variant": true
   },
+  "jadeaddons.lootr": {
+    "info": true
+  },
+  "twilightforest": {
+    "chiseled_bookshelf_spawner": true,
+    "quest_ram_wool": true
+  },
   "jade": {
     "coordinates.rel": false,
     "registry_name.special": false,

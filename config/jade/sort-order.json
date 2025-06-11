@@ -14,6 +14,8 @@
   "jade_access:entity_variant": null,
   "jade_access:held_item": null,
   "jade_access:sign": null,
+  "jadeaddons.lootr:info": null,
+  "jadeaddons.lootr:inventory": null,
   "minecraft:animal_owner": null,
   "minecraft:armor_stand": null,
   "minecraft:beehive": null,
@@ -58,5 +60,7 @@
   "minecraft:total_enchantment_power": null,
   "minecraft:villager_profession": null,
   "minecraft:waxed": null,
-  "minecraft:zombie_villager": null
+  "minecraft:zombie_villager": null,
+  "twilightforest:chiseled_bookshelf_spawner": null,
+  "twilightforest:quest_ram_wool": null
 }
