@@ -1,0 +1,14 @@
+[animal_remodels]
+	#Config changes require a restart to take effect
+	#If the chicken remodel and texture variants are enabled
+	chickenRemodel = true
+	#If the cow remodel and texture variants are enabled
+	cowRemodel = true
+	#If the pig remodel and texture variants are enabled
+	pigRemodel = true
+	#If the rabbit remodel and texture variants are enabled
+	rabbitRemodel = true
+	#If the sheep remodel and texture variants are enabled
+	sheepRemodel = true
+	#If the squid remodel and texture variants are enabled
+	squidRemodel = true
