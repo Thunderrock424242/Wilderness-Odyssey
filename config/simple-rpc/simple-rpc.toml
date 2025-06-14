@@ -2,7 +2,7 @@
 #General Config Section. See https://srpc.fdd-docs.com/introduction/
 [general]
 	#The Application ID of the Discord App to use
-	applicationID = "762726289341677668"
+	applicationID = "1383582333608919142"
 	#Enable/Disable the mod
 	enabled = true
 	#Enable/Disable debugging mode. WARNING: MAY CAUSE LOG SPAM!
