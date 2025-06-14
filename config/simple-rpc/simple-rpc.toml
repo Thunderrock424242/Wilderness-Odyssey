@@ -10,7 +10,7 @@
 	#Display the Icon and Pack Name in place of LargeImage from compatible launchers. DOES NOT WORK WITH CUSTOM APPS! ONLY THE DEFAULT ONE!
 	launcherIntegration = false
 	#Allow using local image files, as RPC icons
-	rpcImageServer = false
+	rpcImageServer = true
 	#The URL of the RPC image server that will be used for local images. Restart required when changed
 	rpcImageServerUrl = "https://rpcavatar.firstdark.dev"
 	#Internal Version Number. NO TOUCHY!
