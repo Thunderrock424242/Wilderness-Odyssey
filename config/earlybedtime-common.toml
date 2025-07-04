@@ -1,0 +1,5 @@
+#.
+#The earliest time that you can go to bed. Vanilla is 12542.
+# Default: 11500
+# Range: > -2147483648
+"Allowed Sleep Time" = 11500

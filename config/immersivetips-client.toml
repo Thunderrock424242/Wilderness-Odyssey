@@ -1,0 +1,24 @@
+#.
+#Sets screens to manually enable tips on.
+"Whitelisted Screens" = []
+#.
+#Sets screens to manually disable tips on.
+"Blacklisted Screens" = []
+#.
+#Loads included default tips from the legacy format.
+"Enable Legacy Tips" = true
+#.
+#Loads remote tips from GitHub for the loading screen.
+"Enable Remote Loading Screen Tips" = true
+#.
+#Loads remote item tooltips from GitHub.
+"Enable Remote Item Tips" = true
+#.
+#If disabled, will only show on the pause and death screens.
+"Enable On Loading Screens" = true
+#.
+#If disabled, will only show on the loading and death screens.
+"Enable On Pause Screen" = true
+#.
+#If disabled, will only show on the pause and loading screens.
+"Enable On Death Screen" = true
