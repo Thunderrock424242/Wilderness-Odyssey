@@ -8,7 +8,7 @@
 		#Where to display the Hud when no minimap is installed.
 		#Default is TOP_LEFT.
 		#Allowed Values: TOP_LEFT, TOP_CENTER, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, CUSTOM
-		hud_location = "TOP_LEFT"
+		hud_location = "TOP_RIGHT"
 		#The horizontal offset of the HUD when no minimap is installed (in pixels)
 		#'hudLocation' must be set to 'CUSTOM'
 		#Default is 2.
