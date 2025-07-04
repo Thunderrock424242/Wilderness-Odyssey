@@ -22,9 +22,9 @@
 	#4 - 6 = Early/Mid/Late Summer
 	#7 - 9 = Early/Mid/Late Autumn
 	#10 - 12 = Early/Mid/Late Winter
-	starting_sub_season = 1
+	starting_sub_season = 12
 	#The duration of a sub season in days.
-	sub_season_duration = 8
+	sub_season_duration = 10
 	#If the season should progress on a server with no players online
 	progress_season_while_offline = true
 	#The duration of a Minecraft day in ticks.
