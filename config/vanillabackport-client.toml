@@ -1,0 +1,3 @@
+["The Garden Awakens"]
+	#Determine if the music should fade out when entering a pale garden
+	fadeMusicOnPaleGarden = true
