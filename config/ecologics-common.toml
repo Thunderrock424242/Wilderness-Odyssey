@@ -16,3 +16,8 @@
 [lush_caves]
 	#Vanilla Azalea trees will have azalea logs instead of oak logs
 	replaceAzaleaTree = true
+
+#Plains
+[plains]
+	#Should Foxes attack Squirrels?
+	foxesAttackSquirrels = true

@@ -9,6 +9,6 @@
 	#If the rabbit remodel and texture variants are enabled
 	rabbitRemodel = true
 	#If the sheep remodel and texture variants are enabled
-	sheepRemodel = true
+	sheepRemodel = false
 	#If the squid remodel and texture variants are enabled
 	squidRemodel = true

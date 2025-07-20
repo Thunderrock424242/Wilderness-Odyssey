@@ -79,7 +79,7 @@
 	firebombExplosionRadius = 2.0
 
 [bulk_placement]
-	#Set to 0 to disable any feature.
+	#Set to 0 to disable any key.
 	#The maximum distance ladders can be placed like scaffolding.
 	# Default: 8
 	# Range: > 0

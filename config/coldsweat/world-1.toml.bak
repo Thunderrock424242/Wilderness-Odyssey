@@ -457,3 +457,16 @@
 		# Default: 40
 		# Range: > 0
 		"Icebox Fuel Consumption Interval" = 40
+
+	[Compatibility.Seasons]
+		#─────────────────────────────────────────────────────────────────────────
+		# Defines the temperature changes caused by each season
+		# ├── Format: [seasonStart, seasonMid, seasonEnd, *units]
+		# └── [* = optional]
+		# • seasonStart/Mid/End: The temperature offset at the start, middle, and end of the season
+		# • *units: The unit of temperature (C, F, or MC)
+		# ⌄ 
+		Summer = [0.4, 0.6, 0.4]
+		Autumn = [0.2, 0, -0.2]
+		Winter = [-0.4, -0.6, -0.4]
+		Spring = [-0.2, 0, 0.2]

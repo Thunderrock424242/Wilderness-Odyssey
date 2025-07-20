@@ -1,0 +1,54 @@
+#General mod settings
+[general]
+	#-
+	Misc_windOn = true
+	#-
+	Wind_LowWindEvents = true
+	#-
+	Wind_HighWindEvents = true
+	#-
+	Wind_UsePerlinNoise = false
+	#-
+	# Default: 2400
+	# Range: > -2147483648
+	lowWindTimerEnableAmountBase = 2400
+	#-
+	# Default: 12000
+	# Range: > -2147483648
+	lowWindTimerEnableAmountRnd = 12000
+	#-
+	# Default: 4000
+	# Range: > -2147483648
+	lowWindOddsTo1 = 4000
+	#-
+	# Default: 2400
+	# Range: > -2147483648
+	highWindTimerEnableAmountBase = 2400
+	#-
+	# Default: 12000
+	# Range: > -2147483648
+	highWindTimerEnableAmountRnd = 12000
+	#-
+	# Default: 8000
+	# Range: > -2147483648
+	highWindOddsTo1 = 8000
+	#-
+	# Default: 1.0
+	# Range: -1.7976931348623157E308 ~ 1.7976931348623157E308
+	globalWindAngleChangeAmountRate = 1.0
+	#-
+	# Default: 1.0E-5
+	# Range: -1.7976931348623157E308 ~ 1.7976931348623157E308
+	windSpeedMin = 1.0E-5
+	#-
+	# Default: 1.0
+	# Range: -1.7976931348623157E308 ~ 1.7976931348623157E308
+	windSpeedMax = 1.0
+	#Min wind speed to maintain if its raining with global overcast mode on, overrides low wind events and windSpeedMin
+	# Default: 0.01
+	# Range: -1.7976931348623157E308 ~ 1.7976931348623157E308
+	windSpeedMinGlobalOvercastRaining = 0.01
+	#-
+	# Default: 10
+	# Range: > -2147483648
+	Wind_Turbine_FE_Generated_Per_Tick = 10

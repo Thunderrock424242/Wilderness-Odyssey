@@ -1,2 +1,27 @@
-#URL to open when reporting an issue
-reportLink = "https://github.com/Thunderrock424242/Wilderness-Odyssey/issues"
+[postmortem]
+	#Number of game events to retain for post-mortem dump
+	# Default: 500
+	# Range: 100 ~ 10000
+	bufferSize = 500
+
+[reporting]
+	#GitHub repository (owner/Repo) for creating crash reports
+	githubRepository = "YourOrg/YourRepo"
+
+[performance]
+	#Tick duration (ms) above which a warning is logged
+	# Default: 50
+	# Range: 1 ~ 10000
+	tickThresholdMs = 50
+	#Heap usage ratio (0.0 - 1.0) to trigger memory warning
+	# Default: 0.8
+	# Range: 0.0 ~ 1.0
+	memoryWarningRatio = 0.8
+
+[compatibility]
+	#Enable scanning for known mod incompatibilities at startup
+	enableScan = true
+
+[logging]
+	#Enable real-time in-game log monitoring and notifications
+	enableLiveMonitor = true

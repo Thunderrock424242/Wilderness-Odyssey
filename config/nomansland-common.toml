@@ -17,8 +17,6 @@
 	genericCavesBiomes = true
 	#If the maple biomes are enabled
 	mapleBiomes = true
-	#If the old growth biomes are enabled
-	oldGrowthBiomes = true
 	#If the autumnal forest is enabled
 	autumnal = true
 	#If the dark taiga is enabled
@@ -31,6 +29,10 @@
 	bayou = true
 	#If the bog is enabled
 	bog = true
+	#If the old growth forest is enabled
+	oldGrowthForest = true
+	#If the boreal forest is enabled
+	borealForest = true
 
 [tap]
 	#Time is calculated in ticks. 20 ticks make 1 second.

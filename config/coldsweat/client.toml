@@ -22,7 +22,7 @@
 	# ⌄ 
 	# Default: 3
 	# Range: 0 ~ 3
-	"Show Water Effect" = 3
+	"Show Water Effect" = 0
 	#─────────────────────────────────────────────────────────────────────────
 	# The scale of the water droplets on-screen, in scaled "pixels"
 	# ⌄ 

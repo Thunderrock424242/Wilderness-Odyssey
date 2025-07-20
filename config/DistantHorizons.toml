@@ -590,20 +590,20 @@ _version = 3
 		# UNCOMPRESSED 
 		# Should only be used for testing, is worse in every way vs [LZ4].
 		# Expected Compression Ratio: 1.0
-		# Estimated average DTO read speed: 1.64 milliseconds
-		# Estimated average DTO write speed: 12.44 milliseconds
+		# Estimated average DTO read speed: 3.25 milliseconds
+		# Estimated average DTO write speed: 5.99 milliseconds
 		# 
 		# LZ4 
 		# A good option if you're CPU limited and have plenty of hard drive space.
-		# Expected Compression Ratio: 0.36
+		# Expected Compression Ratio: 0.26
 		# Estimated average DTO read speed: 1.85 ms
 		# Estimated average DTO write speed: 9.46 ms
 		# 
 		# LZMA2 
 		# Slow but very good compression.
-		# Expected Compression Ratio: 0.14
-		# Estimated average DTO read speed: 11.89 ms
-		# Estimated average DTO write speed: 192.01 ms
+		# Expected Compression Ratio: 0.2
+		# Estimated average DTO read speed: 13.29 ms
+		# Estimated average DTO write speed: 70.95 ms
 		dataCompression = "LZMA2"
 		#
 		# How should block data be compressed when creating LOD data? 
@@ -780,6 +780,11 @@ _version = 3
 	# Maximum speed for uploading LODs to the clients, in KB/s.
 	# Value of 0 disables the limit.
 	maxDataTransferSpeed = 500
+	#
+	# Enables adaptive transfer speed based on client performance.
+	# If true, DH will automatically adjust transfer rate to minimize connection lag.
+	# If false, transfer speed will remain fixed.
+	enableAdaptiveTransferSpeed = false
 
 	[server.experimental]
 		#
