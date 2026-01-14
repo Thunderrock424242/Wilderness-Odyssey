@@ -65,6 +65,9 @@
 	#maintain the Dog Data. If the other Mod failed to keep the data,
 	#the Dog cannot be respawned and will be gone forever. You have been warned.
 	trust_third_party_storage = false
+	#Allow DTN to log and warn when detected a Dog being restored from
+	#third party storage when trust_third_party_storage is disabled.
+	third_party_store_warn = true
 	#By default, you can directly train an untamed wolf to a Dog
 	#with a Training Treat. Set this to True to disable.
 	disable_train_untamed_wolf = false
@@ -74,6 +77,8 @@
 	dog_respawn_incapacitated_when_killed = true
 	#Enable this if you prefer Mob Retriever to only work with DTN's dog.
 	mob_retriever_only_carry_dog = false
+	#Enable this if you prefer Mob Retriever to only work with Leashable Mobs.
+	mob_retriever_only_carry_leashable = false
 	#By default, Dogs extend their bounding box covering the passengers
 	#to avoid suffocating them while calculating the appropriate path.
 	#Set this to false to disable it, but be warned, although Mob Retriever Dogs will still
@@ -169,6 +174,9 @@
 	#being able to eat food that must not be fed to a real life Dog
 	#e.g. Cookie. Use with caution.
 	dog_can_eat_all_food = false
+	#Enable this to make all non following docile Dogs to not loose hunger
+	#when standing.
+	wandering_dog_non_hunger = false
 	#This allows DTN Dogs to still save as a seperate entity
 	#when riding on the player's head. This is to prevent them
 	#from being corrupted when Minecraft unexpectedly crashes
@@ -178,9 +186,3 @@
 	#This ensures that the target chunk that a Dog is moving to
 	#is actually loaded BEFORE it actually moves to.
 	dog_load_chunk_before_move = true
-	#Allow DTN to log and warn when detected a Dog being restored from
-	#third party storage when trust_third_party_storage is disabled.
-	third_party_store_warn = true
-	#Enable this to make all non following docile Dogs to not loose hunger
-	#when standing.
-	wandering_dog_non_hunger = false

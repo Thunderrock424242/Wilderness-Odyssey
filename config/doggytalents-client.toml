@@ -54,7 +54,7 @@
 	#will make DTN directly reference the in-game texture.
 	use_vanilla_res_for_classical = false
 	#Show a fun icon on world loading screen.
-	world_load_icon = false
+	world_load_icon = true
 	#Move the world load icon to the right corner.
 	world_load_icon_r = false
 	#Set the world load icon offset from the corner.

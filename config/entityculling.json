@@ -12,15 +12,17 @@
   ],
   "entityWhitelist": [
     "botania:mana_burst",
-    "drg_flares:drg_flares"
+    "drg_flares:drg_flares",
+    "quark:soul_bead"
   ],
   "tracingDistance": 128,
   "debugMode": false,
   "sleepDelay": 10,
   "hitboxLimit": 50,
-  "skipMarkerArmorStands": true,
+  "captureRate": 5,
   "tickCulling": true,
   "tickCullingWhitelist": [
+    "minecraft:block_display",
     "alexscaves:gum_worm",
     "minecraft:jungle_boat",
     "minecraft:spruce_boat",
@@ -42,11 +44,13 @@
     "minecraft:oak_chest_boat",
     "avm_staff:campfire_flame",
     "minecraft:dark_oak_chest_boat",
+    "minecraft:text_display",
     "create:gantry_contraption",
     "minecraft:oak_boat",
     "minecraft:pale_oak_boat",
     "minecraft:acacia_chest_boat",
     "minecraft:cherry_chest_boat",
+    "minecraft:item_display",
     "create:stationary_contraption",
     "minecraft:bamboo_raft",
     "minecraft:firework_rocket",
@@ -54,9 +58,12 @@
     "create:carriage_contraption",
     "minecraft:pale_oak_chest_boat",
     "minecraft:bamboo_chest_raft",
-    "minecraft:mangrove_chest_boat"
+    "minecraft:mangrove_chest_boat",
+    "voidscape:corrupted_pawn"
   ],
   "disableF3": false,
   "skipEntityCulling": false,
-  "skipBlockEntityCulling": false
+  "skipBlockEntityCulling": false,
+  "blockEntityFrustumCulling": true,
+  "forceDisplayCulling": false
 }

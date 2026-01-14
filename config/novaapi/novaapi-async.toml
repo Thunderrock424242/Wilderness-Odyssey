@@ -1,0 +1,21 @@
+[asyncThreading]
+	#Master toggle for the async task system.
+	enabled = true
+	#Worker pool size for CPU-bound tasks (recommended: cores - 1).
+	# Default: 31
+	# Range: 1 ~ 64
+	maxThreads = 31
+	#Maximum tasks waiting for a worker thread before new submissions are rejected.
+	# Default: 256
+	# Range: 32 ~ 4096
+	queueSize = 256
+	#Maximum main-thread tasks applied per server tick to avoid long stalls.
+	# Default: 64
+	# Range: 1 ~ 512
+	applyPerTick = 64
+	#Optional timeout for long-running worker tasks (0 to disable).
+	# Default: 20000
+	# Range: 0 ~ 600000
+	taskTimeoutMs = 20000
+	#Enables verbose logging for async task scheduling and application.
+	debugLogging = false

@@ -1,6 +1,6 @@
 {
-  "configVersion": 11,
-  "animationSmoothingSpeed": 0.2,
+  "configVersion": 10,
+  "animationSmoothingSpeed": 0.1,
   "holdingItems": [
     "quad-mstv-mtv:pale_oak_torch",
     "quad-mstv-mtv:bamboo_torch",
@@ -71,8 +71,14 @@
   "freezingAnimation": true,
   "huggingAnimation": false,
   "narutoRunning": false,
-  "enableInWorldBookRendering": false,
   "disableLegSmoothing": false,
-  "bowAnimation": "CUSTOM_V1",
-  "burningAnimation": true
+  "bowAnimation": "VANILLA",
+  "customBowRotationLock": false,
+  "clampCrossbowAnimations": false,
+  "burningAnimation": true,
+  "hideItemsForTheseBows": [],
+  "mapHolding": [
+    "minecraft:filled_map",
+    "antiqueatlas:antique_atlas"
+  ]
 }

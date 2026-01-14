@@ -1,0 +1,100 @@
+[common]
+	# Default: 1000000.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	teleporter_usage = 1000000.0
+	# Default: 120.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	radioisotopegenerator_voltage = 120.0
+	# Default: 0.3499999940395355
+	# Range: 0.0 ~ 1.7976931348623157E308
+	radioisotopegenerator_output_multiplier = 0.3499999940395355
+	# Default: 350000.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	fissionreactor_max_energy_target = 350000.0
+	# Default: 850000.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	msrreactor_max_energy_target = 850000.0
+	# Default: 6000000.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	fusionreactor_max_energy_target = 6000000.0
+	# Default: 50000.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	fusionreactor_usage_per_tick = 50000.0
+	# Default: 1024
+	# Range: > 0
+	fusionreactor_max_storage = 1024
+	# Default: 2.0E8
+	# Range: 0.0 ~ 1.7976931348623157E308
+	particle_injector_usage_per_particle = 2.0E8
+	# Default: 1500.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	gascentrifuge_usage_per_tick = 1500.0
+	# Default: 20
+	# Range: > 0
+	gascentrifuge_required_ticks = 20
+	# Default: 200.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	freezeplug_usage_per_tick = 200.0
+	# Default: 120.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	moltensaltsupplier_voltage = 120.0
+	# Default: 200.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	moltensaltsupplier_usage_per_tick = 200.0
+	# Default: 6000.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	atomicassembler_usage_per_tick = 6000.0
+	# Default: 480.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	atomicassembler_voltage = 480.0
+	# Default: 6000
+	# Range: > 0
+	atomicassembler_required_ticks = 6000
+	# Default: 40
+	# Range: > 0
+	quantum_tunnel_frequency_cap_per_player = 40
+	# Default: 40
+	# Range: > 0
+	antimatter_ticks_on_ground = 40
+	# Default: 100.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	cloud_chamber_energy_usage_per_tick = 100.0
+	# Default: 1
+	# Range: > 0
+	cloud_chamber_fluid_usage_per_tick = 1
+	# Default: 100.0
+	# Range: 0.0 ~ 1.7976931348623157E308
+	fallout_scrubber_usage_per_tick = 100.0
+	# Default: 5
+	# Range: > 0
+	atomic_assembler_radiation_radius = 5
+	# Default: 3
+	# Range: > 0
+	chemical_extractor_radiation_radius = 3
+	# Default: 10
+	# Range: > 0
+	fuel_reprocessor_radiation_radius = 10
+	# Default: 5
+	# Range: > 0
+	gas_centrifuge_radiation_radius = 5
+	# Default: 5
+	# Range: > 0
+	nuclear_boiler_radiation_radius = 5
+	# Default: 3
+	# Range: > 0
+	particle_injector_radiation_radius = 3
+	# Default: 5
+	# Range: > 0
+	radioactive_processor_radiation_radius = 5
+	# Default: 10
+	# Range: > 0
+	radioisotopegenerator_radiation_radius = 10
+	# Default: 5
+	# Range: > 0
+	molten_salt_supplier_radiation_radius = 5
+	# Default: 50
+	# Range: > 0
+	particle_cooldown_tick = 50
+	# Default: 800
+	# Range: > 0
+	particle_survival_ticks = 800

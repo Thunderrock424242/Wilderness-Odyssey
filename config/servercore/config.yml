@@ -31,8 +31,8 @@ dynamic:
   # If left unspecified, the maximum value will be used.
   # Note: adding view / simulation distance here will override their value in server.properties.
   default-values:
-    CHUNK_TICK_DISTANCE: 10
     MOBCAP_PERCENTAGE: 100
+    CHUNK_TICK_DISTANCE: 10
 
   # The settings that will be decreased when the server is overloaded, in the specified order.
   # You can remove settings from the list that you don't want to be dynamically adjusted.
@@ -162,6 +162,54 @@ mob-spawning:
 
     - category: 'WATER_AMBIENT'
       mobcap: 20
+      spawn-interval: 1
+
+    - category: 'HYBRID_AQUATIC_CEPHALOPOD'
+      mobcap: 4
+      spawn-interval: 1
+
+    - category: 'HYBRID_AQUATIC_CRITTER'
+      mobcap: 8
+      spawn-interval: 1
+
+    - category: 'HYBRID_AQUATIC_CRUSTACEAN'
+      mobcap: 8
+      spawn-interval: 1
+
+    - category: 'HYBRID_AQUATIC_FISH'
+      mobcap: 16
+      spawn-interval: 1
+
+    - category: 'HYBRID_AQUATIC_JELLY'
+      mobcap: 4
+      spawn-interval: 1
+
+    - category: 'HYBRID_AQUATIC_MAMMAL'
+      mobcap: 2
+      spawn-interval: 1
+
+    - category: 'HYBRID_AQUATIC_MINIBOSS'
+      mobcap: 4
+      spawn-interval: 400
+
+    - category: 'HYBRID_AQUATIC_MINION'
+      mobcap: 8
+      spawn-interval: 400
+
+    - category: 'HYBRID_AQUATIC_RIVER_FISH'
+      mobcap: 10
+      spawn-interval: 1
+
+    - category: 'HYBRID_AQUATIC_SHARK'
+      mobcap: 8
+      spawn-interval: 400
+
+    - category: 'GLARES'
+      mobcap: 15
+      spawn-interval: 1
+
+    - category: 'RASCALS'
+      mobcap: 1
       spawn-interval: 1
 
 

@@ -1,2 +1,0 @@
-#Show a warning if Valhelsia Furniture is not installed before world creation.
-furniture_warning = true

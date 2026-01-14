@@ -1,0 +1,386 @@
+	[common.explosives]
+		#Whether explosions will be cached; may use a lot of memory!
+		should_cache_explosions = true
+		#NB! This is ONLY useful for very slow pc's. Like very slow. It is very BAD for slow - mediocre - good pc's and will make raytracing SLOWER for these!!!
+		should_multithread_raytracing = false
+
+		[common.explosives.tier1]
+			# Default: 10.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_obsidian_size = 10.0
+			# Default: 2.5
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_condensive_size = 2.5
+			# Default: 1.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_attractive_size = 1.0
+			# Default: 2.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_attractive_repulsive_push_strength = 2.0
+			# Default: 1.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_repulsive_size = 1.0
+			# Default: 7.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_incendiary_radius = 7.0
+			# Default: 25.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_shrapnel_shrapnel_count = 25.0
+			# Default: 7.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_chemical_size = 7.0
+			#Value is in ticks.
+			# Default: 1200.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_chemical_duration_ticks = 1200.0
+			# Default: 10
+			# Range: > 0
+			explosive_anvil_anvilsperblast = 10
+			# Default: 7.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_infestive_radius = 7.0
+			#Value is in ticks.
+			# Default: 20.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_infestive_duration_ticks = 20.0
+			# Default: 7.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_debilitation_size = 7.0
+			#Value is in ticks.
+			# Default: 1200.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_debilitation_duration_ticks = 1200.0
+
+		[common.explosives.tier2]
+			# Default: 50.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_fragmentation_shrapnel_count = 50.0
+			# Default: 7.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_contagious_size = 7.0
+			# Default: 10
+			# Range: > 0
+			virus_effect_radius = 10
+			#Value is in ticks.
+			# Default: 1200.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_contagious_duration_ticks = 1200.0
+			# Default: 5.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_breaching_size = 5.0
+			#Value is in ticks.
+			# Default: 1.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_breaching_duration_ticks = 1.0
+			# Default: 60.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_breaching_energy = 60.0
+			# Default: 30.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_thermobaric_size = 30.0
+			#Value is in ticks.
+			# Default: 45.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_thermobaric_duration_ticks = 45.0
+			# Default: 60.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_thermobaric_energy = 60.0
+			# Default: 2.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_sonic_maxhardness = 2.0
+			# Default: 10.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_sonic_radius = 10.0
+			# Default: 1.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_sonic_velocity = 1.0
+			#Value is in ticks.
+			# Default: 20.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_sonic_duration_ticks = 20.0
+
+		[common.explosives.tier3]
+			# Default: 3
+			# Range: > 0
+			explosive_antigravity_chunkradius = 3
+			#Value is in ticks.
+			# Default: 12000
+			# Range: > 0
+			explosive_antigravity_chunkduration_ticks = 12000
+			# Default: 1.1
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_antigravity_gravityfactor = 1.1
+			# Default: 300
+			# Range: > 0
+			explosive_antigravity_maxheight = 300
+			#It is recommended to keep this value low
+			# Default: 1
+			# Range: > 0
+			explosive_antigravity_maxblockchecks = 1
+			# Default: 45.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_emp_radius = 45.0
+			# Default: 45.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_nuclear_size = 45.0
+			#Value is in ticks.
+			# Default: 360.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_nuclear_duration_ticks = 360.0
+			# Default: 120.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_nuclear_energy = 120.0
+			# Default: 90.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_nuclear_radiation_radius = 90.0
+			# Default: 1.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_endothermic_maxhardness = 1.0
+			# Default: 30.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_endothermic_radius = 30.0
+			# Default: 1.5
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_endothermic_velocity = 1.5
+			#Value is in ticks.
+			# Default: 20.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_endothermic_duration_ticks = 20.0
+			# Default: 2.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_exothermic_maxhardness = 2.0
+			# Default: 40.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_exothermic_radius = 40.0
+			# Default: 0.01
+			# Range: 0.0 ~ 1.0
+			explosive_exothermic_chance_for_lava = 0.01
+			# Default: 0.3
+			# Range: 0.0 ~ 1.0
+			explosive_exothermic_chance_to_burn = 0.3
+			#Value is in ticks.
+			# Default: 20.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_exothermic_duration_ticks = 20.0
+			# Default: 9.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_ender_radius = 9.0
+			# Default: 10
+			# Range: > 0
+			explosive_ender_endermancount = 10
+			# Default: 3.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_hypersonic_maxhardness = 3.0
+			# Default: 18.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_hypersonic_radius = 18.0
+			# Default: 1.5
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_hypersonic_velocity = 1.5
+			#Value is in ticks.
+			# Default: 50.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_hypersonic_duration_ticks = 50.0
+			# Default: 45.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_antimatter_radius = 45.0
+			#Value is in ticks.
+			# Default: 80.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_antimatter_duration_ticks = 80.0
+			# Default: 100.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_largeantimatter_radius = 100.0
+			#Value is in ticks.
+			# Default: 200.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_largeantimatter_duration_ticks = 200.0
+			# Default: 50.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_darkmatter_radius = 50.0
+			#Value is in ticks.
+			# Default: 1200.0
+			# Range: 0.0 ~ 1.7976931348623157E308
+			explosive_darkmatter_duration_ticks = 1200.0
+			#How many iterations the blast will perform. Set to -1 for infinite, 0 for none.
+			# Default: 1200
+			# Range: > -2147483648
+			explosive_darkmatter_persistance_iterations = 1200
+			#Value is in ticks.
+			# Default: 5
+			# Range: > 0
+			explosive_darkmatter_movementticks = 5
+			#Value is in ticks.
+			# Default: 1
+			# Range: > 0
+			explosive_darkmatter_repeatduration_ticks = 1
+
+	[common.missile_silo]
+		#Usage per launch in joules
+		# Default: 10000.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		missilesilo_usage_joules_per_launch = 10000.0
+		# Default: 100
+		# Range: > 0
+		missile_health = 100
+		# Default: 500
+		# Range: > 0
+		launcher_platform_range_t1 = 500
+		# Default: 3000
+		# Range: > 0
+		launcher_platform_range_t2 = 3000
+		# Default: 10000
+		# Range: > 0
+		launcher_platform_range_t3 = 10000
+		# Default: 500
+		# Range: > 0
+		vls_range = 500
+		# Default: 45
+		# Range: > 0
+		launch_platform_default_inaccuracy_deg = 45
+
+	[common.esm_tower]
+		# Default: 1000.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		esm_tower_usage_per_tick = 1000.0
+		# Default: 200.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		esm_tower_search_radius = 200.0
+
+	[common.search_radar]
+		#Usage in watt for radar
+		# Default: 10000.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		radar_usage_watt = 10000.0
+		# Default: 600
+		# Range: > 0
+		radar_range = 600
+
+	[common.fire_control_radar]
+		#Usage in watt for fire control radar
+		# Default: 10000.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		fire_control_radar_usage_watt = 10000.0
+		# Default: 550
+		# Range: > 0
+		fire_control_radar_range = 550
+		#How far a turret can be from a fire control radar
+		# Default: 32.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		max_distance_from_radar = 32.0
+
+	[common.sam_turret]
+		# Default: 1000.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		sam_turret_usage_per_tick = 1000.0
+		# Default: 300.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		sam_turret_base_range = 300.0
+		# Default: 0.2
+		# Range: 0.0 ~ 1.7976931348623157E308
+		sam_turret_rotation_speed_radians = 0.2
+		# Default: 100
+		# Range: > 0
+		sam_turret_cooldown_ticks = 100
+
+	[common.sam_entity]
+		# Default: 0.1
+		# Range: 0.0 ~ 1.7976931348623157E308
+		sam_entity_turning_speed_radians = 0.1
+		# Default: 3.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		sam_top_speed = 3.0
+		# Default: 0.04
+		# Range: 0.0 ~ 1.7976931348623157E308
+		sam_acceleration = 0.04
+		# Default: 0.25
+		# Range: 0.0 ~ 1.0
+		sam_minturnspeed_perc = 0.25
+		# Default: 0.5
+		# Range: 0.0 ~ 1.0
+		sam_chance_to_destroy = 0.5
+
+	[common.anti_ballistic_entity]
+		# Default: 0.05
+		# Range: 0.0 ~ 1.7976931348623157E308
+		antiballisticmissile_entity_turning_speed_radians = 0.05
+		# Default: 0.85
+		# Range: 0.0 ~ 1.0
+		antiballisticmissile_chance_to_destroy = 0.85
+		# Default: 5.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		antiballisticmissile_top_speed = 5.0
+		# Default: 0.04
+		# Range: 0.0 ~ 1.7976931348623157E308
+		antiballisticmissile_acceleration = 0.04
+		# Default: 0.15
+		# Range: 0.0 ~ 1.0
+		antiballisticmissile_minturnspeed_perc = 0.15
+		#The amount of inaccuracy each range upgrade will add to the turret. Affects shots past the base range. Set to 1 to disable.
+		# Default: 1.001
+		# Range: 0.0 ~ 1.7976931348623157E308
+		range_increase_inaccuracy_multiplier = 1.001
+
+	[common.ciws_turret]
+		# Default: 1000.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		ciws_turret_usage_per_tick = 1000.0
+		# Default: 100.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		ciws_turret_base_range = 100.0
+		# Default: 0.6
+		# Range: 0.0 ~ 1.7976931348623157E308
+		ciws_turret_rotation_speed_radians = 0.6
+		# Default: 0.05
+		# Range: 0.0 ~ 1.7976931348623157E308
+		ciws_innaccuracy = 0.05
+
+	[common.laser_turret]
+		# Default: 10000.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		laser_turret_usage_per_tick = 10000.0
+		# Default: 300.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		laser_turret_base_range = 300.0
+		# Default: 0.2
+		# Range: 0.0 ~ 1.7976931348623157E308
+		laser_turret_rotation_speed_radians = 0.2
+		# Default: 100.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		laser_turret_max_heat = 100.0
+		# Default: 40.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		laser_turret_cool_threshold = 40.0
+		# Default: 1.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		laser_turret_base_damage = 1.0
+
+	[common.railgun_turret]
+		# Default: 10000.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		railgun_turret_usage_per_tick = 10000.0
+		# Default: 300.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		railgun_turret_base_range = 300.0
+		# Default: 0.1
+		# Range: 0.0 ~ 1.7976931348623157E308
+		railgun_turret_rotation_speed_radians = 0.1
+		# Default: 100
+		# Range: > 0
+		railgun_turret_cooldown_ticks = 100
+		# Default: 0.05
+		# Range: 0.0 ~ 1.7976931348623157E308
+		railgun_innaccuracy = 0.05
+
+	[common.proximity_detector]
+		# Default: 100.0
+		# Range: 0.0 ~ 1.7976931348623157E308
+		proximitydetector_usage_per_tick = 100.0
+
+	[common.items]
+		# Default: 60
+		# Range: > 0
+		rocket_launcher_cooldown_ticks = 60
+		# Default: 1000
+		# Range: > 0
+		laser_designator_range = 1000

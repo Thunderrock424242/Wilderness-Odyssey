@@ -1,0 +1,28 @@
+{
+  "incompatibilities": [
+    {
+      "title": "Example Mod Conflict",
+      "mods": ["examplemod", "othermod"],
+      "reason": "Describe the incompatibility here"
+    },
+    {
+      "title": "Iris shaders hidden by Sodium Extras",
+      "mods": ["iris", "sodium-extra|sodiumextra|sodium_extra"],
+      "tags": ["shader", "shader_screen"],
+      "symptom": "The Iris shader selection screen fails to appear in Video Settings.",
+      "reason": "Sodium Extras replaces the video settings screen and hides Iris' shader button.",
+      "workaround": "Disable Sodium Extras' video menu override or remove the mod to restore the shader button.",
+      "source": "https://github.com/IrisShaders/Iris/issues/1951"
+    },
+    {
+      "title": "Oculus shaders blocked by menu overhauls",
+      "mods": ["oculus"],
+      "requiresOneOf": ["rubidium_extra|rubidium-extra|rubidiumextra", "magnesium_extras|magnesium-extras"],
+      "tags": ["shader", "shader_screen"],
+      "symptom": "The shader selection option from Oculus is missing from graphics settings.",
+      "reason": "Video settings overhauls replace the menu that Oculus augments, hiding shader controls.",
+      "workaround": "Disable the conflicting menu overhaul or use its compatibility setting for Oculus.",
+      "severity": "warn"
+    }
+  ]
+}

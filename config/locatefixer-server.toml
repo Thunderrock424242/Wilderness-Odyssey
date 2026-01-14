@@ -1,0 +1,29 @@
+[locate]
+	#Ordered list of radii (in blocks) used when scanning for structures/biomes.
+	locateRings = [6400, 16000, 32000, 64000, 128000, 256000]
+	#Number of asynchronous locate worker threads. Use 1 to force sequential processing.
+	# Default: 1
+	# Range: 1 ~ 8
+	locateThreadCount = 1
+	#How long (in minutes) locate results remain cached before expiring.
+	# Default: 30
+	# Range: 1 ~ 240
+	cacheDurationMinutes = 30
+	#Granularity (in chunks) used when caching locate results. Higher values share results across wider areas.
+	# Default: 8
+	# Range: 1 ~ 128
+	cacheChunkGranularity = 8
+	#Multiplier applied to the computed biome sample radius to reduce sampling frequency.
+	# Default: 1.5
+	# Range: 1.0 ~ 8.0
+	biomeSampleRadiusMultiplier = 1.5
+	#Multiplier applied to the computed biome sample step to reduce sampling frequency.
+	# Default: 1.75
+	# Range: 1.0 ~ 8.0
+	biomeSampleStepMultiplier = 1.75
+
+[poi]
+	#Radius (in blocks) used when searching for points of interest.
+	# Default: 256
+	# Range: 16 ~ 4096
+	poiSearchRadius = 256

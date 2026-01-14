@@ -1,0 +1,19 @@
+["Tick Time Display Options"]
+	#Show in-game time (HH:mm) on screen
+	show_game_time = true
+	#Show local system time (HH:mm:ss) on screen
+	show_local_time = true
+
+[Performance]
+	#Reduce TickTok's per-tick workload by sampling world time once per second (20 ticks)
+	enable_tick_optimization = false
+
+[Debugging]
+	#Enable verbose debug-level logging output in the console
+	enable_debug_logging = false
+	#Emit TRACE logs for tick/time conversion helpers
+	enable_trace_conversions = false
+	#Emit TRACE logs for formatting helpers
+	enable_trace_formatting = false
+	#Emit TRACE logs for time-of-day phase events
+	enable_trace_events = false

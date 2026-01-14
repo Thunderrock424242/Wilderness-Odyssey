@@ -1,0 +1,12 @@
+#Enable persistent caching for downloaded modpack data
+enableCache = true
+#Maximum size of the mod data cache in megabytes (0 disables the limit)
+# Default: 512
+# Range: > 0
+maxCacheSizeMb = 512
+#Maximum age of cached entries before they are pruned (0 disables age-based pruning)
+# Default: 168
+# Range: > 0
+maxEntryAgeHours = 168
+#Enable verbose cache logging for debugging purposes
+verboseLogging = false

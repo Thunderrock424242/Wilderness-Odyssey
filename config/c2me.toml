@@ -22,7 +22,7 @@ defaultGlobalExecutorParallelismExpression = "default"
 # - https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Thread.html#setPriority(int)
 # 
 threadPoolPriority = "default"
-# (Default: 17) Configures the parallelism of global executor
+# (Default: 7) Configures the parallelism of global executor
 globalExecutorParallelism = "default"
 
 [fixes]
@@ -54,18 +54,6 @@ globalExecutorParallelism = "default"
 	# (Default: 32678) Hard limit for io worker nbt cache
 	chunkDataCacheLimit = "default"
 
-	[clientSideConfig.modifyMaxVDConfig]
-		# (Default: true) Whether to modify maximum view distance
-		enabled = "default"
-		# (Default: 83) Max render distance allowed in game options
-		maxViewDistance = "default"
-		# (Default: true) Enable client-side support for extended render distance protocol (c2me:ext_render_distance_v1)
-		# This allows requesting render distances higher than 127 chunks from the server
-		# 
-		# Note: The server must advertise support this protocol for this to work
-		# 
-		enableExtRenderDistanceProtocol = "default"
-
 [vanillaWorldGenOptimizations]
 	# (Default: false) Whether to use density function compiler to accelerate world generation
 	# 
@@ -88,12 +76,10 @@ globalExecutorParallelism = "default"
 	# (may cause incompatibility with other mods)
 	# 
 	# Set to false for the following reasons: 
-	# Incompatible with biolith@3.0.5 (*) (defined in c2me) 
+	# Incompatible with biolith@3.0.10 (*) (defined in c2me) 
 	useEndBiomeCache = "default"
 	# (Default: true) Whether to enable StructureWeightSampler optimizations to accelerate world generation
 	# 
-	# Set to false for the following reasons: 
-	# Incompatible with twilightforest@4.7.3196 (*) (defined in c2me) 
 	optimizeStructureWeightSampler = "default"
 
 [chunkSystem]
@@ -156,6 +142,12 @@ globalExecutorParallelism = "default"
 	# Only applies when useLegacyScheduling is disabled.
 	# 
 	lowMemoryMode = "default"
+	# (Default: true) Whether to delay full chunk events to after full chunk future have been completed
+	# This restores the buggy behavior in NeoForge that the ecosystem have been relying on
+	# 
+	# Do not change this unless you know what you are doing
+	# 
+	delayFullChunkEvents = "default"
 
 [generalOptimizations]
 	# (Default: 100000) The task interval of mid-tick chunk tasks in nanoseconds (-1 to disable)  
@@ -184,7 +176,7 @@ globalExecutorParallelism = "default"
 [noTickViewDistance]
 	# (Default: true) Whether to enable no-tick view distance
 	enabled = "default"
-	# (Default: 18) No-tick view distance max concurrent chunk loads 
+	# (Default: 8) No-tick view distance max concurrent chunk loads 
 	#  Lower this for a better latency and higher this for a faster loading
 	maxConcurrentChunkLoads = "default"
 	# (Default: true) Whether to use compatibility mode to send chunks 
@@ -197,3 +189,15 @@ globalExecutorParallelism = "default"
 	# (Default: false) Whether to ensure correct chunks within normal render distance 
 	#  This will send chunks twice increasing network load
 	ensureChunkCorrectness = "default"
+
+	[clientSideConfig.modifyMaxVDConfig]
+		# (Default: true) Whether to modify maximum view distance
+		enabled = "default"
+		# (Default: 55) Max render distance allowed in game options
+		maxViewDistance = "default"
+		# (Default: true) Enable client-side support for extended render distance protocol (c2me:ext_render_distance_v1)
+		# This allows requesting render distances higher than 127 chunks from the server
+		# 
+		# Note: The server must advertise support this protocol for this to work
+		# 
+		enableExtRenderDistanceProtocol = "default"

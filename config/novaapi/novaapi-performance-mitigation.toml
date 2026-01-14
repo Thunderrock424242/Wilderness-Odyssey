@@ -1,0 +1,19 @@
+[performanceMitigation]
+	#Enable render-distance mitigation suggestions/actions.
+	enableRenderDistanceMitigation = true
+	#Worst tick time (ms) treated as a render-distance spike.
+	# Default: 55
+	# Range: 20 ~ 200
+	renderDistanceFpsThresholdMs = 55
+	#Chunk I/O queue saturation ratio that signals render queue pressure.
+	# Default: 0.85
+	# Range: 0.0 ~ 2.0
+	renderDistanceQueuePressureThreshold = 0.85
+	#Chunks to drop from client view distance during render-distance mitigation.
+	# Default: 2
+	# Range: 0 ~ 16
+	renderDistanceViewDrop = 2
+	#Chunks to drop from simulation/entity distance during render-distance mitigation.
+	# Default: 1
+	# Range: 0 ~ 16
+	renderDistanceEntityDrop = 1
