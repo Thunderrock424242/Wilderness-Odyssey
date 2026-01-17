@@ -165,6 +165,13 @@
     "curseForgeHash": 3834293058,
     "modrinthHash": "c6528c9760ecfd2987484aabe54c3d26e931e3a7"
   },
+  "betterdays-1.21.1-3.3.6.2-NEOFORGE.jar": {
+    "jarName": "betterdays-1.21.1-3.3.6.2-NEOFORGE.jar",
+    "modId": "betterdays",
+    "version": "3.3.6.2",
+    "curseForgeHash": 4169425994,
+    "modrinthHash": "7424f2e07fd45ba60b0aff239621ca27d4513289"
+  },
   "BetterF3-11.0.3-NeoForge-1.21.1.jar": {
     "jarName": "BetterF3-11.0.3-NeoForge-1.21.1.jar",
     "modId": "betterf3",
@@ -492,13 +499,6 @@
     "curseForgeHash": 933317947,
     "modrinthHash": "418fcd42e3a7844c9bdc71c9b6401fdb3894e0c4"
   },
-  "debugguardian-1.5.4.jar": {
-    "jarName": "debugguardian-1.5.4.jar",
-    "modId": "debugguardian",
-    "version": "1.5.4",
-    "curseForgeHash": 2480568018,
-    "modrinthHash": "c2bcb04247b48bc2bb57f6274013c08d1ee52501"
-  },
   "DeleteWorldsToTrash-v21.1.0-1.21.1-NeoForge.jar": {
     "jarName": "DeleteWorldsToTrash-v21.1.0-1.21.1-NeoForge.jar",
     "modId": "deleteworldstotrash",
@@ -821,6 +821,13 @@
     "curseForgeHash": 2450810752,
     "modrinthHash": "2c6651f0563a4f800e0857e424ac01c1e42f80f7"
   },
+  "gaboulibs-neoforge-1.4.jar": {
+    "jarName": "gaboulibs-neoforge-1.4.jar",
+    "modId": "gaboulibs",
+    "version": "1.4",
+    "curseForgeHash": 1943490665,
+    "modrinthHash": "05be02b0f8d28473eeab05aea2a39c327d0c4bf4"
+  },
   "geckolib-neoforge-1.21.1-4.8.3.jar": {
     "jarName": "geckolib-neoforge-1.21.1-4.8.3.jar",
     "modId": "geckolib",
@@ -834,6 +841,13 @@
     "version": "3.4.6",
     "curseForgeHash": 1693878,
     "modrinthHash": "cea812a101e7dd130d130ca43d7ee4d1a227cbd5"
+  },
+  "GlitchCore-neoforge-1.21.1-2.1.0.0.jar": {
+    "jarName": "GlitchCore-neoforge-1.21.1-2.1.0.0.jar",
+    "modId": "glitchcore",
+    "version": "2.1.0.0",
+    "curseForgeHash": 152279774,
+    "modrinthHash": "8bce11b0b5233146051bb7b7a227247e03fe88b2"
   },
   "globalpacks-neoforge-1.21.1-21.0.6.jar": {
     "jarName": "globalpacks-neoforge-1.21.1-21.0.6.jar",
@@ -1155,6 +1169,13 @@
     "curseForgeHash": 164804057,
     "modrinthHash": "1eeb2aad79e2d9bac1b1d793768eb0d3483358fe"
   },
+  "NeoForge-Version-Serene Seasons Plus-1.21.1-4.2.2.jar": {
+    "jarName": "NeoForge-Version-Serene Seasons Plus-1.21.1-4.2.2.jar",
+    "modId": "sereneseasonsplus",
+    "version": "4.2.2",
+    "curseForgeHash": 4109374434,
+    "modrinthHash": "b3f998281765d50a38e3480d9d9481154a8aa65f"
+  },
   "netherportalfix-neoforge-1.21.1-21.1.1.jar": {
     "jarName": "netherportalfix-neoforge-1.21.1-21.1.1.jar",
     "modId": "netherportalfix",
@@ -1371,6 +1392,13 @@
     "version": "0.1.5",
     "curseForgeHash": 3009343278,
     "modrinthHash": "e5b9c7e6a7856302c6b078255e6b90b5cc1ec0b0"
+  },
+  "SereneSeasons-neoforge-1.21.1-10.1.0.3.jar": {
+    "jarName": "SereneSeasons-neoforge-1.21.1-10.1.0.3.jar",
+    "modId": "sereneseasons",
+    "version": "10.1.0.3",
+    "curseForgeHash": 341671071,
+    "modrinthHash": "8b9034d4c43f880b1f1ebdd3943219de0b0bc4c5"
   },
   "servercore-neoforge-1.5.10+1.21.1.jar": {
     "jarName": "servercore-neoforge-1.5.10+1.21.1.jar",

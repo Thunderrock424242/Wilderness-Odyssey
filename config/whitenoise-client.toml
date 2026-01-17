@@ -1,0 +1,7 @@
+#Show advanced tooltips. Requires advanced tooltips (F3+H)
+#Shows NBT data, tags and durability information.
+showAdvancedTooltips = false
+#Log warnings for missing translation keys.
+#If enabled, missing translation keys will be logged to the console.
+#This can help identify missing translations in the mod.
+logTranslatableWarnings = true

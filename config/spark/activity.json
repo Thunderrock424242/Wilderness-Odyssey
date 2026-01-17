@@ -5,6 +5,32 @@
       "name": "CheerierBird61",
       "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
     },
+    "time": 1768689065897,
+    "type": "Profiler",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/aLvV089cMX"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1768688610135,
+    "type": "Profiler (live)",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/PrD3X5eRSW"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
     "time": 1768678477719,
     "type": "Profiler",
     "data": {

@@ -1,0 +1,45 @@
+[performance]
+	#Use async tasks for some operations to improve performance. This may cause issues with some mods.
+	useAsync = true
+
+[snowPillerAndReplacer]
+	#Tick interval for snow pillers in ticks. Default is 20 (1 second).
+	# Default: 20
+	# Range: > 1
+	tickSnowPiller = 20
+	#Tick interval for snow replacer in ticks. Default is 20 (1 second).
+	# Default: 100
+	# Range: > 1
+	tickSnowReplacer = 100
+
+[snowstorm]
+	#Enable snowstorm mode which increases snow pilling intensity.
+	enabled = false
+
+["Grass and Flower Growth"]
+	#Enable enhanced grass and flower growth during warm seasons.
+	enabled = true
+
+[snow]
+	#Maximum total snow layers allowed per column (8 layers = 1 block). Default 24 = 3 blocks.
+	# Default: 24
+	# Range: 0 ~ 512
+	maxSnowAccumulationLayers = 24
+
+[seasonSync]
+	#Lock seasons to current Canadian calendar months (Eastern time).
+	realTimeCanadianSeasons = false
+
+[seasonalDaylightCycle]
+	#Enable seasonal daylight cycle. This will change the length of day and night based on the current season.
+	enableSeasonalDaylightCycle = true
+	#If true, the day and night lengths will be determined by the custom values set below. If false, the day and night lengths will be determined by the season.
+	customCycleLength = false
+	#Custom day length in ticks. Only used if seasonal daylight cycle is disabled.
+	# Default: 1.0
+	# Range: 0.05 ~ 100.0
+	customDayLength = 1.0
+	#Custom night length in ticks. Only used if seasonal daylight cycle is disabled.
+	# Default: 1.0
+	# Range: 0.05 ~ 100.0
+	customNightLength = 1.0
