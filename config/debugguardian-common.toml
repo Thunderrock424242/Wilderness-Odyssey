@@ -22,16 +22,12 @@
 		aiimprovements = true
 		#Allow log output for All The Leaks (alltheleaks)
 		alltheleaks = true
-		#Allow log output for AmbientSounds (ambientsounds)
-		ambientsounds = true
 		#Allow log output for AppleSkin (appleskin)
 		appleskin = true
 		#Allow log output for Aquaculture 2 (aquaculture)
 		aquaculture = true
 		#Allow log output for Architectury (architectury)
 		architectury = true
-		#Allow log output for Astran - BETA-RELEASE (astran)
-		astran = true
 		#Allow log output for Autumnity (autumnity)
 		autumnity = true
 		#Allow log output for BadOptimizations (badoptimizations)
@@ -58,8 +54,6 @@
 		butchery = true
 		#Allow log output for Carry On (carryon)
 		carryon = true
-		#Allow log output for Central Heater (central_heater)
-		central_heater = true
 		#Allow log output for ChoiceTheorem's Overhauled Village (ctov)
 		ctov = true
 		#Allow log output for Cloth Config v15 API (cloth_config)
@@ -170,8 +164,6 @@
 		fancymenu = true
 		#Allow log output for Farmer's Delight (farmersdelight)
 		farmersdelight = true
-		#Allow log output for Farmers Heaters (farmers_heaters)
-		farmers_heaters = true
 		#Allow log output for FarmersStructures (farmers_structures)
 		farmers_structures = true
 		#Allow log output for Fast Suite (fastsuite)
@@ -320,8 +312,6 @@
 		modernfix = true
 		#Allow log output for Moonlight Lib (moonlight)
 		moonlight = true
-		#Allow log output for More Culling (moreculling)
-		moreculling = true
 		#Allow log output for Nature's Compass (naturescompass)
 		naturescompass = true
 		#Allow log output for NeoForge (neoforge)
@@ -330,8 +320,6 @@
 		netherportalfix = true
 		#Allow log output for NotEnoughAnimations (notenoughanimations)
 		notenoughanimations = true
-		#Allow log output for Nova API (novaapi)
-		novaapi = true
 		#Allow log output for Nuclear Science (nuclearscience)
 		nuclearscience = true
 		#Allow log output for Nyf's Spiders (nyfsspiders)
@@ -406,22 +394,276 @@
 		vanillabackport = true
 		#Allow log output for Variants&Ventures (variantsandventures)
 		variantsandventures = true
-		#Allow log output for Veil (veil)
-		veil = true
 		#Allow log output for Vista (vista)
 		vista = true
 		#Allow log output for Voltaic (voltaic)
 		voltaic = true
 		#Allow log output for Waddles (waddles)
 		waddles = true
-		#Allow log output for Wilderness Odyssey API (wildernessodysseyapi)
-		wildernessodysseyapi = true
 		#Allow log output for Yeetus Experimentus (yeetusexperimentus)
 		yeetusexperimentus = true
 		#Allow log output for YetAnotherConfigLib (yet_another_config_lib_v3)
 		yet_another_config_lib_v3 = true
 		#Allow log output for YUNG's API (yungsapi)
 		yungsapi = true
+		#Allow log output for Chloride (chloride)
+		chloride = true
+		#Allow log output for Cupboard mod (cupboard)
+		cupboard = true
+		#Allow log output for Dynamic FPS (dynamic_fps)
+		dynamic_fps = true
+		#Allow log output for FTB Library (ftblibrary)
+		ftblibrary = true
+		#Allow log output for FTB Quests (ftbquests)
+		ftbquests = true
+		#Allow log output for FTB Teams (ftbteams)
+		ftbteams = true
+		#Allow log output for FTBQuestsOptimizer (ftbqopt)
+		ftbqopt = true
+		#Allow log output for Gpu memory leak fix (gpumemleakfix)
+		gpumemleakfix = true
+		#Allow log output for Puzzles Lib (puzzleslib)
+		puzzleslib = true
+		#Allow log output for World Icon Updater (worldiconupdater)
+		worldiconupdater = true
+		#Allow log output for Modpack Update Checker (modpackupdatechecker)
+		modpackupdatechecker = true
+		#Allow log output for MPUC lavender-md (mpuc_lavendermd)
+		mpuc_lavendermd = true
+		#Allow log output for Necronomicon (necronomicon)
+		necronomicon = true
+		#Allow log output for Welcome Screen (welcomescreen)
+		welcomescreen = true
+		#Allow log output for Wilderness Odyssey API (wildernessodysseyapi)
+		wildernessodysseyapi = true
+		#Allow log output for Reese's Sodium Options (reeses_sodium_options)
+		reeses_sodium_options = true
+		#Allow log output for Additional Structures (additionalstructures)
+		additionalstructures = true
+		#Allow log output for AdoraBuild: Structures (adorabuild_structures)
+		adorabuild_structures = true
+		#Allow log output for Artifacts (artifacts)
+		artifacts = true
+		#Allow log output for Atmospheric (atmospheric)
+		atmospheric = true
+		#Allow log output for Berezka API (berezka_api)
+		berezka_api = true
+		#Allow log output for Better Archeology (betterarcheology)
+		betterarcheology = true
+		#Allow log output for Blossom Blade (mr_blossom_blade)
+		mr_blossom_blade = true
+		#Allow log output for Burnt 1.9.0.3 Neoforge 1.21.1 (burnt)
+		burnt = true
+		#Allow log output for Create: Rustic Structures (create_rustic_structures)
+		create_rustic_structures = true
+		#Allow log output for Create: Structures Arise (create_structures_arise)
+		create_structures_arise = true
+		#Allow log output for Dungeons and Taverns (mr_dungeons_andtaverns)
+		mr_dungeons_andtaverns = true
+		#Allow log output for Dungeons and Taverns Ancient City Overhaul (mr_dungeons_andtavernsancientcityoverhaul)
+		mr_dungeons_andtavernsancientcityoverhaul = true
+		#Allow log output for Dungeons and Taverns Pillager Outpost Overhaul (mr_dungeons_andtavernspillageroutpostoverhaul)
+		mr_dungeons_andtavernspillageroutpostoverhaul = true
+		#Allow log output for Dungeons and Taverns Swamp Hut Overhaul (mr_dungeons_andtavernsswamphutoverhaul)
+		mr_dungeons_andtavernsswamphutoverhaul = true
+		#Allow log output for Dungeons and Taverns Woodland Mansion Replacement (mr_dungeons_andtavernswoodlandmansionreplacement)
+		mr_dungeons_andtavernswoodlandmansionreplacement = true
+		#Allow log output for Eternal Nether (eternalnether)
+		eternalnether = true
+		#Allow log output for ExpandAbility (expandability)
+		expandability = true
+		#Allow log output for Explorations+ (explorations)
+		explorations = true
+		#Allow log output for Formations (formations)
+		formations = true
+		#Allow log output for Formations Nether (formationsnether)
+		formationsnether = true
+		#Allow log output for Formations Overworld (formationsoverworld)
+		formationsoverworld = true
+		#Allow log output for HopoBetterRuinedPortals (hoporp)
+		hoporp = true
+		#Allow log output for HopoBetterUnderwaterRuins (hopour)
+		hopour = true
+		#Allow log output for Lootr (lootr)
+		lootr = true
+		#Allow log output for Luki's Crazy Chambers (mr_lukis_crazychambers)
+		mr_lukis_crazychambers = true
+		#Allow log output for Luki's Grand Capitals (mr_lukis_grandcapitals)
+		mr_lukis_grandcapitals = true
+		#Allow log output for Medieval Buildings [The End Edition] (medievalend)
+		medievalend = true
+		#Allow log output for Mo' Structures (mostructures)
+		mostructures = true
+		#Allow log output for Moog's Structure Lib (moogs_structures)
+		moogs_structures = true
+		#Allow log output for MoogsMissingVillages (mmv)
+		mmv = true
+		#Allow log output for MoogsNetherStructures (mns)
+		mns = true
+		#Allow log output for MoogsSoaringStructures (mss)
+		mss = true
+		#Allow log output for Omega Config Architectury (omegaconfig)
+		omegaconfig = true
+		#Allow log output for Realm RPG: Fallen Adventurers (realmrpg_skeletons)
+		realmrpg_skeletons = true
+		#Allow log output for Repurposed Structures (repurposed_structures)
+		repurposed_structures = true
+		#Allow log output for Sky Villages (skyvillages)
+		skyvillages = true
+		#Allow log output for Structure Layout Optimizer (structure_layout_optimizer)
+		structure_layout_optimizer = true
+		#Allow log output for Structurify (structurify)
+		structurify = true
+		#Allow log output for The lost city (the_lost_city)
+		the_lost_city = true
+		#Allow log output for Tidal Towns (mr_tidal_towns)
+		mr_tidal_towns = true
+		#Allow log output for Towers of The Wild: Modded (totw_modded)
+		totw_modded = true
+		#Allow log output for Trimmed (trimmed)
+		trimmed = true
+		#Allow log output for Underground Bunkers (underground_bunkers)
+		underground_bunkers = true
+		#Allow log output for Wetland Whimsy (wetland_whimsy)
+		wetland_whimsy = true
+		#Allow log output for WITS (wits)
+		wits = true
+		#Allow log output for YUNG's Better Desert Temples (betterdeserttemples)
+		betterdeserttemples = true
+		#Allow log output for YUNG's Better Dungeons (betterdungeons)
+		betterdungeons = true
+		#Allow log output for YUNG's Better End Island (betterendisland)
+		betterendisland = true
+		#Allow log output for YUNG's Better Jungle Temples (betterjungletemples)
+		betterjungletemples = true
+		#Allow log output for YUNG's Better Mineshafts (bettermineshafts)
+		bettermineshafts = true
+		#Allow log output for YUNG's Better Nether Fortresses (betterfortresses)
+		betterfortresses = true
+		#Allow log output for YUNG's Better Ocean Monuments (betteroceanmonuments)
+		betteroceanmonuments = true
+		#Allow log output for YUNG's Better Strongholds (betterstrongholds)
+		betterstrongholds = true
+		#Allow log output for YUNG's Better Witch Huts (betterwitchhuts)
+		betterwitchhuts = true
+		#Allow log output for YUNG's Bridges (yungsbridges)
+		yungsbridges = true
+		#Allow log output for YUNG's Extras (yungsextras)
+		yungsextras = true
+		#Allow log output for Blended Compat (blended_compat)
+		blended_compat = true
+		#Allow log output for Catalogue (catalogue)
+		catalogue = true
+		#Allow log output for Chalk (chalk)
+		chalk = true
+		#Allow log output for ChatAnimation (chatanimation)
+		chatanimation = true
+		#Allow log output for Cherished Worlds (cherishedworlds)
+		cherishedworlds = true
+		#Allow log output for Chimes (chimes)
+		chimes = true
+		#Allow log output for CinematicZoom (cinematiczoom)
+		cinematiczoom = true
+		#Allow log output for Comforts (comforts)
+		comforts = true
+		#Allow log output for Exposure (exposure)
+		exposure = true
+		#Allow log output for Ksyxis (ksyxis)
+		ksyxis = true
+		#Allow log output for Lunar (lunar)
+		lunar = true
+		#Allow log output for PacketFixer (packetfixer)
+		packetfixer = true
+		#Allow log output for Saturn (saturn)
+		saturn = true
+		#Allow log output for Sooty Chimneys (sootychimneys)
+		sootychimneys = true
+		#Allow log output for SpectreLib (spectrelib)
+		spectrelib = true
+		#Allow log output for Subtle Effects (subtle_effects)
+		subtle_effects = true
+		#Allow log output for Visuality: Reforged (visuality)
+		visuality = true
+		#Allow log output for Alex's Mobs (alexsmobs)
+		alexsmobs = true
+		#Allow log output for Alternate Current (alternate_current)
+		alternate_current = true
+		#Allow log output for Aquatic Frontiers (aquatic_frontiers)
+		aquatic_frontiers = true
+		#Allow log output for Better Beacons (better_beacons)
+		better_beacons = true
+		#Allow log output for Better Safe Bed (bettersafebed)
+		bettersafebed = true
+		#Allow log output for Biome Spawn Point (biomespawnpoint)
+		biomespawnpoint = true
+		#Allow log output for Bookshelf (bookshelf)
+		bookshelf = true
+		#Allow log output for Cerbons API (cerbons_api)
+		cerbons_api = true
+		#Allow log output for Citadel (citadel)
+		citadel = true
+		#Allow log output for Clumps (clumps)
+		clumps = true
+		#Allow log output for Collective (collective)
+		collective = true
+		#Allow log output for Connectivity Mod (connectivity)
+		connectivity = true
+		#Allow log output for Delete Worlds To Trash (deleteworldstotrash)
+		deleteworldstotrash = true
+		#Allow log output for Desired Servers (desiredservers)
+		desiredservers = true
+		#Allow log output for Distant Horizons (distanthorizons)
+		distanthorizons = true
+		#Allow log output for e4mc (e4mc_minecraft)
+		e4mc_minecraft = true
+		#Allow log output for Freecam (freecam)
+		freecam = true
+		#Allow log output for FTB Chunks (ftbchunks)
+		ftbchunks = true
+		#Allow log output for Global Packs (globalpacks)
+		globalpacks = true
+		#Allow log output for Jade Addons (jadeaddons)
+		jadeaddons = true
+		#Allow log output for KubeJS (kubejs)
+		kubejs = true
+		#Allow log output for MaxHealthFix (maxhealthfix)
+		maxhealthfix = true
+		#Allow log output for memorysettings mod (memorysettings)
+		memorysettings = true
+		#Allow log output for NaNny (nanny)
+		nanny = true
+		#Allow log output for NeoAuth (neo_auth)
+		neo_auth = true
+		#Allow log output for Pack Analytics (packanalytics)
+		packanalytics = true
+		#Allow log output for PrickleMC (prickle)
+		prickle = true
+		#Allow log output for Realistic Bees (realisticbees)
+		realisticbees = true
+		#Allow log output for Remove Reloading Screen (rrls)
+		rrls = true
+		#Allow log output for Responsive Shields (responsiveshields)
+		responsiveshields = true
+		#Allow log output for Rhino (rhino)
+		rhino = true
+		#Allow log output for Shoulder Surfing Reloaded (shouldersurfing)
+		shouldersurfing = true
+		#Allow log output for Too Fast (toofast)
+		toofast = true
+		#Allow log output for V-Tweaks (vtweaks)
+		vtweaks = true
+		#Allow log output for Visual Workbench (visualworkbench)
+		visualworkbench = true
+		#Allow log output for Continuity (continuity)
+		continuity = true
+		#Allow log output for Forgified Fabric API (dummy) (forgified_fabric_api)
+		forgified_fabric_api = true
+		#Allow log output for More Axolotl Variants API (mavapi)
+		mavapi = true
+		#Allow log output for More Axolotl Variants Mod (mavm)
+		mavm = true
+		#Allow log output for Sinytra Connector (connector)
+		connector = true
 
 [postmortem]
 	#Number of game events to retain for post-mortem dump

@@ -1,0 +1,72 @@
+{
+	"beaconEffects": {
+		"isTertiaryEffectsEnabled": true,
+		"levelOneEffects": [
+			"minecraft:speed",
+			"minecraft:jump_boost"
+		],
+		"levelTwoEffects": [
+			"minecraft:haste",
+			"better_beacons:long_reach"
+		],
+		"levelThreeEffects": [
+			"minecraft:strength",
+			"minecraft:resistance"
+		],
+		"secondaryEffects": [
+			"minecraft:night_vision",
+			"minecraft:regeneration",
+			"minecraft:fire_resistance"
+		],
+		"tertiaryEffects": [
+			"better_beacons:phantom_bane",
+			"better_beacons:patrol_bane"
+		]
+	},
+	"beaconRangeAndAmplifier": {
+		"isPaymentItemRangeEnabled": true,
+		"isBaseBlockAmplifierEnabled": true
+	},
+	"beaconBeam": {
+		"allowRedirecting": true,
+		"allowTransparency": true,
+		"horizontalMoveLimit": 64
+	},
+	"beaconButtons": {
+		"cancelButtonRemoveEffects": true,
+		"isCancelButtonTooltipEnabled": true,
+		"isConfirmButtonTooltipEnabled": true
+	},
+	"beaconPaymentItemsUI": {
+		"first": {
+			"item": "minecraft:netherite_ingot",
+			"tertiaryPosX": 12,
+			"posX": 14
+		},
+		"second": {
+			"item": "minecraft:diamond",
+			"tertiaryPosX": 33,
+			"posX": 35
+		},
+		"third": {
+			"item": "minecraft:emerald",
+			"tertiaryPosX": 53,
+			"posX": 55
+		},
+		"fourth": {
+			"item": "minecraft:gold_ingot",
+			"tertiaryPosX": 75,
+			"posX": 77
+		},
+		"fifth": {
+			"item": "minecraft:iron_ingot",
+			"tertiaryPosX": 97,
+			"posX": 100
+		},
+		"sixth": {
+			"item": "minecraft:copper_ingot",
+			"tertiaryPosX": 119,
+			"posX": 122
+		}
+	}
+}

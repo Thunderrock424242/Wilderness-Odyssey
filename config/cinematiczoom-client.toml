@@ -1,0 +1,32 @@
+#Configuración del Mod Cinematic Zoom
+[general]
+	#Factor de zoom por defecto en primera persona. Un valor más bajo significa más zoom.
+	# Default: 0.2
+	# Range: 0.01 ~ 1.0
+	firstPersonDefaultZoom = 0.2
+	#Factor de zoom por defecto en tercera persona.
+	# Default: 0.5
+	# Range: 0.01 ~ 1.0
+	thirdPersonDefaultZoom = 0.5
+	#El nivel más profundo de zoom alcanzable con la rueda del ratón.
+	# Default: 0.05
+	# Range: 0.01 ~ 1.0
+	minZoomFactor = 0.05
+	#El nivel más alejado de zoom alcanzable. No puede ser mayor que 1.0.
+	# Default: 1.0
+	# Range: 0.01 ~ 1.0
+	maxZoomFactor = 1.0
+	#Cantidad que cambia el zoom con cada paso de la rueda del ratón.
+	# Default: 0.05
+	# Range: 0.001 ~ 0.5
+	zoomStep = 0.05
+	#Velocidad de la animación del zoom al usar la rueda del ratón (lerp factor).
+	# Default: 0.2
+	# Range: 0.01 ~ 1.0
+	smoothZoomSpeed = 0.2
+	#Duración en milisegundos de las animaciones de entrada y salida del zoom.
+	# Default: 500
+	# Range: 0 ~ 5000
+	animationDurationMs = 500
+	#Activa o desactiva los efectos de sonido al iniciar y detener el zoom.
+	enableZoomSounds = true

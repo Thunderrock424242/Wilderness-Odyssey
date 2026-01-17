@@ -1,0 +1,13 @@
+# Whether the Marsh Biome should be allowed to generate
+# Requires game restart
+generate_marsh = true
+# Whether the Vanilla Swamp Hut should be disabled
+disable_vanilla_swamp_huts = true
+# Whether villager trades should be modified
+modify_trades = true
+# Whether the "Disks" found in bodies of water should be upgraded
+upgrade_disks = true
+# How many particles the Ancient Pot can create
+# Default: 24
+# Range: 0 ~ 256
+ancient_pot_max_particles = 24

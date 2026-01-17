@@ -1,0 +1,22 @@
+#Just debug mode
+DebugMode = false
+#Dev mode adds some commands, must be turned off for release version of modpack.
+DevMode = false
+#Default value of doExtraChecks (if value isn't provided)
+DefaultDoExtraChecksValue = true
+#Creates berezka_plugins folder and loads data from it.
+UseFolderPluginSystem = false
+#Defines loot tables to replace: modid:path:target.json (path from loot_tables folder to target, target - name of loot table, required file must be in berezka_plugins/modid/target.json, example: berezka_api:chests/:berezkahousesmall_0.json)
+FolderPluginSystemList = []
+#Spawns less loot.
+SpawnLessLoot = false
+#Maximum size of cache
+# Default: 500
+# Range: -9223372036854775808 ~ 9223372036854775807
+MaxSizeOfStructuresCache = 500
+#LifeTimeOfStricturesCacheEntry.
+# Default: 20000
+# Range: -9223372036854775808 ~ 9223372036854775807
+LifeTimeOfStricturesCacheEntry = 20000
+#Multiplier of Structures Spacing and Separation.
+StructuresRarityMultiplier = 1.0

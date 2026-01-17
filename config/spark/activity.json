@@ -1,0 +1,28 @@
+[
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1768678477719,
+    "type": "Profiler",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/LtDUJaHEdm"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1768366328908,
+    "type": "Profiler",
+    "data": {
+      "type": "file",
+      "value": "C:\\Users\\mason\\curseforge\\minecraft\\Instances\\Wilderness Odyssey (1)\\config\\spark\\profile-2026-01-13_23.52.08.sparkprofile"
+    }
+  }
+]

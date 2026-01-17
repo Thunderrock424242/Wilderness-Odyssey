@@ -1,0 +1,105 @@
+{
+  // Welcome to Mo'Structures Config!
+  //
+  //   Take a break, rest a while, enjoy the scenery! :)
+  //
+  //   Using this config, you can:
+  //   - Prevent structures from generating by de-activating them.
+  //   - Modify values used in calculating structure locations to modify their chance to generate.
+  //
+  //   You can modify the biomes these structures spawn in through datapacks.
+  //
+  //   Structures use two numbers to determine structure locations:
+  //   - Separation is the minimum chunk distance between structures of that type.
+  //   - Spacing is the average chunk distance between structures of that type.
+  //   Modifying these values can shift the chances a structure generates.
+  //
+  //   If you have any questions, please join my discord available in our CurseForge page.
+  "structureConfigEntries": {
+    "villager_tower": {
+      "activated": true,
+      "separation": 16,
+      "spacing": 26
+    },
+    "lighthouse": {
+      "activated": true,
+      "separation": 14,
+      "spacing": 24
+    },
+    "air_balloon": {
+      "activated": true,
+      "separation": 12,
+      "spacing": 22
+    },
+    "killer_bunny_castle": {
+      "activated": true,
+      "separation": 22,
+      "spacing": 32
+    },
+    "jungle_pyramid": {
+      "activated": true,
+      "separation": 22,
+      "spacing": 25
+    },
+    "abandoned_church": {
+      "activated": true,
+      "separation": 20,
+      "spacing": 33
+    },
+    "sphinx": {
+      "activated": true,
+      "separation": 16,
+      "spacing": 24
+    },
+    "barn_house": {
+      "activated": true,
+      "separation": 16,
+      "spacing": 32
+    },
+    "pillager_mines": {
+      "activated": true,
+      "separation": 27,
+      "spacing": 40
+    },
+    "pirate_ship": {
+      "activated": true,
+      "separation": 16,
+      "spacing": 32
+    },
+    "tavern": {
+      "activated": true,
+      "separation": 16,
+      "spacing": 26
+    },
+    "moai": {
+      "activated": true,
+      "separation": 15,
+      "spacing": 17
+    },
+    "the_castle_in_the_sky": {
+      "activated": true,
+      "separation": 22,
+      "spacing": 32
+    },
+    "ice_tower": {
+      "activated": true,
+      "separation": 20,
+      "spacing": 28
+    },
+    "villager_market": {
+      "activated": true,
+      "separation": 16,
+      "spacing": 32
+    },
+    "big_pyramid": {
+      "activated": true,
+      "separation": 25,
+      "spacing": 32
+    },
+    "pillager_factory": {
+      "activated": true,
+      "separation": 16,
+      "spacing": 34
+    }
+  }
+}

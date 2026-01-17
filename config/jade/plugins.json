@@ -52,12 +52,32 @@
     "painting": true,
     "chiseled_bookshelf": true
   },
+  "jadeaddons": {
+    "equipment_requirement": ""
+  },
+  "jadeaddons.create": {
+    "filter": true,
+    "backtank_capacity": true,
+    "goggles.requires_goggles": true,
+    "goggles": false,
+    "blaze_burner": true,
+    "exact_block": true,
+    "goggles.detailed": false,
+    "placard": true
+  },
+  "exposure": {
+    "lightroom": true,
+    "photograph_frame": true
+  },
   "jade_access": {
     "held_item": true,
     "sign": true,
     "block": true,
     "entity": true,
     "entity_variant": true
+  },
+  "jadeaddons.lootr": {
+    "info": true
   },
   "jade": {
     "coordinates.rel": false,

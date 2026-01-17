@@ -37,3 +37,6 @@
 		resolution_scale = 8
 		#Enables rendering of debug information for televisions
 		render_debug = false
+		#Distant Horizons compatibility lod render quality
+		#Allowed Values: OFF, LOW, MED, HIGH
+		distant_horizons_LOD = "OFF"

@@ -1,0 +1,26 @@
+# FTBQuestOptimizer config file
+# If you're a modpack maker, edit defaultconfigs/ftbqoptimizer-server.snbt instead
+
+{
+	# Aggregate item removal and call addProgress() once.
+	# Default: true
+	consume.aggregate: true
+	
+	# Limit number of main+hotbar slots scanned per pass to avoid long stalls.
+	# Default: 36
+	# Range: 9 ~ 200
+	consume.max_slots_per_pass: 36
+	
+	# Debounce detection so repeated slot changes schedule only one check.
+	# Default: true
+	detect.debounce: true
+	
+	# Override FTBQ detection delay in ticks. -1 = use FTBQ's own value.
+	# Default: -1
+	# Range: -1 ~ 200
+	detect.delay_override: -1
+	
+	# Ignore slot changes where only NBT changed (same item & count).
+	# Default: true
+	detect.ignore_nbt_only_changes: true
+}
