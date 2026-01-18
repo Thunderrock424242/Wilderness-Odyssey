@@ -332,3 +332,8 @@
 !terralith:yosemite_cliffs,
 !terralith:yosemite_lowlands,
 !biomeswevegone:zelkova_forest,
+!galosphere:crystal_canyons,
+!yungscavebiomes:frosted_caves,
+!galosphere:lichen_caves,
+!yungscavebiomes:lost_caves,
+!galosphere:pink_salt_caves,

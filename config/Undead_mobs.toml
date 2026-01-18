@@ -1,0 +1,51 @@
+[pregnantbabies]
+	#Maximum number of babies a pregnant could spawn
+	"Maximum numbers of summonings pregnant can spawn" = 10.0
+	#disable the bility entirely
+	"Disable spawning of summonings" = false
+	#Example: 80 meaning 20 percent of sucker spawing and 80 of bidys. (by setting to 100 no sucker willl spawn)
+	"Bidy spawning percentage pool" = 80.0
+
+[hunter]
+	#Can also be turned off with griefing gamemode
+	"Allows hunter to destroy fence or doors" = true
+	"Allows hunter to hunt animals" = true
+	"Allows hunter to life steal" = true
+	#Hunters will usaully eat any dropped meat they find
+	"Allows hunter to eat dropped food" = true
+	#hunter will usaully fly and despawn from sunlight
+	"Hunter soar off from sunlight" = true
+
+[bomber]
+	#bomber explosion radius
+	"Bomber explosion in block area" = 9.0
+
+[clogger]
+	#Clogger will usaully not tolererate player cheesing in a fight
+	"Will clogger dig away(despawn) from cowardice enemy?" = true
+
+[suckers]
+	#To disable/enable this machanic
+	"allow chances for sucker to spawn with something riding on them" = true
+	#Per sucker, what at what percentage it would spawn with something
+	"chances for sucker to have mob spawn riding on them, upon spawning" = 15.0
+	#Example: 80 meaning 20 percent of baby zombie spawning and 80 of bidys. (by setting to 100 no baby zombie will spawn)
+	"Bidy spawning percentage pool" = 80.0
+
+["Big sucker"]
+	#default at 5
+	"How many suckers spawn per Big Sucker?" = 5.0
+
+["The Wolf"]
+	#They usaully spawn blade like mobs to attack target
+	"Can the wolf spawn stroms" = true
+	#Somehow it cant be chnaged via attributes so here it is. (exclusively for this mob)
+	"The wolf swinging attack Damage" = 4.0
+
+["The Lechery"]
+	#This has to do with world ore generation
+	"Do Lechery spawn as ore blocks" = true
+
+["The Dungeon"]
+	#Can The Dungeon mob and its structures spawn in thiss world?
+	"Enable or Disabling dungeons" = true

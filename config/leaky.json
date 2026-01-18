@@ -1,0 +1,26 @@
+{
+  "improveItemPerformance": {
+    "desc:": "Improves item entiy performance, significantly reduing their overhead. default: true",
+    "improveItemPerformance": true
+  },
+  "highlightitems": {
+    "desc:": "Choose if nearby reported stacked item entities should be glowing, default: true",
+    "highlightitems": true
+  },
+  "reportThreshold": {
+    "desc:": "Set the min amount of stacked items being reported, default: 200",
+    "reportThreshold": 200
+  },
+  "autoremovethreshold": {
+    "desc:": "Set the amount of stacked items being automatically removed, stacks of items only get removed after waiting the reportInterval after first detection. If the stacks exceed the autoremoval threshold by x3 they are instantly removed. default: 400",
+    "autoremovethreshold": 400
+  },
+  "reportInterval": {
+    "desc:": "Set the amount of seconds between repeated notifications, : default: 180",
+    "reportInterval": 180
+  },
+  "chatnotification": {
+    "desc:": "Set the chat notification type, one of these: PLAYER(closest player), EVERYONE(all players), NONE, OP(operator). default: PLAYER",
+    "chatnotification": "PLAYER"
+  }
+}
