@@ -1,0 +1,165 @@
+[General]
+	#Show GUI hints when looking at carcasses.
+	"Show Hints" = true
+	#Enable to have carcasses drop with ONLY cleavers. Disable to have carcasses drop no matter what kills the mob.
+	"Only Cleavers Drop Carcasses" = true
+	#Instantly bleed carcasses.
+	"Instant Bleeding" = false
+	#Enable organ drops
+	Organs = true
+	#Enable carcass weight (slowness effect when carcasses are in your inventory)
+	"Weighted Carcasses" = true
+	#Enable looting when butchering carcasses
+	"Looting Enchantment" = true
+	#Enable sulfur ore generation
+	"Sulfur Ore Generation" = true
+	#Enable salt generation
+	"Salt Generation" = true
+	#Enable blood spread
+	"Blood Spread" = true
+
+[Mobs]
+	#Enable Axolotl Carcass
+	Axolotl = true
+	#Enable Bat Carcasses
+	"Bat Carcass" = true
+	#Enable Bee Carcasses
+	"Bee Carcass" = true
+	#Enable Brown Mooshroom Carcasses
+	"Brown Mooshroom" = true
+	#Enable Camel Carcasses
+	Camel = true
+	#Enable Cat Carcasses
+	Cat = true
+	#Enable Cave Spider Carcasses
+	"Cave Spider" = true
+	#Enable Chicken Carcasses
+	"Chicken Carcass" = true
+	#Enable Cod Carcasses
+	Cod = true
+	#Enable Cow Carcasses
+	"Cow Carcass" = true
+	#Enable Creeper Carcasses
+	Creeper = true
+	#Enable Dolphin Carcasses
+	"Dolphin Carcass" = true
+	#Enable Donkey Carcasses
+	Donkey = true
+	#Enable Drowned Corpses
+	Drowned = true
+	#Enable Elder Guardian Carcass
+	"Elder Guardian" = true
+	#Enable Evoker Corpses
+	Evoker = true
+	#Enable Ender Dragon Carcass
+	"Ender Dragon" = true
+	#Enable Enderman Corpses
+	Enderman = true
+	#Enable Endermite Carcass
+	Endermite = true
+	#Enable Fox Carcasses
+	Fox = true
+	#Enable Frog Carcass
+	Frog = true
+	#Enable Glow Squid Carcasses
+	"Glow Squid Carcass" = true
+	#Enable Goat Carcasses
+	"Goat Carcass" = true
+	#Enable Guardian Carcasses
+	Guardian = true
+	#Enable Hoglin Carcasses
+	Hoglin = true
+	#Enable Horse Carcasses
+	Horse = true
+	#Enable Husk Corpses
+	Husk = true
+	#Enable Iron Golem Corpses
+	"Iron Golem" = true
+	#Enable Llama Carcass
+	Llama = true
+	#Enable Magma Cube Carcass
+	"Magma Cube" = true
+	#Enable Mule Carcasses
+	Mule = true
+	#Enable Ocelot Carcasses
+	Ocelot = true
+	#Enable Panda Carcasses
+	Panda = true
+	#Enable Pig Carcasses
+	"Pig Carcass" = true
+	#Enable Piglin Corpses
+	Piglin = true
+	#Enable Piglin Brute Corpses
+	"Piglin Brute" = true
+	#Enable Pillager Corpses
+	Pillager = true
+	#Enable Polar Bear Carcass
+	"Polar Bear" = true
+	#Enable Player Corpses
+	Player = true
+	#Enable Pufferfish Carcass
+	Pufferfish = true
+	#Enable Phantom Carcass
+	Phantom = true
+	#Enable Rabbit Carcass
+	Rabbit = true
+	#Enable Red Mooshroom Carcasses
+	"Red Mooshroom" = true
+	#Enable Salmon Carcasses
+	Salmon = true
+	#Enable Sheep Carcasses
+	"Sheep Carcass" = true
+	#Enable Shulker Carcass
+	Shulker = true
+	#Enable Silverfish Carcass
+	Silverfish = true
+	#Enable Skeleton Carcass
+	Skeleton = true
+	#Enable Skeleton Horse Carcass
+	"Skeleton Horse" = true
+	#Enable Slime Carcass
+	Slime = true
+	#Enable Sniffer Carcass
+	Sniffer = true
+	#Enable Spider Carcasses
+	"Spider Carcass" = true
+	#Enable Squid Carcasses
+	"Squid Carcass" = true
+	#Enable Stray Carcass
+	Stray = true
+	#Enable Strider Carcass
+	Strider = true
+	#Enable Turtle Carcass
+	Turtle = true
+	#Enable Villager Corpses
+	Villager = true
+	#Enable Vindicator Corpses
+	Vindicator = true
+	#Enable Warden Corpses
+	Warden = true
+	#Enable Witch Corpses
+	Witch = true
+	#Enable Wither Skeleton Corpses
+	"Wither Skeleton" = true
+	#Enable Wither Corpses
+	Wither = true
+	#Enable Wolf Corpses
+	Wolf = true
+	#Enable Zoglin Corpses
+	Zoglin = true
+	#Enable Zombie Corpses
+	Zombie = true
+	#Enable Zombie Horse Corpses
+	"Zombie Horse" = true
+	#Enable Zombie Villager Corpses
+	"Zombie Villager" = true
+	#Enable Zombified Piglin Corpses
+	"Zombified Piglin" = true
+
+["Mod Compatibilities"]
+	#Enable Farmers Delight Compatibility
+	"Farmers Delight" = false
+
+["Butchers Coin Reward"]
+	#The loottable that the butchery coin rewards from.
+	Loottable = "minecraft:chests/end_city_treasure"

@@ -1,0 +1,16 @@
+#Whether armadillos are no longer afraid of mobs wearing armadillo chestplates
+armadilloUnafraidArmor = true
+#Whether glazed terracotta should be able to be smelted/blasted into faded terracotta (Reload Required)
+fadedTerracottaSmelting = true
+#Whether faded terracotta should be available in the creative inventory (Reload Required)
+fadedTerracottaCreative = true
+#Whether sherds should be able to be smelted into cracked sherds (Reload Required)
+sherdCracking = true
+#Whether blank sherds should be able to be crafted from cracked sherds (Reload Required)
+sherdRepairing = true
+#Whether sherds should be able to be crafted from blank sherds (Reload Required)
+sherdCrafting = false
+#Whether blank sherds should be able to be crafted from basic materials (Reload Required)
+blankSherdConstructing = false
+#Whether any sherd should be able to be crafted from basic materials (Reload Required)
+sherdConstructing = false

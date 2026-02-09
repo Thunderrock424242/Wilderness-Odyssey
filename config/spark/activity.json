@@ -5,6 +5,175 @@
       "name": "CheerierBird61",
       "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
     },
+    "time": 1770608785085,
+    "type": "Profiler",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/EMqbOmWUEB"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1770581685604,
+    "type": "Heap dump summary",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/GHhRlQsQtF"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1770581639437,
+    "type": "Profiler",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/lJppvfjwU1"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1770580248169,
+    "type": "Profiler",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/GZm8uLEzig"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1770580008779,
+    "type": "Heap dump summary",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/AFOyrtGDqL"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1770578523391,
+    "type": "Profiler",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/w1osIwixBk"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1770439782855,
+    "type": "Profiler",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/zYbeBNkYz9"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1770423098136,
+    "type": "Profiler",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/eWHmbUcI56"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1769967413617,
+    "type": "Profiler (live)",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/DQTpyFPBpP"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1769800391577,
+    "type": "Profiler",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/kXCUReU54H"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1769799063237,
+    "type": "Profiler (live)",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/QAQZREXO8x"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1769319167716,
+    "type": "Profiler",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/TardA1HxQD"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1769184639264,
+    "type": "Profiler",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/bZpkiUQFQK"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
     "time": 1768689065897,
     "type": "Profiler",
     "data": {

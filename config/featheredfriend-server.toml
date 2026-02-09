@@ -1,0 +1,40 @@
+[calendar]
+	#Names of the 8 calendar months, in order.
+	#If the list is missing or has the wrong size,
+	#the mod will fall back to its built-in defaults.
+	monthNames = ["Dawnroot", "Blossomwake", "Greengale", "Suncrest", "Stormfall", "Shadowmere", "Frostveil", "Darkrest"]
+	#Year suffix string, e.g. "A.N." for "After Notch".
+	#Used when displaying dates like: Day 17 of Dawnroot, 112 A.N.
+	yearSuffix = "A.N."
+	#How many in-game days each month lasts before progressing to the next month.
+	#This is server-authoritative and synced to clients.
+	#
+	#Examples:
+	#- Vanilla-ish fantasy default: 28
+	#- Perfect sync with Serene Seasons sub_season_duration=16: set this to 24
+	#
+	#Valid range: 1..365
+	# Default: 28
+	# Range: 1 ~ 365
+	daysPerMonth = 28
+
+[settings]
+	#Server-authoritative global player chat toggle for FeatheredFriend.
+	#If true, FeatheredFriend will block player chat (commands unaffected).
+	#
+	#This value is hot-reloadable and is synced to clients.
+	#
+	#Note: older versions stored chatDisabled in world SavedData; this config now drives the behavior directly.
+	chatDisabledDefault = true
+
+[spawning]
+	#How many WILD (untamed) ravens FeatheredFriend may keep spawned per online (non-spectator) player.
+	#This is only used by FeatheredFriend's own natural spawn handler (not by vanilla biome spawns).
+	#
+	#Examples:
+	#- 0: disable wild raven spawning (and aggressively cull existing wild ravens near players)
+	#- 1: at most 1 wild raven per online player (default)
+	#- 2: allow up to 2 wild ravens per online player
+	# Default: 1
+	# Range: 0 ~ 16
+	wildRavensPerPlayer = 1

@@ -1,0 +1,18 @@
+#Enable cached resource pack loading via NovaAPI
+enableOptimization = true
+#Allow NovaAPI to download packs that are not already cached
+allowRemoteDownloads = true
+#Automatically enable cached packs without user intervention
+autoEnablePacks = true
+#Force packs to be treated as compatible (suppresses "incompatible" warnings)
+forceCompatible = false
+#Require packs by default when manifest entries omit the flag
+defaultRequired = false
+#Fix pack position by default when manifest entries omit the flag
+defaultFixedPosition = false
+#Default position for packs when manifest entries omit the position
+#Allowed Values: TOP, BOTTOM
+defaultPosition = "TOP"
+#Default pack type when manifest entries omit the packType field
+#Allowed Values: CLIENT_RESOURCES, SERVER_DATA
+defaultPackType = "CLIENT_RESOURCES"

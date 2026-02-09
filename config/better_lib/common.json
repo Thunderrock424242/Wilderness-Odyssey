@@ -1,0 +1,250 @@
+{
+  "enableFeatureX": {
+    "value": true,
+    "category": "General Settings",
+    "description": "Enable or disable experimental features."
+  },
+  "playerName": {
+    "value": "Reggarf",
+    "category": "General Settings",
+    "description": "Set your in-game player name for identification."
+  },
+  "debugMode": {
+    "value": false,
+    "category": "General Settings",
+    "description": "Show developer debug logs in the console."
+  },
+  "autoSave": {
+    "value": true,
+    "category": "General Settings",
+    "description": "Auto-save configuration changes on exit."
+  },
+  "updateCheckInterval": {
+    "value": 15,
+    "category": "General Settings",
+    "description": "How often (in minutes) to check for updates."
+  },
+  "language": {
+    "value": "English",
+    "category": "General Settings",
+    "description": "Choose your preferred language."
+  },
+  "enableAnimations": {
+    "value": true,
+    "category": "General Settings",
+    "description": "Whether the config screen should use animations."
+  },
+  "syncAcrossServers": {
+    "value": false,
+    "category": "General Settings",
+    "description": "Whether to sync this config across multiplayer servers."
+  },
+  "renderDistance": {
+    "value": 12,
+    "category": "Performance",
+    "description": "Adjust the render distance to balance performance and visuals."
+  },
+  "asyncChunkLoading": {
+    "value": true,
+    "category": "Performance",
+    "description": "Enable async loading for world chunks."
+  },
+  "gpuOptimizations": {
+    "value": true,
+    "category": "Performance",
+    "description": "Enable GPU-based rendering optimizations."
+  },
+  "fpsLimit": {
+    "value": 120,
+    "category": "Performance",
+    "description": "Limit FPS to reduce GPU usage."
+  },
+  "memoryCleanup": {
+    "value": true,
+    "category": "Performance",
+    "description": "Enable automatic memory cleanup."
+  },
+  "maxEntityRender": {
+    "value": 200,
+    "category": "Performance",
+    "description": "Set the max entity render count."
+  },
+  "smoothLighting": {
+    "value": true,
+    "category": "Performance",
+    "description": "Enable smooth lighting."
+  },
+  "dynamicShadows": {
+    "value": false,
+    "category": "Performance",
+    "description": "Enable dynamic shadows (may affect FPS)."
+  },
+  "uiColor": {
+    "value": -2130771968,
+    "category": "Colors",
+    "description": "UI color theme with optional transparency support."
+  },
+  "accentColor": {
+    "value": -16711936,
+    "category": "Colors",
+    "description": "Accent color used for buttons."
+  },
+  "backgroundOverlay": {
+    "value": -2147483648,
+    "category": "Colors",
+    "description": "Background overlay color for GUIs."
+  },
+  "tooltipColor": {
+    "value": -870178270,
+    "category": "Colors",
+    "description": "Tooltip background color."
+  },
+  "enableGradient": {
+    "value": true,
+    "category": "Colors",
+    "description": "Enable gradient effects in menus."
+  },
+  "theme": {
+    "value": "Default",
+    "category": "Colors",
+    "description": "Select theme style."
+  },
+  "difficulty": {
+    "value": "NORMAL",
+    "category": "Gameplay",
+    "description": "Select the overall game difficulty level."
+  },
+  "hardcoreMode": {
+    "value": false,
+    "category": "Gameplay",
+    "description": "Enable hardcore mode (no respawns)."
+  },
+  "keepInventory": {
+    "value": true,
+    "category": "Gameplay",
+    "description": "Enable keep inventory on death."
+  },
+  "maxPets": {
+    "value": 5,
+    "category": "Gameplay",
+    "description": "Maximum number of tamed pets."
+  },
+  "weatherEffects": {
+    "value": true,
+    "category": "Gameplay",
+    "description": "Enable weather effects (rain, thunder, snow)."
+  },
+  "respawnDelay": {
+    "value": 5,
+    "category": "Gameplay",
+    "description": "Respawn delay in seconds after death."
+  },
+  "randomEvents": {
+    "value": false,
+    "category": "Gameplay",
+    "description": "Enable random events in survival mode."
+  },
+  "masterVolume": {
+    "value": 80,
+    "category": "Audio",
+    "description": "Master sound volume."
+  },
+  "musicVolume": {
+    "value": 50,
+    "category": "Audio",
+    "description": "Music volume."
+  },
+  "blockSoundVolume": {
+    "value": 70,
+    "category": "Audio",
+    "description": "Block interaction sounds."
+  },
+  "ambientSounds": {
+    "value": true,
+    "category": "Audio",
+    "description": "Enable ambient sounds."
+  },
+  "chatPingSound": {
+    "value": false,
+    "category": "Audio",
+    "description": "Enable sound when receiving chat messages."
+  },
+  "voiceChatQuality": {
+    "value": "High",
+    "category": "Audio",
+    "description": "Voice chat quality (requires restart)."
+  },
+  "customHUD": {
+    "value": true,
+    "category": "HUD",
+    "description": "Enable custom HUD overlay."
+  },
+  "showCoordinates": {
+    "value": true,
+    "category": "HUD",
+    "description": "Show coordinates on screen."
+  },
+  "showFPS": {
+    "value": true,
+    "category": "HUD",
+    "description": "Display FPS counter on screen."
+  },
+  "showArmorDurability": {
+    "value": true,
+    "category": "HUD",
+    "description": "Show armor durability as a percentage."
+  },
+  "compassEnabled": {
+    "value": false,
+    "category": "HUD",
+    "description": "Enable compass direction indicator."
+  },
+  "formattedChat": {
+    "value": true,
+    "category": "Chat",
+    "description": "Enable chat formatting."
+  },
+  "mentionHighlightColor": {
+    "value": -22016,
+    "category": "Chat",
+    "description": "Highlight mentions with color."
+  },
+  "muteSystemMessages": {
+    "value": false,
+    "category": "Chat",
+    "description": "Mute system messages."
+  },
+  "chatHideDelay": {
+    "value": 30,
+    "category": "Chat",
+    "description": "Auto-hide chat after inactivity (seconds)."
+  },
+  "showChatTimestamp": {
+    "value": true,
+    "category": "Chat",
+    "description": "Show timestamp in chat messages."
+  },
+  "fancyParticles": {
+    "value": true,
+    "category": "Misc",
+    "description": "Enable experimental particle effects."
+  },
+  "favoriteServers": {
+    "value": [
+      "play.example.net",
+      "mc.reggarf.com"
+    ],
+    "category": "Misc",
+    "description": "List of custom server IPs."
+  },
+  "modCompatibility": {
+    "value": true,
+    "category": "Misc",
+    "description": "Enable mod compatibility layer."
+  },
+  "loadingTips": {
+    "value": true,
+    "category": "Misc",
+    "description": "Show random fun tips on the loading screen."
+  }
+}

@@ -1,6 +1,10 @@
 ["General Settings"]
 	#Enable Nova API. If false, all features are disabled.
 	enableNovaAPI = true
+	#Enable modpack-friendly tuning to lower CPU and memory usage (auto-adjusts Nova API internal limits).
+	modpackResourceProfile = true
+	#Enable debug logs for memory usage and thread counts.
+	enableMemoryThreadLogs = false
 
 ["Chunk Optimization Settings"]
 	#Enable optimized chunk loading and retention.

@@ -79,6 +79,9 @@
   "jadeaddons.lootr": {
     "info": true
   },
+  "oritech": {
+    "machine_core_controller": true
+  },
   "jade": {
     "coordinates.rel": false,
     "registry_name.special": false,

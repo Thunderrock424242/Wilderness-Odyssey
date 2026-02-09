@@ -1,0 +1,5 @@
+[telemetryConsent]
+	#Client-side telemetry consent decision (accepted/declined/unknown).
+	decision = "accepted"
+	#Modpack world version when consent was last recorded.
+	version = "1.0.0"

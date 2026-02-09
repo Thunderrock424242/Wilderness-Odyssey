@@ -1,0 +1,4 @@
+#Disable donation reminders
+disableReminder = false
+#World version when opt out was last set
+optOutWorldVersion = "1.0.0"

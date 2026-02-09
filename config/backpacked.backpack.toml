@@ -1,0 +1,401 @@
+# Equipable related properties
+[equipable]
+	# The maximum amount of backpacks that can be equipped by a player. This will determine
+	# how many slots will appear when opening the "Equipped Backpacks" menu.
+	# Valid range: 1 to 9 (inclusive)
+	maxEquipable = 5
+	# If enabled, backpacks will stay equipped on the player after death (same as the
+	# keepInventory game rule). Please note that this will make the Recall augment
+	# effectively useless.
+	# Valid values: true, false
+	keepOnDeath = false
+	# The number of equippable slots that will automatically be unlocked by default and for free.
+	# Please note that the cost model will still factor these free slots into the calculation
+	# for unlocking the next locked slot. The slots also cannot be revoked once unlocked.
+	# Valid range: 0 to 9 (inclusive)
+	initialUnlockedEquipableSlots = 1
+	# If set to true, all equipable slots will be unlocked by default.
+	# WARNING: Reverting the option from true to false will cause backpacks to be dropped
+	# into the world if the slot they are in is now locked. You have been warned.
+	# Valid values: true, false
+	unlockAllEquipableSlots = false
+	# If set to true, equipable slots may be unlocked using Unlock Tokens
+	# Valid values: true, false
+	allowUnlockingUsingUnlockToken = false
+
+	# Cost related properties for equipable slots
+	[equipable.unlockCost]
+		# The type of payment to use to unlock backpack slots. By default this value is set to EXPERIENCE,
+		# which will use the players experience levels are used to unlock new slots. If value is set to
+		# ITEM, this will instead consume a specified item from the player's inventory (including anything
+		# placed in the backpack) to unlock new slots.
+		# Valid values: EXPERIENCE, ITEM
+		paymentType = "EXPERIENCE"
+		# Only applicable if paymentType is set to ITEM. This option will control the item used when paying
+		# to unlock new slots.
+		paymentItem = "minecraft:emerald"
+		# The interpolate method to use when calculating the cost of unlocking a slot. The cost
+		# of slots increases the more slots that are unlocked. This function determines how steep
+		# the price will increase after each slot is unlocked. The interpolated value is calculated
+		# using the minCost and maxCost.
+		# 
+		# Function Descriptions:
+		# LINEAR - A constant grow in the cost. Cost will jump by the same value after every slot unlocked.
+		# SQUARED - Slowly scales the cost for about half, then cost will increase noticeably for the final half.
+		# CUBIC - Very slowly scales the cost for about two thirds, then cost increases sharply for the final third.
+		# 
+		# Note: This property has no effect if useCustomCosts is set to true
+		# 
+		# Valid values: LINEAR, SQUARED, CUBIC
+		costInterpolateFunction = "LINEAR"
+		# The minimum cost to unlock a backpack slot. This value would be the cost
+		# when unlocking the first slot in a backpack inventory. The cost to unlock
+		# subsequent slots are interpolated from the this value to the maxCost, and
+		# scaled by the scaleFunction.
+		# 
+		# Note: This property has no effect if useCustomCosts is set to true
+		# Valid range: 1 to 100 (inclusive)
+		minCost = 10
+		# The maximum cost to unlock a backpack slot. This value would be the cost
+		# when unlocking the final slot in a backpack inventory. The cost to unlock
+		# prior slots are interpolated from the minCost to this value, and scaled
+		# by the scaleFunction.
+		# 
+		# Note: This property has no effect if useCustomCosts is set to true
+		# Valid range: 1 to 100 (inclusive)
+		maxCost = 40
+		# If enabled, instead of using a cost that is calculated based on a minCost
+		# and maxCost, custom costs allow the cost to be specified manually using
+		# a list of values (see customCosts).
+		# Valid values: true, false
+		useCustomCosts = true
+		# A list of numbers that represent the cost values, must be whole and positive
+		# numbers only. See customCostsSelectionFunction property to set the behaviour of
+		# how values are selected from the custom costs list.
+		# 
+		customCosts = [30, 30, 30, 40]
+		# Determines how the cost value is selected from the customCosts list.
+		# 
+		# Possible Functions:
+		# LINEAR_INTERPOLATION - This will count how many slots/bays are unlocked plus one and divide it by the
+		#                        maximum unlockable slots/bays. For example, if 10 out of 20 slots are unlocked,
+		#                        a value of 11 divided by 20 will be evaluated and that will equal 0.55 or 55%.
+		#                        A cost value is then picked out of the customCosts list at the position that
+		#                        represents 55% percent of the lists length. So if customCosts contained 20 values, it
+		#                        will be picking the 11th value. The formula is custom_costs_length * ((unlocked_count + 1) / total_unlockable).
+		#                        (See below for real examples)
+		# INDEX_WITH_CLAMP     - This option will exactly match the next unlock count to an index in the customCosts
+		#                        list. For example, if 10 out of 20 slots are unlocked, the next unlock count will
+		#                        be 11, so the 11th value in the custom costs list will be used as the cost to
+		#                        unlock the next slot/bay. This option will safely handle cases where if the 11th value
+		#                        doesn't exist, due the custom costs list containing less than 11 values, the last
+		#                        value in the list will be selected. (See below for real examples)
+		# 
+		# Examples:
+		# 1. Backpack has 27 unlockable slots, and this option is set to INDEX_WITH_CLAMP. The custom costs
+		# list contains the values [5, 5, 5, 5, 5, 10]. This is interpreted as "the first five unlock costs
+		# will be 5, all the remaining will cost 10".
+		# 
+		# 2. Backpack has 3 unlockable augment bays, and this option is set to INDEX_WITH_CLAMP. The custom
+		# cost lists contains the values [5, 10, 15]. This is interpreted as "the first augment bay will
+		# cost 5, the second will cost 10, and the final will cost 15".
+		# 
+		# 3. Backpack has 18 unlockable slots, and this option is set to LINEAR_INTERPOLATION. The custom costs
+		# list contains the values [1, 100]. This is interpreted as "the first nine unlock costs will
+		# cost 1, then the final nine will cost 100".
+		# 
+		# 4. Backpack has 9 unlockable slots, and this option is set to LINEAR_INTERPOLATION, and the custom costs
+		# list contains the values [1, 2, 3, 4, 5, 6, 7, 8, 9]. Since the count of the unlockable slots (9) and the
+		# length of the customCosts list (9) are the exact same, the first unlock cost will be 1, the
+		# second 2, the third 3, and so on until 9. However, if you bumped the backpack to 18 unlockable slots,
+		# this would then change to, the first two unlock costs will be 1, the next two unlock costs will be 2, the
+		# following two unlock costs will be 3.
+		# 
+		# Note from MrCrayfish:
+		# This may seem confusing (and it is), but just play around with this config property. Always start with a
+		# fresh backpack everytime you change this property, or you may not see how the property affects the selection
+		# process. I suggest starting with LINEAR_INTERPOLATION and then adding enough values to the customCosts list
+		# so it matches the number of slots in the backpack (so if the backpack has 54 slots, put 54 values into customCosts).
+		# Once you've tried that, half the number of values in customCosts (so if 54 slots, put 27 values into customCosts)
+		# and this will give you an understanding of how the function works. Then afterwards, try INDEX_WITH_CLAMP but set
+		# the values [1, 2, 3] as the customCosts. You will see the first unlock cost 1, the second cost 2, and every other
+		# unlock will cost 3.
+		# 
+		# Valid values: LINEAR_INTERPOLATION, INDEX_WITH_CLAMP
+		customCostsSelectionFunction = "INDEX_WITH_CLAMP"
+
+# Cosmetic related properties
+[cosmetics]
+	# The default cosmetic (model) of the backpack. This should generally be a backpack
+	# that is unlocked by default
+	defaultCosmetic = "backpacked:vintage"
+	# If enabled, prevents backpacks from being customised. This will remove the
+	# customise button from the backpack inventory
+	# Valid values: true, false
+	disableCustomisation = false
+	# Allows every player to use any backpack cosmetic variant without needing to
+	# complete the challenges. Side note, any progress to a challenge will not be
+	# tracked while enabled.
+	# Valid values: true, false
+	unlockAllCosmetics = false
+	# A list that contains ids of backpack cosmetics that will be disabled. The default
+	# cosmetic (as configured by defaultCosmetic) cannot be disabled even if added to this
+	# list. You can grab the ID of backpacks by hovering them in the customisation screen
+	# while holding down CTRL button on your keyboard, and clicking will copy the ID to
+	# your clipboard.
+	# Example: disabledCosmetics = ["backpacked:rocket", "backpacked:classic", "backpacked:honey_jar"]
+	disabledCosmetics = []
+
+# Inventory related properties
+[inventory]
+	# A list of items that are not allowed inside the inventory of a backpack.
+	# Note: It is recommended to ban items that have an inventory as this will create
+	# large NBT data and potentially crash the server!
+	bannedItems = ["travelersbackpack:custom_travelers_backpack", "pinesbarrels:better_barrel", "quark:seed_pouch", "quark:backpack", "sophisticatedbackpacks:backpack", "sophisticatedbackpacks:iron_backpack", "sophisticatedbackpacks:gold_backpack", "sophisticatedbackpacks:diamond_backpack", "sophisticatedbackpacks:netherite_backpack", "improvedbackpacks:tiny_pocket", "improvedbackpacks:medium_pocket", "improvedbackpacks:large_pocket", "improvedbackpacks:white_backpack", "improvedbackpacks:orange_backpack", "improvedbackpacks:magenta_backpack", "improvedbackpacks:light_blue_backpack", "improvedbackpacks:yellow_backpack", "improvedbackpacks:lime_backpack", "improvedbackpacks:pink_backpack", "improvedbackpacks:gray_backpack", "improvedbackpacks:light_gray_backpack", "improvedbackpacks:cyan_backpack", "improvedbackpacks:purple_backpack", "improvedbackpacks:blue_backpack", "improvedbackpacks:brown_backpack", "improvedbackpacks:green_backpack", "improvedbackpacks:red_backpack", "improvedbackpacks:black_backpack", "immersiveengineering:toolbox", "immersiveengineering:crate", "immersiveengineering:reinforced_crate", "create:white_toolbox", "create:orange_toolbox", "create:magenta_toolbox", "create:light_blue_toolbox", "create:yellow_toolbox", "create:lime_toolbox", "create:pink_toolbox", "create:gray_toolbox", "create:light_gray_toolbox", "create:cyan_toolbox", "create:purple_toolbox", "create:blue_toolbox", "create:brown_toolbox", "create:green_toolbox", "create:red_toolbox", "create:black_toolbox", "mekanism:personal_chest", "supplementaries:sack"]
+
+	# Slots related properties
+	[inventory.slots]
+		# If set to true, all backpacks slots will be unlocked by default.
+		# WARNING: Reverting the option from true to false will cause items to be dropped
+		# into the world if the slot they are in is now locked. You have been warned.
+		# Valid values: true, false
+		unlockAllSlots = false
+		# The number of slots that will automatically be unlocked by default and for free.
+		# Please note that the cost model will still factor these free slots into the calculation
+		# for unlocking the next locked slot. The slots also cannot be revoked once unlocked.
+		# Valid range: 0 to 253 (inclusive)
+		initialUnlockedSlots = 9
+		# If set to true, backpack slots may be unlocked using Unlock Tokens
+		# Valid values: true, false
+		allowUnlockingUsingUnlockToken = true
+
+		# Cost related properties for inventory slots
+		[inventory.slots.unlockCost]
+			# The type of payment to use to unlock backpack slots. By default this value is set to EXPERIENCE,
+			# which will use the players experience levels are used to unlock new slots. If value is set to
+			# ITEM, this will instead consume a specified item from the player's inventory (including anything
+			# placed in the backpack) to unlock new slots.
+			# Valid values: EXPERIENCE, ITEM
+			paymentType = "EXPERIENCE"
+			# Only applicable if paymentType is set to ITEM. This option will control the item used when paying
+			# to unlock new slots.
+			paymentItem = "minecraft:emerald"
+			# The interpolate method to use when calculating the cost of unlocking a slot. The cost
+			# of slots increases the more slots that are unlocked. This function determines how steep
+			# the price will increase after each slot is unlocked. The interpolated value is calculated
+			# using the minCost and maxCost.
+			# 
+			# Function Descriptions:
+			# LINEAR - A constant grow in the cost. Cost will jump by the same value after every slot unlocked.
+			# SQUARED - Slowly scales the cost for about half, then cost will increase noticeably for the final half.
+			# CUBIC - Very slowly scales the cost for about two thirds, then cost increases sharply for the final third.
+			# 
+			# Note: This property has no effect if useCustomCosts is set to true
+			# 
+			# Valid values: LINEAR, SQUARED, CUBIC
+			costInterpolateFunction = "CUBIC"
+			# The minimum cost to unlock a backpack slot. This value would be the cost
+			# when unlocking the first slot in a backpack inventory. The cost to unlock
+			# subsequent slots are interpolated from the this value to the maxCost, and
+			# scaled by the scaleFunction.
+			# 
+			# Note: This property has no effect if useCustomCosts is set to true
+			# Valid range: 1 to 100 (inclusive)
+			minCost = 1
+			# The maximum cost to unlock a backpack slot. This value would be the cost
+			# when unlocking the final slot in a backpack inventory. The cost to unlock
+			# prior slots are interpolated from the minCost to this value, and scaled
+			# by the scaleFunction.
+			# 
+			# Note: This property has no effect if useCustomCosts is set to true
+			# Valid range: 1 to 100 (inclusive)
+			maxCost = 20
+			# If enabled, instead of using a cost that is calculated based on a minCost
+			# and maxCost, custom costs allow the cost to be specified manually using
+			# a list of values (see customCosts).
+			# Valid values: true, false
+			useCustomCosts = false
+			# A list of numbers that represent the cost values, must be whole and positive
+			# numbers only. See customCostsSelectionFunction property to set the behaviour of
+			# how values are selected from the custom costs list.
+			# 
+			customCosts = []
+			# Determines how the cost value is selected from the customCosts list.
+			# 
+			# Possible Functions:
+			# LINEAR_INTERPOLATION - This will count how many slots/bays are unlocked plus one and divide it by the
+			#                        maximum unlockable slots/bays. For example, if 10 out of 20 slots are unlocked,
+			#                        a value of 11 divided by 20 will be evaluated and that will equal 0.55 or 55%.
+			#                        A cost value is then picked out of the customCosts list at the position that
+			#                        represents 55% percent of the lists length. So if customCosts contained 20 values, it
+			#                        will be picking the 11th value. The formula is custom_costs_length * ((unlocked_count + 1) / total_unlockable).
+			#                        (See below for real examples)
+			# INDEX_WITH_CLAMP     - This option will exactly match the next unlock count to an index in the customCosts
+			#                        list. For example, if 10 out of 20 slots are unlocked, the next unlock count will
+			#                        be 11, so the 11th value in the custom costs list will be used as the cost to
+			#                        unlock the next slot/bay. This option will safely handle cases where if the 11th value
+			#                        doesn't exist, due the custom costs list containing less than 11 values, the last
+			#                        value in the list will be selected. (See below for real examples)
+			# 
+			# Examples:
+			# 1. Backpack has 27 unlockable slots, and this option is set to INDEX_WITH_CLAMP. The custom costs
+			# list contains the values [5, 5, 5, 5, 5, 10]. This is interpreted as "the first five unlock costs
+			# will be 5, all the remaining will cost 10".
+			# 
+			# 2. Backpack has 3 unlockable augment bays, and this option is set to INDEX_WITH_CLAMP. The custom
+			# cost lists contains the values [5, 10, 15]. This is interpreted as "the first augment bay will
+			# cost 5, the second will cost 10, and the final will cost 15".
+			# 
+			# 3. Backpack has 18 unlockable slots, and this option is set to LINEAR_INTERPOLATION. The custom costs
+			# list contains the values [1, 100]. This is interpreted as "the first nine unlock costs will
+			# cost 1, then the final nine will cost 100".
+			# 
+			# 4. Backpack has 9 unlockable slots, and this option is set to LINEAR_INTERPOLATION, and the custom costs
+			# list contains the values [1, 2, 3, 4, 5, 6, 7, 8, 9]. Since the count of the unlockable slots (9) and the
+			# length of the customCosts list (9) are the exact same, the first unlock cost will be 1, the
+			# second 2, the third 3, and so on until 9. However, if you bumped the backpack to 18 unlockable slots,
+			# this would then change to, the first two unlock costs will be 1, the next two unlock costs will be 2, the
+			# following two unlock costs will be 3.
+			# 
+			# Note from MrCrayfish:
+			# This may seem confusing (and it is), but just play around with this config property. Always start with a
+			# fresh backpack everytime you change this property, or you may not see how the property affects the selection
+			# process. I suggest starting with LINEAR_INTERPOLATION and then adding enough values to the customCosts list
+			# so it matches the number of slots in the backpack (so if the backpack has 54 slots, put 54 values into customCosts).
+			# Once you've tried that, half the number of values in customCosts (so if 54 slots, put 27 values into customCosts)
+			# and this will give you an understanding of how the function works. Then afterwards, try INDEX_WITH_CLAMP but set
+			# the values [1, 2, 3] as the customCosts. You will see the first unlock cost 1, the second cost 2, and every other
+			# unlock will cost 3.
+			# 
+			# Valid values: LINEAR_INTERPOLATION, INDEX_WITH_CLAMP
+			customCostsSelectionFunction = "LINEAR_INTERPOLATION"
+
+	# Size related properties
+	[inventory.size]
+		# The amount of columns in the backpack inventory.
+		# WARNING: Larger than 15 columns will start to cut off GUI elements when using auto GUI
+		# scale. If you make the size of the backpack smaller, items in the backpack that no
+		# longer fit will spawn into the world. Take care when changing this property on a
+		# running game/server since the changes will be automatically reloaded upon saving this file.
+		# Valid range: 1 to 23 (inclusive)
+		columns = 9
+		# The amount of rows in the backpack inventory.
+		# WARNING: Larger than 6 rows will not fit on some resolutions when using auto GUI scale.
+		# If you make the size of the backpack smaller, items in the backpack that no
+		# longer fit will spawn into the world. Take care when changing this property on a
+		# running game/server since the changes will be automatically reloaded upon saving this file.
+		# Valid range: 1 to 11 (inclusive)
+		rows = 5
+
+# Augment Bay related properties
+[augmentBays]
+	# If true, the first augment bay will automatically be unlocked by default and for free.
+	# Valid values: true, false
+	unlockFirstAugmentBay = false
+	# If set to true, all augment bays will be unlocked by default.
+	# Valid values: true, false
+	unlockAllAugmentBays = false
+	# If set to true, augment bays may be unlocked using Unlock Tokens
+	# Valid values: true, false
+	allowUnlockingUsingUnlockToken = false
+
+	# Cost related properties for augment bays
+	[augmentBays.unlockCost]
+		# The type of payment to use to unlock backpack slots. By default this value is set to EXPERIENCE,
+		# which will use the players experience levels are used to unlock new slots. If value is set to
+		# ITEM, this will instead consume a specified item from the player's inventory (including anything
+		# placed in the backpack) to unlock new slots.
+		# Valid values: EXPERIENCE, ITEM
+		paymentType = "EXPERIENCE"
+		# Only applicable if paymentType is set to ITEM. This option will control the item used when paying
+		# to unlock new slots.
+		paymentItem = "minecraft:emerald"
+		# The interpolate method to use when calculating the cost of unlocking a slot. The cost
+		# of slots increases the more slots that are unlocked. This function determines how steep
+		# the price will increase after each slot is unlocked. The interpolated value is calculated
+		# using the minCost and maxCost.
+		# 
+		# Function Descriptions:
+		# LINEAR - A constant grow in the cost. Cost will jump by the same value after every slot unlocked.
+		# SQUARED - Slowly scales the cost for about half, then cost will increase noticeably for the final half.
+		# CUBIC - Very slowly scales the cost for about two thirds, then cost increases sharply for the final third.
+		# 
+		# Note: This property has no effect if useCustomCosts is set to true
+		# 
+		# Valid values: LINEAR, SQUARED, CUBIC
+		costInterpolateFunction = "LINEAR"
+		# The minimum cost to unlock a backpack slot. This value would be the cost
+		# when unlocking the first slot in a backpack inventory. The cost to unlock
+		# subsequent slots are interpolated from the this value to the maxCost, and
+		# scaled by the scaleFunction.
+		# 
+		# Note: This property has no effect if useCustomCosts is set to true
+		# Valid range: 1 to 100 (inclusive)
+		minCost = 10
+		# The maximum cost to unlock a backpack slot. This value would be the cost
+		# when unlocking the final slot in a backpack inventory. The cost to unlock
+		# prior slots are interpolated from the minCost to this value, and scaled
+		# by the scaleFunction.
+		# 
+		# Note: This property has no effect if useCustomCosts is set to true
+		# Valid range: 1 to 100 (inclusive)
+		maxCost = 40
+		# If enabled, instead of using a cost that is calculated based on a minCost
+		# and maxCost, custom costs allow the cost to be specified manually using
+		# a list of values (see customCosts).
+		# Valid values: true, false
+		useCustomCosts = true
+		# A list of numbers that represent the cost values, must be whole and positive
+		# numbers only. See customCostsSelectionFunction property to set the behaviour of
+		# how values are selected from the custom costs list.
+		# 
+		customCosts = [10, 20, 30, 40]
+		# Determines how the cost value is selected from the customCosts list.
+		# 
+		# Possible Functions:
+		# LINEAR_INTERPOLATION - This will count how many slots/bays are unlocked plus one and divide it by the
+		#                        maximum unlockable slots/bays. For example, if 10 out of 20 slots are unlocked,
+		#                        a value of 11 divided by 20 will be evaluated and that will equal 0.55 or 55%.
+		#                        A cost value is then picked out of the customCosts list at the position that
+		#                        represents 55% percent of the lists length. So if customCosts contained 20 values, it
+		#                        will be picking the 11th value. The formula is custom_costs_length * ((unlocked_count + 1) / total_unlockable).
+		#                        (See below for real examples)
+		# INDEX_WITH_CLAMP     - This option will exactly match the next unlock count to an index in the customCosts
+		#                        list. For example, if 10 out of 20 slots are unlocked, the next unlock count will
+		#                        be 11, so the 11th value in the custom costs list will be used as the cost to
+		#                        unlock the next slot/bay. This option will safely handle cases where if the 11th value
+		#                        doesn't exist, due the custom costs list containing less than 11 values, the last
+		#                        value in the list will be selected. (See below for real examples)
+		# 
+		# Examples:
+		# 1. Backpack has 27 unlockable slots, and this option is set to INDEX_WITH_CLAMP. The custom costs
+		# list contains the values [5, 5, 5, 5, 5, 10]. This is interpreted as "the first five unlock costs
+		# will be 5, all the remaining will cost 10".
+		# 
+		# 2. Backpack has 3 unlockable augment bays, and this option is set to INDEX_WITH_CLAMP. The custom
+		# cost lists contains the values [5, 10, 15]. This is interpreted as "the first augment bay will
+		# cost 5, the second will cost 10, and the final will cost 15".
+		# 
+		# 3. Backpack has 18 unlockable slots, and this option is set to LINEAR_INTERPOLATION. The custom costs
+		# list contains the values [1, 100]. This is interpreted as "the first nine unlock costs will
+		# cost 1, then the final nine will cost 100".
+		# 
+		# 4. Backpack has 9 unlockable slots, and this option is set to LINEAR_INTERPOLATION, and the custom costs
+		# list contains the values [1, 2, 3, 4, 5, 6, 7, 8, 9]. Since the count of the unlockable slots (9) and the
+		# length of the customCosts list (9) are the exact same, the first unlock cost will be 1, the
+		# second 2, the third 3, and so on until 9. However, if you bumped the backpack to 18 unlockable slots,
+		# this would then change to, the first two unlock costs will be 1, the next two unlock costs will be 2, the
+		# following two unlock costs will be 3.
+		# 
+		# Note from MrCrayfish:
+		# This may seem confusing (and it is), but just play around with this config property. Always start with a
+		# fresh backpack everytime you change this property, or you may not see how the property affects the selection
+		# process. I suggest starting with LINEAR_INTERPOLATION and then adding enough values to the customCosts list
+		# so it matches the number of slots in the backpack (so if the backpack has 54 slots, put 54 values into customCosts).
+		# Once you've tried that, half the number of values in customCosts (so if 54 slots, put 27 values into customCosts)
+		# and this will give you an understanding of how the function works. Then afterwards, try INDEX_WITH_CLAMP but set
+		# the values [1, 2, 3] as the customCosts. You will see the first unlock cost 1, the second cost 2, and every other
+		# unlock will cost 3.
+		# 
+		# Valid values: LINEAR_INTERPOLATION, INDEX_WITH_CLAMP
+		customCostsSelectionFunction = "INDEX_WITH_CLAMP"

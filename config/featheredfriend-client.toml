@@ -1,0 +1,4 @@
+[client]
+	#If true, holding a sealed scroll will automatically summon your raven (client preference).
+	#If false, you must whistle manually.
+	autoSummonOnScroll = true

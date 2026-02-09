@@ -1,0 +1,75 @@
+[impactSites]
+	#If true, meteor impact sites will not be generated.
+	debugDisableImpactSites = false
+
+[debug]
+	#If true, every structure placement attempt is recorded and logged for troubleshooting.
+	debugLogPlacements = false
+
+[placement]
+	#If true, structure placement will attempt to blend terrain even when no terrain marker blocks exist.
+	enableAutoTerrainBlend = true
+	#If true, auto-blend will skip columns where the structure does not touch the template's bottom layer. Helps prevent terrain from filling structure interiors.
+	enableSmartAutoTerrainBlend = true
+	#Maximum number of blocks to fill upward from the surface when auto-blending structures.
+	# Default: 6
+	# Range: 1 ~ 64
+	autoTerrainBlendMaxDepth = 6
+	#Horizontal radius to feather terrain around structures when auto-blending is enabled.
+	# Default: 2
+	# Range: 0 ~ 8
+	autoTerrainBlendRadius = 2
+	#Maximum number of blocks the leveling marker may be placed below the sampled surface. Prevents tall templates from being buried when the blue wool marker sits high above the intended ground contact point. Set to -1 to disable clamping.
+	# Default: 12
+	# Range: -1 ~ 256
+	maxLevelingDepth = 12
+	#When true, hostile mob spawns inside the starter bunker will be blocked after placement.
+	starterStructurePreventHostiles = true
+	#Horizontal radius (in blocks) around the starter bunker where hostile mob spawns are denied.
+	# Default: 24
+	# Range: 1 ~ 128
+	starterStructureSpawnDenyRadius = 24
+	#Vertical half-height (in blocks up and down) where hostile mob spawns are denied around the starter bunker.
+	# Default: 12
+	# Range: 1 ~ 128
+	starterStructureSpawnDenyHeight = 12
+
+	[minecraft.structures]
+		jigsaw = true
+		end_city = true
+		desert_pyramid = true
+		nether_fossil = true
+		igloo = true
+		ocean_monument = true
+		woodland_mansion = true
+		fortress = true
+		stronghold = true
+		mineshaft = true
+		ocean_ruin = true
+		ruined_portal = true
+		jungle_temple = true
+		swamp_hut = true
+		shipwreck = true
+		buried_treasure = true
+
+	[minecraft.pois]
+		home = true
+		fletcher = true
+		bee_nest = true
+		meeting = true
+		leatherworker = true
+		librarian = true
+		toolsmith = true
+		weaponsmith = true
+		lightning_rod = true
+		butcher = true
+		cartographer = true
+		fisherman = true
+		mason = true
+		beehive = true
+		nether_portal = true
+		armorer = true
+		shepherd = true
+		farmer = true
+		lodestone = true
+		cleric = true

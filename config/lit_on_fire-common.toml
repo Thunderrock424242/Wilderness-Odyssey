@@ -1,0 +1,28 @@
+#Items can be consumed on activation
+item_consume = false
+#Enable checking waterlog property to lit
+check_waterlogging = true
+#Enable checking required space to lit
+check_require_space = true
+#Enable item swing animation
+swing = true
+#Enable particles on activation 
+particles_activation = true
+#Enable sounds on activation
+sound_activation = true
+#Enable actionbar tooltip on activation
+actionbar_activation = true
+#Enable chance on activation
+chance_to_lit = true
+#Chance of success 1/X
+# Default: 50
+# Range: 1 ~ 100
+chance_to_lit_value = 50
+#Enable chance fail sound
+chance_to_lit_fail = true
+#Enable sound on invalid placement
+invalid_sound = true
+#Enable action bar on invalid placement
+invalid_actionbar = true
+#Enable event to lit nether portals
+activation_portal = true

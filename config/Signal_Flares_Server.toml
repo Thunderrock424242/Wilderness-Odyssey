@@ -1,0 +1,14 @@
+[chat]
+	#Sends out a massage containing players coordinates
+	"Chat Massage" = false
+
+[flares]
+	#Keep in mind the damage scales with speed (speed x damage)
+	"Flare Speed" = 2.0
+	#Keep in mind the damage scales with speed (speed x damage)
+	"Flare Damage" = 0.0
+	"Flare Knockback" = 1.0
+	"Flare Piercing" = 0.0
+	#Sets target on fire
+	"Flare Fire" = false
+	"Flare No Gravity Ticks" = 25.0

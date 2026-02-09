@@ -1,0 +1,35 @@
+# A list that contains ids of augments that should be disabled. The augments will be
+# hidden from the popup menu and cannot be selected. Augments applied on existing
+# backpacks will simply be removed. Use advanced tooltips (F3 + H) to discover the IDs
+# of augments.
+# Example: disabledAugments = ["backpacked:recall", "backpacked:lootbound"]
+disabledAugments = []
+
+# Funnelling related properties
+[funnelling]
+	# The maximum amount of filters that can be configured
+	# Valid range: 1 to 256 (inclusive)
+	maxFilters = 32
+
+# Hopper Bridge related properties
+[hopperBridge]
+	# The maximum amount of filters that can be configured
+	# Valid range: 1 to 256 (inclusive)
+	maxFilters = 32
+
+# Hopper Bridge related properties
+[imbuedHide]
+	# If enabled, Imbued Hide will make the backpack immune to fire regardless of the damage source
+	# Valid values: true, false
+	fireImmunity = true
+	# A list containing ids of damage types that the backpack will be invulnerable to when Imbued Hide is applied.
+	# You can discover all valid damage types in-game by pasting in the command (include all characters between the quotes): "/damage @s 1 "
+	# Example: invulnerableToDamageTypes = ["minecraft:cactus", "minecraft:explosion"]
+	invulnerableToDamageTypes = ["minecraft:cactus", "minecraft:explosion", "minecraft:sonic_boom"]
+
+# Immortal related properties
+[immortal]
+	# The amount of ticks to wait after Immortal has been triggered for it to be able to be triggered again.
+	# By default, Immortal is set to 1 minute. Use the formula: ticks = 20 * <seconds>
+	# Valid range: 0 to 2147483647 (inclusive)
+	cooldown = 1200

@@ -9,3 +9,15 @@
 	# Default: 128
 	# Range: 0 ~ 4096
 	particleCullingDistance = 128
+
+["Instanced Rendering"]
+	#Enable instanced rendering for supported entity models.
+	enableInstancedRendering = true
+	#Distance in blocks for LOD0 instanced models.
+	# Default: 16.0
+	# Range: 1.0 ~ 256.0
+	instancedLod0Distance = 16.0
+	#Distance in blocks for LOD1 instanced models.
+	# Default: 48.0
+	# Range: 1.0 ~ 512.0
+	instancedLod1Distance = 48.0

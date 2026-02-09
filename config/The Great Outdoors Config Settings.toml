@@ -1,0 +1,39 @@
+["Animal Spawns"]
+	#true by default
+	"Spawn Pronghorn" = true
+	#true by default
+	"Spawn Cinnamon Bears" = true
+	#true by default
+	"Spawn Seepers" = true
+	#true by default
+	"Spawn Mountain Bluebirds" = true
+	#true by default
+	"Spawn Yellow Bellied Marmots" = true
+	#true by default
+	"Spawn Rubber Boas" = true
+
+["Animal Behavior"]
+	#true by default
+	"Puma's Attack Players" = true
+
+["Natural Features"]
+	#true by default
+	"Spawn Geysers" = true
+	#true by default
+	"Spawn Mudpots" = true
+	#true by default
+	"Spawn Hotsprings" = true
+	#true by default
+	"Spawn Whitebark Pines" = true
+	#true by default
+	"Spawn Grand Geyser Field Spruce" = true
+	#true by default
+	"Spawn Asters" = true
+	#true by default
+	"Spawn Rocky Mountain Dwarf Sunflower" = true
+
+["Rare skin variants"]
+	#Chance for piebald pronghorn skin. example 0.02 is 2%  0.5 is 50%     (default is 0.02) 
+	"chance to get piebald pronghorn" = 0.1
+	#Chance for luecistic rubber boa skin. example 0.02 is 2%  0.5 is 50%   (default is 0.02) 
+	"chance to get Luecistic Rubber Boa" = 0.02

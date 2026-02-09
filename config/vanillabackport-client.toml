@@ -1,7 +1,3 @@
-["The Garden Awakens"]
-	#toggle whether music should fade on the pale garden
-	pale_garden_music_fade = true
-
 ["Spring to Life"]
 	#allow falling leaves particles to generate
 	falling_leaves = true
@@ -9,3 +5,7 @@
 	# Default: 0.01
 	# Range: 0.0 ~ 1.0
 	falling_leaves_frequency = 0.01
+	#use the legacy spawn egg textures
+	use_legacy_spawn_eggs = false
+	#toggle the colored sheep wool undercoat
+	use_sheep_wool_undercoat = true

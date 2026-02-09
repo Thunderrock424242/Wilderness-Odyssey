@@ -114,3 +114,11 @@
 	cacheFolderName = "chunk-cache"
 	#If true, chunk cache data is stored under the world-specific config folder instead of the global config directory.
 	storeCacheInWorldConfig = true
+	#Maximum queued chunk mesh rebuilds before new requests are skipped. Set to 0 for unlimited.
+	# Default: 2048
+	# Range: 0 ~ 65536
+	maxPendingMeshRebuilds = 2048
+	#Maximum queued chunk mesh uploads before new requests are skipped. Set to 0 for unlimited.
+	# Default: 4096
+	# Range: 0 ~ 65536
+	maxPendingMeshUploads = 4096

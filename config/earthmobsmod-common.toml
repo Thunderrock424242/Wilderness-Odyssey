@@ -54,10 +54,6 @@
 # Default: 10
 # Range: 0 ~ 1000
 "Bone Spider SpawnRate" = 10
-#Changed Stray Bone Spider SpawnRate. [0 ~ 1000]
-# Default: 10
-# Range: 0 ~ 1000
-"Stray Bone Spider SpawnRate" = 10
 #Changed BoulderingZombie SpawnRate. [0 ~ 1000]
 # Default: 20
 # Range: 0 ~ 1000

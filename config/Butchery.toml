@@ -17,6 +17,10 @@
 	"Salt Generation" = true
 	#Enable blood spread
 	"Blood Spread" = true
+	#Give the butchers guide on first join.
+	"First Join Book" = true
+	#Enable blood puddles dropping when no blood grate is below a carcass.
+	"Blood Puddle" = true
 
 [Mobs]
 	#Enable Axolotl Carcass
@@ -155,11 +159,19 @@
 	"Zombie Villager" = true
 	#Enable Zombified Piglin Corpses
 	"Zombified Piglin" = true
-
-["Mod Compatibilities"]
-	#Enable Farmers Delight Compatibility
-	"Farmers Delight" = false
+	#Enable Ravager Carcass
+	Ravager = true
 
 ["Butchers Coin Reward"]
 	#The loottable that the butchery coin rewards from.
 	Loottable = "minecraft:chests/end_city_treasure"
+
+["Farmers Delight Compatibility"]
+	#Enable Farmers Delight Compatibility
+	"Farmers Delight" = false
+
+["Vampirism Compatibility"]
+	#Replaces heart drops with vampirisms hearts
+	"Vampirism Heart" = false
+	#Replaces eye drops with vampirisms eyes
+	"Vampires Delight Eye" = false

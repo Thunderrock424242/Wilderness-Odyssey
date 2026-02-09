@@ -1,0 +1,11 @@
+["Overlay Rendering"]
+	#Group overlay draw calls by texture to reduce state changes.
+	enableOverlayBatching = true
+
+["Particle Rendering"]
+	#Cull modded particle submissions based on camera distance and frustum visibility.
+	enableParticleCulling = true
+	#Maximum distance in blocks for modded particle submissions before culling.
+	# Default: 128
+	# Range: 0 ~ 4096
+	particleCullingDistance = 128

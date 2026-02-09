@@ -1,0 +1,21 @@
+# If enabled, hides the config button from the backpack screen
+# Valid values: true, false
+hideConfigButton = false
+# Determines how unlockable slots are displayed and interactions are handled. This
+# option can be changed directly in the backpack inventory GUI.
+# 
+# Mode descriptions:
+# ENABLED     - Unlockable slots will always be enabled (visible and interactable).
+# PURCHASABLE - Unlockable slots will only be enabled if the player has has exp levels
+#               to purchase/unlock the slot, otherwise they will be disabled (faded out
+#               and not interactable).
+# DISABLED    - Unlockable slots will always be disabled. (faded out and not interactable).
+# 
+# Valid values: ENABLED, PURCHASABLE, DISABLED
+unlockableSlotMode = "ENABLED"
+# Very secret feature, do not enable if you don't want your screen filled with particle effects
+# Valid values: true, false
+glitterBomb = false
+# If enabled, hides the call to action at the bottom of the customisation menu which links out to community addons and a guide.
+# Valid values: true, false
+hideAddonsCallToAction = false

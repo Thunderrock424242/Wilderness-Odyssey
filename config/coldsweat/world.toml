@@ -271,7 +271,7 @@
 	# When set to true, uses Cold Sweat's temperature system to determine water freezing behavior
 	"Custom Freezing Behavior" = true
 	#─────────────────────────────────────────────────────────────────────────
-	# When set to true, modifies ice blocks to be harvestable with a pickaxe
+	# When set to true, modifies ice blocks to be harvestable with a pickaxe and tweaks its mining speed
 	"Custom Ice Drops" = true
 	#─────────────────────────────────────────────────────────────────────────
 	# The speed at which wet players dry off
@@ -291,7 +291,7 @@
 	#─────────────────────────────────────────────────────────────────────────
 	# The default temperature of water
 	# └── Format: [temperature, *units]
-	"Default Water Temperature" = [-10, "f"]
+	"Default Water Temperature" = [-10.0, "f"]
 	#─────────────────────────────────────────────────────────────────────────
 	# The maximum soak level a player can reach from rain alone (0.0 - 1.0)
 	# Default: 0.2
