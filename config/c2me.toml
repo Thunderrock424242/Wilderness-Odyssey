@@ -22,7 +22,7 @@ defaultGlobalExecutorParallelismExpression = "default"
 # - https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Thread.html#setPriority(int)
 # 
 threadPoolPriority = "default"
-# (Default: 18) Configures the parallelism of global executor
+# (Default: 12) Configures the parallelism of global executor
 globalExecutorParallelism = "default"
 
 [fixes]
@@ -176,7 +176,7 @@ globalExecutorParallelism = "default"
 [noTickViewDistance]
 	# (Default: true) Whether to enable no-tick view distance
 	enabled = "default"
-	# (Default: 19) No-tick view distance max concurrent chunk loads 
+	# (Default: 13) No-tick view distance max concurrent chunk loads 
 	#  Lower this for a better latency and higher this for a faster loading
 	maxConcurrentChunkLoads = "default"
 	# (Default: true) Whether to use compatibility mode to send chunks 
@@ -193,7 +193,7 @@ globalExecutorParallelism = "default"
 	[clientSideConfig.modifyMaxVDConfig]
 		# (Default: true) Whether to modify maximum view distance
 		enabled = "default"
-		# (Default: 85) Max render distance allowed in game options
+		# (Default: 69) Max render distance allowed in game options
 		maxViewDistance = "default"
 		# (Default: true) Enable client-side support for extended render distance protocol (c2me:ext_render_distance_v1)
 		# This allows requesting render distances higher than 127 chunks from the server

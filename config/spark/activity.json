@@ -5,6 +5,45 @@
       "name": "CheerierBird61",
       "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
     },
+    "time": 1770704246757,
+    "type": "Heap dump summary",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/xiAAgknhi9"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1770704234593,
+    "type": "Profiler",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/v4YYFMOfKv"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
+    "time": 1770703238781,
+    "type": "Profiler",
+    "data": {
+      "type": "url",
+      "value": "https://spark.lucko.me/LzNuCuXkHu"
+    }
+  },
+  {
+    "user": {
+      "type": "player",
+      "name": "CheerierBird61",
+      "uniqueId": "45381edb-0e73-4f7c-8c28-685cdd397aec"
+    },
     "time": 1770608785085,
     "type": "Profiler",
     "data": {
