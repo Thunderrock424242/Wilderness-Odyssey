@@ -2,35 +2,35 @@
   "modpack": {
     "name": "Your Modpack Name",
     "tagline": "An Epic Adventure Awaits",
-    "description": "Embark on an unforgettable journey through a carefully crafted world of exploration and discovery. This modpack transforms Minecraft into an epic adventure filled with new dimensions, challenging dungeons, and mysterious quests.",
+    "description": "Embark on a polished Minecraft experience with curated progression, improved exploration, and long-term goals for solo and multiplayer worlds.",
     "version": "1.0.0",
     "minecraftVersion": "1.20.1"
   },
   "links": {
     "curseforge": "https://www.curseforge.com/minecraft/modpacks/your-modpack",
     "discord": "",
-    "github": "https://github.com/yourusername/modpack-wiki"
+    "github": "yourusername/modpack-wiki"
   },
   "features": [
     {
-      "title": "Epic Exploration",
-      "description": "Discover dozens of new biomes, structures, and dimensions to explore",
-      "icon": "🗺️"
+      "title": "Adventure-First Progression",
+      "description": "Questing and milestone-based progression keep players moving forward without overwhelming them.",
+      "icon": "🧭"
     },
     {
-      "title": "Challenging Combat",
-      "description": "Face powerful bosses and enhanced mobs with new weapons and armor",
+      "title": "High-Impact Combat",
+      "description": "Face tougher encounters, unique bosses, and meaningful gear upgrades.",
       "icon": "⚔️"
     },
     {
-      "title": "Quest System",
-      "description": "Follow guided questlines that lead you through the adventure",
-      "icon": "📜"
+      "title": "Worldbuilding Tools",
+      "description": "Build ambitious bases with decorative and utility mods that work well together.",
+      "icon": "🏰"
     },
     {
-      "title": "Balanced Progression",
-      "description": "Carefully tuned gameplay that rewards exploration and skill",
-      "icon": "⭐"
+      "title": "Multiplayer Friendly",
+      "description": "Balanced settings and documentation make it easier to run a shared server.",
+      "icon": "🤝"
     }
   ],
   "gallery": {
@@ -38,22 +38,22 @@
       {
         "url": "images/screenshot1.png",
         "title": "Exploring New Dimensions",
-        "description": "Venture into mysterious new worlds"
+        "description": "Venture into mysterious worlds with layered progression goals."
       },
       {
         "url": "images/screenshot2.png",
         "title": "Epic Boss Battles",
-        "description": "Face powerful enemies"
+        "description": "Take on major encounters that reward preparation and teamwork."
       },
       {
         "url": "images/screenshot3.png",
         "title": "Beautiful Landscapes",
-        "description": "Discover breathtaking biomes"
+        "description": "Discover scenic regions and biome overhauls."
       },
       {
         "url": "images/screenshot4.png",
         "title": "Ancient Structures",
-        "description": "Explore ruins and dungeons"
+        "description": "Explore dungeons, ruins, and hidden loot trails."
       }
     ]
   },
@@ -62,18 +62,40 @@
     "branch": "main",
     "categories": [
       "Getting Started",
-      "Mods List",
+      "Server Setup",
       "Progression Guide",
       "Dimensions",
       "Bosses",
       "FAQ"
+    ],
+    "pages": [
+      {
+        "title": "Quick Start",
+        "summary": "Install the pack, recommended settings, and first 30-minute goals.",
+        "file": "getting-started.md"
+      },
+      {
+        "title": "Server Admin Guide",
+        "summary": "RAM sizing, JVM flags, and moderation best practices.",
+        "file": "server-setup.md"
+      },
+      {
+        "title": "Progression Path",
+        "summary": "A phase-by-phase guide to avoid dead ends and confusion.",
+        "file": "progression-guide.md"
+      },
+      {
+        "title": "Troubleshooting",
+        "summary": "Fix common crashes, log locations, and compatibility notes.",
+        "file": "faq.md"
+      }
     ]
   },
   "theme": {
-    "primaryColor": "#d97706",
+    "primaryColor": "#f59e0b",
     "secondaryColor": "#92400e",
     "accentColor": "#fbbf24",
-    "backgroundColor": "#1c1917",
-    "textColor": "#fafaf9"
+    "backgroundColor": "#0f1116",
+    "textColor": "#f8fafc"
   }
 }

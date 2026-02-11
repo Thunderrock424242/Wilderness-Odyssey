@@ -4,141 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Modpack</title>
+    <meta name="description" content="A polished, configurable website template for Minecraft modpacks.">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Philosopher:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo" id="nav-logo">Modpack</div>
+    <header class="site-header">
+        <nav class="navbar container">
+            <a href="#home" class="nav-logo" id="nav-logo">Modpack</a>
             <ul class="nav-menu">
                 <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#features" class="nav-link">Features</a></li>
                 <li><a href="#gallery" class="nav-link">Gallery</a></li>
                 <li><a href="#wiki" class="nav-link">Wiki</a></li>
-                <li><a href="#download" class="nav-link download-btn">Download</a></li>
+                <li><a href="#download" class="nav-link nav-cta">Download</a></li>
             </ul>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-background"></div>
-        <div class="hero-content">
+    <main>
+        <section id="home" class="hero container">
+            <p class="eyebrow">Minecraft Modpack</p>
             <h1 class="hero-title" id="hero-title">Your Modpack Name</h1>
             <p class="hero-tagline" id="hero-tagline">An Epic Adventure Awaits</p>
             <p class="hero-description" id="hero-description">Loading...</p>
-            <div class="hero-buttons">
-                <a href="#download" class="btn btn-primary" id="hero-download">
-                    <span>Download on CurseForge</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                    </svg>
-                </a>
-                <a href="#wiki" class="btn btn-secondary">
-                    <span>Read the Wiki</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                    </svg>
-                </a>
+            <div class="hero-actions">
+                <a href="#download" class="btn btn-primary" id="hero-download">Download on CurseForge</a>
+                <a href="#wiki" class="btn btn-secondary">Open Wiki Hub</a>
             </div>
             <div class="hero-stats">
-                <div class="stat">
-                    <span class="stat-value" id="mc-version">1.20.1</span>
-                    <span class="stat-label">Minecraft</span>
+                <article class="stat">
+                    <p class="stat-value" id="mc-version">1.20.1</p>
+                    <p class="stat-label">Minecraft</p>
+                </article>
+                <article class="stat">
+                    <p class="stat-value" id="pack-version">1.0.0</p>
+                    <p class="stat-label">Pack Version</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="features" class="section container">
+            <div class="section-heading">
+                <h2>Why players like this pack</h2>
+                <p>Show visitors exactly what makes your modpack special.</p>
+            </div>
+            <div class="features-grid" id="features-grid"></div>
+        </section>
+
+        <section id="gallery" class="section container">
+            <div class="section-heading">
+                <h2>Gallery</h2>
+                <p>Highlights from gameplay, builds, and community moments.</p>
+            </div>
+            <div class="gallery-grid" id="gallery-grid"></div>
+        </section>
+
+        <section id="wiki" class="section container wiki">
+            <div class="section-heading">
+                <h2>Wiki Hub</h2>
+                <p>A cleaner way to share guides, progression docs, and community knowledge.</p>
+            </div>
+
+            <div class="wiki-layout">
+                <div class="wiki-panel">
+                    <h3>Browse categories</h3>
+                    <p>These links point to markdown docs in your wiki repository.</p>
+                    <div class="wiki-categories" id="wiki-categories"></div>
                 </div>
-                <div class="stat">
-                    <span class="stat-value" id="pack-version">1.0.0</span>
-                    <span class="stat-label">Version</span>
+
+                <div class="wiki-panel">
+                    <h3>Featured pages</h3>
+                    <p>Keep this list focused on the most useful guides for new players.</p>
+                    <div class="wiki-pages" id="wiki-pages"></div>
                 </div>
             </div>
-        </div>
-        <div class="scroll-indicator">
-            <div class="scroll-arrow"></div>
-        </div>
-    </section>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">Features</h2>
-            <div class="features-grid" id="features-grid">
-                <!-- Features loaded dynamically -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Gallery Section -->
-    <section id="gallery" class="gallery">
-        <div class="container">
-            <h2 class="section-title">Gallery</h2>
-            <div class="gallery-grid" id="gallery-grid">
-                <!-- Gallery loaded dynamically -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Wiki Section -->
-    <section id="wiki" class="wiki">
-        <div class="container">
-            <h2 class="section-title">Community Wiki</h2>
-            <p class="wiki-intro">
-                Our wiki is community-maintained and hosted on GitHub. Anyone can contribute by submitting pull requests!
-            </p>
-            <div class="wiki-categories" id="wiki-categories">
-                <!-- Categories loaded dynamically -->
-            </div>
             <div class="wiki-contribute">
-                <h3>Want to Contribute?</h3>
-                <p>The wiki lives in our GitHub repository. Fork it, make your changes, and submit a pull request!</p>
-                <a href="#" class="btn btn-primary" id="github-link" target="_blank" rel="noopener noreferrer">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                    <span>View on GitHub</span>
-                </a>
+                <h3>Contribute to the wiki</h3>
+                <p>Fork the repo, edit markdown files, and submit a pull request. Community help keeps docs accurate.</p>
+                <a href="#" class="btn btn-primary" id="github-link" target="_blank" rel="noopener noreferrer">Open GitHub Wiki Repository</a>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Download Section -->
-    <section id="download" class="download">
-        <div class="container">
-            <div class="download-content">
-                <h2 class="section-title">Ready to Start Your Adventure?</h2>
-                <p>Download the modpack from CurseForge and begin your journey today!</p>
-                <a href="#" class="btn btn-primary btn-large" id="download-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                    </svg>
-                    <span>Download on CurseForge</span>
-                </a>
-                <div class="download-links">
-                    <a href="#" id="discord-link" class="social-link">Join Discord</a>
-                    <a href="#" id="github-wiki-link" class="social-link">GitHub Wiki</a>
-                </div>
+        <section id="download" class="section container download">
+            <h2>Ready to play?</h2>
+            <p>Install from CurseForge and jump in. Keep your wiki nearby for progression tips.</p>
+            <div class="download-actions">
+                <a href="#" class="btn btn-primary" id="download-btn">Download on CurseForge</a>
+                <a href="#" id="discord-link" class="btn btn-secondary">Join Discord</a>
+                <a href="#" id="github-wiki-link" class="btn btn-secondary">GitHub Wiki</a>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <p>Community-driven modpack. Not affiliated with Mojang or Microsoft.</p>
-            <p>Edit <code>config.json</code> to customize this website.</p>
+        <div class="container footer-inner">
+            <p>Community-driven modpack project. Not affiliated with Mojang or Microsoft.</p>
+            <p>Edit <code>config.json</code> to customize text, links, wiki pages, and colors.</p>
         </div>
     </footer>
 
-    <!-- Lightbox for Gallery -->
     <div class="lightbox" id="lightbox">
-        <button class="lightbox-close">&times;</button>
+        <button class="lightbox-close" aria-label="Close image">&times;</button>
         <img src="" alt="" id="lightbox-img">
         <div class="lightbox-caption" id="lightbox-caption"></div>
-        <button class="lightbox-prev">‹</button>
-        <button class="lightbox-next">›</button>
+        <button class="lightbox-prev" aria-label="Previous image">‹</button>
+        <button class="lightbox-next" aria-label="Next image">›</button>
     </div>
 
     <script src="script.js"></script>
