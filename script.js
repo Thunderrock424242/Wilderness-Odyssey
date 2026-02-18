@@ -37,7 +37,6 @@ const defaultGallery = [
     }
 ];
 
-
 const defaultBlogPosts = [
     {
         title: 'Version 1.0.0 Released',
@@ -80,7 +79,7 @@ async function loadConfig() {
         config = {};
     }
 
-    populateWebsite();
+    await populateWebsite();
     applyTheme();
 }
 
@@ -114,10 +113,11 @@ function getGithubUrls() {
     };
 }
 
-function populateWebsite() {
+async function populateWebsite() {
     document.title = config.modpack?.name || 'Modpack';
     document.getElementById('page-title').textContent = document.title;
-    document.getElementById('nav-logo').textContent = config.modpack?.name || 'Modpack';
+
+    applyBranding();
 
     document.getElementById('hero-title').textContent = config.modpack?.name || 'Your Modpack Name';
     document.getElementById('hero-tagline').textContent = config.modpack?.tagline || 'An Epic Adventure Awaits';
@@ -144,8 +144,36 @@ function populateWebsite() {
 
     populateFeatures();
     populateGallery();
-    populateBlogPosts();
+    await populateBlogPosts();
     populateWikiHub(githubUrls);
+}
+
+function applyBranding() {
+    const navLogo = document.getElementById('nav-logo');
+    const logoConfig = config.branding?.logo;
+    const logoImageUrl = logoConfig?.src || '';
+
+    if (!logoImageUrl) {
+        navLogo.textContent = config.modpack?.name || 'Modpack';
+        navLogo.classList.remove('nav-logo-image');
+        return;
+    }
+
+    navLogo.classList.add('nav-logo-image');
+    navLogo.innerHTML = '';
+
+    const logoImage = document.createElement('img');
+    logoImage.src = logoImageUrl;
+    logoImage.alt = logoConfig?.alt || `${config.modpack?.name || 'Modpack'} logo`;
+    logoImage.width = Number(logoConfig?.width) || 160;
+    logoImage.height = Number(logoConfig?.height) || 48;
+
+    logoImage.addEventListener('error', () => {
+        navLogo.classList.remove('nav-logo-image');
+        navLogo.textContent = config.modpack?.name || 'Modpack';
+    }, { once: true });
+
+    navLogo.appendChild(logoImage);
 }
 
 function populateFeatures() {
@@ -191,7 +219,6 @@ function populateGallery() {
     });
 }
 
-
 function formatBlogDate(value) {
     if (!value) {
         return 'Recent update';
@@ -209,13 +236,109 @@ function formatBlogDate(value) {
     });
 }
 
-function populateBlogPosts() {
+async function loadBlogPostsFromFolder() {
+    const blogIndexPath = config.blog?.indexFile || 'blogs/index.json';
+
+    try {
+        const indexResponse = await fetch(blogIndexPath);
+        if (!indexResponse.ok) {
+            throw new Error(`Unable to load ${blogIndexPath}`);
+        }
+
+        const blogIndex = await indexResponse.json();
+        const entries = blogIndex.posts || [];
+
+        const loadedPosts = await Promise.all(entries.map(async (entry) => {
+            const postFile = typeof entry === 'string' ? entry : entry.file;
+            if (!postFile) {
+                return null;
+            }
+
+            const postResponse = await fetch(postFile);
+            if (!postResponse.ok) {
+                throw new Error(`Unable to load ${postFile}`);
+            }
+
+            const post = await postResponse.json();
+            return {
+                ...post,
+                url: post.url || (typeof entry === 'object' ? entry.url : ''),
+                sourceFile: postFile
+            };
+        }));
+
+        return loadedPosts.filter(Boolean);
+    } catch (error) {
+        console.error('Failed to load blog posts from folder:', error);
+        return [];
+    }
+}
+
+function renderBlogContent(container, contentBlocks = []) {
+    if (!contentBlocks.length) {
+        return;
+    }
+
+    contentBlocks.forEach((block) => {
+        if (block.type === 'heading') {
+            const heading = document.createElement('h4');
+            heading.textContent = block.text || 'Section';
+            container.appendChild(heading);
+            return;
+        }
+
+        if (block.type === 'image') {
+            const figure = document.createElement('figure');
+            figure.className = 'blog-figure';
+
+            const image = document.createElement('img');
+            image.src = block.src || '';
+            image.alt = block.alt || 'Blog image';
+            image.loading = 'lazy';
+            figure.appendChild(image);
+
+            if (block.caption) {
+                const caption = document.createElement('figcaption');
+                caption.textContent = block.caption;
+                figure.appendChild(caption);
+            }
+
+            container.appendChild(figure);
+            return;
+        }
+
+        if (block.type === 'list' && Array.isArray(block.items)) {
+            const list = document.createElement('ul');
+            block.items.forEach((itemText) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = itemText;
+                list.appendChild(listItem);
+            });
+            container.appendChild(list);
+            return;
+        }
+
+        const paragraph = document.createElement('p');
+        paragraph.textContent = block.text || '';
+        container.appendChild(paragraph);
+    });
+}
+
+async function populateBlogPosts() {
     const blogGrid = document.getElementById('blog-grid');
     if (!blogGrid) {
         return;
     }
 
-    const posts = config.blog?.posts?.length ? config.blog.posts : defaultBlogPosts;
+    let posts = [];
+    if (config.blog?.source === 'folder' || config.blog?.indexFile) {
+        posts = await loadBlogPostsFromFolder();
+    }
+
+    if (!posts.length) {
+        posts = config.blog?.posts?.length ? config.blog.posts : defaultBlogPosts;
+    }
+
     blogGrid.innerHTML = '';
 
     posts.forEach((post) => {
@@ -226,15 +349,48 @@ function populateBlogPosts() {
         const postSummary = post.summary || 'Share an update with your community.';
         const postAuthor = post.author || 'Modpack Team';
         const postUrl = post.url || '#';
+        const coverImage = post.coverImage || '';
 
         article.innerHTML = `
             <p class="blog-meta">${formatBlogDate(post.date)} · ${postAuthor}</p>
             <h3>${postTitle}</h3>
             <p>${postSummary}</p>
-            <a class="blog-link" href="${postUrl}" ${postUrl === '#' ? '' : 'target="_blank" rel="noopener noreferrer"'}>
-                Read update →
-            </a>
         `;
+
+        if (coverImage) {
+            const image = document.createElement('img');
+            image.className = 'blog-cover-image';
+            image.src = coverImage;
+            image.alt = `${postTitle} cover image`;
+            image.loading = 'lazy';
+            article.appendChild(image);
+        }
+
+        if (Array.isArray(post.content) && post.content.length) {
+            const details = document.createElement('details');
+            details.className = 'blog-details';
+
+            const summary = document.createElement('summary');
+            summary.textContent = 'Read full post';
+            details.appendChild(summary);
+
+            const content = document.createElement('div');
+            content.className = 'blog-content';
+            renderBlogContent(content, post.content);
+            details.appendChild(content);
+
+            article.appendChild(details);
+        } else {
+            const link = document.createElement('a');
+            link.className = 'blog-link';
+            link.href = postUrl;
+            link.textContent = 'Read update →';
+            if (postUrl !== '#') {
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+            }
+            article.appendChild(link);
+        }
 
         blogGrid.appendChild(article);
     });
@@ -346,6 +502,7 @@ function prevImage() {
     currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
     openLightbox(currentImageIndex);
 }
+
 
 function handleNavigation() {
     const navLinks = document.querySelectorAll('.nav-link');

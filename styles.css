@@ -61,6 +61,18 @@ a {
     letter-spacing: 0.02em;
 }
 
+.nav-logo.nav-logo-image {
+    display: inline-flex;
+    align-items: center;
+}
+
+.nav-logo.nav-logo-image img {
+    display: block;
+    width: auto;
+    max-height: 48px;
+    object-fit: contain;
+}
+
 .nav-menu {
     list-style: none;
     display: flex;
@@ -279,6 +291,54 @@ a {
     color: var(--accent-color);
 }
 
+.blog-cover-image {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+}
+
+.blog-details {
+    margin-top: 0.2rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.55rem;
+}
+
+.blog-details summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.blog-content {
+    margin-top: 0.65rem;
+    display: grid;
+    gap: 0.6rem;
+}
+
+.blog-content h4 {
+    color: var(--text-color);
+}
+
+.blog-content ul {
+    padding-left: 1.2rem;
+}
+
+.blog-figure {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.blog-figure img {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+}
+
+.blog-figure figcaption {
+    color: var(--muted-text);
+    font-size: 0.85rem;
+}
+
 .gallery-item {
     overflow: hidden;
     position: relative;
@@ -493,4 +553,38 @@ a {
         width: 88vw;
         bottom: 5%;
     }
+}
+
+/* Wilderness Odyssey clean styling */
+body {
+    background: radial-gradient(circle at top, #1a223a 0%, var(--bg-color) 52%);
+}
+
+.site-header {
+    background: rgba(10, 16, 32, 0.88);
+    border-bottom-color: rgba(148, 163, 184, 0.2);
+}
+
+.nav-logo.nav-logo-image img {
+    max-height: 52px;
+}
+
+.feature-card,
+.blog-card,
+.wiki-panel,
+.wiki-contribute,
+.wiki-page-card,
+.gallery-item,
+.stat {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover,
+.blog-card:hover,
+.wiki-panel:hover,
+.wiki-page-card:hover,
+.gallery-item:hover,
+.stat:hover {
+    border-color: rgba(147, 197, 253, 0.4);
+    box-shadow: 0 8px 20px rgba(7, 12, 24, 0.3);
 }
