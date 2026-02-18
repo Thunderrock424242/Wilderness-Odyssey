@@ -554,3 +554,37 @@ a {
         bottom: 5%;
     }
 }
+
+/* Wilderness Odyssey clean styling */
+body {
+    background: radial-gradient(circle at top, #1a223a 0%, var(--bg-color) 52%);
+}
+
+.site-header {
+    background: rgba(10, 16, 32, 0.88);
+    border-bottom-color: rgba(148, 163, 184, 0.2);
+}
+
+.nav-logo.nav-logo-image img {
+    max-height: 52px;
+}
+
+.feature-card,
+.blog-card,
+.wiki-panel,
+.wiki-contribute,
+.wiki-page-card,
+.gallery-item,
+.stat {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover,
+.blog-card:hover,
+.wiki-panel:hover,
+.wiki-page-card:hover,
+.gallery-item:hover,
+.stat:hover {
+    border-color: rgba(147, 197, 253, 0.4);
+    box-shadow: 0 8px 20px rgba(7, 12, 24, 0.3);
+}

@@ -503,6 +503,7 @@ function prevImage() {
     openLightbox(currentImageIndex);
 }
 
+
 function handleNavigation() {
     const navLinks = document.querySelectorAll('.nav-link');
     const sections = document.querySelectorAll('section[id]');

@@ -2,8 +2,8 @@
 
 A clean, configurable static website for Minecraft modpacks with:
 
-- polished landing page
-- configurable text or image logo
+- polished landing page with clean, readable styling
+- configurable text or image logo (default themed Wilderness Odyssey logo)
 - gallery with lightbox
 - file-based blog system (with local post images)
 - wiki hub (categories + featured pages)

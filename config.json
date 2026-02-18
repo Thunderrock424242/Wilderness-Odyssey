@@ -1,17 +1,17 @@
 {
   "modpack": {
-    "name": "Your Modpack Name",
-    "tagline": "An Epic Adventure Awaits",
-    "description": "Embark on a polished Minecraft experience with curated progression, improved exploration, and long-term goals for solo and multiplayer worlds.",
+    "name": "Wilderness Odyssey",
+    "tagline": "A Wild Quest Through Ancient Frontiers",
+    "description": "Survive the wilds, conquer forgotten ruins, and build your legend across a handcrafted adventure progression tuned for explorers and server communities.",
     "version": "1.0.0",
     "minecraftVersion": "1.20.1"
   },
   "branding": {
     "logo": {
       "src": "images/site-logo.svg",
-      "alt": "Your Modpack Logo",
-      "width": 320,
-      "height": 72
+      "alt": "Wilderness Odyssey logo",
+      "width": 360,
+      "height": 96
     }
   },
   "links": {
@@ -100,11 +100,11 @@
     ]
   },
   "theme": {
-    "primaryColor": "#f59e0b",
-    "secondaryColor": "#92400e",
-    "accentColor": "#fbbf24",
-    "backgroundColor": "#0f1116",
-    "textColor": "#f8fafc"
+    "primaryColor": "#60a5fa",
+    "secondaryColor": "#1e3a8a",
+    "accentColor": "#93c5fd",
+    "backgroundColor": "#0b1020",
+    "textColor": "#e5e7eb"
   },
   "blog": {
     "source": "folder",
