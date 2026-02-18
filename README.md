@@ -5,6 +5,7 @@ A clean, configurable static website for Minecraft modpacks with:
 - polished landing page
 - gallery with lightbox
 - wiki hub (categories + featured pages)
+- blog section for news, patch notes, and updates
 - GitHub Pages deployment workflow
 
 ## Quick Start
@@ -23,6 +24,7 @@ Everything is controlled through `config.json`.
 - `links.curseforge`: download link
 - `links.discord`: optional community invite
 - `links.github`: either `owner/repo` or full GitHub URL
+- `blog.posts`: list of blog cards (title, summary, date, author, url)
 - `wiki.categories`: category chips shown in the wiki hub
 - `wiki.pages`: featured wiki cards with title, summary, and markdown file
 - `theme`: color overrides

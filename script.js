@@ -37,6 +37,31 @@ const defaultGallery = [
     }
 ];
 
+
+const defaultBlogPosts = [
+    {
+        title: 'Version 1.0.0 Released',
+        summary: 'Your first stable release is live with curated progression, performance tuning, and updated quest flow.',
+        date: '2026-01-15',
+        author: 'Modpack Team',
+        url: '#'
+    },
+    {
+        title: 'Server Setup Tips',
+        summary: 'Recommended JVM settings, backup strategy, and early anti-lag config suggestions for multiplayer worlds.',
+        date: '2026-01-02',
+        author: 'Ops Lead',
+        url: '#'
+    },
+    {
+        title: 'Roadmap: Next Content Phase',
+        summary: 'A look at upcoming dimensions, progression gates, and planned quality-of-life updates.',
+        date: '2025-12-20',
+        author: 'Design Team',
+        url: '#'
+    }
+];
+
 const defaultWikiCategories = [
     'Getting Started',
     'Mods List',
@@ -119,6 +144,7 @@ function populateWebsite() {
 
     populateFeatures();
     populateGallery();
+    populateBlogPosts();
     populateWikiHub(githubUrls);
 }
 
@@ -162,6 +188,55 @@ function populateGallery() {
 
         item.addEventListener('click', () => openLightbox(index));
         galleryGrid.appendChild(item);
+    });
+}
+
+
+function formatBlogDate(value) {
+    if (!value) {
+        return 'Recent update';
+    }
+
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) {
+        return value;
+    }
+
+    return parsed.toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
+function populateBlogPosts() {
+    const blogGrid = document.getElementById('blog-grid');
+    if (!blogGrid) {
+        return;
+    }
+
+    const posts = config.blog?.posts?.length ? config.blog.posts : defaultBlogPosts;
+    blogGrid.innerHTML = '';
+
+    posts.forEach((post) => {
+        const article = document.createElement('article');
+        article.className = 'blog-card';
+
+        const postTitle = post.title || 'Blog Post';
+        const postSummary = post.summary || 'Share an update with your community.';
+        const postAuthor = post.author || 'Modpack Team';
+        const postUrl = post.url || '#';
+
+        article.innerHTML = `
+            <p class="blog-meta">${formatBlogDate(post.date)} · ${postAuthor}</p>
+            <h3>${postTitle}</h3>
+            <p>${postSummary}</p>
+            <a class="blog-link" href="${postUrl}" ${postUrl === '#' ? '' : 'target="_blank" rel="noopener noreferrer"'}>
+                Read update →
+            </a>
+        `;
+
+        blogGrid.appendChild(article);
     });
 }
 
