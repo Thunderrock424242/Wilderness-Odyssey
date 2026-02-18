@@ -23,22 +23,22 @@
     {
       "title": "Adventure-First Progression",
       "description": "Questing and milestone-based progression keep players moving forward without overwhelming them.",
-      "icon": "\ud83e\udded"
+      "icon": "🧭"
     },
     {
       "title": "High-Impact Combat",
       "description": "Face tougher encounters, unique bosses, and meaningful gear upgrades.",
-      "icon": "\u2694\ufe0f"
+      "icon": "⚔️"
     },
     {
       "title": "Worldbuilding Tools",
       "description": "Build ambitious bases with decorative and utility mods that work well together.",
-      "icon": "\ud83c\udff0"
+      "icon": "🏰"
     },
     {
       "title": "Multiplayer Friendly",
       "description": "Balanced settings and documentation make it easier to run a shared server.",
-      "icon": "\ud83e\udd1d"
+      "icon": "🤝"
     }
   ],
   "gallery": {
