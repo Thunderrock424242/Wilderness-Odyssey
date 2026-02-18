@@ -206,7 +206,8 @@ a {
 }
 
 .features-grid,
-.gallery-grid {
+.gallery-grid,
+.blog-grid {
     margin-top: 1.2rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -241,6 +242,41 @@ a {
 .feature-card p {
     color: var(--muted-text);
     font-size: 0.95rem;
+}
+
+
+.blog-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.blog-meta {
+    color: var(--accent-color);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.blog-card h3 {
+    font-size: 1.08rem;
+}
+
+.blog-card p {
+    color: var(--muted-text);
+}
+
+.blog-link {
+    color: var(--text-color);
+    font-weight: 700;
+    margin-top: auto;
+}
+
+.blog-link:hover {
+    color: var(--accent-color);
 }
 
 .gallery-item {
