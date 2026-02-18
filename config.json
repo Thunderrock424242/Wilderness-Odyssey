@@ -6,6 +6,14 @@
     "version": "1.0.0",
     "minecraftVersion": "1.20.1"
   },
+  "branding": {
+    "logo": {
+      "src": "images/site-logo.svg",
+      "alt": "Your Modpack Logo",
+      "width": 320,
+      "height": 72
+    }
+  },
   "links": {
     "curseforge": "https://www.curseforge.com/minecraft/modpacks/your-modpack",
     "discord": "",
@@ -15,22 +23,22 @@
     {
       "title": "Adventure-First Progression",
       "description": "Questing and milestone-based progression keep players moving forward without overwhelming them.",
-      "icon": "\ud83e\udded"
+      "icon": "🧭"
     },
     {
       "title": "High-Impact Combat",
       "description": "Face tougher encounters, unique bosses, and meaningful gear upgrades.",
-      "icon": "\u2694\ufe0f"
+      "icon": "⚔️"
     },
     {
       "title": "Worldbuilding Tools",
       "description": "Build ambitious bases with decorative and utility mods that work well together.",
-      "icon": "\ud83c\udff0"
+      "icon": "🏰"
     },
     {
       "title": "Multiplayer Friendly",
       "description": "Balanced settings and documentation make it easier to run a shared server.",
-      "icon": "\ud83e\udd1d"
+      "icon": "🤝"
     }
   ],
   "gallery": {
@@ -99,28 +107,8 @@
     "textColor": "#f8fafc"
   },
   "blog": {
-    "posts": [
-      {
-        "title": "v1.0 Release Notes",
-        "summary": "Highlights from launch week, progression changes, and top-reported fixes.",
-        "date": "2026-01-15",
-        "author": "Your Name",
-        "url": "https://example.com/blog/v1-0-release-notes"
-      },
-      {
-        "title": "Server Performance Guide",
-        "summary": "Suggested flags, pregeneration tips, and chunk loading rules for smoother worlds.",
-        "date": "2026-01-08",
-        "author": "Server Team",
-        "url": "https://example.com/blog/server-performance-guide"
-      },
-      {
-        "title": "Community Spotlight",
-        "summary": "Featured player builds, event recap, and what is coming next in the roadmap.",
-        "date": "2025-12-28",
-        "author": "Community Manager",
-        "url": "https://example.com/blog/community-spotlight"
-      }
-    ]
+    "source": "folder",
+    "indexFile": "blogs/index.json",
+    "posts": []
   }
 }
