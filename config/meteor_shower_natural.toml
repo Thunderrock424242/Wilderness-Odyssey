@@ -1,0 +1,145 @@
+	["自然流星雨配置"."概率配置"]
+		#基础触发概率（每tick）
+		# Default: 0.001
+		# Range: 0.0 ~ 1.0
+		base_chance = 0.001
+		#夜晚额外概率加成
+		# Default: 0.002
+		# Range: 0.0 ~ 1.0
+		night_bonus = 0.002
+
+	["自然流星雨配置"."时间配置"]
+		#夜晚开始时间（游戏时间）
+		# Default: 13000
+		# Range: 0 ~ 24000
+		night_start_time = 13000
+		#夜晚结束时间（游戏时间）
+		# Default: 23000
+		# Range: 0 ~ 24000
+		night_end_time = 23000
+		#最短冷却时间（ticks）
+		# Default: 12000
+		# Range: 1000 ~ 100000
+		min_cooldown = 12000
+		#最长冷却时间（ticks）
+		# Default: 48000
+		# Range: 1000 ~ 100000
+		max_cooldown = 48000
+
+	["自然流星雨配置"."数量配置"]
+		#小型流星雨最少数量
+		# Default: 5
+		# Range: 1 ~ 50
+		min_count_small = 5
+		#小型流星雨最多数量
+		# Default: 15
+		# Range: 1 ~ 50
+		max_count_small = 15
+		#中型流星雨最少数量
+		# Default: 15
+		# Range: 5 ~ 100
+		min_count_medium = 15
+		#中型流星雨最多数量
+		# Default: 30
+		# Range: 5 ~ 100
+		max_count_medium = 30
+		#大型流星雨最少数量
+		# Default: 30
+		# Range: 10 ~ 200
+		min_count_large = 30
+		#大型流星雨最多数量
+		# Default: 60
+		# Range: 10 ~ 200
+		max_count_large = 60
+		#史诗级流星雨最少数量
+		# Default: 60
+		# Range: 20 ~ 500
+		min_count_epic = 60
+		#史诗级流星雨最多数量
+		# Default: 150
+		# Range: 20 ~ 500
+		max_count_epic = 150
+
+	["自然流星雨配置"."尺寸配置"]
+		#小型流星雨最小尺寸
+		# Default: 0.1
+		# Range: 0.05 ~ 1.0
+		min_size_small = 0.1
+		#小型流星雨最大尺寸
+		# Default: 0.3
+		# Range: 0.05 ~ 1.0
+		max_size_small = 0.3
+		#中型流星雨最小尺寸
+		# Default: 0.2
+		# Range: 0.1 ~ 1.5
+		min_size_medium = 0.2
+		#中型流星雨最大尺寸
+		# Default: 0.5
+		# Range: 0.1 ~ 1.5
+		max_size_medium = 0.5
+		#大型流星雨最小尺寸
+		# Default: 0.3
+		# Range: 0.15 ~ 2.0
+		min_size_large = 0.3
+		#大型流星雨最大尺寸
+		# Default: 0.8
+		# Range: 0.15 ~ 2.0
+		max_size_large = 0.8
+		#史诗级流星雨最小尺寸
+		# Default: 0.5
+		# Range: 0.2 ~ 3.0
+		min_size_epic = 0.5
+		#史诗级流星雨最大尺寸
+		# Default: 1.2
+		# Range: 0.2 ~ 3.0
+		max_size_epic = 1.2
+
+	["自然流星雨配置"."生成范围配置"]
+		#最小生成半径（相对于玩家）
+		# Default: 1200.0
+		# Range: 400.0 ~ 8000.0
+		spawn_radius_min = 1200.0
+		#最大生成半径（相对于玩家）
+		# Default: 4000.0
+		# Range: 800.0 ~ 12000.0
+		spawn_radius_max = 4000.0
+		#最小生成高度
+		# Default: 200
+		# Range: 100 ~ 800
+		height_min = 200
+		#最大生成高度
+		# Default: 400
+		# Range: 200 ~ 1000
+		height_max = 400
+
+	["自然流星雨配置"."月相影响配置"]
+		#满月时的概率倍数
+		# Default: 3.0
+		# Range: 1.0 ~ 10.0
+		full_moon_multiplier = 3.0
+		#上弦月/下弦月时的概率倍数
+		# Default: 2.0
+		# Range: 1.0 ~ 5.0
+		half_moon_multiplier = 2.0
+		#盈凸月/亏凸月时的概率倍数
+		# Default: 1.5
+		# Range: 1.0 ~ 3.0
+		crescent_moon_multiplier = 1.5
+
+	["自然流星雨配置"."规模概率配置"]
+		#小型规模概率
+		# Default: 0.6
+		# Range: 0.0 ~ 1.0
+		small_scale_chance = 0.6
+		#中型规模概率
+		# Default: 0.25
+		# Range: 0.0 ~ 1.0
+		medium_scale_chance = 0.25
+		#大型规模概率
+		# Default: 0.1
+		# Range: 0.0 ~ 1.0
+		large_scale_chance = 0.1
+		#史诗级规模概率
+		# Default: 0.05
+		# Range: 0.0 ~ 1.0
+		epic_scale_chance = 0.05

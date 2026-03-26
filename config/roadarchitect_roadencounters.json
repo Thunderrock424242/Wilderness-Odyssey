@@ -1,0 +1,1238 @@
+{
+  "debugActionbar": false,
+  "maxMarkers": 3,
+  "strideBlocks": 160,
+  "triggerRadius": 75,
+  "cooldownSeconds": 300,
+  "spawnOffset": 6,
+  "spawns": [
+    {
+      "eventType": "AMBUSH",
+      "weight": 4,
+      "groups": [
+        {
+          "idOrTag": "minecraft:pillager",
+          "countMin": 2,
+          "countMax": 4,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 4,
+      "groups": [
+        {
+          "idOrTag": "minecraft:zombie",
+          "countMin": 4,
+          "countMax": 6,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 4,
+      "groups": [
+        {
+          "idOrTag": "minecraft:skeleton",
+          "countMin": 3,
+          "countMax": 5,
+          "nbt": [
+            "{ArmorItems:[{},{},{},{id:\"minecraft:iron_helmet\",Count:1b}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 3,
+      "groups": [
+        {
+          "idOrTag": "minecraft:zombie",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": []
+        },
+        {
+          "idOrTag": "minecraft:skeleton",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:zombie",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": [
+            "{HandItems:[{id:\"minecraft:iron_sword\",Count:1b}],ArmorItems:[{id:\"minecraft:iron_boots\",Count:1b},{id:\"minecraft:iron_leggings\",Count:1b},{id:\"minecraft:iron_chestplate\",Count:1b},{id:\"minecraft:iron_helmet\",Count:1b}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 1,
+      "groups": [
+        {
+          "idOrTag": "minecraft:pillager",
+          "countMin": 1,
+          "countMax": 1,
+          "nbt": [
+            "{HandItems:[{id:\"minecraft:crossbow\",Count:1b},{id:\"minecraft:ominous_banner\",Count:1b}]}"
+          ]
+        },
+        {
+          "idOrTag": "minecraft:pillager",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 1,
+      "groups": [
+        {
+          "idOrTag": "minecraft:witch",
+          "countMin": 1,
+          "countMax": 1,
+          "nbt": []
+        },
+        {
+          "idOrTag": "minecraft:zombie",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:stray",
+          "countMin": 3,
+          "countMax": 4,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [
+        "minecraft:snowy_plains",
+        "minecraft:ice_spikes",
+        "minecraft:snowy_taiga",
+        "minecraft:snowy_beach",
+        "minecraft:grove",
+        "minecraft:snowy_slopes",
+        "minecraft:frozen_peaks",
+        "minecraft:jagged_peaks"
+      ],
+      "biomeBlacklist": []
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:wolf",
+          "countMin": 3,
+          "countMax": 5,
+          "nbt": [
+            "{Attributes:[{Name:\"generic.attack_damage\",Base:4.0d}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:zombie",
+          "countMin": 3,
+          "countMax": 4,
+          "nbt": [
+            "{ActiveEffects:[{Id:\"minecraft:speed\",Amplifier:0b,Duration:600},{Id:\"minecraft:jump_boost\",Amplifier:0b,Duration:600}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:skeleton",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": [
+            "{HandItems:[{id:\"minecraft:bow\",Count:1b,tag:{Enchantments:[{id:\"minecraft:power\",lvl:1s}]}}],ArmorItems:[{id:\"minecraft:chainmail_boots\",Count:1b},{id:\"minecraft:chainmail_leggings\",Count:1b},{id:\"minecraft:chainmail_chestplate\",Count:1b},{id:\"minecraft:chainmail_helmet\",Count:1b}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 1,
+      "groups": [
+        {
+          "idOrTag": "minecraft:zombie",
+          "countMin": 3,
+          "countMax": 4,
+          "nbt": [
+            "{HandItems:[{id:\"minecraft:iron_pickaxe\",Count:1b}],ArmorItems:[{},{},{},{id:\"minecraft:iron_helmet\",Count:1b}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 1,
+      "groups": [
+        {
+          "idOrTag": "minecraft:zombie",
+          "countMin": 3,
+          "countMax": 4,
+          "nbt": [
+            "{HandItems:[{id:\"minecraft:iron_hoe\",Count:1b}],ArmorItems:[{id:\"minecraft:leather_boots\",Count:1b},{id:\"minecraft:leather_leggings\",Count:1b},{id:\"minecraft:leather_chestplate\",Count:1b},{id:\"minecraft:leather_helmet\",Count:1b}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:cave_spider",
+          "countMin": 3,
+          "countMax": 5,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:drowned",
+          "countMin": 2,
+          "countMax": 4,
+          "nbt": [
+            "{HandItems:[{id:\"minecraft:trident\",Count:1b}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ],
+      "biomeBlacklist": []
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:husk",
+          "countMin": 3,
+          "countMax": 4,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [
+        "minecraft:desert"
+      ],
+      "biomeBlacklist": []
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 1,
+      "groups": [
+        {
+          "idOrTag": "minecraft:illusioner",
+          "countMin": 1,
+          "countMax": 1,
+          "nbt": []
+        },
+        {
+          "idOrTag": "minecraft:pillager",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 1,
+      "groups": [
+        {
+          "idOrTag": "minecraft:evoker",
+          "countMin": 1,
+          "countMax": 1,
+          "nbt": []
+        },
+        {
+          "idOrTag": "minecraft:vindicator",
+          "countMin": 1,
+          "countMax": 2,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:zombie",
+          "countMin": 3,
+          "countMax": 4,
+          "nbt": [
+            "{ActiveEffects:[{Id:\"minecraft:speed\",Amplifier:1b,Duration:600}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:zombie",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": [
+            "{ActiveEffects:[{Id:\"minecraft:resistance\",Amplifier:0b,Duration:600}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:zombie",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": [
+            "{ArmorItems:[{id:\"minecraft:chainmail_boots\",Count:1b},{id:\"minecraft:chainmail_leggings\",Count:1b},{id:\"minecraft:chainmail_chestplate\",Count:1b},{id:\"minecraft:chainmail_helmet\",Count:1b}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:zombie",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": [
+            "{HandItems:[{id:\"minecraft:iron_sword\",Count:1b,tag:{Enchantments:[{id:\"minecraft:sharpness\",lvl:1s}]}}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:skeleton",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": [
+            "{HandItems:[{id:\"minecraft:bow\",Count:1b,tag:{Enchantments:[{id:\"minecraft:punch\",lvl:2s}]}}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 1,
+      "groups": [
+        {
+          "idOrTag": "minecraft:skeleton",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": [
+            "{HandItems:[{id:\"minecraft:bow\",Count:1b,tag:{Enchantments:[{id:\"minecraft:flame\",lvl:1s}]}}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:skeleton",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": [
+            "{ArmorItems:[{id:\"minecraft:chainmail_boots\",Count:1b},{id:\"minecraft:chainmail_leggings\",Count:1b},{id:\"minecraft:chainmail_chestplate\",Count:1b},{id:\"minecraft:chainmail_helmet\",Count:1b}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 1,
+      "groups": [
+        {
+          "idOrTag": "minecraft:skeleton",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": [
+            "{HandItems:[{id:\"minecraft:iron_sword\",Count:1b}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 1,
+      "groups": [
+        {
+          "idOrTag": "minecraft:skeleton",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": [
+            "{HandItems:[{id:\"minecraft:bow\",Count:1b},{id:\"minecraft:tipped_arrow\",Count:64b,tag:{Potion:\"minecraft:poison\"}}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 1,
+      "groups": [
+        {
+          "idOrTag": "minecraft:skeleton",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": [
+            "{HandItems:[{id:\"minecraft:bow\",Count:1b},{id:\"minecraft:tipped_arrow\",Count:64b,tag:{Potion:\"minecraft:slowness\"}}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 1,
+      "groups": [
+        {
+          "idOrTag": "minecraft:skeleton",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": [
+            "{HandItems:[{id:\"minecraft:bow\",Count:1b},{id:\"minecraft:tipped_arrow\",Count:64b,tag:{Potion:\"minecraft:weakness\"}}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:spider",
+          "countMin": 3,
+          "countMax": 4,
+          "nbt": [
+            "{ActiveEffects:[{Id:\"minecraft:speed\",Amplifier:1b,Duration:600}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 1,
+      "groups": [
+        {
+          "idOrTag": "minecraft:spider",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": [
+            "{ActiveEffects:[{Id:\"minecraft:strength\",Amplifier:0b,Duration:600}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 1,
+      "groups": [
+        {
+          "idOrTag": "minecraft:spider",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": [
+            "{ActiveEffects:[{Id:\"minecraft:invisibility\",Amplifier:0b,Duration:600}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "PATROL",
+      "weight": 5,
+      "groups": [
+        {
+          "idOrTag": "minecraft:iron_golem",
+          "countMin": 1,
+          "countMax": 1,
+          "nbt": [
+            "{Health:25f}"
+          ]
+        },
+        {
+          "idOrTag": "minecraft:vindicator",
+          "countMin": 2,
+          "countMax": 2,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 5,
+      "groups": [
+        {
+          "idOrTag": "minecraft:zombie_villager",
+          "countMin": 1,
+          "countMax": 1,
+          "nbt": []
+        },
+        {
+          "idOrTag": "minecraft:zombie",
+          "countMin": 3,
+          "countMax": 4,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "MERCHANT",
+      "weight": 4,
+      "groups": [
+        {
+          "idOrTag": "minecraft:wandering_trader",
+          "countMin": 1,
+          "countMax": 1,
+          "nbt": []
+        },
+        {
+          "idOrTag": "minecraft:trader_llama",
+          "countMin": 2,
+          "countMax": 2,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "PATROL",
+      "weight": 4,
+      "groups": [
+        {
+          "idOrTag": "minecraft:iron_golem",
+          "countMin": 1,
+          "countMax": 1,
+          "nbt": []
+        },
+        {
+          "idOrTag": "minecraft:villager",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "WILDLIFE",
+      "weight": 3,
+      "groups": [
+        {
+          "idOrTag": "minecraft:wolf",
+          "countMin": 3,
+          "countMax": 5,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "MERCHANT",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:wandering_trader",
+          "countMin": 1,
+          "countMax": 1,
+          "nbt": [
+            "{CustomName:\"{\\\"text\\\":\\\"Lost Traveler\\\",\\\"color\\\":\\\"gold\\\"}\",CustomNameVisible:1b,PersistenceRequired:1b,HandItems:[{id:\"minecraft:map\",Count:1b},{}],HandDropChances:[0.0f,0.0f],ActiveEffects:[{Id:\"minecraft:speed\",Amplifier:0b,Duration:6000}],Offers:{Recipes:[{buy:{id:\"minecraft:emerald\",Count:6b},sell:{id:\"minecraft:name_tag\",Count:1b},maxUses:3,rewardExp:1b,priceMultiplier:0.05f},{buy:{id:\"minecraft:emerald\",Count:9b},sell:{id:\"minecraft:saddle\",Count:1b},maxUses:2,rewardExp:1b,priceMultiplier:0.05f},{buy:{id:\"minecraft:emerald\",Count:1b},sell:{id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:night_vision\"}},maxUses:4,rewardExp:1b,priceMultiplier:0.05f},{buy:{id:\"minecraft:emerald\",Count:15b},buyB:{id:\"minecraft:diamond\",Count:1b},sell:{id:\"minecraft:echo_shard\",Count:1b},maxUses:1,rewardExp:1b,priceMultiplier:0.0f},{buy:{id:\"minecraft:emerald\",Count:1b},sell:{id:\"minecraft:mycelium\",Count:2b},maxUses:3,rewardExp:1b,priceMultiplier:0.05f},{buy:{id:\"minecraft:emerald\",Count:12b},sell:{id:\"minecraft:spore_blossom\",Count:1b},maxUses:1,rewardExp:1b,priceMultiplier:0.0f},{buy:{id:\"minecraft:emerald\",Count:1b},sell:{id:\"minecraft:pointed_dripstone\",Count:6b},maxUses:3,rewardExp:1b,priceMultiplier:0.05f},{buy:{id:\"minecraft:emerald\",Count:16b},sell:{id:\"minecraft:sculk_sensor\",Count:1b},maxUses:1,rewardExp:1b,priceMultiplier:0.0f},{buy:{id:\"minecraft:emerald\",Count:20b},sell:{id:\"minecraft:sculk_shrieker\",Count:1b},maxUses:1,rewardExp:1b,priceMultiplier:0.0f},{buy:{id:\"minecraft:emerald\",Count:4b},sell:{id:\"minecraft:nautilus_shell\",Count:1b},maxUses:2,rewardExp:1b,priceMultiplier:0.05f},{buy:{id:\"minecraft:emerald\",Count:15b},sell:{id:\"minecraft:goat_horn\",Count:1b},maxUses:1,rewardExp:1b,priceMultiplier:0.0f},{buy:{id:\"minecraft:emerald\",Count:28b},sell:{id:\"minecraft:sniffer_egg\",Count:1b},maxUses:1,rewardExp:1b,priceMultiplier:0.0f},{buy:{id:\"minecraft:emerald\",Count:9b},sell:{id:\"minecraft:torchflower_seeds\",Count:1b},maxUses:2,rewardExp:1b,priceMultiplier:0.05f},{buy:{id:\"minecraft:emerald\",Count:9b},sell:{id:\"minecraft:pitcher_pod\",Count:1b},maxUses:2,rewardExp:1b,priceMultiplier:0.05f},{buy:{id:\"minecraft:emerald\",Count:64b},buyB:{id:\"minecraft:diamond\",Count:5b},sell:{id:\"minecraft:trident\",Count:1b},maxUses:1,rewardExp:1b,priceMultiplier:0.0f},{buy:{id:\"minecraft:emerald\",Count:25b},sell:{id:\"minecraft:music_disc_pigstep\",Count:1b},maxUses:1,rewardExp:1b,priceMultiplier:0.0f},{buy:{id:\"minecraft:emerald\",Count:20b},sell:{id:\"minecraft:music_disc_otherside\",Count:1b},maxUses:1,rewardExp:1b,priceMultiplier:0.0f},{buy:{id:\"minecraft:emerald\",Count:10b},sell:{id:\"minecraft:snout_banner_pattern\",Count:1b},maxUses:1,rewardExp:1b,priceMultiplier:0.0f},{buy:{id:\"minecraft:emerald\",Count:10b},sell:{id:\"minecraft:mojang_banner_pattern\",Count:1b},maxUses:1,rewardExp:1b,priceMultiplier:0.0f}]}}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "MERCHANT",
+      "weight": 2,
+      "groups": [
+        {
+          "idOrTag": "minecraft:villager",
+          "countMin": 1,
+          "countMax": 1,
+          "nbt": [
+            "{VillagerData:{profession:\"minecraft:cleric\"}}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "AMBUSH",
+      "weight": 5,
+      "groups": [
+        {
+          "idOrTag": "minecraft:zombie",
+          "countMin": 2,
+          "countMax": 3,
+          "nbt": [
+            "{ArmorItems:[{},{},{},{id:\"minecraft:carved_pumpkin\",Count:1b}],ActiveEffects:[{Id:\"minecraft:slowness\",Amplifier:0b,Duration:600}]}"
+          ]
+        },
+        {
+          "idOrTag": "minecraft:skeleton",
+          "countMin": 1,
+          "countMax": 2,
+          "nbt": [
+            "{ArmorItems:[{},{},{},{id:\"minecraft:carved_pumpkin\",Count:1b}],ActiveEffects:[{Id:\"minecraft:slowness\",Amplifier:0b,Duration:600}]}"
+          ]
+        },
+        {
+          "idOrTag": "minecraft:zombie_villager",
+          "countMin": 1,
+          "countMax": 1,
+          "nbt": [
+            "{VillagerData:{profession:\"minecraft:none\"},ActiveEffects:[{Id:\"minecraft:slowness\",Amplifier:0b,Duration:600}]}"
+          ]
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": [
+        "minecraft:river",
+        "minecraft:frozen_river",
+        "minecraft:ocean",
+        "minecraft:deep_ocean",
+        "minecraft:cold_ocean",
+        "minecraft:deep_cold_ocean",
+        "minecraft:lukewarm_ocean",
+        "minecraft:deep_lukewarm_ocean",
+        "minecraft:warm_ocean",
+        "minecraft:deep_warm_ocean",
+        "minecraft:frozen_ocean",
+        "minecraft:deep_frozen_ocean"
+      ]
+    },
+    {
+      "eventType": "NONE",
+      "weight": 10,
+      "groups": [
+        {
+          "idOrTag": "minecraft:pillager",
+          "countMin": 4,
+          "countMax": 5,
+          "nbt": []
+        }
+      ],
+      "biomeWhitelist": [],
+      "biomeBlacklist": []
+    }
+  ],
+  "types": {
+    "ambush": {
+      "sounds": [
+        "minecraft:entity.pillager.ambient"
+      ]
+    },
+    "merchant": {
+      "sounds": [
+        "minecraft:entity.villager.yes"
+      ]
+    },
+    "patrol": {
+      "sounds": [
+        "minecraft:entity.iron_golem.repair"
+      ]
+    },
+    "wildlife": {
+      "sounds": [
+        "minecraft:entity.wolf.howl"
+      ]
+    },
+    "none": {
+      "sounds": []
+    }
+  }
+}

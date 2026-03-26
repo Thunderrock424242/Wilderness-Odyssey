@@ -1,0 +1,207 @@
+#General Settings
+[general]
+	#Will log clients that connect with Vivecraft and their Vivecraft version.
+	debug = false
+	#Will check for new mod versions when an OP logs into the server and sends a system message to them.
+	checkForUpdate = true
+	#What updates to check for.
+	# r: Release, b: Beta, a: Alpha
+	checkForUpdateType = "r"
+	#Set to 'true' to only allow VR players to join the server.
+	# If enabled, VR hotswitching will be automatically disabled.
+	vr_only = false
+	#Set to 'true' to only allow players that have Vivecraft installed to join the server.
+	vive_only = false
+	#Set to 'true', to allow server OPs to bypass VR/Vivecraft only settings.
+	allow_op = true
+	#Seconds to wait before kicking a player or sending the welcome messages.
+	# The player's client must send the Vivecraft VERSION info in this time.
+	# default: 10.00, min: 0.00, max: 100.00
+	messageAndKickDelay = 10.0
+	#Gives VR Players fun cakes and drinks at random, when they respawn.
+	vrFun = true
+	#Sends the player position data also back to the player that sent it, usually not needed.
+	# Enable this on a dedicated server when using replay mod or something similar.
+	sendDataToOwner = false
+
+#Configure messages that are sent when players do specific actions.
+#Set message to nothing to not send. e.g., leaveMessage = ""
+# Use '%s' in any message for the player name.
+# For messages that take two placeholders (i.e., death by mob) use '%1$s' for the player name and '%2$s' for the second placeholder.
+[messages]
+	#Enable or disable all messages.
+	enabled = false
+	#Message sent when a player joins with VR active.
+	welcomeVR = "%s has joined with standing VR!"
+	#Message sent when a player joins with VR not active.
+	welcomeNonVR = "%s has joined with Non-VR companion!"
+	#Message sent when a player joins with VR in seated mode.
+	welcomeSeated = "%s has joined with seated VR!"
+	#Message sent when a player joins without vivecraft installed.
+	welcomeVanilla = "%s has joined as a Muggle!"
+	#Message sent when a player leaves the server.
+	leaveMessage = "%s has disconnected from the server!"
+	#Message sent when a player dies with VR active.
+	deathVR = "%s died in standing VR!"
+	#Message sent when a player dies with VR not active.
+	deathNonVR = "%s died in Non-VR companion!"
+	#Message sent when a player dies with VR in seated mode.
+	deathSeated = "%s died in seated VR!"
+	#Message sent when a player dies without Vivecraft.
+	deathVanilla = "%s died as a Muggle!"
+	#Message sent when a player dies because of a mob with VR active.
+	deathByMobVR = "%1$s was slain by %2$s in standing VR!"
+	#Message sent when a player dies because of a mob with VR not active.
+	deathByMobNonVR = "%1$s was slain by %2$s in Non-VR companion!"
+	#Message sent when a player dies because of a mob with VR in seated mode.
+	deathByMobSeated = "%1$s was slain by %2$s in seated VR!"
+	#Message sent when a player dies because of a mob without Vivecraft.
+	deathByMobVanilla = "%1$s was slain by %2$s as a Muggle!"
+	#Message sent to a player when they get kicked because of the 'Vivecraft Only' setting.
+	KickViveOnly = "This server is configured for Vivecraft players only."
+	#Message sent to a player when they get kicked because of the 'VR Only' setting.
+	KickVROnly = "This server is configured for VR players only."
+
+#Vanilla Modifications for VR Players
+[vrChanges]
+	#Distance at which creepers swell and explode for standing VR players.
+	# Vanilla distance: 3
+	# default: 1.75, min: 0.10, max: 10.00
+	creeperSwellDistance = 1.75
+	#Adjusts the range in which mobs can use melee attacks against standing VR players.
+	# This is a reduction to the vanilla range (0.8 blocks), so 0.0 causes no change, and -0.7 means the mobs need to almost touch the player to cause an attack.
+	# When set very low, mobs might stop right in front of the player without attacking!
+	# default: -0.40, min: -0.70, max: 0.00
+	mobAttackRangeAdjustment = -0.4
+	#Allows vr players to hit/mine with their non-dominant hand items.
+	dualWielding = true
+	#Melee damage addition for VR players when hitting with their feet.
+	# This scales with the armor attribute of the boots, doing one additional damage per Armor level, times this multiplier
+	# Set to 0.0 to disable.
+	# default: 0.00, min: 0.00, max: 5.00
+	bootsArmorDamage = 0.0
+	#Projectiles by default have an inaccuracy to not shoot in the same direction all the time.
+	# With this, the inaccuracy can be adjusted for VR players.
+	# 1.0 is equal to vanilla, 0.0 is no inaccuracy at all.
+	# default: 1.00, min: 0.00, max: 1.00
+	projectileInaccuracyMultiplier = 1.0
+	#Allows VR players to bypass the vanilla block breaking check, which prevents breaking blocks too fast.
+	allowFasterBlockBreaking = true
+	#Allows VR players to block attacks by holding their shield up, without needing to actively use it. This means they can block attacks without needing to slow down.
+	allowRoomscaleShieldBlocking = true
+	#Allows VR players to attack entities, while they are actively using a shield. (This setting does not affect roomscale shield blocking)
+	allowAttacksWhileBlocking = true
+
+	#Bow Damage Adjustments
+	[vrChanges.bow]
+		#Archery damage multiplier for VR players in standing mode.
+		# Set to 1.0 to disable.
+		# default: 2.00, min: 1.00, max: 10.00
+		standingMultiplier = 2.0
+		#Archery damage multiplier for VR players in seated mode.
+		# Set to 1.0 to disable.
+		# default: 1.00, min: 1.00, max: 10.00
+		seatedMultiplier = 1.0
+		#Headshot damage multiplier for VR players in standing mode.
+		# Set to 1.0 to disable.
+		# default: 3.00, min: 1.00, max: 10.00
+		standingHeadshotMultiplier = 3.0
+		#Headshot damage multiplier for VR players in seated mode.
+		# Set to 1.0 to disable.
+		# default: 2.00, min: 1.00, max: 10.00
+		seatedHeadshotMultiplier = 2.0
+		#Headshot damage multiplier for Vanilla/NonVR players.
+		# Set to 1.0 to disable.
+		# default: 1.00, min: 1.00, max: 10.00
+		vanillaHeadshotMultiplier = 1.0
+		#Indicator to notify players that they got a headshot. Options are:
+		# "NONE": No indicator.
+		# "AUDIO": Plays a sound near the shooter.
+		# "VISUAL": Spawns particles at the hit location.
+		# "BOTH": Both Audio and Visual indicators.
+		headshotIndicator = "BOTH"
+
+#PVP Settings
+[pvp]
+	#Notifies the player that tried to cause damage, that it was blocked from the server.
+	notifyBlockedDamage = false
+	#Allows Standing VR players to damage each other.
+	VRvsVR = true
+	#Allows Seated VR players to damage each other.
+	SEATEDVRvsSEATEDVR = true
+	#Allows Standing VR players and Non VR players to damage each other.
+	VRvsNONVR = true
+	#Allows Seated VR players and Non VR players to damage each other.
+	SEATEDVRvsNONVR = true
+	#Allows Standing VR players and Seated VR Players to damage each other.
+	VRvsSEATEDVR = true
+
+#Climbey Motion Settings
+[climbey]
+	#Allows the use of 'Jump Boots' and 'Climb Claws'.
+	enabled = true
+	#If enabled, hanging on walls with the 'Climb Claws', or jumping with the 'Jump Boots' will cause exhaustion.
+	foodExhaustion = true
+	#Specifies how the blocks in the blocklist are interpreted. Options are:
+	# "DISABLED": List is ignored. All blocks are climbable.
+	# "WHITELIST": Only blocks on the list are climbable.
+	# "BLACKLIST": All blocks are climbable except those on the list
+	blockmode = "DISABLED"
+	#List of block names for use with WHITELIST/BLACKLIST block mode.
+	# Blocks can be of the form 'blockid' for vanilla or 'modid:blockid' for modded blocks
+	blocklist = ["white_wool", "dirt", "grass_block"]
+
+#Roomscale Crawling Settings
+[crawling]
+	#Allows VR players to get into the crawl state by getting low to the ground. Disabling does not prevent vanilla crawling.
+	enabled = true
+
+#Teleport Settings
+[teleport]
+	#Allows VR players to use teleport movement. It is recommended to leave this enabled for players prone to VR sickness.
+	# Disabling this only works for Vivecraft 1.3.0+ clients.
+	enabled = true
+	#If enabled, teleporting up blocks will cause exhaustion.
+	foodExhaustion = false
+	#Enforces limited teleport range and frequency in Survival.
+	limitedSurvival = false
+	#Maximum number of blocks players in Survival mode can teleport up. Set to 0 to disable.
+	# default: 4, min: 1, max: 16
+	upLimit = 4
+	#Maximum number of blocks players in Survival mode can teleport down. Set to 0 to disable.
+	# default: 4, min: 1, max: 16
+	downLimit = 4
+	#Maximum number of blocks players in Survival mode can teleport horizontally. Set to 0 to disable.
+	# default: 16, min: 1, max: 32
+	horizontalLimit = 16
+
+#Worldscale Settings
+[worldScale]
+	#Limit the range of worldscales players are allowed to use.
+	limitRange = false
+	#Lower limit of allowed worldscale
+	# default: 0.50, min: 0.10, max: 100.00
+	min = 0.5
+	#Upper limit of allowed worldscale
+	# default: 2.00, min: 0.10, max: 100.00
+	max = 2.0
+
+#Other Clientsetting Overrides
+[settingOverrides]
+	#Forces players to use the 'Raw Item Positions' setting
+	thirdPersonItems = false
+	#Forces players to use the 'Raw Item Positions' setting, only for items with custom model data/custom item models.
+	thirdPersonItemsCustom = false
+
+#VR Hotswitch Settings
+[vrSwitching]
+	#Allows players to switch between VR and NonVR on the fly.
+	# If disabled, they will be locked to the mode they joined with.
+	enabled = true
+
+#Debug Settings
+[debug]
+	#Will spawn particles at VR players device positions, to indicate the server VR data state.
+	debugParticles = false
+	#Will spawn particles at VR players head position, to indicate the server VR data state.
+	debugParticlesHead = false

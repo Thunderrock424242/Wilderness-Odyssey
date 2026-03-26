@@ -59,7 +59,3 @@
 ["Hot as Lava"]
 	#allows chicken jockeys to drop the lava chicken music disc
 	lava_chicken_music_disc = true
-
-[Debug]
-	#toggle debug features
-	debug = true

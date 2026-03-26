@@ -13,6 +13,10 @@
 		# Default: 1.0
 		# Range: 0.0 ~ 1.0
 		vignette = 1.0
+		#Turns off all the tv screen effects and draws it as a simple texture. Disabling can make the render slightly faster. All below options will be ignored if this is disabled
+		screen_effects = true
+		#Plays an animation when the television is turned off or on
+		turn_off_animation = true
 
 	[television.live_feed]
 		#How many times per second the television updates its live feed texture. Lowering this will improve performance but make the video less smooth, fractions work too
@@ -40,3 +44,7 @@
 		#Distant Horizons compatibility lod render quality
 		#Allowed Values: OFF, LOW, MED, HIGH
 		distant_horizons_LOD = "OFF"
+		#Draws the date and time on the live feed texture
+		draw_date = false
+		#Attempts to disable iris shaders in the live feed view
+		iris_off_hack = true

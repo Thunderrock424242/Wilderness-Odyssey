@@ -1,0 +1,20 @@
+{
+  "entityTrails": {
+    "meteor_shower:fallen_star_entity": {
+      "size": 1.0,
+      "max_points": 140,
+      "min_speed": 0.001,
+      "update_frequency": 1,
+      "fade_in_color": "#FF44AAFF",
+      "fade_out_color": "#0044AAFF",
+      "position_offset": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "motion_shift": 0.3,
+      "backward_shift": 0.3
+    }
+  },
+  "particleTrails": {}
+}

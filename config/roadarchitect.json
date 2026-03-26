@@ -1,0 +1,1593 @@
+{
+  "initScanRadius": 125,
+  "chunkGenerateScanRadius": 20,
+  "maxConnectionDistance": 715,
+  "pipelineIntervalSeconds": 120,
+  "lampInterval": 30,
+  "roadWidth": 3,
+  "sideDecorationInterval": 12,
+  "buoyInterval": 18,
+  "maskErosion": 1,
+  "deterministicDecorations": true,
+  "roadStyles": {
+    "enabled": true,
+    "overrides": [
+      {
+        "biomeSelectors": [],
+        "palette": [
+          {
+            "block": "minecraft:grass_block",
+            "weight": 3
+          },
+          {
+            "block": "minecraft:cobblestone",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:gravel",
+            "weight": 1
+          }
+        ],
+        "decorations": []
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:river"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:grass_block",
+            "weight": 4
+          },
+          {
+            "block": "minecraft:sand",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:gravel",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:oak_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:stony_shore"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:stone",
+            "weight": 7
+          },
+          {
+            "block": "minecraft:cobblestone",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:gravel",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:oak_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:beach"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:sand",
+            "weight": 7
+          },
+          {
+            "block": "minecraft:cobblestone",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:gravel",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:oak_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:old_growth_pine_taiga"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:podzol",
+            "weight": 7
+          },
+          {
+            "block": "minecraft:cobblestone",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:gravel",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:tuff",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:andesite",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:spruce_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:old_growth_spruce_taiga"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:podzol",
+            "weight": 7
+          },
+          {
+            "block": "minecraft:cobblestone",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:gravel",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:tuff",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:andesite",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:spruce_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:taiga"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:grass_block",
+            "weight": 4
+          },
+          {
+            "block": "minecraft:stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:moss_block",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:stone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:cobblestone",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:spruce_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:snowy_taiga"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:dirt_path",
+            "weight": 4
+          },
+          {
+            "block": "minecraft:stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:moss_block",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:stone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:cobblestone",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:spruce_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:snowy_beach"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:dirt_path",
+            "weight": 4
+          },
+          {
+            "block": "minecraft:stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:moss_block",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:stone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:cobblestone",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:spruce_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:snowy_plains"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:dirt_path",
+            "weight": 4
+          },
+          {
+            "block": "minecraft:stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:moss_block",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:stone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:cobblestone",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:spruce_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:snowy_slopes"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:dirt_path",
+            "weight": 4
+          },
+          {
+            "block": "minecraft:stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:moss_block",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:stone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:cobblestone",
+            "weight": 1
+          }
+        ],
+        "decorations": []
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:swamp"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:grass_block",
+            "weight": 4
+          },
+          {
+            "block": "minecraft:tuff",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:cracked_stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:moss_block",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:oak_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:mangrove_swamp"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:mud",
+            "weight": 7
+          },
+          {
+            "block": "minecraft:tuff",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:cracked_stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:moss_block",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:mangrove_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:plains"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:grass_block",
+            "weight": 4
+          },
+          {
+            "block": "minecraft:stone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:andesite",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:cracked_stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_stone_bricks",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:oak_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:cherry_grove"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:grass_block",
+            "weight": 4
+          },
+          {
+            "block": "minecraft:stone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:andesite",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:cracked_stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_stone_bricks",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:cherry_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:dark_forest"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:grass_block",
+            "weight": 4
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:moss_block",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:stone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:cobblestone",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:dark_oak_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:savanna"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:grass_block",
+            "weight": 4
+          },
+          {
+            "block": "minecraft:coarse_dirt",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:andesite",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:gravel",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:acacia_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:desert"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:smooth_sandstone",
+            "weight": 7
+          },
+          {
+            "block": "minecraft:suspicious_sand",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:packed_mud",
+            "weight": 2
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:sandstone_wall"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:badlands"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:red_sandstone",
+            "weight": 7
+          },
+          {
+            "block": "minecraft:red_sand",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:packed_mud",
+            "weight": 2
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:red_sandstone_wall"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:wooded_badlands"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:red_sandstone",
+            "weight": 7
+          },
+          {
+            "block": "minecraft:red_sand",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:packed_mud",
+            "weight": 2
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:red_sandstone_wall"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:eroded_badlands"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:red_sandstone",
+            "weight": 7
+          },
+          {
+            "block": "minecraft:red_sand",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:packed_mud",
+            "weight": 2
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "minecraft:red_sandstone_wall"
+          }
+        ]
+      }
+    ]
+  },
+  "bopRoadStyles": {
+    "enabled": true,
+    "overrides": [
+      {
+        "biomeSelectors": [
+          "biomesoplenty:bayou",
+          "biomesoplenty:bog",
+          "biomesoplenty:floodplain",
+          "biomesoplenty:fen",
+          "biomesoplenty:marsh",
+          "biomesoplenty:muskeg",
+          "biomesoplenty:wetland",
+          "biomesoplenty:moor"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:mud",
+            "weight": 5
+          },
+          {
+            "block": "biomesoplenty:mossy_black_sand",
+            "weight": 3
+          },
+          {
+            "block": "minecraft:packed_mud",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "biomesoplenty:black_sandstone",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:willow_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:rainforest",
+          "biomesoplenty:rocky_rainforest",
+          "biomesoplenty:tropics",
+          "biomesoplenty:undergrowth",
+          "biomesoplenty:overgrown_greens"
+        ],
+        "palette": [
+          {
+            "block": "biomesoplenty:brimstone_bricks",
+            "weight": 4
+          },
+          {
+            "block": "biomesoplenty:brimstone",
+            "weight": 3
+          },
+          {
+            "block": "minecraft:moss_block",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:andesite",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:gravel",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:palm_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:cold_desert",
+          "biomesoplenty:lush_desert",
+          "biomesoplenty:lush_savanna",
+          "biomesoplenty:scrubland",
+          "biomesoplenty:dryland",
+          "biomesoplenty:shrubland",
+          "biomesoplenty:rocky_shrubland"
+        ],
+        "palette": [
+          {
+            "block": "biomesoplenty:orange_sand",
+            "weight": 6
+          },
+          {
+            "block": "biomesoplenty:orange_sandstone",
+            "weight": 3
+          },
+          {
+            "block": "biomesoplenty:cut_orange_sandstone",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:packed_mud",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:terracotta",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:mahogany_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:dune_beach",
+          "biomesoplenty:gravel_beach"
+        ],
+        "palette": [
+          {
+            "block": "biomesoplenty:white_sand",
+            "weight": 6
+          },
+          {
+            "block": "biomesoplenty:white_sandstone",
+            "weight": 3
+          },
+          {
+            "block": "biomesoplenty:black_sand",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:smooth_sandstone",
+            "weight": 1
+          },
+          {
+            "block": "biomesoplenty:cut_white_sandstone",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:palm_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:highland",
+          "biomesoplenty:jade_cliffs",
+          "biomesoplenty:crag",
+          "biomesoplenty:hot_springs"
+        ],
+        "palette": [
+          {
+            "block": "biomesoplenty:thermal_calcite",
+            "weight": 4
+          },
+          {
+            "block": "minecraft:calcite",
+            "weight": 3
+          },
+          {
+            "block": "minecraft:stone",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:cobbled_deepslate",
+            "weight": 1
+          },
+          {
+            "block": "biomesoplenty:chiseled_white_sandstone",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:pine_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:coniferous_forest",
+          "biomesoplenty:snowy_coniferous_forest",
+          "biomesoplenty:fir_clearing",
+          "biomesoplenty:snowy_fir_clearing"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:stone_bricks",
+            "weight": 5
+          },
+          {
+            "block": "minecraft:stone",
+            "weight": 3
+          },
+          {
+            "block": "minecraft:gravel",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:andesite",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:fir_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:redwood_forest",
+          "biomesoplenty:old_growth_woodland",
+          "biomesoplenty:woodland"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:stone",
+            "weight": 6
+          },
+          {
+            "block": "minecraft:coarse_dirt",
+            "weight": 3
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:granite",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:redwood_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:maple_woods",
+          "biomesoplenty:snowy_maple_woods",
+          "biomesoplenty:seasonal_forest",
+          "biomesoplenty:snowblossom_grove",
+          "biomesoplenty:orchard",
+          "biomesoplenty:pasture",
+          "biomesoplenty:pumpkin_patch"
+        ],
+        "palette": [
+          {
+            "block": "biomesoplenty:white_sandstone",
+            "weight": 5
+          },
+          {
+            "block": "minecraft:dirt_path",
+            "weight": 3
+          },
+          {
+            "block": "minecraft:coarse_dirt",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:granite",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mossy_stone_bricks",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:maple_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:field",
+          "biomesoplenty:forested_field",
+          "biomesoplenty:flower_field",
+          "biomesoplenty:lavender_field",
+          "biomesoplenty:grassland",
+          "biomesoplenty:prairie"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:dirt_path",
+            "weight": 5
+          },
+          {
+            "block": "minecraft:dirt_path",
+            "weight": 3
+          },
+          {
+            "block": "minecraft:stone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:gravel",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:smooth_stone",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:jacaranda_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:auroral_garden",
+          "biomesoplenty:mystic_grove",
+          "biomesoplenty:glowing_grotto",
+          "biomesoplenty:crystalline_chasm"
+        ],
+        "palette": [
+          {
+            "block": "biomesoplenty:glowing_moss_block",
+            "weight": 4
+          },
+          {
+            "block": "biomesoplenty:glowshroom_block",
+            "weight": 3
+          },
+          {
+            "block": "minecraft:amethyst_block",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:chiseled_deepslate",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:end_stone_bricks",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:magic_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:origin_valley",
+          "biomesoplenty:wintry_origin_valley"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:dirt_path",
+            "weight": 6
+          },
+          {
+            "block": "minecraft:moss_block",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:smooth_stone",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:calcite",
+            "weight": 1
+          },
+          {
+            "block": "biomesoplenty:thermal_calcite",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:empyreal_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:fungal_jungle",
+          "biomesoplenty:spider_nest"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:mycelium",
+            "weight": 4
+          },
+          {
+            "block": "biomesoplenty:glowshroom_block",
+            "weight": 3
+          },
+          {
+            "block": "biomesoplenty:stringy_cobweb",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:deepslate_tiles",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:mud",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:umbran_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:ominous_woods",
+          "biomesoplenty:dead_forest",
+          "biomesoplenty:old_growth_dead_forest"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:deepslate_bricks",
+            "weight": 5
+          },
+          {
+            "block": "minecraft:coarse_dirt",
+            "weight": 3
+          },
+          {
+            "block": "minecraft:mud",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:deepslate",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:stone",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:dead_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:wasteland",
+          "biomesoplenty:wasteland_steppe"
+        ],
+        "palette": [
+          {
+            "block": "biomesoplenty:dried_salt",
+            "weight": 4
+          },
+          {
+            "block": "minecraft:coarse_dirt",
+            "weight": 3
+          },
+          {
+            "block": "minecraft:gravel",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:mud",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:cobbled_deepslate",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:dead_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:visceral_heap",
+          "biomesoplenty:withered_abyss"
+        ],
+        "palette": [
+          {
+            "block": "biomesoplenty:flesh",
+            "weight": 5
+          },
+          {
+            "block": "biomesoplenty:porous_flesh",
+            "weight": 3
+          },
+          {
+            "block": "biomesoplenty:flesh_tendons",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:netherrack",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:blackstone",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:hellbark_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:volcanic_plains",
+          "biomesoplenty:volcano",
+          "biomesoplenty:erupting_inferno"
+        ],
+        "palette": [
+          {
+            "block": "biomesoplenty:brimstone",
+            "weight": 5
+          },
+          {
+            "block": "biomesoplenty:brimstone_bricks",
+            "weight": 3
+          },
+          {
+            "block": "minecraft:blackstone",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:magma_block",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:polished_basalt",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:hellbark_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:end_corruption",
+          "biomesoplenty:end_reef",
+          "biomesoplenty:end_wilds"
+        ],
+        "palette": [
+          {
+            "block": "biomesoplenty:algal_end_stone",
+            "weight": 4
+          },
+          {
+            "block": "biomesoplenty:unmapped_end_stone",
+            "weight": 3
+          },
+          {
+            "block": "biomesoplenty:null_end_stone",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:end_stone_bricks",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:purpur_block",
+            "weight": 1
+          }
+        ],
+        "decorations": []
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:tundra",
+          "biomesoplenty:snowblossom_grove"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:snow_block",
+            "weight": 4
+          },
+          {
+            "block": "minecraft:packed_ice",
+            "weight": 3
+          },
+          {
+            "block": "minecraft:stone",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:gravel",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:stone_bricks",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:pine_fence"
+          }
+        ]
+      },
+      {
+        "biomeSelectors": [
+          "biomesoplenty:aspen_glade",
+          "biomesoplenty:eucalyptus_forest",
+          "biomesoplenty:jacaranda_glade",
+          "biomesoplenty:mediterranean_forest",
+          "biomesoplenty:ebony_woods"
+        ],
+        "palette": [
+          {
+            "block": "minecraft:dirt_path",
+            "weight": 4
+          },
+          {
+            "block": "minecraft:smooth_stone",
+            "weight": 2
+          },
+          {
+            "block": "minecraft:mossy_cobblestone",
+            "weight": 1
+          },
+          {
+            "block": "minecraft:granite",
+            "weight": 1
+          }
+        ],
+        "decorations": [
+          {
+            "type": "FENCE",
+            "block": "biomesoplenty:jacaranda_fence"
+          }
+        ]
+      }
+    ]
+  },
+  "lampPosts": {
+    "enabled": true,
+    "overrides": [
+      {
+        "biomeSelectors": [
+          "minecraft:plains"
+        ],
+        "baseBlock": "minecraft:cobblestone_wall",
+        "postBlock": "minecraft:oak_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:stony_shore"
+        ],
+        "baseBlock": "minecraft:cobblestone_wall",
+        "postBlock": "minecraft:oak_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:beach"
+        ],
+        "baseBlock": "minecraft:sandstone_wall",
+        "postBlock": "minecraft:oak_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:old_growth_pine_taiga"
+        ],
+        "baseBlock": "minecraft:mossy_cobblestone_wall",
+        "postBlock": "minecraft:spruce_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:old_growth_spruce_taiga"
+        ],
+        "baseBlock": "minecraft:mossy_cobblestone_wall",
+        "postBlock": "minecraft:spruce_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:taiga"
+        ],
+        "baseBlock": "minecraft:mossy_cobblestone_wall",
+        "postBlock": "minecraft:spruce_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:snowy_taiga"
+        ],
+        "baseBlock": "minecraft:cobblestone_wall",
+        "postBlock": "minecraft:spruce_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:snowy_beach"
+        ],
+        "baseBlock": "minecraft:cobblestone_wall",
+        "postBlock": "minecraft:spruce_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:snowy_plains"
+        ],
+        "baseBlock": "minecraft:cobblestone_wall",
+        "postBlock": "minecraft:spruce_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:snowy_slopes"
+        ],
+        "baseBlock": "minecraft:cobblestone_wall",
+        "postBlock": "minecraft:spruce_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:swamp"
+        ],
+        "baseBlock": "minecraft:mossy_cobblestone_wall",
+        "postBlock": "minecraft:oak_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:mangrove_swamp"
+        ],
+        "baseBlock": "minecraft:mossy_cobblestone_wall",
+        "postBlock": "minecraft:mangrove_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:cherry_grove"
+        ],
+        "baseBlock": "minecraft:cobblestone_wall",
+        "postBlock": "minecraft:cherry_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:dark_forest"
+        ],
+        "baseBlock": "minecraft:mossy_cobblestone_wall",
+        "postBlock": "minecraft:dark_oak_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:savanna"
+        ],
+        "baseBlock": "minecraft:mud_brick_wall",
+        "postBlock": "minecraft:acacia_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:desert"
+        ],
+        "baseBlock": "minecraft:sandstone_wall",
+        "postBlock": "minecraft:birch_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:badlands"
+        ],
+        "baseBlock": "minecraft:red_sandstone_wall",
+        "postBlock": "minecraft:acacia_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:wooded_badlands"
+        ],
+        "baseBlock": "minecraft:red_sandstone_wall",
+        "postBlock": "minecraft:acacia_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [
+          "minecraft:eroded_badlands"
+        ],
+        "baseBlock": "minecraft:red_sandstone_wall",
+        "postBlock": "minecraft:acacia_fence",
+        "lampBlock": "minecraft:lantern"
+      },
+      {
+        "biomeSelectors": [],
+        "baseBlock": "minecraft:cobblestone_wall",
+        "postBlock": "minecraft:oak_fence",
+        "lampBlock": "minecraft:lantern"
+      }
+    ]
+  },
+  "structureSelectors": [
+    "#minecraft:village"
+  ],
+  "dimensionSelectors": [
+    "minecraft:overworld"
+  ],
+  "terrainAnalyzer": {
+    "enabled": false,
+    "roughRadius": 12,
+    "roughStride": 3,
+    "roughRangeThreshold": 12,
+    "roughPenaltyScale": 15.0
+  },
+  "cache": {
+    "runtimeBudgetMb": 256,
+    "snapshotBudgetMb": 64,
+    "persistedBudgetMb": 128,
+    "regionSizeChunks": 32,
+    "enablePrefill": true,
+    "prefillMaxChunks": 2048,
+    "persistHeights": true,
+    "persistStabilities": true,
+    "persistBiomes": true
+  },
+  "pathfinding": {
+    "preferLandOverWater": true,
+    "waterStepPenalty": 200.0,
+    "coastAvoidBufferBlocks": 16,
+    "coastProximityPenalty": 180.0,
+    "acceptHighProgressPartial": true,
+    "partialProgressPercent": 80
+  },
+  "forbiddenBiomes": {
+    "selectors": [
+      "#minecraft:is_ocean",
+      "#minecraft:is_deep_ocean"
+    ],
+    "bufferBlocks": 16,
+    "proximityPenalty": 500.0
+  },
+  "debug": {
+    "enableVerboseLogs": false,
+    "enablePipelineProfiler": false,
+    "enableCacheLogs": false,
+    "showCacheStatsOverlay": false
+  }
+}

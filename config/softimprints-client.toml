@@ -1,0 +1,122 @@
+[general]
+	#Tick interval for imprint check and write/apply.
+	#1 = every tick, 2 = every 2 ticks, etc.
+	#Range: 1 .. 200
+	enable_imprints = true
+	#Tick interval for imprint check and write/apply.
+	#1 = every tick, 2 = every 2 ticks, etc.
+	#Range: 1 .. 200
+	imprint_write_check_tickrate = 1
+	#Tick interval for scheduling chunk section rebuilds.
+	#Range: 1 .. 200
+	imprint_chunk_rebuild_tickrate = 1
+	#Base footprint size multiplier.
+	#1.0 = default size
+	#Range: 0.1 .. 4.0
+	imprint_base_scale = 1.0
+	#Minimum horizontal movement before placing the next trail stamp.
+	#Larger value = sparser trail
+	#Range: 0.01 .. 1.0
+	imprint_step_distance = 0.15
+	#Allow all eligible entity types to leave imprints.
+	#Blacklist still takes priority.
+	enable_imprints_for_all_entities = true
+	#Allow full-block Ecliptic Seasons snowy surfaces to receive imprints automatically.
+	#Applies only when Ecliptic Seasons is present on NeoForge.
+	enable_ecliptic_seasons_compat = true
+	#Use render-model snapshots for imprint placement on living entities.
+	imprint_model_contact = false
+	#Capture render-model snapshots every N render frames while entities are visible.
+	#1 = every frame
+	#Range: 1 .. 20
+	imprint_snapshot_interval = 12
+	#Accumulate render-model snapshots captured during the current game tick instead of using only the latest sample.
+	imprint_accumulate_snapshots = true
+	#Height of the top contact band above the snow surface for model-contact mode.
+	#0.0 keeps the band razor-thin; larger values are more forgiving.
+	#Range: 0.0 .. 0.5
+	imprint_contact_band_height = 0.15
+	#In model-contact mode, place a new imprint when body yaw changes by at least this many degrees.
+	#0.0 disables rotation-triggered updates.
+	#Range: 0.0 .. 45.0
+	imprint_rotation_step_degrees = 10.0
+	#Minimum ticks between rotation-triggered model-contact updates.
+	#Movement-distance updates are unaffected.
+	#Range: 0 .. 20
+	imprint_rotation_step_cooldown_ticks = 6
+	#Enable layer 1 (base ring).
+	imprint_enable_layer_1 = true
+	#Grid size of ring 1 (base ring).
+	#Valid range: 2..16
+	#Range: 2 .. 16
+	imprint_layer_1_map_size = 8
+	#Enable layer 2 (outer ring).
+	imprint_enable_layer_2 = true
+	#Grid size of ring 2 (outer ring).
+	#Valid range: 2..16
+	#Range: 2 .. 16
+	imprint_layer_2_map_size = 16
+	#Extra expansion in cells for ring 2.
+	#0 = same width as base ring
+	#Range: 0 .. 16
+	imprint_layer_2_expand_cells = 2
+	#Adds deterministic wobble to the outer edge of layer 2.
+	#Higher values make the contour less uniform.
+	#Range: 0.0 .. 1.0
+	imprint_layer_2_edge_noise = 0.5
+	#Removes some exposed edge cells from layer 2.
+	#Higher values make the layer look looser and more broken up.
+	#Range: 0.0 .. 1.0
+	imprint_layer_2_edge_erosion = 0.3
+	#Enable layer 3 (2nd outer ring).
+	imprint_enable_layer_3 = true
+	#Grid size of ring 3 (2-nd outer ring).
+	#Valid range: 2..16
+	#Range: 2 .. 16
+	imprint_layer_3_map_size = 16
+	#Extra expansion in cells for ring 3.
+	#0 = same width as base ring
+	#Range: 0 .. 16
+	imprint_layer_3_expand_cells = 3
+	#Adds deterministic wobble to the outer edge of layer 3.
+	#Higher values make the contour less uniform.
+	#Range: 0.0 .. 1.0
+	imprint_layer_3_edge_noise = 0.1
+	#Removes some exposed edge cells from layer 3.
+	#Higher values make the layer look looser and more broken up.
+	#Range: 0.0 .. 1.0
+	imprint_layer_3_edge_erosion = 0.3
+	#Texture variant for layer 1 (base ring).
+	#Range: 0 .. 2
+	imprint_layer_1_variant = 0
+	#Texture variant for layer 2.
+	#Range: 0 .. 2
+	imprint_layer_2_variant = 0
+	#Texture variant for layer 3.
+	#Range: 0 .. 2
+	imprint_layer_3_variant = 0
+	#Remove footprints after a time limit.
+	imprint_enable_time_decay = false
+	#How many ticks a footprint lives before being removed.
+	#Only used when imprint_enable_time_decay is true.
+	#600 = 30 seconds. 1200 = 60 seconds.
+	#Range: 20 .. 12000
+	imprint_decay_ticks = 600
+	#Remove oldest footprints when the block count exceeds the limit.
+	imprint_enable_limit = true
+	#Maximum number of block positions with imprints per level.
+	#Only used when imprint_enable_limit is true.
+	#Oldest stamps are removed first when exceeded.
+	#Range: 64 .. 65536
+	imprint_block_limit = 8192
+	#Entity type ids that should never leave imprints.
+	#Example: ["minecraft:enderman"]
+	imprint_target_blacklist = []
+	#Non-living entity type ids allowed to leave imprints.
+	#Example: ["minecraft:boat"]
+	imprint_custom_entities = ["minecraft:boat"]
+	#Block ids that can receive imprints.
+	#minecraft:snow and minecraft:snow_block are included by default.
+	#Requires resource reload (F3+T) after changing.
+	#Example: ["minecraft:snow_block"]
+	imprint_surface_blocks = ["minecraft:snow", "minecraft:snow_block"]

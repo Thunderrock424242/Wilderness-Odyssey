@@ -1,0 +1,16 @@
+{
+  "configVersion": 0,
+  "useShaderpackWater": true,
+  "doFloods": true,
+  "doRainPuddles": true,
+  "doDripPuddles": true,
+  "doPotionPuddles": true,
+  "doCauldronPuddles": true,
+  "doFlowingWaterPuddles": true,
+  "doMeltingSnowPuddles": true,
+  "range": 128,
+  "collectionSpeed": 4,
+  "evaporationSpeed": 8,
+  "rainLevel": 90,
+  "stormLevel": 130
+}

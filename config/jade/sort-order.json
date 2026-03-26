@@ -75,5 +75,21 @@
   "minecraft:villager_profession": null,
   "minecraft:waxed": null,
   "minecraft:zombie_villager": null,
-  "oritech:machine_core_controller": null
+  "oritech:machine_core_controller": null,
+  "pneumaticcraft:camo": null,
+  "pneumaticcraft:entity": null,
+  "pneumaticcraft:pneumatic": null,
+  "pneumaticcraft:redstone": null,
+  "pneumaticcraft:semiblock": null,
+  "pneumaticcraft:tube_module": null,
+  "replication:matter_tank": null,
+  "supplementaries:hat_stand": null,
+  "supplementaries:present": null,
+  "supplementaries:safe": null,
+  "twilightforest:chiseled_bookshelf_spawner": null,
+  "twilightforest:drying_rack": null,
+  "twilightforest:quest_ram_wool": null,
+  "untitledduckmod:lay_egg": null,
+  "untitledduckmod:next_eat": null,
+  "waystones:waystone": null
 }

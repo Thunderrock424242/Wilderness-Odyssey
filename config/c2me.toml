@@ -80,6 +80,8 @@ globalExecutorParallelism = "default"
 	useEndBiomeCache = "default"
 	# (Default: true) Whether to enable StructureWeightSampler optimizations to accelerate world generation
 	# 
+	# Set to false for the following reasons: 
+	# Incompatible with twilightforest@4.8.3345 (*) (defined in c2me) 
 	optimizeStructureWeightSampler = "default"
 
 [chunkSystem]

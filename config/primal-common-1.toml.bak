@@ -1,0 +1,259 @@
+#Misc Settings
+[misc]
+	#List of egg data: each entry is [block_id, entity_id].
+	#This is used for the nest block, for eggs that can hatch, add the block to the animal_egg tag to be placeable or to the next config
+	#Primal eggs are already defined
+	eggData = [["minecraft:turtle_egg", "minecraft:turtle"], ["minecraft:sniffer_egg", "minecraft:sniffer"], ["nomansland:tortoise_egg", "nomansland:tortoise"]]
+	#To add egg blocks directly instead of modifying the animal_egg tag
+	extraPlaceableEggs = []
+
+#Mob Settings
+[mob]
+
+	[mob.replaced_models]
+		#Toggle model replacements for certain mobs
+		polarBearModelChange = true
+		polarBearIncreasesHealth = true
+		foxModelChange = true
+
+	#Primal Mobs Spawn - tweak natural spawn
+	#(Eagles only spawn on nests, tweak the nest spawn in world section)
+	[mob.bear]
+
+		[mob.bear.single]
+			#Enable or disable bear single spawning
+			#Default=true
+			enableBearSingleSpawn = true
+			#Spawn weight for single bears (higher = more common)
+			#Default=20
+			# Default: 20
+			# Range: > 1
+			bearSingleSpawnWeight = 20
+			#Minimum group size for single bears, it MUST be lesser than max group size
+			#Default=1
+			# Default: 1
+			# Range: > 1
+			bearSingleMinGroup = 1
+			#Maximum group size for single bears, it MUST be greater than min group size
+			#Default=1
+			# Default: 1
+			# Range: > 1
+			bearSingleMaxGroup = 1
+			#Extra biomes (separated from biome tag) where single bears can spawn.
+			#Must be written as full biome IDs (e.g. "minecraft:plains", "nomansland:maple_forest")
+			#You can use biome tags too, just put a # before (e.g. "#minecraft:is_forest", "#nomansland:is_river")
+			#Default = []
+			bearSingleExtraBiomes = []
+
+		[mob.bear.group]
+			#Enable or disable bear group spawning (with babies)
+			#Default=true
+			enableBearGroupSpawn = true
+			#Spawn weight for bear groups (higher = more common)
+			#Default=5
+			# Default: 5
+			# Range: > 1
+			bearGroupSpawnWeight = 5
+			#Minimum group size for bear groups, it MUST be lesser than max group size
+			#Default=2
+			# Default: 2
+			# Range: > 1
+			bearGroupMinGroup = 2
+			#Maximum group size for bear groups, it MUST be greater than min group size
+			#Default=2
+			# Default: 2
+			# Range: > 1
+			bearGroupMaxGroup = 2
+			#Extra biomes (separated from biome tag) where bear groups can spawn.
+			#Must be written as full biome IDs (e.g. "minecraft:plains", "nomansland:maple_forest")
+			#You can use biome tags too, just put a # before (e.g. "#minecraft:is_forest", "#nomansland:is_river")
+			#Default = []
+			bearGroupExtraBiomes = []
+
+		[mob.crocodile.normal]
+			#Enable or disable crocodile spawning in swampy/jungle biomes
+			#Default=true
+			enableCrocodileNormalSpawn = true
+			#Spawn weight for crocodiles in swampy/jungle biomes (higher = more common)
+			#Default=20
+			# Default: 20
+			# Range: > 1
+			crocodileNormalSpawnWeight = 20
+			#Minimum group size for crocodiles in swampy/jungle biomes, it MUST be lesser than max group size
+			#Default=1
+			# Default: 1
+			# Range: > 1
+			crocodileNormalMinGroup = 1
+			#Maximum group size for crocodiles in swampy/jungle biomes, it MUST be greater than min group size
+			#Default=1
+			# Default: 1
+			# Range: > 1
+			crocodileNormalMaxGroup = 1
+			#Extra biomes (separated from biome tag) where normal crocodiles can spawn.
+			#Must be written as full biome IDs (e.g. "minecraft:plains", "nomansland:maple_forest")
+			#You can use biome tags too, just put a # before (e.g. "#minecraft:is_forest", "#nomansland:is_river")
+			#Default = []
+			crocodileNormalExtraBiomes = []
+
+		[mob.crocodile.warm]
+			#Enable or disable crocodile spawning in warm biomes
+			#Default=true
+			enableCrocodileWarmSpawn = true
+			#Spawn weight for crocodiles in warm biomes (higher = more common)
+			#Default=3
+			# Default: 3
+			# Range: > 1
+			crocodileWarmSpawnWeight = 3
+			#Minimum group size for crocodiles in warm biomes, it MUST be lesser than max group size
+			#Default=1
+			# Default: 1
+			# Range: > 1
+			crocodileWarmMinGroup = 1
+			#Maximum group size for crocodiles in warm biomes, it MUST be greater than min group size
+			#Default=1
+			# Default: 1
+			# Range: > 1
+			crocodileWarmMaxGroup = 1
+			#Extra biomes (separated from biome tag) where warm crocodiles can spawn
+			#Must be written as full biome IDs (e.g. "minecraft:plains", "nomansland:maple_forest")
+			#You can use biome tags too, just put a # before (e.g. "#minecraft:is_forest", "#nomansland:is_river")
+			#Default = []
+			crocodileWarmExtraBiomes = []
+
+		[mob.shark.single]
+			#Enable or disable single shark spawning
+			#Default=true
+			enableSingleSharkSpawn = true
+			#Spawn weight for single sharks (higher = more common)
+			#Default=5
+			# Default: 5
+			# Range: > 1
+			sharkSingleSpawnWeight = 5
+			#Minimum group size for single sharks, it MUST be lesser than max group size
+			#Default=1
+			# Default: 1
+			# Range: > 1
+			sharkSingleMinGroup = 1
+			#Maximum group size for single sharks, it MUST be greater than min group size
+			#Default=1
+			# Default: 1
+			# Range: > 1
+			sharkSingleMaxGroup = 1
+			#Extra biomes (separated from biome tag) where single sharks can spawn.
+			#Must be written as full biome IDs (e.g. "minecraft:plains", "nomansland:maple_forest")
+			#You can use biome tags too, just put a # before (e.g. "#minecraft:is_forest", "#nomansland:is_river")
+			#Default = []
+			sharkSingleExtraBiomes = []
+
+		[mob.shark.group]
+			#Enable or disable group shark spawning
+			#Default=true
+			enableSharkGroupSpawn = true
+			#Spawn weight for shark groups (higher = more common)
+			#Default=1
+			# Default: 1
+			# Range: > 1
+			sharkGroupSpawnWeight = 1
+			#Minimum group size for shark groups, it MUST be lesser than max group size
+			#Default=1
+			# Default: 1
+			# Range: > 1
+			sharkGroupMinGroup = 1
+			#Maximum group size for shark groups, it MUST be greater than min group size
+			#Default=3
+			# Default: 3
+			# Range: > 1
+			sharkGroupMaxGroup = 3
+			#Extra biomes (separated from biome tag) where shark groups can spawn.
+			#Must be written as full biome IDs (e.g. "minecraft:plains", "nomansland:maple_forest")
+			#You can use biome tags too, just put a # before (e.g. "#minecraft:is_forest", "#nomansland:is_river")
+			#Default = []
+			sharkGroupExtraBiomes = []
+
+#World Settings
+[world]
+
+	[world.river_reeds]
+		#Enable or disable river reeds spawning
+		#Default=true
+		riverReedsSpawnInWorld = true
+		#Patch rarity for river reeds
+		#Default=2
+		# Default: 2
+		# Range: > 0
+		riverReedsPatchRarity = 2
+		#Patch horizontal spread (XZ) for river reeds
+		#Default=8
+		# Default: 8
+		# Range: > 0
+		riverReedsPatchSpreadXZ = 8
+		#Patch vertical spread (Y) for river reeds
+		#Default=5
+		# Default: 5
+		# Range: > 0
+		riverReedsPatchSpreadY = 5
+		#Extra biomes (separated from biome tag) where river reeds can spawn.
+		#Must be written as full biome IDs (e.g. "minecraft:plains", "nomansland:maple_forest")
+		#You can use biome tags too, just put a # before (e.g. "#minecraft:is_forest", "#nomansland:is_river")
+		#Default = []
+		riverReedsExtraBiomes = []
+
+	[world.seashells]
+		#Enable or disable seashells spawning
+		#Default=true
+		seaShellsSpawnInWorld = true
+		#Patch rarity for seashells
+		#Default=5
+		# Default: 5
+		# Range: > 0
+		seaShellsPatchRarity = 5
+		#Number of tries per patch for seashells
+		#Default=96
+		# Default: 96
+		# Range: > 0
+		seaShellsPatchTries = 96
+		#Patch horizontal spread (XZ) for seashells
+		#Default=6
+		# Default: 6
+		# Range: > 0
+		seaShellsPatchSpreadXZ = 6
+		#Patch vertical spread (Y) for seashells
+		#Default=2
+		# Default: 2
+		# Range: > 0
+		seaShellsPatchSpreadY = 2
+		#Extra biomes (separated from biome tag) where seashells can spawn.
+		#Must be written as full biome IDs (e.g. "minecraft:plains", "nomansland:maple_forest")
+		#You can use biome tags too, just put a # before (e.g. "#minecraft:is_forest", "#nomansland:is_river")
+		#Default = []
+		seaShellsExtraBiomes = []
+
+	[world.eagle_nest]
+		#Enable or disable eagle nest spawning
+		#Default=true
+		eagleNestSpawnInWorld = true
+		#Rarity of eagle nests (higher = rarer)
+		#Default=30
+		# Default: 30
+		# Range: > 0
+		eagleNestRarity = 30
+		#Number of tries per patch for eagle nests
+		#Default=12
+		# Default: 12
+		# Range: > 0
+		eagleNestTries = 12
+		#Patch horizontal spread (XZ) for eagle nests
+		#Default=1
+		# Default: 1
+		# Range: > 0
+		eagleNestSpreadXZ = 1
+		#Patch vertical spread (Y) for eagle nests
+		#Default=0
+		# Default: 0
+		# Range: > 0
+		eagleNestSpreadY = 0
+		#Extra biomes (separated from biome tag) where eagle nests can spawn.
+		#Must be written as full biome IDs (e.g. "minecraft:plains", "nomansland:maple_forest")
+		#You can use biome tags too, just put a # before (e.g. "#minecraft:is_forest", "#nomansland:is_river")
+		#Default = []
+		eagleNestExtraBiomes = []

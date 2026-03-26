@@ -30,6 +30,12 @@
 	#Whether to apply view bobbing in shoulder surfing perspective. Set to INHERIT to inherit vanilla setting.
 	#Allowed Values: INHERIT, ON, OFF
 	view_bobbing_mode = "INHERIT"
+	#Whether or not to follow the rotations of the player when camera is decoupled.
+	follow_player_rotations = true
+	#The delay in ticks after which the camera rotations will follow rotations of the player.
+	# Default: 40
+	# Range: > 1
+	follow_player_rotations_delay = 40
 
 	[camera.offset]
 		#Third person camera x-offset.
@@ -264,7 +270,7 @@
 [perspective]
 	#The default perspective when you load the game.
 	#Allowed Values: FIRST_PERSON, THIRD_PERSON_BACK, THIRD_PERSON_FRONT, SHOULDER_SURFING
-	default_perspective = "SHOULDER_SURFING"
+	default_perspective = "FIRST_PERSON"
 	#Whether or not to remember the last perspective used.
 	remember_last_perspective = true
 	#Whether or not to replace the default third person perspective.
@@ -311,6 +317,10 @@
 		# Default: 4
 		# Range: > 0
 		turning_lock_time = 4
+		#The speed multiplier at which the player rotation converges to the movement direction of the player.
+		# Default: 0.25
+		# Range: 0.05000000074505806 ~ 1.0
+		turning_speed_multiplier = 0.25
 
 [object_picker]
 	#The raytrace distance used for the dynamic crosshair.
