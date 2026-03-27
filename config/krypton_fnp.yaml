@@ -10,7 +10,7 @@ mixin:
 fix:
   issues128:
     # Fix Traffic Statistics
-    enabled: false
+    enabled: true
     # Run bandwidth statistics on sync thread, which is closer to Vanilla behavior.
     sync: true
 compress:

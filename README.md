@@ -4,7 +4,7 @@
 ### *A CurseForge-style NeoForge Modpack Page*
 
 ![Minecraft](https://img.shields.io/badge/Minecraft-1.21.1-3C8527?style=for-the-badge&logo=minecraft&logoColor=white)
-![Loader](https://img.shields.io/badge/Loader-NeoForge%2021.1.176-2E7D32?style=for-the-badge)
+![Loader](https://img.shields.io/badge/Loader-NeoForge%2021.1.221-2E7D32?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Alpha%20%E2%86%92%20Beta-orange?style=for-the-badge)
 ![Focus](https://img.shields.io/badge/Theme-Exploration%20%7C%20Adventure-7B5CFF?style=for-the-badge)
 
@@ -12,7 +12,7 @@
 
 ---
 
-## 🌲 Welcome, Traveler
+## 🌲 Welcome, Survivor
 **Wilderness Odyssey** is a handcrafted adventure/exploration modpack built for players who want danger, discovery, atmosphere, and unforgettable world generation.
 
 > You are not loading a world.
@@ -34,9 +34,9 @@
 | Category | Details |
 |---|---|
 | **Minecraft Version** | `1.21.1` |
-| **Mod Loader** | `NeoForge 21.1.176` |
+| **Mod Loader** | `NeoForge 21.1.221` |
 | **Pack Stage** | `Alpha (approaching Beta)` |
-| **Core Vibe** | `Adventure • Exploration • Survival Atmosphere` |
+| **Core Vibe** | `Adventure • Exploration • Survival Atmosphere • Mystery` |
 | **Known Pillars** | Worldgen, structures, mobs, immersion, optimization |
 
 ---
@@ -80,16 +80,6 @@
 - **EntityCulling**
 
 </details>
-
----
-
-## 🎮 Playstyle Selector *(Unique Feature)*
-Pick your expedition style and self-impose rules for extra fun:
-
-- [ ] **Pathfinder Mode** – No minimap-style assistance, rely on landmarks and memory.
-- [ ] **Relic Hunter Mode** – Prioritize structures, collect one trophy per major biome.
-- [ ] **Nomad Mode** – No permanent base before first rare structure clear.
-- [ ] **Stormwalker Mode** – Travel during bad weather for risk/reward atmosphere runs.
 
 ---
 
