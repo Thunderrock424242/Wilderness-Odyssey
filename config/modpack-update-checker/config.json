@@ -1,10 +1,10 @@
 {
   "schemaVersion": 9,
-  "currentVersion": "1.0.0",
-  "modpackName": "Modpack Name Goes Here",
+  "currentVersion": "0.1.0",
+  "modpackName": "Wilderness Odyssey",
   "modpackAuthor": "My Modpack Studio",
-  "modpackReleaseType": "stable",
-  "updateCheckerId": "https://raw.githubusercontent.com/Modpack-Update-Checker/example-update-checker/main/",
+  "modpackReleaseType": "Alpha",
+  "updateCheckerId": "https://github.com/Thunderrock424242/Wilderness-Odyssey/blob/Versions/version-info/meta.json",
   "advanced": {
     "bccEnabled": false,
     "expandButton": false,
