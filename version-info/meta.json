@@ -12,6 +12,17 @@
             }
         }
     }
+
+        {
+        "id": "0.1.0",
+        "releasedAt": placeholder,
+        "updateType": "Major",
+        "promotions": {
+            "downloads": {
+                "curseforge": "https://www.curseforge.com/minecraft/modpacks/wilderness-odyssey"
+            }
+        }
+    }
    
     ]
   }
