@@ -22,7 +22,7 @@ jobs:
       - name: Checkout Website branch
         uses: actions/checkout@v6
         with:
-          ref: Website                # explicitly targets your Website branch
+          ref: website                # explicitly targets your Website branch
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6
