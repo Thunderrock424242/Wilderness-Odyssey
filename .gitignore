@@ -1,0 +1,26 @@
+# Node / Vite
+node_modules/
+dist/
+
+# Gradle / Minecraft run output
+.gradle/
+build/
+run/
+runs/
+run-data/
+
+# IDEs
+.idea/
+.vscode/
+out/
+*.iml
+*.ipr
+*.iws
+
+# Local generated files
+logs/debug.log
+logs/latest.log
+formatted_APIchangelog.txt
+formatted_changelog.txt
+changelog.txt
+Modpack_Checklist.txt

@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Example inline image">
-  <rect width="1200" height="675" fill="#111827" />
-  <rect x="40" y="40" width="1120" height="595" fill="#1f2937" stroke="#fbbf24" stroke-width="4" />
-  <text x="100" y="280" fill="#fbbf24" font-family="Inter, Arial, sans-serif" font-size="58" font-weight="700">Inline Blog Image</text>
-  <text x="100" y="350" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="34">Keep images next to your post files for easy organization.</text>
-</svg>

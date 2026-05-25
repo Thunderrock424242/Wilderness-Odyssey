@@ -1,0 +1,49 @@
+name: Deploy Wilderness Odyssey Website
+
+on:
+  workflow_dispatch:   # manual trigger only
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Website branch
+        uses: actions/checkout@v6
+        with:
+          ref: Website                # explicitly targets your Website branch
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install website dependencies
+        run: npm ci
+
+      - name: Build website
+        run: npm run build
+
+      - name: Upload website artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
