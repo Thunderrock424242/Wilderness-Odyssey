@@ -240,8 +240,9 @@ footer{padding:3rem 5rem;background:#030208;border-top:1px solid rgba(232,160,32
 @media(max-width:900px){
   nav{padding:1.2rem 1.6rem}.n-links{display:none}
   .origin-inner,.road-inner{grid-template-columns:1fr;gap:3.5rem;padding:0 1.6rem}
-  .world-inner,.feat-inner{padding:0 1.6rem}
-  .biome-grid,.feat-grid{grid-template-columns:1fr}
+  .world-inner,.feat-inner,.blog-inner{padding:0 1.6rem}
+  .biome-grid,.feat-grid,.blog-grid,.survivor-logs-grid{grid-template-columns:1fr}
+  .blog-card.featured{grid-column:auto}
   .bcard{height:300px}
   footer{padding:2.5rem 1.6rem}
   .foot{flex-direction:column;gap:1.4rem;text-align:center}
@@ -252,6 +253,10 @@ footer{padding:3rem 5rem;background:#030208;border-top:1px solid rgba(232,160,32
 .cmd-hint{font-family:var(--F-mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;
   padding:.38rem .9rem;border:1px solid rgba(232,160,32,.2);color:rgba(232,160,32,.55);
   border-radius:2px;cursor:pointer;transition:all .25s;user-select:none}
+.terminal-command-hints{display:flex;flex-wrap:wrap;gap:.6rem}
+.cmd-hint-gold{border-color:rgba(232,160,32,.4);color:var(--gold)}
+.cmd-hint-ember{border-color:rgba(255,85,24,.25);color:rgba(255,85,24,.6)}
+.cmd-hint-blue{border-color:rgba(58,184,255,.25);color:rgba(58,184,255,.6)}
 .cmd-hint:hover{border-color:var(--gold);color:var(--gold);background:rgba(232,160,32,.06)}
 
 /* INTERACTIVE TERMINAL */
@@ -269,6 +274,7 @@ footer{padding:3rem 5rem;background:#030208;border-top:1px solid rgba(232,160,32
 #iterm-input::placeholder{color:rgba(107,100,85,.4)}
 
 /* SURVIVOR LOGS */
+.survivor-logs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
 .slog{background:rgba(8,6,12,.65);border:1px solid rgba(255,255,255,.055);border-radius:4px;
   padding:2rem;transition:border-color .4s,transform .4s,box-shadow .4s;cursor:default;
   display:flex;flex-direction:column;gap:.9rem}
@@ -284,6 +290,32 @@ footer{padding:3rem 5rem;background:#030208;border-top:1px solid rgba(232,160,32
 .slog-tag.warn{color:var(--gold);border-color:rgba(232,160,32,.3)}
 .slog-tag.danger{color:var(--ember);border-color:rgba(255,85,24,.3)}
 .slog-locked .slog-body{font-style:normal;font-family:var(--F-mono);font-size:.72rem;line-height:1.9;color:rgba(107,100,85,.7)}
+
+/* BLOG */
+#blog{padding:12rem 0;background:linear-gradient(180deg,#080609 0%,#05070b 100%)}
+.blog-inner{max-width:1260px;margin:0 auto;padding:0 5rem}
+.blog-head{margin-bottom:5rem;max-width:760px}
+.blog-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem}
+.blog-card{position:relative;background:rgba(7,9,13,.76);border:1px solid rgba(255,255,255,.055);border-radius:4px;padding:2.2rem;overflow:hidden;transition:border-color .35s,transform .35s,box-shadow .35s}
+.blog-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 15% 0%,rgba(232,160,32,.08),transparent 58%);opacity:0;transition:opacity .35s;pointer-events:none}
+.blog-card:hover{border-color:rgba(232,160,32,.18);transform:translateY(-5px);box-shadow:0 22px 60px rgba(0,0,0,.45)}
+.blog-card:hover::before{opacity:1}
+.blog-card.featured{grid-column:span 2}
+.blog-meta{display:flex;justify-content:space-between;gap:1rem;margin-bottom:1.25rem;position:relative;z-index:1}
+.blog-label,.blog-date{font-family:var(--F-mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase}
+.blog-label{color:var(--gold)}
+.blog-date{color:rgba(107,100,85,.72)}
+.blog-title{font-family:var(--F-serif);font-size:1.05rem;letter-spacing:.12em;text-transform:uppercase;color:var(--white);margin-bottom:.85rem;position:relative;z-index:1}
+.blog-excerpt{font-size:.96rem;line-height:1.75;color:rgba(240,236,224,.58);position:relative;z-index:1}
+.blog-tags{display:flex;flex-wrap:wrap;gap:.45rem;margin:1.4rem 0;position:relative;z-index:1}
+.blog-tag{font-family:var(--F-mono);font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(58,184,255,.62);border:1px solid rgba(58,184,255,.2);padding:.25rem .55rem;border-radius:1px}
+.blog-details{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.06);padding-top:1rem}
+.blog-details summary{font-family:var(--F-mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(232,160,32,.72);cursor:pointer;list-style:none}
+.blog-details summary::-webkit-details-marker{display:none}
+.blog-details summary::after{content:'+';margin-left:.7rem;color:var(--gold)}
+.blog-details[open] summary::after{content:'-'}
+.blog-body{display:grid;gap:.85rem;margin-top:1rem}
+.blog-body p{font-size:.92rem;line-height:1.78;color:rgba(240,236,224,.54)}
 
 /* ═══ GALLERY ═══ */
 #gallery{position:relative;width:100%;background:#02020a;overflow:hidden}
@@ -343,3 +375,9 @@ footer{padding:3rem 5rem;background:#030208;border-top:1px solid rgba(232,160,32
 .g-header .ch-label{justify-content:center}
 .g-header .ch-title{margin-bottom:0}
 .g-header .divline{margin:1.4rem auto 3rem}
+
+@media(max-width:900px){
+  .blog-inner{padding:0 1.6rem}
+  .blog-grid,.survivor-logs-grid{grid-template-columns:1fr}
+  .blog-card.featured{grid-column:auto}
+}

@@ -103,6 +103,17 @@ const commandList: TerminalCommand[] = [
     ],
   },
   {
+    name: 'blog',
+    description: 'jump to development blog',
+    run: () => {
+      document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' });
+      return [
+        line('tb2', 'Opening Field Notes archive...'),
+        line('tl', '  Latest development updates are available in the blog section.'),
+      ];
+    },
+  },
+  {
     name: 'version',
     description: 'modpack and website version info',
     run: () => [
