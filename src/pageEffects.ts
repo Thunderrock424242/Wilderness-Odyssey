@@ -1,3 +1,4 @@
+// Corresponds to global page motion, cursor, scroll, and gallery behavior.
 type Particle = {
   x: number;
   y: number;

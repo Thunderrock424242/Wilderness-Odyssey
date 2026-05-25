@@ -1,3 +1,4 @@
+// Corresponds to shared site metadata and terminal changelog output.
 export type ReleaseNote = {
   version: string;
   date: string;

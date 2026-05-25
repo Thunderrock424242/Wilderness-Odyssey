@@ -1,3 +1,4 @@
+// Corresponds to the Features section.
 export type FeatureCard = {
   icon: string;
   title: string;

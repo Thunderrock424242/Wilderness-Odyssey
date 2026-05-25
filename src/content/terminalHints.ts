@@ -1,3 +1,4 @@
+// Corresponds to the clickable command hints in the Interactive Terminal section.
 export type TerminalHintTone = 'default' | 'gold' | 'ember' | 'blue';
 
 export type TerminalHint = {

@@ -1,3 +1,4 @@
+// Corresponds to the Gallery section.
 export type GalleryImage = {
   src: string;
   alt: string;

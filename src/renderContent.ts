@@ -1,12 +1,18 @@
+// Corresponds to rendering data-driven page sections into index.html containers.
 import { FEATURES } from './content/features';
 import { GALLERY_SLIDES, type GallerySlide } from './content/gallerySlides';
 import { BLOG_POSTS } from './content/blogPosts';
-import { ROADMAP_ITEMS } from './content/roadmap';
+import { ROADMAP_ITEMS, type RoadmapStatus } from './content/roadmap';
 import { SURVIVOR_LOGS } from './content/survivorLogs';
 import { TERMINAL_HINTS } from './content/terminalHints';
 
 const byId = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
 const delayClass = (index: number) => `d${Math.min(index + 1, 7)}`;
+const roadmapStatusClass: Record<RoadmapStatus, string> = {
+  done: 'done',
+  'in progress': 'in-progress',
+  planned: '',
+};
 
 export function renderPageContent() {
   renderGallery();
@@ -125,7 +131,8 @@ function renderRoadmap() {
     row.className = `ri rx rx-right ${delayClass(index)}`;
 
     const dotWrap = div('ri-dot-wrap');
-    const dot = div(`ri-dot${item.status === 'planned' ? '' : ` ${item.status}`}`);
+    const statusClass = roadmapStatusClass[item.status];
+    const dot = div(`ri-dot${statusClass ? ` ${statusClass}` : ''}`);
     dotWrap.appendChild(dot);
 
     const body = div('ri-body');

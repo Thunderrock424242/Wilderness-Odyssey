@@ -1,3 +1,4 @@
+// Corresponds to the Blog / Field Notes section.
 export type BlogPost = {
   date: string;
   label: string;

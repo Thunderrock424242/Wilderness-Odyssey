@@ -1,3 +1,4 @@
+// Corresponds to the Survivor Logs section.
 export type SurvivorLogTone = 'safe' | 'warn' | 'danger';
 
 export type SurvivorLog = {

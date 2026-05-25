@@ -1,3 +1,4 @@
+// Corresponds to the interactive Bunker OS terminal section.
 import { WO_CONFIG, type ReleaseNote } from './config';
 
 type TerminalTone = 'tl' | 'tg' | 'tw' | 'tb2' | 'tr' | 'iterm-cmd' | 'iterm-err';

@@ -1,4 +1,5 @@
-export type RoadmapStatus = 'done' | 'now' | 'planned';
+// Corresponds to the Roadmap section.
+export type RoadmapStatus = 'done' | 'in progress' | 'planned';
 
 export type RoadmapItem = {
   status: RoadmapStatus;
@@ -13,19 +14,19 @@ export const ROADMAP_ITEMS: RoadmapItem[] = [
     body: 'Core biomes, creatures, and exploration systems live on CurseForge.',
   },
   {
-    status: 'done',
+    status: 'in progress',
     title: 'Water Physics',
     body: 'Advanced ocean, river, and tide simulation with SPH fluid dynamics.',
-  },
-  {
-    status: 'now',
-    title: 'New Dimensions',
-    body: 'Alternate worlds accessible through meteor-energy portals - in progress.',
   },
   {
     status: 'planned',
     title: 'Anomaly & Affliction',
     body: 'Deadly anomaly effects that warp the world around you - exposure brings consequences no potion can fix.',
+  },
+  {
+    status: 'planned',
+    title: 'New Dimensions',
+    body: 'Alternate worlds accessible through meteor-energy portals.',
   },
   {
     status: 'planned',
