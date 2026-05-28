@@ -2,16 +2,18 @@
 import { FEATURES } from './content/features';
 import { GALLERY_SLIDES, type GallerySlide } from './content/gallerySlides';
 import { BLOG_POSTS } from './content/blogPosts';
-import { ROADMAP_ITEMS, type RoadmapStatus } from './content/roadmap';
+import { ROADMAP_ITEMS, ROADMAP_STATS, type RoadmapStatus } from './content/roadmap';
 import { SURVIVOR_LOGS } from './content/survivorLogs';
 import { TERMINAL_HINTS } from './content/terminalHints';
 
 const byId = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
 const delayClass = (index: number) => `d${Math.min(index + 1, 7)}`;
 const roadmapStatusClass: Record<RoadmapStatus, string> = {
-  done: 'done',
+  complete: 'done',
   'in progress': 'in-progress',
-  planned: '',
+  'next up': 'next-up',
+  planned: 'planned',
+  research: 'research',
 };
 
 export function renderPageContent() {
@@ -125,25 +127,87 @@ function renderRoadmap() {
   const list = byId<HTMLUListElement>('roadmapList') ?? document.querySelector<HTMLUListElement>('.rmap');
   if (!list) return;
 
+  const stats = byId<HTMLElement>('roadmapStats');
+  if (stats) {
+    const statsFragment = document.createDocumentFragment();
+    ROADMAP_STATS.forEach((stat, index) => {
+      const statItem = div(`road-stat rx rx-left ${delayClass(index + 2)}`);
+      statItem.appendChild(div('road-stat-value', stat.value));
+      statItem.appendChild(div('road-stat-label', stat.label));
+      statItem.appendChild(paragraph('road-stat-detail', stat.detail));
+      statsFragment.appendChild(statItem);
+    });
+    stats.replaceChildren(statsFragment);
+  }
+
   const fragment = document.createDocumentFragment();
   ROADMAP_ITEMS.forEach((item, index) => {
     const row = document.createElement('li');
     row.className = `ri rx rx-right ${delayClass(index)}`;
+    row.dataset.status = roadmapStatusClass[item.status];
 
     const dotWrap = div('ri-dot-wrap');
     const statusClass = roadmapStatusClass[item.status];
     const dot = div(`ri-dot${statusClass ? ` ${statusClass}` : ''}`);
+    const phase = span('ri-phase-dot', item.phase);
     dotWrap.appendChild(dot);
+    dotWrap.appendChild(phase);
 
     const body = div('ri-body');
-    body.appendChild(heading('h4', '', item.title));
-    body.appendChild(paragraph('', item.body));
+    const head = div('ri-head');
+    const meta = div('ri-meta');
+    meta.appendChild(span('ri-phase', item.phase));
+    meta.appendChild(span(`ri-status ${statusClass}`, item.status));
+    meta.appendChild(span('ri-target', item.target));
+    head.appendChild(meta);
+    head.appendChild(heading('h4', '', item.title));
+    head.appendChild(paragraph('ri-summary', item.summary));
+    body.appendChild(head);
+
+    const progress = div('ri-progress');
+    const progressLabel = div('ri-progress-label');
+    progressLabel.appendChild(span('', item.track));
+    progressLabel.appendChild(span('', `${item.progress}%`));
+    const progressTrack = div('ri-progress-track');
+    progressTrack.setAttribute('role', 'progressbar');
+    progressTrack.setAttribute('aria-label', `${item.title} progress`);
+    progressTrack.setAttribute('aria-valuemin', '0');
+    progressTrack.setAttribute('aria-valuemax', '100');
+    progressTrack.setAttribute('aria-valuenow', String(item.progress));
+    const progressFill = div('ri-progress-fill');
+    progressFill.style.width = `${Math.max(0, Math.min(item.progress, 100))}%`;
+    progressTrack.appendChild(progressFill);
+    progress.append(progressLabel, progressTrack);
+    body.appendChild(progress);
+
+    const details = div('ri-detail-grid');
+    details.appendChild(createRoadmapBlock('Deliverables', item.deliverables));
+    details.appendChild(createRoadmapBlock('Exit check', item.successCriteria));
+    details.appendChild(createRoadmapBlock('Depends on', item.dependencies));
+    body.appendChild(details);
+    body.appendChild(paragraph('ri-community', item.communitySignal));
 
     row.append(dotWrap, body);
     fragment.appendChild(row);
   });
 
   list.replaceChildren(fragment);
+}
+
+function createRoadmapBlock(title: string, items: string[]) {
+  const block = div('ri-block');
+  block.appendChild(div('ri-block-title', title));
+
+  const list = document.createElement('ul');
+  list.className = 'ri-points';
+  items.forEach((item) => {
+    const row = document.createElement('li');
+    row.textContent = item;
+    list.appendChild(row);
+  });
+  block.appendChild(list);
+
+  return block;
 }
 
 function renderTerminalHints() {
