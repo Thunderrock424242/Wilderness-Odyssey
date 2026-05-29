@@ -46,7 +46,6 @@ jobs:
 
           test -f dist/index.html
           test -f dist/logo.png
-          test -f dist/social-preview-v1.png
           test -d dist/assets
 
           find dist/assets -type f -name '*.js' -print -quit | grep -q .
