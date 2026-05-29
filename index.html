@@ -52,12 +52,11 @@
 <nav id="nav">
   <a href="#hero" class="n-logo" aria-current="page">Wilderness Odyssey</a>
   <ul class="n-links" id="navLinks">
-    <li><a href="#origin">Origin</a></li>
-    <li><a href="#world">World</a></li>
-    <li><a href="#features">Features</a></li>
+    <li><a href="#hero">Home</a></li>
     <li><a href="roadmap.html">Roadmap</a></li>
     <li><a href="gallery.html">Gallery</a></li>
-    <li><a href="news.html">Latest News</a></li>
+    <li><a href="news.html">News</a></li>
+    <li><a href="patch-notes.html">Patches</a></li>
     <li><a href="#survivor-logs">Logs</a></li>
     <li><a href="blog.html">Blog</a></li>
     <li><a href="#community" class="n-cta">Discord</a></li>
@@ -218,7 +217,13 @@
         <span class="hub-card-copy">A quick feed generated from the newest blog entries, so field notes double as site news.</span>
         <span class="hub-card-link">Open news</span>
       </a>
-      <a class="hub-card rx rx-up d4" href="blog.html" data-code="LOG">
+      <a class="hub-card rx rx-up d4" href="patch-notes.html" data-code="PCH">
+        <span class="hub-card-kicker">Release record</span>
+        <span class="hub-card-title">Patch Notes</span>
+        <span class="hub-card-copy">Release highlights, fixes, known issues, and alpha maintenance notes in one archive.</span>
+        <span class="hub-card-link">Open patches</span>
+      </a>
+      <a class="hub-card rx rx-up d5" href="blog.html" data-code="LOG">
         <span class="hub-card-kicker">Field notes</span>
         <span class="hub-card-title">Blog</span>
         <span class="hub-card-copy">Development notes, site updates, and longer entries from the road toward public releases.</span>
@@ -242,7 +247,7 @@
 </section>
 
 <!-- ROADMAP -->
-<section id="roadmap" class="chapter">
+<section id="roadmap" class="chapter" data-roadmap-mode="summary">
   <div class="ch-num rn">04</div>
   <div class="road-inner">
     <div>
@@ -251,7 +256,8 @@
       <div class="divline rx rx-left d2"></div>
       <p class="ch-body rx rx-left d3">Wilderness Odyssey is actively growing from public alpha into a deeper survival, anomaly, and exploration experience. This roadmap tracks what is shipped, what is being built now, and what must be true before each phase moves forward.</p>
       <div class="road-stats" id="roadmapStats"></div>
-      <p class="road-note rx rx-left d6">Targets are intentionally quality-based. A phase moves when the build is stable enough to play, test, and explain clearly.</p>
+      <p class="road-note rx rx-left d6">This is the quick signal view. The full roadmap page includes deliverables, exit checks, dependencies, and community testing needs.</p>
+      <a class="section-link rx rx-left d7" href="roadmap.html">Open full roadmap</a>
     </div>
     <ul class="rmap" id="roadmapList"></ul>
   </div>

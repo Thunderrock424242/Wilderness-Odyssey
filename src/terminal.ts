@@ -197,6 +197,22 @@ const commandList: TerminalCommand[] = [
     },
   },
   {
+    name: 'patches',
+    description: 'open patch notes archive',
+    run: () => {
+      const notes = document.getElementById('patch-notes');
+      if (notes) {
+        notes.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.location.href = 'patch-notes.html';
+      }
+      return [
+        line('tb2', 'Opening patch notes archive...'),
+        line('tl', '  Release highlights, fixes, and known issues are filed there.'),
+      ];
+    },
+  },
+  {
     name: 'version',
     description: 'modpack and website version info',
     run: () => [
@@ -215,7 +231,7 @@ const commandList: TerminalCommand[] = [
       line('tl', `  Last updated ...... ${WO_CONFIG.website.updated}`),
       line('tl', `  Author ............ ${WO_CONFIG.website.author}`),
       line('tl', ''),
-      line('tg', '  Type "news" for the latest feed or "blog" for the full archive.'),
+      line('tg', '  Type "news", "patches", or "blog" for update archives.'),
     ],
   },
   {

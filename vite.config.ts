@@ -13,6 +13,7 @@ export default defineConfig({
         roadmap: resolve(root, 'roadmap.html'),
         gallery: resolve(root, 'gallery.html'),
         news: resolve(root, 'news.html'),
+        patchNotes: resolve(root, 'patch-notes.html'),
         blog: resolve(root, 'blog.html'),
       },
     },

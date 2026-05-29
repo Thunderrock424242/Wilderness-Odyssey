@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --configLoader native --host 127.0.0.1",
-    "build": "tsc && vite build --configLoader native && node scripts/copy-social-assets.mjs",
+    "dev": "node scripts/generate-blog-share-pages.mjs && vite --configLoader native --host 127.0.0.1",
+    "build": "tsc && node scripts/generate-blog-share-pages.mjs && vite build --configLoader native && node scripts/copy-social-assets.mjs",
     "preview": "vite preview --configLoader native --host 127.0.0.1"
   },
   "devDependencies": {

@@ -3,6 +3,7 @@ node_modules/
 dist/
 
 # Local generated files
+public/blog/
 public/logo.png
 logs/debug.log
 logs/latest.log

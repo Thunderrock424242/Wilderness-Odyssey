@@ -21,6 +21,7 @@ export const TERMINAL_HINTS: TerminalHint[] = [
   { command: 'lore' },
   { command: 'blog', tone: 'blue' },
   { command: 'news', tone: 'gold' },
+  { command: 'patches', tone: 'gold' },
   { command: 'version', tone: 'gold' },
   { command: 'download' },
 ];

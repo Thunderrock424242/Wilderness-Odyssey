@@ -2,6 +2,7 @@
 import { FEATURES } from './content/features';
 import { GALLERY_SLIDES, type GallerySlide } from './content/gallerySlides';
 import { BLOG_POSTS, type BlogPost } from './content/blogPosts';
+import { PATCH_NOTES, type PatchNote } from './content/patchNotes';
 import { ROADMAP_ITEMS, ROADMAP_STATS, type RoadmapStatus } from './content/roadmap';
 import { SURVIVOR_LOGS } from './content/survivorLogs';
 import { TERMINAL_HINTS } from './content/terminalHints';
@@ -24,6 +25,7 @@ export function renderPageContent() {
   renderSurvivorLogs();
   renderLatestNews();
   renderBlogPosts();
+  renderPatchNotes();
   scrollToHashTarget();
 }
 
@@ -195,6 +197,9 @@ function renderRoadmap() {
   const list = byId<HTMLUListElement>('roadmapList') ?? document.querySelector<HTMLUListElement>('.rmap');
   if (!list) return;
 
+  const roadmap = list.closest<HTMLElement>('#roadmap');
+  const isSummary = roadmap?.dataset.roadmapMode === 'summary';
+
   const stats = byId<HTMLElement>('roadmapStats');
   if (stats) {
     const statsFragment = document.createDocumentFragment();
@@ -210,6 +215,11 @@ function renderRoadmap() {
 
   const fragment = document.createDocumentFragment();
   ROADMAP_ITEMS.forEach((item, index) => {
+    if (isSummary) {
+      fragment.appendChild(createRoadmapSummaryRow(item, index));
+      return;
+    }
+
     const row = document.createElement('li');
     row.className = `ri rx rx-right ${delayClass(index)}`;
     row.dataset.status = roadmapStatusClass[item.status];
@@ -260,6 +270,45 @@ function renderRoadmap() {
   });
 
   list.replaceChildren(fragment);
+}
+
+function createRoadmapSummaryRow(item: (typeof ROADMAP_ITEMS)[number], index: number) {
+  const statusClass = roadmapStatusClass[item.status];
+  const row = document.createElement('li');
+  row.className = `ri ri-summary-card rx rx-right ${delayClass(index)}`;
+  row.dataset.status = statusClass;
+
+  const dotWrap = div('ri-dot-wrap');
+  dotWrap.appendChild(div(`ri-dot${statusClass ? ` ${statusClass}` : ''}`));
+  dotWrap.appendChild(span('ri-phase-dot', item.phase));
+
+  const body = div('ri-body');
+
+  const meta = div('ri-meta');
+  meta.appendChild(span('ri-phase', item.phase));
+  meta.appendChild(span(`ri-status ${statusClass}`, item.status));
+  meta.appendChild(span('ri-target', item.target));
+
+  const titleRow = div('ri-summary-title-row');
+  titleRow.appendChild(heading('h4', '', item.title));
+  titleRow.appendChild(span('ri-summary-percent', `${item.progress}%`));
+
+  const progress = div('ri-progress');
+  const progressTrack = div('ri-progress-track');
+  progressTrack.setAttribute('role', 'progressbar');
+  progressTrack.setAttribute('aria-label', `${item.title} progress`);
+  progressTrack.setAttribute('aria-valuemin', '0');
+  progressTrack.setAttribute('aria-valuemax', '100');
+  progressTrack.setAttribute('aria-valuenow', String(item.progress));
+  const progressFill = div('ri-progress-fill');
+  progressFill.style.width = `${Math.max(0, Math.min(item.progress, 100))}%`;
+  progressTrack.appendChild(progressFill);
+  progress.appendChild(progressTrack);
+
+  body.append(meta, titleRow, paragraph('ri-summary', item.summary), progress);
+  row.append(dotWrap, body);
+
+  return row;
 }
 
 function createRoadmapBlock(title: string, items: string[]) {
@@ -347,6 +396,7 @@ function renderLatestNews() {
 
 function createBlogPostCard(post: BlogPost, index: number, showFullEntry: boolean) {
   const slug = slugify(post.title);
+  const shareUrl = blogPostShareUrl(slug);
   const card = document.createElement('article');
   card.className = `blog-card${post.featured ? ' featured' : ''} rx rx-up ${delayClass(index)}`;
   card.id = `${showFullEntry ? 'post' : 'news'}-${slug}`;
@@ -376,14 +426,11 @@ function createBlogPostCard(post: BlogPost, index: number, showFullEntry: boolea
     details.appendChild(body);
 
     card.appendChild(details);
+    card.appendChild(createBlogPostLink(shareUrl, 'Share field note'));
     return card;
   }
 
-  const link = document.createElement('a');
-  link.className = 'blog-read-link';
-  link.href = `blog.html#post-${slug}`;
-  link.textContent = 'Read field note';
-  card.appendChild(link);
+  card.appendChild(createBlogPostLink(shareUrl, 'Read field note'));
 
   return card;
 }
@@ -397,6 +444,69 @@ function slugify(value: string) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
+}
+
+function blogPostShareUrl(slug: string) {
+  return `blog/${slug}/`;
+}
+
+function createBlogPostLink(href: string, text: string) {
+  const link = document.createElement('a');
+  link.className = 'blog-read-link';
+  link.href = href;
+  link.textContent = text;
+  return link;
+}
+
+function renderPatchNotes() {
+  const grid = byId<HTMLElement>('patchNotesGrid');
+  if (!grid) return;
+
+  const fragment = document.createDocumentFragment();
+  getLatestPatchNotes().forEach((note, index) => fragment.appendChild(createPatchNoteCard(note, index)));
+  grid.replaceChildren(fragment);
+}
+
+function createPatchNoteCard(note: PatchNote, index: number) {
+  const card = document.createElement('article');
+  card.className = `patch-card rx rx-up ${delayClass(index)}`;
+
+  const meta = div('patch-meta');
+  meta.appendChild(span('patch-version', note.version));
+  meta.appendChild(span('patch-status', note.status));
+  meta.appendChild(span('patch-date', note.date));
+
+  card.appendChild(meta);
+  card.appendChild(heading('h3', 'patch-title', note.title));
+  card.appendChild(paragraph('patch-summary', note.summary));
+
+  const lists = div('patch-lists');
+  lists.appendChild(createPatchBlock('Highlights', note.highlights));
+  lists.appendChild(createPatchBlock('Fixes', note.fixes));
+  lists.appendChild(createPatchBlock('Known issues', note.knownIssues));
+  card.appendChild(lists);
+
+  return card;
+}
+
+function createPatchBlock(title: string, items: string[]) {
+  const block = div('patch-block');
+  block.appendChild(div('patch-block-title', title));
+
+  const list = document.createElement('ul');
+  list.className = 'patch-points';
+  items.forEach((item) => {
+    const row = document.createElement('li');
+    row.textContent = item;
+    list.appendChild(row);
+  });
+
+  block.appendChild(list);
+  return block;
+}
+
+function getLatestPatchNotes() {
+  return [...PATCH_NOTES].sort((a, b) => b.date.localeCompare(a.date));
 }
 
 function scrollToHashTarget() {
