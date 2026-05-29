@@ -39,6 +39,51 @@ jobs:
       - name: Build website
         run: npm run build
 
+      - name: Check website artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -f dist/index.html
+          test -f dist/logo.png
+          test -f dist/social-preview-v1.png
+          test -d dist/assets
+
+          find dist/assets -type f -name '*.js' -print -quit | grep -q .
+          find dist/assets -type f -name '*.css' -print -quit | grep -q .
+          grep -q '/Wilderness-Odyssey/assets/' dist/index.html
+
+      - name: Check website links
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          npm run preview -- --port 4173 > /tmp/wilderness-odyssey-preview.log 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid" 2>/dev/null || true' EXIT
+
+          for attempt in {1..30}; do
+            if curl --silent --fail http://127.0.0.1:4173/Wilderness-Odyssey/ > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
+
+          curl --silent --fail http://127.0.0.1:4173/Wilderness-Odyssey/ > /dev/null
+          npx --yes linkinator@7.6.1 http://127.0.0.1:4173/Wilderness-Odyssey/ \
+            --recurse \
+            --skip 'data:.*' \
+            --skip 'https://fonts\.googleapis\.com/.*' \
+            --skip 'https://thunderrock424242\.github\.io/Wilderness-Odyssey/.*'
+
+      - name: Run Lighthouse report
+        uses: treosh/lighthouse-ci-action@v12
+        continue-on-error: true
+        with:
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          configPath: ./.lighthouserc.json
+
       - name: Upload website artifact
         uses: actions/upload-pages-artifact@v5
         with:

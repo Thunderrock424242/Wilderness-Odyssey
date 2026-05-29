@@ -12,6 +12,11 @@ export const FEATURES: FeatureCard[] = [
     body: 'Environments unlike anything in vanilla Minecraft. Vibrant colours, dynamic ecosystems, and terrains that feel genuinely alive.',
   },
   {
+    icon: '\u26C8\uFE0F',
+    title: 'Seasons & Storms',
+    body: 'A living weather system cycles through seasons, rain, snow, and thunder, turning every journey into a fight against the world itself.',
+  },
+  {
     icon: '\u{1F98E}',
     title: 'New Creatures',
     body: 'The anomaly energy transformed wildlife over fifty years. Hundreds of evolved creatures - fascinating, deadly, and never seen before.',
