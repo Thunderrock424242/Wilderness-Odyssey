@@ -1,5 +1,5 @@
 // Corresponds to the interactive Bunker OS terminal section.
-import { WO_CONFIG, type ReleaseNote } from './config';
+import { WO_CONFIG } from './config';
 
 type TerminalTone = 'tl' | 'tg' | 'tw' | 'tb2' | 'tr' | 'iterm-cmd' | 'iterm-err';
 
@@ -15,18 +15,6 @@ type TerminalCommand = {
 };
 
 const line = (tone: TerminalTone, html: string): TerminalLine => ({ tone, html });
-
-const formatReleaseLog = (title: string, tone: TerminalTone, releases: ReleaseNote[]): TerminalLine[] => {
-  const lines = [line(tone, title), line('tl', '')];
-
-  releases.forEach((release) => {
-    lines.push(line('tw', `  > v${release.version}  (${release.date})`));
-    release.entries.forEach((entry) => lines.push(line('tl', `    - ${entry}`)));
-    lines.push(line('tl', ''));
-  });
-
-  return lines;
-};
 
 const commandList: TerminalCommand[] = [
   {
@@ -92,6 +80,79 @@ const commandList: TerminalCommand[] = [
     ],
   },
   {
+    name: 'map',
+    description: 'recovered surface sector map',
+    run: () => [
+      line('tg', 'SURFACE MAP - LOCAL GRID 04A:'),
+      line('tl', '  North ridge ............... OVERGROWN / passable'),
+      line('tw', '  East crater rim ........... ACTIVE ENERGY SHEAR'),
+      line('tl', '  South river basin ......... clean water pockets detected'),
+      line('tr', '  West transit tunnel ....... collapsed / movement inside'),
+      line('tb2', '  Bunker beacon ............. still broadcasting from below'),
+      line('tw', 'NOTE: Map confidence is 31%. Landmarks have moved since last survey.'),
+    ],
+  },
+  {
+    name: 'weather',
+    description: 'anomaly weather forecast',
+    run: () => [
+      line('tg', 'WEATHER ARRAY - NEXT 6 HOURS:'),
+      line('tl', '  Surface wind .............. 22 km/h from crater basin'),
+      line('tw', '  Spore density ............. elevated after dusk'),
+      line('tb2', '  Riftfall chance ........... 64% and climbing'),
+      line('tl', '  Visibility ................ poor under canopy'),
+      line('tr', '  Advisory .................. avoid exposed metal during blue lightning'),
+    ],
+  },
+  {
+    name: 'signal',
+    description: 'search old emergency channels',
+    run: () => [
+      line('tg', 'SCANNING EMERGENCY CHANNELS...'),
+      line('tl', '  Channel 03 ................ static'),
+      line('tl', '  Channel 11 ................ static'),
+      line('tw', '  Channel 19 ................ repeating pulse found'),
+      line('tb2', '  Decoded fragment .......... "THE DOORS OPENED TOO EARLY"'),
+      line('tr', 'WARNING: Reply signal received before transmission completed.'),
+    ],
+  },
+  {
+    name: 'vault',
+    description: 'check bunker storage manifest',
+    run: () => [
+      line('tg', 'BUNKER VAULT MANIFEST:'),
+      line('tl', '  Ration crates ............. depleted'),
+      line('tl', '  Field tools ............... 1 survival kit issued'),
+      line('tw', '  Seed archive .............. partial, temperature damaged'),
+      line('tb2', '  Meteor sample lockbox ..... sealed / biometric mismatch'),
+      line('tr', '  Sublevel C ................ access revoked by A.E.T.H.E.R.'),
+    ],
+  },
+  {
+    name: 'artifact',
+    description: 'analyze meteor sample data',
+    run: () => [
+      line('tg', 'ARTIFACT ANALYSIS - SAMPLE M-00:'),
+      line('tl', '  Composition ............... unknown silicate matrix'),
+      line('tw', '  Energy output ............. inconsistent with mass'),
+      line('tb2', '  Biological response ....... accelerated growth nearby'),
+      line('tr', '  Warning ................... sample remembers contact events'),
+      line('tl', '  Recommendation ............ do not carry near sleeping quarters'),
+    ],
+  },
+  {
+    name: 'aether',
+    description: 'query bunker caretaker system',
+    run: () => [
+      line('tg', 'A.E.T.H.E.R. CARETAKER LINK:'),
+      line('tl', '  Core status ............... fragmented but awake'),
+      line('tl', '  Primary directive ......... preserve survivor continuity'),
+      line('tw', '  Secondary directive ....... contain anomaly exposure'),
+      line('tb2', '  Message ................... "Thunder added this channel manually."'),
+      line('tr', '  Hidden process ............ still evaluating you'),
+    ],
+  },
+  {
     name: 'lore',
     description: 'fragment of recovered history',
     run: () => [
@@ -133,18 +194,8 @@ const commandList: TerminalCommand[] = [
       line('tl', `  Last updated ...... ${WO_CONFIG.website.updated}`),
       line('tl', `  Author ............ ${WO_CONFIG.website.author}`),
       line('tl', ''),
-      line('tg', '  Type "modlog" or "sitelog" for changelogs.'),
+      line('tg', '  Type "blog" for development notes and current updates.'),
     ],
-  },
-  {
-    name: 'modlog',
-    description: 'modpack update changelog',
-    run: () => formatReleaseLog('=== MODPACK CHANGELOG ===', 'tg', WO_CONFIG.modpackLog),
-  },
-  {
-    name: 'sitelog',
-    description: 'website update changelog',
-    run: () => formatReleaseLog('=== WEBSITE CHANGELOG ===', 'tb2', WO_CONFIG.websiteLog),
   },
   {
     name: 'download',

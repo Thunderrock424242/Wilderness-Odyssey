@@ -2,22 +2,9 @@
 node_modules/
 dist/
 
-# Gradle / Minecraft run output
-.gradle/
-build/
-run/
-runs/
-run-data/
-
-# IDEs
-.idea/
-.vscode/
-out/
-*.iml
-*.ipr
-*.iws
-
 # Local generated files
+public/logo.png
+public/social-preview-v*.png
 logs/debug.log
 logs/latest.log
 formatted_APIchangelog.txt

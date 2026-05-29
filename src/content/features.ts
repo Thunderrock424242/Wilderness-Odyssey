@@ -31,9 +31,4 @@ export const FEATURES: FeatureCard[] = [
     title: 'Lost Civilisation',
     body: "Piece together humanity's story through ancient ruins, forgotten caches, and journals left behind by those who didn't survive.",
   },
-  {
-    icon: '\u2697\uFE0F',
-    title: 'Unknown Sickness',
-    body: 'The meteor brought more than anomaly. Strange afflictions alter survivors and creatures alike. Not all that glows in this world is safe.',
-  },
 ];
