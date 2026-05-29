@@ -4,39 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wilderness Odyssey — The World Reborn</title>
-<!-- ═══ SOCIAL PREVIEW — controls Discord / Twitter / iMessage embeds ═══
-     Keep absolute URLs here so external crawlers can fetch the card from GitHub Pages.
-     Recommended image size: 1200 x 630px
+<!-- ═══ DISCORD / SOCIAL EMBED — controls link previews ═══
+     Discord only supports a few Open Graph fields here: title, description,
+     site name, URL, and the theme-color accent bar.
 ════════════════════════════════════════════════════════════════════ -->
 
 <!-- General -->
-<meta name="description" content="A cinematic Minecraft survival modpack set 50 years after a meteor impact. Wake in a bunker, cross a world reclaimed by nature, and survive the anomaly storms.">
+<meta name="description" content="BUNKER_OS reports breathable air, hostile anomaly weather, and a world reclaimed by nature. Wake up, gear up, and step outside.">
 <meta name="theme-color" content="#e8a020">
 <link rel="canonical" href="https://thunderrock424242.github.io/Wilderness-Odyssey/">
-<link rel="icon" type="image/png" href="/Wilderness-Odyssey/logo.png">
 
 <!-- Open Graph (Discord, Facebook, iMessage, Slack, etc.) -->
 <meta property="og:type"        content="website">
-<meta property="og:site_name"   content="Wilderness Odyssey">
+<meta property="og:site_name"   content="BUNKER_OS // Wilderness Odyssey">
 <meta property="og:locale"      content="en_US">
 <meta property="og:url"         content="https://thunderrock424242.github.io/Wilderness-Odyssey/">
-<meta property="og:title"       content="Wilderness Odyssey — The World Reborn">
-<meta property="og:description" content="Wake 50 years after impact. Explore lush ruins, anomaly-charged biomes, meteor craters, and survival systems built for a dangerous new Earth.">
-<meta property="og:image"       content="https://thunderrock424242.github.io/Wilderness-Odyssey/social-preview-v1.png">
-<meta property="og:image:secure_url" content="https://thunderrock424242.github.io/Wilderness-Odyssey/social-preview-v1.png">
-<meta property="og:image:type"  content="image/png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt"   content="Wilderness Odyssey title over a post-impact bunker terminal scene with meteor fire and anomaly energy.">
+<meta property="og:title"       content="Wilderness Odyssey // Surface Access Restored">
+<meta property="og:description" content="BUNKER_OS reports breathable air, hostile anomaly weather, and a world reclaimed by nature. Wake up, gear up, and step outside.">
 
 <!-- Twitter / X card -->
-<meta name="twitter:card"        content="summary_large_image">
-<meta name="twitter:title"       content="Wilderness Odyssey — The World Reborn">
-<meta name="twitter:description" content="A cinematic Minecraft survival modpack about bunker awakening, reclaimed wilderness, anomaly storms, and meteor-scarred exploration.">
-<meta name="twitter:image"       content="https://thunderrock424242.github.io/Wilderness-Odyssey/social-preview-v1.png">
-<meta name="twitter:image:alt"   content="Wilderness Odyssey title over a post-impact bunker terminal scene with meteor fire and anomaly energy.">
+<meta name="twitter:card"        content="summary">
+<meta name="twitter:title"       content="Wilderness Odyssey // Surface Access Restored">
+<meta name="twitter:description" content="BUNKER_OS reports breathable air, hostile anomaly weather, and a world reclaimed by nature. Wake up, gear up, and step outside.">
 
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"></noscript>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -47,7 +42,7 @@
 <!-- NAV -->
 <nav id="nav">
   <a href="#" class="n-logo">Wilderness Odyssey</a>
-  <ul class="n-links">
+  <ul class="n-links" id="navLinks">
     <li><a href="#origin">Origin</a></li>
     <li><a href="#world">World</a></li>
     <li><a href="#features">Features</a></li>
@@ -57,6 +52,11 @@
     <li><a href="#blog">Blog</a></li>
     <li><a href="#community" class="n-cta">Discord</a></li>
   </ul>
+  <button class="n-toggle" type="button" aria-controls="navLinks" aria-expanded="false" aria-label="Open navigation">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 </nav>
 
 <!-- ═══ HERO ═══ -->
@@ -223,8 +223,8 @@
 <!-- INTERACTIVE TERMINAL -->
 <section id="terminal-section" class="chapter" style="padding:12rem 0;background:linear-gradient(180deg,#070510 0%,#04030a 100%)">
   <div class="ch-num" style="top:5%;right:-1%">05</div>
-  <div style="max-width:1260px;margin:0 auto;padding:0 5rem">
-    <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:7rem;align-items:center">
+  <div class="terminal-section-inner">
+    <div class="terminal-section-grid">
       <div>
         <p class="ch-label rx rx-left">Interactive</p>
         <h2 class="ch-title rx rx-left d1">Access the<br><em>Bunker OS</em></h2>
@@ -263,8 +263,8 @@
 <!-- SURVIVOR LOGS -->
 <section id="survivor-logs" class="chapter" style="padding:12rem 0;background:linear-gradient(180deg,#04030a 0%,#080609 100%)">
   <div class="ch-num" style="top:5%;left:-1%">06</div>
-  <div style="max-width:1260px;margin:0 auto;padding:0 5rem">
-    <div style="margin-bottom:5rem">
+  <div class="survivor-inner">
+    <div class="survivor-head">
       <p class="ch-label rx rx-left">Survivor Logs</p>
       <h2 class="ch-title rx rx-left d1">Found in the<br><em>Ruins</em></h2>
       <div class="divline rx rx-left d2"></div>

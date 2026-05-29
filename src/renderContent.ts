@@ -29,81 +29,147 @@ function renderGallery() {
   const stage = byId<HTMLElement>('galleryStage');
   if (!stage) return;
 
+  byId<HTMLElement>('galleryLightbox')?.remove();
+
   const fragment = document.createDocumentFragment();
-  GALLERY_SLIDES.forEach((slide, index) => fragment.appendChild(createGallerySlide(slide, index)));
-  fragment.appendChild(createGalleryControls(GALLERY_SLIDES.length));
+  const grid = div('gallery-grid');
+  grid.setAttribute('aria-label', 'Wilderness Odyssey screenshot gallery');
+  GALLERY_SLIDES.forEach((slide, index) => grid.appendChild(createGalleryCard(slide, index)));
+  fragment.appendChild(grid);
   stage.replaceChildren(fragment);
+  document.body.appendChild(createGalleryLightbox(GALLERY_SLIDES));
 }
 
-function createGallerySlide(slide: GallerySlide, index: number) {
-  const wrapper = document.createElement('div');
-  wrapper.className = `gslide${index === 0 ? ' active' : ''}`;
-  wrapper.dataset.index = String(index);
+function createGalleryCard(slide: GallerySlide, index: number) {
+  const card = document.createElement('button');
+  card.className = `gallery-card rx rx-up ${delayClass(index)}`;
+  card.type = 'button';
+  card.dataset.galleryIndex = String(index);
+  card.dataset.tag = slide.tag;
+  card.dataset.title = slide.title;
+  card.dataset.description = slide.description;
+  card.dataset.placeholderIcon = slide.placeholderIcon;
+  card.dataset.placeholderLabel = slide.placeholderLabel;
+  card.dataset.placeholderHint = slide.placeholderHint;
+  card.ariaLabel = `Open ${slide.title} screenshot`;
+
+  if (slide.image) {
+    card.dataset.imageSrc = slide.image.src;
+    card.dataset.imageAlt = slide.image.alt;
+  }
+
+  const media = div('gallery-card-media');
 
   if (slide.image) {
     const image = document.createElement('img');
-    image.className = 'gslide-img';
+    image.className = 'gallery-card-img';
     image.src = slide.image.src;
     image.alt = slide.image.alt;
     image.loading = index === 0 ? 'eager' : 'lazy';
-    wrapper.appendChild(image);
+    media.appendChild(image);
   } else {
     const placeholder = document.createElement('div');
-    placeholder.className = 'gslide-placeholder';
-    placeholder.appendChild(span('gph-icon', slide.placeholderIcon));
-    placeholder.appendChild(span('gph-label', slide.placeholderLabel));
-    placeholder.appendChild(span('gph-hint', slide.placeholderHint));
-    wrapper.appendChild(placeholder);
+    placeholder.className = 'gallery-card-placeholder';
+    placeholder.appendChild(span('gallery-placeholder-icon', slide.placeholderIcon));
+    placeholder.appendChild(span('gallery-placeholder-label', slide.placeholderLabel));
+    placeholder.appendChild(span('gallery-placeholder-hint', slide.placeholderHint));
+    media.appendChild(placeholder);
   }
 
-  wrapper.appendChild(div('gslide-ov'));
-  wrapper.appendChild(div('gslide-left-ov'));
+  media.appendChild(div('gallery-card-shade'));
+  card.appendChild(media);
 
-  const caption = div('gcaption');
-  caption.appendChild(div('gcap-tag', slide.tag));
-  caption.appendChild(div('gcap-title', slide.title));
-  caption.appendChild(div('gcap-desc', slide.description));
-  wrapper.appendChild(caption);
+  const caption = div('gallery-card-caption');
+  caption.appendChild(div('gallery-card-tag', slide.tag));
+  caption.appendChild(div('gallery-card-title', slide.title));
+  card.appendChild(caption);
 
-  return wrapper;
+  return card;
 }
 
-function createGalleryControls(totalSlides: number) {
-  const controls = div('g-controls');
+function createGalleryLightbox(slides: GallerySlide[]) {
+  const lightbox = document.createElement('div');
+  lightbox.className = 'gallery-lightbox';
+  lightbox.id = 'galleryLightbox';
+  lightbox.hidden = true;
+  lightbox.setAttribute('role', 'dialog');
+  lightbox.setAttribute('aria-modal', 'true');
+  lightbox.setAttribute('aria-label', 'Gallery image viewer');
+
+  const backdrop = div('gallery-lightbox-backdrop');
+  backdrop.dataset.galleryClose = 'true';
+  lightbox.appendChild(backdrop);
+
+  const counter = div('gallery-lightbox-counter');
+  counter.id = 'galleryLightboxCounter';
+  lightbox.appendChild(counter);
+
+  const close = document.createElement('button');
+  close.className = 'gallery-lightbox-close';
+  close.id = 'galleryLightboxClose';
+  close.type = 'button';
+  close.ariaLabel = 'Close gallery viewer';
+  close.textContent = 'x';
+  lightbox.appendChild(close);
 
   const prev = document.createElement('button');
-  prev.className = 'g-prev';
-  prev.id = 'gPrev';
+  prev.className = 'gallery-lightbox-nav gallery-lightbox-prev';
+  prev.id = 'galleryLightboxPrev';
   prev.type = 'button';
-  prev.ariaLabel = 'Previous';
+  prev.ariaLabel = 'Previous image';
   prev.textContent = '\u2190';
-  controls.appendChild(prev);
 
-  const dots = div('g-dots');
-  dots.id = 'gDots';
-  for (let index = 0; index < totalSlides; index += 1) {
-    const dot = div(`gdot${index === 0 ? ' active' : ''}`);
-    dot.dataset.i = String(index);
-    dots.appendChild(dot);
-  }
-  controls.appendChild(dots);
+  const frame = div('gallery-lightbox-frame');
+  frame.id = 'galleryLightboxFrame';
+
+  const caption = document.createElement('figcaption');
+  caption.className = 'gallery-lightbox-caption';
+  caption.id = 'galleryLightboxCaption';
+
+  const figure = document.createElement('figure');
+  figure.className = 'gallery-lightbox-figure';
+  figure.append(frame, caption);
 
   const next = document.createElement('button');
-  next.className = 'g-next';
-  next.id = 'gNext';
+  next.className = 'gallery-lightbox-nav gallery-lightbox-next';
+  next.id = 'galleryLightboxNext';
   next.type = 'button';
-  next.ariaLabel = 'Next';
+  next.ariaLabel = 'Next image';
   next.textContent = '\u2192';
-  controls.appendChild(next);
 
-  const counter = div('g-counter');
-  const current = document.createElement('span');
-  current.id = 'gCur';
-  current.textContent = '01';
-  counter.append(current, ` / ${String(totalSlides).padStart(2, '0')}`);
-  controls.appendChild(counter);
+  const main = div('gallery-lightbox-main');
+  main.append(prev, figure, next);
+  lightbox.appendChild(main);
 
-  return controls;
+  const thumbs = div('gallery-lightbox-thumbs');
+  thumbs.id = 'galleryLightboxThumbs';
+  slides.forEach((slide, index) => thumbs.appendChild(createGalleryThumb(slide, index)));
+  lightbox.appendChild(thumbs);
+
+  return lightbox;
+}
+
+function createGalleryThumb(slide: GallerySlide, index: number) {
+  const thumb = document.createElement('button');
+  thumb.className = 'gallery-lightbox-thumb';
+  thumb.type = 'button';
+  thumb.dataset.thumbIndex = String(index);
+  thumb.ariaLabel = `Show ${slide.title}`;
+
+  if (slide.image) {
+    const image = document.createElement('img');
+    image.src = slide.image.src;
+    image.alt = '';
+    image.loading = 'lazy';
+    thumb.appendChild(image);
+    return thumb;
+  }
+
+  const placeholder = div('gallery-thumb-placeholder');
+  placeholder.appendChild(span('gallery-thumb-icon', slide.placeholderIcon));
+  thumb.appendChild(placeholder);
+
+  return thumb;
 }
 
 function renderFeatures() {
