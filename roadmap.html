@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wilderness Odyssey - Roadmap</title>
+<meta name="description" content="Track the Wilderness Odyssey alpha roadmap, active milestones, dependencies, and release-quality checks.">
+<meta name="theme-color" content="#e8a020">
+<link rel="canonical" href="https://thunderrock424242.github.io/Wilderness-Odyssey/roadmap.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="cur"></div><div id="curt"></div>
+<div id="prog"></div>
+
+<nav id="nav">
+  <a href="index.html" class="n-logo">Wilderness Odyssey</a>
+  <ul class="n-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="roadmap.html" aria-current="page">Roadmap</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="news.html">Latest News</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="index.html#community" class="n-cta">Discord</a></li>
+  </ul>
+  <button class="n-toggle" type="button" aria-controls="navLinks" aria-expanded="false" aria-label="Open navigation">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<header class="page-hero">
+  <div class="page-hero-inner">
+    <p class="page-kicker rx rx-left">Build Path</p>
+    <h1 class="page-title rx rx-left d1">Roadmap <em>Archive</em></h1>
+    <p class="page-copy rx rx-left d2">A focused view of what is shipped, what is being built now, and what each phase needs before it moves forward.</p>
+    <div class="page-actions rx rx-left d3">
+      <a href="news.html" class="btn-main">Latest News</a>
+      <a href="blog.html" class="btn-ghost">Field Notes</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="roadmap" class="chapter">
+    <div class="ch-num rn">01</div>
+    <div class="road-inner">
+      <div>
+        <div class="alpha-badge rx rx-left"><div class="abdot"></div>Currently Alpha</div>
+        <h2 class="ch-title rx rx-left d1">The <em>Journey</em><br>Continues</h2>
+        <div class="divline rx rx-left d2"></div>
+        <p class="ch-body rx rx-left d3">Wilderness Odyssey is actively growing from public alpha into a deeper survival, anomaly, and exploration experience. This roadmap tracks what is shipped, what is being built now, and what must be true before each phase moves forward.</p>
+        <div class="road-stats" id="roadmapStats"></div>
+        <p class="road-note rx rx-left d6">Targets are intentionally quality-based. A phase moves when the build is stable enough to play, test, and explain clearly.</p>
+      </div>
+      <ul class="rmap" id="roadmapList"></ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="f-brand">Wilderness Odyssey</div>
+    <ul class="fl">
+      <li><a href="https://www.curseforge.com/minecraft" target="_blank">CurseForge</a></li>
+      <li><a href="https://discord.gg/XHSFDb7EM5" target="_blank">Discord</a></li>
+      <li><a href="https://github.com/Thunderrock424242" target="_blank">GitHub</a></li>
+    </ul>
+    <p class="fc">&copy; 2025 Thunderrock424242</p>
+  </div>
+</footer>
+
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>

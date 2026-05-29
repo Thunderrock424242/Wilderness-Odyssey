@@ -1,7 +1,7 @@
-// Corresponds to rendering data-driven page sections into index.html containers.
+// Corresponds to rendering data-driven sections into page containers.
 import { FEATURES } from './content/features';
 import { GALLERY_SLIDES, type GallerySlide } from './content/gallerySlides';
-import { BLOG_POSTS } from './content/blogPosts';
+import { BLOG_POSTS, type BlogPost } from './content/blogPosts';
 import { ROADMAP_ITEMS, ROADMAP_STATS, type RoadmapStatus } from './content/roadmap';
 import { SURVIVOR_LOGS } from './content/survivorLogs';
 import { TERMINAL_HINTS } from './content/terminalHints';
@@ -22,7 +22,9 @@ export function renderPageContent() {
   renderRoadmap();
   renderTerminalHints();
   renderSurvivorLogs();
+  renderLatestNews();
   renderBlogPosts();
+  scrollToHashTarget();
 }
 
 function renderGallery() {
@@ -319,26 +321,49 @@ function renderSurvivorLogs() {
 }
 
 function renderBlogPosts() {
-  const grid = byId<HTMLElement>('blogPostsGrid');
-  if (!grid) return;
+  const grids = Array.from(document.querySelectorAll<HTMLElement>('[data-blog-feed], #blogPostsGrid'));
+  if (!grids.length) return;
 
-  const fragment = document.createDocumentFragment();
-  BLOG_POSTS.forEach((post, index) => {
-    const card = document.createElement('article');
-    card.className = `blog-card${post.featured ? ' featured' : ''} rx rx-up ${delayClass(index)}`;
+  grids.forEach((grid) => {
+    const fragment = document.createDocumentFragment();
+    getLatestPosts().forEach((post, index) => fragment.appendChild(createBlogPostCard(post, index, true)));
+    grid.replaceChildren(fragment);
+  });
+}
 
-    const meta = div('blog-meta');
-    meta.appendChild(span('blog-label', post.label));
-    meta.appendChild(span('blog-date', post.date));
+function renderLatestNews() {
+  const feeds = Array.from(document.querySelectorAll<HTMLElement>('[data-news-feed]'));
+  if (!feeds.length) return;
 
-    card.appendChild(meta);
-    card.appendChild(heading('h3', 'blog-title', post.title));
-    card.appendChild(paragraph('blog-excerpt', post.excerpt));
+  feeds.forEach((feed) => {
+    const limit = Number(feed.dataset.newsLimit ?? BLOG_POSTS.length);
+    const fragment = document.createDocumentFragment();
+    getLatestPosts()
+      .slice(0, Number.isFinite(limit) && limit > 0 ? limit : BLOG_POSTS.length)
+      .forEach((post, index) => fragment.appendChild(createBlogPostCard(post, index, false)));
+    feed.replaceChildren(fragment);
+  });
+}
 
-    const tags = div('blog-tags');
-    post.tags.forEach((tag) => tags.appendChild(span('blog-tag', tag)));
-    card.appendChild(tags);
+function createBlogPostCard(post: BlogPost, index: number, showFullEntry: boolean) {
+  const slug = slugify(post.title);
+  const card = document.createElement('article');
+  card.className = `blog-card${post.featured ? ' featured' : ''} rx rx-up ${delayClass(index)}`;
+  card.id = `${showFullEntry ? 'post' : 'news'}-${slug}`;
 
+  const meta = div('blog-meta');
+  meta.appendChild(span('blog-label', post.label));
+  meta.appendChild(span('blog-date', post.date));
+
+  card.appendChild(meta);
+  card.appendChild(heading('h3', 'blog-title', post.title));
+  card.appendChild(paragraph('blog-excerpt', post.excerpt));
+
+  const tags = div('blog-tags');
+  post.tags.forEach((tag) => tags.appendChild(span('blog-tag', tag)));
+  card.appendChild(tags);
+
+  if (showFullEntry) {
     const details = document.createElement('details');
     details.className = 'blog-details';
 
@@ -351,10 +376,37 @@ function renderBlogPosts() {
     details.appendChild(body);
 
     card.appendChild(details);
-    fragment.appendChild(card);
-  });
+    return card;
+  }
 
-  grid.replaceChildren(fragment);
+  const link = document.createElement('a');
+  link.className = 'blog-read-link';
+  link.href = `blog.html#post-${slug}`;
+  link.textContent = 'Read field note';
+  card.appendChild(link);
+
+  return card;
+}
+
+function getLatestPosts() {
+  return [...BLOG_POSTS].sort((a, b) => b.date.localeCompare(a.date));
+}
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function scrollToHashTarget() {
+  if (!window.location.hash) return;
+
+  window.requestAnimationFrame(() => {
+    const id = window.location.hash.slice(1);
+    const target = document.getElementById(id);
+    target?.scrollIntoView();
+  });
 }
 
 function div(className: string, text?: string) {

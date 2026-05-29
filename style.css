@@ -41,7 +41,7 @@ nav.solid{background:rgba(4,3,10,.9);backdrop-filter:blur(24px);border-bottom:1p
 .n-logo{font-family:var(--F-serif);font-size:.72rem;letter-spacing:.35em;color:var(--gold);text-decoration:none;text-transform:uppercase;line-height:1.35}
 .n-links{display:flex;gap:2.8rem;list-style:none}
 .n-links a{font-family:var(--F-mono);font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s;cursor:none}
-.n-links a:hover{color:var(--gold)}
+.n-links a:hover,.n-links a[aria-current="page"]{color:var(--gold)}
 .n-cta{border:1px solid rgba(232,160,32,.4)!important;color:var(--gold)!important;padding:.4rem 1.2rem;transition:background .3s,border-color .3s!important}
 .n-cta:hover{background:rgba(232,160,32,.08)!important;border-color:var(--gold)!important}
 .n-toggle{display:none;width:44px;height:44px;align-items:center;justify-content:center;flex-direction:column;gap:5px;border:1px solid rgba(232,160,32,.22);background:rgba(4,3,10,.62);border-radius:3px;color:var(--gold);cursor:pointer}
@@ -115,7 +115,7 @@ nav.solid{background:rgba(4,3,10,.9);backdrop-filter:blur(24px);border-bottom:1p
 
 /* ═══ SHARED ═══ */
 .chapter{position:relative;width:100%;overflow:hidden}
-#origin,#world,#features,#roadmap,#gallery,#terminal-section,#survivor-logs,#blog,#community{content-visibility:auto;contain-intrinsic-size:900px}
+#origin,#world,#features,#roadmap,#gallery,#terminal-section,#survivor-logs,#blog,#latest-news,#content-hub,#community{content-visibility:auto;contain-intrinsic-size:900px}
 #gallery{contain-intrinsic-size:700px}
 .ch-num{position:absolute;font-family:var(--F-display);font-size:clamp(10rem,22vw,20rem);color:rgba(255,255,255,.016);line-height:1;pointer-events:none;user-select:none;z-index:0}
 
@@ -135,6 +135,37 @@ nav.solid{background:rgba(4,3,10,.9);backdrop-filter:blur(24px);border-bottom:1p
 .ch-title em{font-style:normal;color:var(--gold)}
 .ch-body{font-size:1.08rem;line-height:1.9;color:rgba(240,236,224,.65);max-width:54ch}
 .divline{width:48px;height:1px;background:linear-gradient(to right,var(--gold),transparent);margin:1.6rem 0}
+
+/* PAGE SHELLS */
+.page-hero{position:relative;min-height:56vh;display:flex;align-items:flex-end;padding:10rem 5rem 5.5rem;background:linear-gradient(180deg,#04030a 0%,#0b0807 56%,#070510 100%);overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(115deg,rgba(232,160,32,.08),transparent 34%,rgba(58,184,255,.045));pointer-events:none}
+.page-hero-inner{position:relative;z-index:1;width:min(980px,100%)}
+.page-kicker{font-family:var(--F-mono);font-size:.64rem;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.page-title{font-family:var(--F-display);font-size:clamp(3.6rem,8vw,7.4rem);line-height:.96;letter-spacing:.045em;color:var(--white);max-width:11ch}
+.page-title em{font-style:normal;color:var(--gold)}
+.page-copy{max-width:62ch;margin-top:1.25rem;font-size:1.08rem;line-height:1.85;color:rgba(240,236,224,.64)}
+.page-actions{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2rem}
+
+#content-hub{padding:10rem 0;background:linear-gradient(180deg,#070510 0%,#060a0d 100%)}
+.hub-inner{max-width:1260px;margin:0 auto;padding:0 5rem}
+.hub-head{max-width:760px;margin-bottom:4rem}
+.hub-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem}
+.hub-card{position:relative;display:flex;min-height:280px;flex-direction:column;justify-content:flex-end;gap:1rem;padding:1.6rem;border:1px solid rgba(255,255,255,.07);border-radius:4px;background:linear-gradient(145deg,rgba(10,8,15,.92),rgba(5,7,12,.78));text-decoration:none;color:var(--white);overflow:hidden;transition:transform .32s,border-color .32s,box-shadow .32s;cursor:none}
+.hub-card::before{content:attr(data-code);position:absolute;top:1rem;right:1rem;font-family:var(--F-mono);font-size:.58rem;letter-spacing:.2em;color:rgba(232,160,32,.36)}
+.hub-card:hover{transform:translateY(-5px);border-color:rgba(232,160,32,.24);box-shadow:0 24px 70px rgba(0,0,0,.36)}
+.hub-card-kicker{font-family:var(--F-mono);font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(58,184,255,.66)}
+.hub-card-title{font-family:var(--F-serif);font-size:.96rem;letter-spacing:.12em;text-transform:uppercase;color:var(--white)}
+.hub-card-copy{font-size:.9rem;line-height:1.65;color:rgba(240,236,224,.55)}
+.hub-card-link{font-family:var(--F-mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+
+#latest-news{padding:11rem 0;background:linear-gradient(180deg,#080609 0%,#05070b 100%)}
+.news-inner{max-width:1260px;margin:0 auto;padding:0 5rem}
+.news-head{display:flex;align-items:end;justify-content:space-between;gap:2rem;margin-bottom:4rem}
+.news-head-text{max-width:760px}
+.blog-read-link{display:inline-flex;align-items:center;margin-top:auto;padding-top:1rem;border-top:1px solid rgba(255,255,255,.06);font-family:var(--F-mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(232,160,32,.75);text-decoration:none;position:relative;z-index:1}
+.blog-read-link:hover{color:var(--gold)}
+.section-link{font-family:var(--F-mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(232,160,32,.24);padding:.72rem 1rem;border-radius:2px;white-space:nowrap;transition:background .25s,border-color .25s}
+.section-link:hover{background:rgba(232,160,32,.07);border-color:rgba(232,160,32,.5)}
 
 /* ═══ ORIGIN ═══ */
 #origin{padding:13rem 0 11rem;background:linear-gradient(180deg,var(--void) 0%,#0a0706 55%,#0e0a07 100%)}
@@ -323,10 +354,10 @@ footer{padding:3rem 5rem;background:#030208;border-top:1px solid rgba(232,160,32
   .scroll-cue{bottom:1rem}
   .scroll-cue span{letter-spacing:.28em}
   .ch-num{font-size:9rem}
-  #origin,#world,#features,#roadmap,#terminal-section,#survivor-logs,#blog{padding:7rem 0!important;min-height:auto}
+  #origin,#world,#features,#roadmap,#terminal-section,#survivor-logs,#blog,#latest-news,#content-hub{padding:7rem 0!important;min-height:auto}
   .origin-inner,.road-inner,.terminal-section-grid{grid-template-columns:1fr;gap:3.5rem}
-  .origin-inner,.road-inner,.world-inner,.feat-inner,.terminal-section-inner,.survivor-inner,.blog-inner{padding:0 1.4rem}
-  .world-head,.feat-head,.survivor-head,.blog-head{margin-bottom:3rem}
+  .origin-inner,.road-inner,.world-inner,.feat-inner,.terminal-section-inner,.survivor-inner,.blog-inner,.news-inner,.hub-inner{padding:0 1.4rem}
+  .world-head,.feat-head,.survivor-head,.blog-head,.hub-head{margin-bottom:3rem}
   .ch-label{font-size:.55rem;letter-spacing:.28em;line-height:1.5;gap:.6rem}
   .ch-title{font-size:3.35rem}
   .ch-body{font-size:1rem;line-height:1.75}
@@ -336,7 +367,7 @@ footer{padding:3rem 5rem;background:#030208;border-top:1px solid rgba(232,160,32
   .tn{font-size:.5rem;letter-spacing:.12em}
   .os-warning{padding:.7rem .8rem}
   .os-warning p{font-size:.55rem}
-  .biome-grid,.feat-grid,.blog-grid,.survivor-logs-grid{grid-template-columns:1fr}
+  .biome-grid,.feat-grid,.blog-grid,.survivor-logs-grid,.hub-grid{grid-template-columns:1fr}
   .feat-grid{gap:1px}
   .fitem,.blog-card,.slog{padding:1.5rem}
   #roadmap{padding:8rem 0}
@@ -350,6 +381,12 @@ footer{padding:3rem 5rem;background:#030208;border-top:1px solid rgba(232,160,32
   .ri-detail-grid{grid-template-columns:1fr}
   .ri-progress-label{font-size:.54rem}
   .blog-card.featured{grid-column:auto}
+  .page-hero{min-height:48vh;padding:8rem 1.4rem 4.5rem}
+  .page-title{font-size:3.4rem}
+  .page-copy{font-size:1rem;line-height:1.72}
+  .news-head{display:grid;gap:1.25rem;margin-bottom:3rem}
+  .section-link{justify-self:start}
+  .hub-card{min-height:220px;cursor:pointer}
   .bcard{height:300px}
   #community{min-height:auto;padding:7rem 1.4rem}
   .comm-glow{width:420px;height:420px}
@@ -499,6 +536,9 @@ footer{padding:3rem 5rem;background:#030208;border-top:1px solid rgba(232,160,32
   .h-sub{font-size:.56rem;letter-spacing:.22em}
   .btn-main,.btn-ghost{font-size:.62rem;letter-spacing:.16em}
   .ch-title{font-size:2.55rem}
+  .page-title{font-size:2.95rem}
+  .page-hero{padding:7rem 1rem 3.5rem}
+  .page-actions{display:grid}
   .ch-label{font-size:.52rem;letter-spacing:.22em}
   .ch-label::before{width:18px}
   .terminal,.iterm,.blog-card,.slog,.fitem,.ri-body{padding:1rem}

@@ -5,14 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wilderness Odyssey — The World Reborn</title>
 <!-- ═══ DISCORD / SOCIAL EMBED — controls link previews ═══
-     Discord only supports a few Open Graph fields here: title, description,
-     site name, URL, and the theme-color accent bar.
+     Keep the embed clean: title, description, site name, accent color,
+     and the existing logo as the small preview image.
 ════════════════════════════════════════════════════════════════════ -->
 
 <!-- General -->
 <meta name="description" content="BUNKER_OS reports breathable air, hostile anomaly weather, and a world reclaimed by nature. Wake up, gear up, and step outside.">
 <meta name="theme-color" content="#e8a020">
 <link rel="canonical" href="https://thunderrock424242.github.io/Wilderness-Odyssey/">
+<link rel="icon" type="image/png" href="/Wilderness-Odyssey/logo.png">
 
 <!-- Open Graph (Discord, Facebook, iMessage, Slack, etc.) -->
 <meta property="og:type"        content="website">
@@ -21,11 +22,19 @@
 <meta property="og:url"         content="https://thunderrock424242.github.io/Wilderness-Odyssey/">
 <meta property="og:title"       content="Wilderness Odyssey // Surface Access Restored">
 <meta property="og:description" content="BUNKER_OS reports breathable air, hostile anomaly weather, and a world reclaimed by nature. Wake up, gear up, and step outside.">
+<meta property="og:image"       content="https://thunderrock424242.github.io/Wilderness-Odyssey/logo.png">
+<meta property="og:image:secure_url" content="https://thunderrock424242.github.io/Wilderness-Odyssey/logo.png">
+<meta property="og:image:type"  content="image/png">
+<meta property="og:image:width" content="256">
+<meta property="og:image:height" content="256">
+<meta property="og:image:alt"   content="Wilderness Odyssey logo.">
 
 <!-- Twitter / X card -->
 <meta name="twitter:card"        content="summary">
 <meta name="twitter:title"       content="Wilderness Odyssey // Surface Access Restored">
 <meta name="twitter:description" content="BUNKER_OS reports breathable air, hostile anomaly weather, and a world reclaimed by nature. Wake up, gear up, and step outside.">
+<meta name="twitter:image"       content="https://thunderrock424242.github.io/Wilderness-Odyssey/logo.png">
+<meta name="twitter:image:alt"   content="Wilderness Odyssey logo.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,15 +50,16 @@
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#" class="n-logo">Wilderness Odyssey</a>
+  <a href="#hero" class="n-logo" aria-current="page">Wilderness Odyssey</a>
   <ul class="n-links" id="navLinks">
     <li><a href="#origin">Origin</a></li>
     <li><a href="#world">World</a></li>
     <li><a href="#features">Features</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="roadmap.html">Roadmap</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="news.html">Latest News</a></li>
     <li><a href="#survivor-logs">Logs</a></li>
-    <li><a href="#blog">Blog</a></li>
+    <li><a href="blog.html">Blog</a></li>
     <li><a href="#community" class="n-cta">Discord</a></li>
   </ul>
   <button class="n-toggle" type="button" aria-controls="navLinks" aria-expanded="false" aria-label="Open navigation">
@@ -180,15 +190,42 @@
 </section>
 
 
-<!-- GALLERY -->
-<section id="gallery" class="chapter">
-  <div class="g-header">
-    <p class="ch-label rx rx-up">Gallery</p>
-    <h2 class="ch-title rx rx-up d1">Witness the <em>World</em></h2>
-    <div class="divline rx rx-up d2"></div>
+<!-- CONTENT HUB -->
+<section id="content-hub" class="chapter">
+  <div class="hub-inner">
+    <div class="hub-head">
+      <p class="ch-label rx rx-left">Mission Directory</p>
+      <h2 class="ch-title rx rx-left d1">Choose Your <em>Signal</em></h2>
+      <div class="divline rx rx-left d2"></div>
+      <p class="ch-body rx rx-left d3">The home page keeps the world introduction in one place. Deeper records now live in focused pages so updates stay easier to read and maintain.</p>
+    </div>
+    <div class="hub-grid">
+      <a class="hub-card rx rx-up d1" href="roadmap.html" data-code="MAP">
+        <span class="hub-card-kicker">Build path</span>
+        <span class="hub-card-title">Roadmap</span>
+        <span class="hub-card-copy">Milestones, current alpha work, dependencies, and what needs to be true before each phase moves.</span>
+        <span class="hub-card-link">Open roadmap</span>
+      </a>
+      <a class="hub-card rx rx-up d2" href="gallery.html" data-code="VIS">
+        <span class="hub-card-kicker">Visual archive</span>
+        <span class="hub-card-title">Gallery</span>
+        <span class="hub-card-copy">Screenshots and placeholder records for biomes, anomaly zones, dimensions, wildlife, and discoveries.</span>
+        <span class="hub-card-link">Open gallery</span>
+      </a>
+      <a class="hub-card rx rx-up d3" href="news.html" data-code="NEW">
+        <span class="hub-card-kicker">Newest signal</span>
+        <span class="hub-card-title">Latest News</span>
+        <span class="hub-card-copy">A quick feed generated from the newest blog entries, so field notes double as site news.</span>
+        <span class="hub-card-link">Open news</span>
+      </a>
+      <a class="hub-card rx rx-up d4" href="blog.html" data-code="LOG">
+        <span class="hub-card-kicker">Field notes</span>
+        <span class="hub-card-title">Blog</span>
+        <span class="hub-card-copy">Development notes, site updates, and longer entries from the road toward public releases.</span>
+        <span class="hub-card-link">Open blog</span>
+      </a>
+    </div>
   </div>
-
-  <div class="gallery-stage" id="galleryStage"></div>
 </section>
 
 <!-- FEATURES -->
@@ -274,9 +311,25 @@
   </div>
 </section>
 
+<!-- LATEST NEWS -->
+<section id="latest-news" class="chapter">
+  <div class="news-inner">
+    <div class="news-head">
+      <div class="news-head-text">
+        <p class="ch-label rx rx-left">Latest News</p>
+        <h2 class="ch-title rx rx-left d1">Newest<br><em>Transmissions</em></h2>
+        <div class="divline rx rx-left d2"></div>
+        <p class="ch-body rx rx-left d3">The newest blog updates surface here automatically, so one field note can feed both the archive and the news board.</p>
+      </div>
+      <a class="section-link rx rx-right d2" href="news.html">Open all news</a>
+    </div>
+    <div class="blog-grid" data-news-feed data-news-limit="3"></div>
+  </div>
+</section>
+
 <!-- BLOG -->
 <section id="blog" class="chapter">
-  <div class="ch-num" style="top:5%;right:-1%">07</div>
+  <div class="ch-num" style="top:5%;right:-1%">08</div>
   <div class="blog-inner">
     <div class="blog-head">
       <p class="ch-label rx rx-left">Field Notes</p>

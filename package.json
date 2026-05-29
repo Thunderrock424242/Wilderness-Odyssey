@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --configLoader native --host 127.0.0.1",
-    "build": "tsc && vite build --configLoader native",
+    "build": "tsc && vite build --configLoader native && node scripts/copy-social-assets.mjs",
     "preview": "vite preview --configLoader native --host 127.0.0.1"
   },
   "devDependencies": {

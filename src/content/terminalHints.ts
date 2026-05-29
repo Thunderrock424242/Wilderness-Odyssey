@@ -20,6 +20,7 @@ export const TERMINAL_HINTS: TerminalHint[] = [
   { command: 'aether', tone: 'blue' },
   { command: 'lore' },
   { command: 'blog', tone: 'blue' },
+  { command: 'news', tone: 'gold' },
   { command: 'version', tone: 'gold' },
   { command: 'download' },
 ];

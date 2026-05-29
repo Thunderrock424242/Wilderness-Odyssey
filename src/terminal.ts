@@ -168,10 +168,31 @@ const commandList: TerminalCommand[] = [
     name: 'blog',
     description: 'jump to development blog',
     run: () => {
-      document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' });
+      const blog = document.getElementById('blog');
+      if (blog) {
+        blog.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.location.href = 'blog.html';
+      }
       return [
         line('tb2', 'Opening Field Notes archive...'),
-        line('tl', '  Latest development updates are available in the blog section.'),
+        line('tl', '  Latest development updates are available in the blog archive.'),
+      ];
+    },
+  },
+  {
+    name: 'news',
+    description: 'open latest news feed',
+    run: () => {
+      const news = document.getElementById('latest-news');
+      if (news) {
+        news.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.location.href = 'news.html';
+      }
+      return [
+        line('tb2', 'Opening latest news feed...'),
+        line('tl', '  Blog updates are mirrored into the news feed automatically.'),
       ];
     },
   },
@@ -194,7 +215,7 @@ const commandList: TerminalCommand[] = [
       line('tl', `  Last updated ...... ${WO_CONFIG.website.updated}`),
       line('tl', `  Author ............ ${WO_CONFIG.website.author}`),
       line('tl', ''),
-      line('tg', '  Type "blog" for development notes and current updates.'),
+      line('tg', '  Type "news" for the latest feed or "blog" for the full archive.'),
     ],
   },
   {
