@@ -20,17 +20,18 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "better-sqlite3": "^11.8.1",
     "discord.js": "^14.18.0",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "present": "^1.0.0",
+    "scripts": "^0.1.0"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.12",
     "@types/node": "^22.13.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
   },
   "engines": {
-    "node": ">=20.0.0"
-  }
+    "node": ">=22.5.0"
+  },
+  "allowScripts": {}
 }

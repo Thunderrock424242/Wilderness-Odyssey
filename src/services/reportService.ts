@@ -163,7 +163,7 @@ export async function sendToConfiguredChannel(
   }
 
   const channel = await client.channels.fetch(channelId).catch(() => null);
-  if (!channel || !channel.isTextBased()) {
+  if (!channel || !channel.isSendable()) {
     return false;
   }
 
@@ -639,7 +639,7 @@ export function searchReports(keyword: string): ReportSearchResult[] {
       OR anomaly_context LIKE @like
     ORDER BY id DESC
     LIMIT 10
-  `).all({ like }) as ReportSearchResult[];
+  `).all({ like }) as unknown as ReportSearchResult[];
 
   const crashes = database.prepare(`
     SELECT 'crash' AS type, public_id AS publicId, likely_cause AS title, status, created_at AS createdAt
@@ -647,7 +647,7 @@ export function searchReports(keyword: string): ReportSearchResult[] {
     WHERE public_id LIKE @like OR likely_cause LIKE @like OR redacted_log LIKE @like
     ORDER BY id DESC
     LIMIT 10
-  `).all({ like }) as ReportSearchResult[];
+  `).all({ like }) as unknown as ReportSearchResult[];
 
   const performance = database.prepare(`
     SELECT 'performance' AS type, public_id AS publicId, lag_location AS title, status, created_at AS createdAt
@@ -655,7 +655,7 @@ export function searchReports(keyword: string): ReportSearchResult[] {
     WHERE public_id LIKE @like OR lag_location LIKE @like OR activity LIKE @like OR modpack_version LIKE @like
     ORDER BY id DESC
     LIMIT 10
-  `).all({ like }) as ReportSearchResult[];
+  `).all({ like }) as unknown as ReportSearchResult[];
 
   const feedback = database.prepare(`
     SELECT 'feedback' AS type, public_id AS publicId, summary AS title, NULL AS status, created_at AS createdAt
@@ -663,7 +663,7 @@ export function searchReports(keyword: string): ReportSearchResult[] {
     WHERE public_id LIKE @like OR summary LIKE @like OR details LIKE @like OR category LIKE @like
     ORDER BY id DESC
     LIMIT 10
-  `).all({ like }) as ReportSearchResult[];
+  `).all({ like }) as unknown as ReportSearchResult[];
 
   const suggestions = database.prepare(`
     SELECT 'suggestion' AS type, public_id AS publicId, title, status, created_at AS createdAt
@@ -671,7 +671,7 @@ export function searchReports(keyword: string): ReportSearchResult[] {
     WHERE public_id LIKE @like OR title LIKE @like OR details LIKE @like OR category LIKE @like
     ORDER BY id DESC
     LIMIT 10
-  `).all({ like }) as ReportSearchResult[];
+  `).all({ like }) as unknown as ReportSearchResult[];
 
   const spark = database.prepare(`
     SELECT 'spark' AS type, public_id AS publicId, activity AS title, status, created_at AS createdAt
@@ -679,7 +679,7 @@ export function searchReports(keyword: string): ReportSearchResult[] {
     WHERE public_id LIKE @like OR session_public_id LIKE @like OR spark_url LIKE @like OR activity LIKE @like OR suspected_area LIKE @like
     ORDER BY id DESC
     LIMIT 10
-  `).all({ like }) as ReportSearchResult[];
+  `).all({ like }) as unknown as ReportSearchResult[];
 
   const playtests = database.prepare(`
     SELECT 'playtest' AS type, public_id AS publicId, test_type AS title, status, created_at AS createdAt
@@ -687,7 +687,7 @@ export function searchReports(keyword: string): ReportSearchResult[] {
     WHERE public_id LIKE @like OR tester_name LIKE @like OR modpack_version LIKE @like OR test_type LIKE @like OR notes LIKE @like
     ORDER BY id DESC
     LIMIT 10
-  `).all({ like }) as ReportSearchResult[];
+  `).all({ like }) as unknown as ReportSearchResult[];
 
   return [...bugs, ...crashes, ...performance, ...feedback, ...suggestions, ...spark, ...playtests]
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))

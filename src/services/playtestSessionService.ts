@@ -119,7 +119,7 @@ export function listRecentPlaytestSessions(limit = 10): PlaytestSessionRecord[] 
     SELECT * FROM playtest_sessions
     ORDER BY id DESC
     LIMIT ?
-  `).all(limit) as PlaytestSessionRow[];
+  `).all(limit) as unknown as PlaytestSessionRow[];
 
   return rows.map(mapSession);
 }
@@ -147,7 +147,7 @@ export function listLinkedReports(sessionPublicId: string): LinkedReportRecord[]
     SELECT * FROM report_links
     WHERE session_public_id = ?
     ORDER BY id DESC
-  `).all(normalizePublicId(sessionPublicId)) as LinkedReportRow[];
+  `).all(normalizePublicId(sessionPublicId)) as unknown as LinkedReportRow[];
 
   return rows.map((row) => ({
     id: row.id,

@@ -115,7 +115,7 @@ export function listSparkReportsForSession(sessionPublicId: string): SparkReport
     SELECT * FROM spark_reports
     WHERE session_public_id = ?
     ORDER BY id DESC
-  `).all(normalizePublicId(sessionPublicId)) as SparkReportRow[];
+  `).all(normalizePublicId(sessionPublicId)) as unknown as SparkReportRow[];
 
   return rows.map(mapSpark);
 }

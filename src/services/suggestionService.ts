@@ -149,7 +149,7 @@ export function getSuggestionVoteCounts(publicId: string): SuggestionVoteCounts 
     FROM suggestion_votes
     WHERE suggestion_public_id = ?
     GROUP BY vote
-  `).all(normalizePublicId(publicId)) as Array<{ vote: SuggestionVoteValue; count: number }>;
+  `).all(normalizePublicId(publicId)) as unknown as Array<{ vote: SuggestionVoteValue; count: number }>;
 
   return rows.reduce<SuggestionVoteCounts>((counts, row) => {
     counts[row.vote] = row.count;
@@ -232,7 +232,7 @@ async function postSuggestion(interaction: ModalSubmitInteraction, suggestion: S
   }
 
   const channel = await interaction.client.channels.fetch(config.channelIds.suggestions).catch(() => null);
-  if (!channel || !channel.isTextBased()) {
+  if (!channel || !channel.isSendable()) {
     return false;
   }
 

@@ -33,7 +33,7 @@ export function listKnownIssues(limit = 10): KnownIssueRecord[] {
       END,
       id DESC
     LIMIT ?
-  `).all(limit) as KnownIssueRow[];
+  `).all(limit) as unknown as KnownIssueRow[];
 
   return rows.map(mapKnownIssue);
 }
@@ -93,7 +93,7 @@ export function listChangelogEntries(limit = 5): ChangelogEntryRecord[] {
     SELECT * FROM changelog_entries
     ORDER BY id DESC
     LIMIT ?
-  `).all(limit) as ChangelogRow[];
+  `).all(limit) as unknown as ChangelogRow[];
 
   return rows.map(mapChangelog);
 }

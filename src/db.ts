@@ -1,16 +1,15 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import Database from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { config } from './config';
 
-let db: Database.Database | null = null;
+let db: DatabaseSync | null = null;
 
-export function getDb(): Database.Database {
+export function getDb(): DatabaseSync {
   if (!db) {
     fs.mkdirSync(path.dirname(config.databasePath), { recursive: true });
-    db = new Database(config.databasePath);
-    db.pragma('journal_mode = WAL');
-    db.pragma('foreign_keys = ON');
+    db = new DatabaseSync(config.databasePath);
+    db.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
     migrate(db);
   }
 
@@ -22,7 +21,7 @@ export function closeDb(): void {
   db = null;
 }
 
-function migrate(database: Database.Database): void {
+function migrate(database: DatabaseSync): void {
   database.exec(`
     CREATE TABLE IF NOT EXISTS bug_reports (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -226,7 +225,7 @@ function migrate(database: Database.Database): void {
   ensureColumn(database, 'bug_reports', 'redacted_log', 'TEXT');
 }
 
-function ensureColumn(database: Database.Database, table: string, column: string, definition: string): void {
+function ensureColumn(database: DatabaseSync, table: string, column: string, definition: string): void {
   const rows = database.prepare(`PRAGMA table_info(${table})`).all() as Array<{ name: string }>;
   if (rows.some((row) => row.name === column)) {
     return;

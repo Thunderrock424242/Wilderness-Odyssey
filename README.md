@@ -11,7 +11,7 @@ The personality is light in-universe support AI: helpful, calm, and a little eer
 - discord.js v14
 - Slash commands
 - Buttons, select menus, and modals
-- SQLite with `better-sqlite3`
+- SQLite with Node's built-in `node:sqlite`
 - `dotenv` for secrets and server configuration
 
 ## Privacy and Security
