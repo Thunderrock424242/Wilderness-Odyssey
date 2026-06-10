@@ -1,0 +1,36 @@
+{
+  "name": "wilderness-oddesy-discord-bot",
+  "version": "0.1.0",
+  "description": "Wilderness Oddesy community support bot for Discord.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "deploy": "tsx src/deploy-commands.ts",
+    "check": "tsc --noEmit"
+  },
+  "keywords": [
+    "discord",
+    "minecraft",
+    "modpack",
+    "support",
+    "wilderness-oddesy"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.13.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
