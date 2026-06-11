@@ -1,7 +1,7 @@
 {
   "name": "wilderness-oddesy-discord-bot",
   "version": "0.1.0",
-  "description": "Wilderness Oddesy community support bot for Discord.",
+  "description": "Wilderness Oddesy community support and dev help desk bot for Discord.",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",

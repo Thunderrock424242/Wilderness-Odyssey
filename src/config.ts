@@ -38,6 +38,15 @@ function numberFromEnv(name: string, fallback: number): number {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 
+function booleanFromEnv(name: string, fallback: boolean): boolean {
+  const value = optional(name);
+  if (!value) {
+    return fallback;
+  }
+
+  return ['1', 'true', 'yes', 'on'].includes(value.toLowerCase());
+}
+
 export const config = {
   discordToken: required('DISCORD_TOKEN'),
   clientId: required('CLIENT_ID'),
@@ -52,6 +61,7 @@ export const config = {
     suggestions: optional('SUGGESTIONS_CHANNEL_ID'),
     sparkReports: optional('SPARK_REPORTS_CHANNEL_ID'),
     playtestSessions: optional('PLAYTEST_SESSIONS_CHANNEL_ID'),
+    playtestCategory: optional('PLAYTEST_CATEGORY_ID'),
     staffReview: optional('STAFF_REVIEW_CHANNEL_ID'),
     staffLog: optional('STAFF_LOG_CHANNEL_ID'),
     support: optional('SUPPORT_CHANNEL_ID')
@@ -63,5 +73,21 @@ export const config = {
     supportChannels: listFromEnv('SUPPORT_CHANNELS', ['#support']),
     knownUnstableFeatures: listFromEnv('KNOWN_UNSTABLE_FEATURES', ['Rifts', 'Anomalies']),
     serverStatusLabel: optional('SERVER_STATUS_LABEL') ?? 'Server status integration not connected yet'
+  },
+  playtest: {
+    termsUrl: optional('PLAYTEST_TERMS_URL'),
+    privacyUrl: optional('PLAYTEST_PRIVACY_URL')
+  },
+  qa: {
+    channelIds: listFromEnv('QA_CHANNEL_IDS', []),
+    teamChannelId: optional('QA_TEAM_CHANNEL_ID'),
+    teamRoleId: optional('QA_TEAM_ROLE_ID')
+  },
+  minecraftVerification: {
+    apiEnabled: booleanFromEnv('MINECRAFT_VERIFY_API_ENABLED', false),
+    apiHost: optional('MINECRAFT_VERIFY_API_HOST') ?? '0.0.0.0',
+    apiPort: numberFromEnv('MINECRAFT_VERIFY_API_PORT', numberFromEnv('PORT', 3000)),
+    publicBaseUrl: optional('MINECRAFT_VERIFY_PUBLIC_URL'),
+    codeTtlMinutes: numberFromEnv('MINECRAFT_VERIFY_CODE_TTL_MINUTES', 15)
   }
 };

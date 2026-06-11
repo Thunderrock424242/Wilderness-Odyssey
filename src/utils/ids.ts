@@ -5,6 +5,8 @@ export type PublicIdType =
   | 'feedback'
   | 'suggestion'
   | 'playtest'
+  | 'playtestRelease'
+  | 'qa'
   | 'spark';
 
 const labels: Record<PublicIdType, string> = {
@@ -14,6 +16,8 @@ const labels: Record<PublicIdType, string> = {
   feedback: 'FDBK',
   suggestion: 'SUG',
   playtest: 'TEST',
+  playtestRelease: 'DROP',
+  qa: 'QA',
   spark: 'SPARK'
 };
 

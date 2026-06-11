@@ -39,6 +39,9 @@ export interface BugReportRecord {
   screenshotName: string | null;
   logFileName: string | null;
   redactedLog: string | null;
+  claimedBy: string | null;
+  claimedByUsername: string | null;
+  claimedAt: string | null;
   status: ReportStatus;
   createdAt: string;
   updatedAt: string;
@@ -55,6 +58,9 @@ export interface CrashReportRecord {
   likelyCause: string;
   confidence: string;
   nextSteps: string;
+  claimedBy: string | null;
+  claimedByUsername: string | null;
+  claimedAt: string | null;
   status: ReportStatus;
   createdAt: string;
   updatedAt: string;
@@ -75,6 +81,9 @@ export interface PerformanceReportRecord {
   renderDistance: number | null;
   lagLocation: string;
   activity: string;
+  claimedBy: string | null;
+  claimedByUsername: string | null;
+  claimedAt: string | null;
   status: ReportStatus;
   createdAt: string;
   updatedAt: string;
@@ -138,8 +147,54 @@ export interface ChangelogEntryRecord {
   createdAt: string;
 }
 
+export interface QaForwardRecord {
+  id: number;
+  publicId: string;
+  userId: string;
+  username: string;
+  channelId: string;
+  messageId: string;
+  messageUrl: string;
+  question: string;
+  status: 'forwarded' | 'answered';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MinecraftLinkCodeRecord {
+  id: number;
+  code: string;
+  userId: string;
+  username: string;
+  expiresAt: string;
+  usedAt: string | null;
+  createdAt: string;
+}
+
+export interface MinecraftLinkRecord {
+  id: number;
+  userId: string;
+  username: string;
+  minecraftUuid: string;
+  minecraftName: string;
+  verifiedAt: string;
+  updatedAt: string;
+}
+
+export type ReportActionType = 'bug' | 'crash' | 'performance' | 'feedback' | 'spark';
+
+export interface ReportUpdateRecord {
+  id: number;
+  reportType: ReportActionType;
+  reportPublicId: string;
+  userId: string;
+  username: string;
+  details: string;
+  createdAt: string;
+}
+
 export interface ReportSearchResult {
-  type: 'bug' | 'crash' | 'performance' | 'feedback' | 'suggestion' | 'spark' | 'playtest';
+  type: 'bug' | 'crash' | 'performance' | 'feedback' | 'suggestion' | 'spark' | 'playtest' | 'qa';
   publicId: string;
   title: string;
   status?: string;

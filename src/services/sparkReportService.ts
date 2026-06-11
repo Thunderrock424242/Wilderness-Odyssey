@@ -22,6 +22,9 @@ interface SparkReportRow {
   latest_log_name: string | null;
   redacted_log: string | null;
   staff_notes: string | null;
+  claimed_by: string | null;
+  claimed_by_username: string | null;
+  claimed_at: string | null;
   status: SparkReportStatus;
   created_at: string;
   updated_at: string;
@@ -164,6 +167,9 @@ function mapSpark(row: SparkReportRow): SparkReportRecord {
     latestLogName: row.latest_log_name,
     redactedLog: row.redacted_log,
     staffNotes: row.staff_notes,
+    claimedBy: row.claimed_by,
+    claimedByUsername: row.claimed_by_username,
+    claimedAt: row.claimed_at,
     status: row.status,
     createdAt: row.created_at,
     updatedAt: row.updated_at

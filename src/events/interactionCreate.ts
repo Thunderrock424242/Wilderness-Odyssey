@@ -4,10 +4,17 @@ import {
   handleBugStatusButton,
   handleBugReportModal,
   handleFeedbackModal,
-  handlePerformanceReportModal
+  handlePerformanceReportModal,
+  handleReportActionButton,
+  handleReportUpdateModal
 } from '../services/reportService';
 import { handleHelpComponent } from '../services/helpService';
 import { handleStaffModal } from '../commands/staff';
+import {
+  handlePlaytestPanelModal,
+  handlePlaytestReleaseButton
+} from '../commands/playtest';
+import { handleSupportPanelComponent } from '../commands/supportpanel';
 import {
   handleSuggestionModal,
   handleSuggestionVoteButton
@@ -53,6 +60,14 @@ export async function handleInteraction(
         return;
       }
 
+      if (await handlePlaytestPanelModal(interaction)) {
+        return;
+      }
+
+      if (await handleReportUpdateModal(interaction)) {
+        return;
+      }
+
       if (await handleStaffModal(interaction)) {
         return;
       }
@@ -67,6 +82,18 @@ export async function handleInteraction(
         if (await handleSuggestionVoteButton(interaction)) {
           return;
         }
+
+        if (await handleReportActionButton(interaction)) {
+          return;
+        }
+
+        if (await handlePlaytestReleaseButton(interaction)) {
+          return;
+        }
+      }
+
+      if (interaction.isStringSelectMenu() && await handleSupportPanelComponent(interaction)) {
+        return;
       }
 
       if (await handleHelpComponent(interaction)) {

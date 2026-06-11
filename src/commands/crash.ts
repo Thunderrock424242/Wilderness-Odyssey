@@ -5,6 +5,8 @@ import { analyzeCrashLog } from '../services/logParser';
 import {
   createCrashReport,
   readTextAttachment,
+  reportClaimButtons,
+  reportReceiptButtons,
   sendToConfiguredChannel
 } from '../services/reportService';
 import { linkReportToSession } from '../services/playtestSessionService';
@@ -53,7 +55,8 @@ export const crashCommand: SlashCommand = {
       }
 
       const posted = await sendToConfiguredChannel(interaction.client, config.channelIds.crashReports, {
-        embeds: [crashReportEmbed(report)]
+        embeds: [crashReportEmbed(report)],
+        components: [reportClaimButtons('crash', report.publicId)]
       });
 
       const embed = baseEmbed(`Crash Analysis ${report.publicId}`, 'Report received. Aether-style analysis complete.')
@@ -68,7 +71,8 @@ export const crashCommand: SlashCommand = {
         content: posted
           ? `Crash signature detected. Staff copy archived as **${report.publicId}**.`
           : `Crash signature detected. Saved locally as **${report.publicId}**. Staff channel posting is not configured yet.`,
-        embeds: [embed]
+        embeds: [embed],
+        components: [reportReceiptButtons('crash', report.publicId)]
       });
     } catch (error) {
       await interaction.editReply({

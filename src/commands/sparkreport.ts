@@ -1,7 +1,12 @@
 import { SlashCommandBuilder } from 'discord.js';
 import type { SlashCommand } from '../types';
 import { config } from '../config';
-import { readTextAttachment, sendToConfiguredChannel } from '../services/reportService';
+import {
+  readTextAttachment,
+  reportClaimButtons,
+  reportReceiptButtons,
+  sendToConfiguredChannel
+} from '../services/reportService';
 import { createSparkReport, isSparkReportUrl } from '../services/sparkReportService';
 import { getPlaytestSession } from '../services/playtestSessionService';
 import { redactLog } from '../services/logParser';
@@ -146,12 +151,14 @@ export const sparkReportCommand: SlashCommand = {
 
       const session = getPlaytestSession(report.sessionPublicId);
       const posted = await sendToConfiguredChannel(interaction.client, config.channelIds.sparkReports, {
-        embeds: [sparkReportEmbed(report, session)]
+        embeds: [sparkReportEmbed(report, session)],
+        components: [reportClaimButtons('spark', report.publicId)]
       });
 
-      await interaction.editReply(
-        `Spark report archived. Performance anomaly logged. Report ID: **${report.publicId}**.${posted ? '' : ' Spark report channel posting is not configured yet, but the report was saved locally.'}`
-      );
+      await interaction.editReply({
+        content: `Spark report archived. Performance anomaly logged. Report ID: **${report.publicId}**.${posted ? '' : ' Spark report channel posting is not configured yet, but the report was saved locally.'}`,
+        components: [reportReceiptButtons('spark', report.publicId)]
+      });
     } catch (error) {
       await interaction.editReply(error instanceof Error ? error.message : 'Could not archive that Spark report.');
     }

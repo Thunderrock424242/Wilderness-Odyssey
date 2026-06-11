@@ -24,6 +24,9 @@ export interface SparkReportRecord {
   latestLogName: string | null;
   redactedLog: string | null;
   staffNotes: string | null;
+  claimedBy: string | null;
+  claimedByUsername: string | null;
+  claimedAt: string | null;
   status: SparkReportStatus;
   createdAt: string;
   updatedAt: string;

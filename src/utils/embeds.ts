@@ -10,7 +10,7 @@ import type {
   SuggestionRecord,
   SuggestionVoteCounts
 } from '../types';
-import type { LinkedReportRecord, PlaytestSessionRecord } from '../types/playtest';
+import type { LinkedReportRecord, PlaytestReleaseRecord, PlaytestSessionRecord } from '../types/playtest';
 import type { SparkReportRecord } from '../types/spark';
 
 export const colors = {
@@ -32,6 +32,10 @@ export function truncate(value: string | null | undefined, max = 1024): string {
   }
 
   return `${clean.slice(0, Math.max(0, max - 3))}...`;
+}
+
+function claimedByText(userId: string | null | undefined): string {
+  return userId ? `<@${userId}>` : 'Unclaimed';
 }
 
 export function baseEmbed(title: string, description?: string): EmbedBuilder {
@@ -71,6 +75,10 @@ export function privacyEmbed(): EmbedBuilder {
         value: 'The bot stores Spark viewer links that testers submit. It does not run Minecraft commands or scrape private Spark data.'
       },
       {
+        name: 'Playtest access',
+        value: 'For closed playtests, the bot can record that you accepted the playtest terms/privacy notice before it sends the test package link.'
+      },
+      {
         name: 'Future Minecraft mod integration',
         value: 'In-game reports should go to a small backend API/webhook endpoint. A Minecraft mod must never contain or use the Discord bot token.'
       }
@@ -82,6 +90,7 @@ export function bugReportEmbed(report: BugReportRecord): EmbedBuilder {
     .setColor(colors.warning)
     .addFields(
       { name: 'Status', value: report.status, inline: true },
+      { name: 'Claimed by', value: claimedByText(report.claimedBy), inline: true },
       { name: 'Modpack version', value: truncate(report.modpackVersion, 128), inline: true },
       { name: 'Minecraft', value: truncate(report.minecraftVersion, 128), inline: true },
       { name: 'NeoForge/Forge', value: truncate(report.loaderVersion, 128), inline: true },
@@ -113,6 +122,7 @@ export function crashReportEmbed(report: CrashReportRecord): EmbedBuilder {
     .setColor(colors.danger)
     .addFields(
       { name: 'Status', value: report.status, inline: true },
+      { name: 'Claimed by', value: claimedByText(report.claimedBy), inline: true },
       { name: 'Likely cause', value: truncate(report.likelyCause, 512), inline: true },
       { name: 'Confidence', value: report.confidence, inline: true },
       { name: 'Next steps', value: truncate(report.nextSteps) },
@@ -127,6 +137,7 @@ export function performanceReportEmbed(report: PerformanceReportRecord): EmbedBu
     .setColor(colors.calm)
     .addFields(
       { name: 'Status', value: report.status, inline: true },
+      { name: 'Claimed by', value: claimedByText(report.claimedBy), inline: true },
       { name: 'Modpack version', value: truncate(report.modpackVersion, 128), inline: true },
       { name: 'FPS average', value: truncate(report.fpsAverage, 128), inline: true },
       { name: 'RAM allocated', value: truncate(report.ramAllocated, 128), inline: true },
@@ -218,11 +229,44 @@ export function playtestListEmbed(sessions: PlaytestSessionRecord[]): EmbedBuild
   return embed;
 }
 
+export function playtestReleaseEmbed(release: PlaytestReleaseRecord): EmbedBuilder {
+  const policyLinks = [
+    release.termsUrl ? `[Terms](${release.termsUrl})` : null,
+    release.privacyUrl ? `[Privacy](${release.privacyUrl})` : null
+  ].filter((value): value is string => Boolean(value));
+
+  return baseEmbed(`Playtest Drop ${release.publicId}`, release.title)
+    .setColor(colors.staff)
+    .addFields(
+      { name: 'Modpack version', value: truncate(release.modpackVersion, 128), inline: true },
+      { name: 'Expected duration', value: truncate(release.expectedDuration, 128), inline: true },
+      { name: 'Package', value: truncate(release.packageName, 256), inline: true },
+      { name: 'Test focus', value: truncate(release.testFocus) },
+      {
+        name: 'Before you download',
+        value: [
+          'Read the playtest instructions and privacy notice.',
+          'Click the acceptance button only if you agree to test the unreleased build and report issues through the support commands.',
+          'After acceptance, the bot will privately send the ZIP link and CurseForge import steps.'
+        ].join('\n')
+      },
+      {
+        name: 'Policy links',
+        value: policyLinks.length > 0 ? policyLinks.join(' | ') : 'Use `/privacy` and follow any staff terms posted in this channel.'
+      },
+      {
+        name: 'Report issues with',
+        value: '`/bugreport`, `/crash`, `/feedback`, `/perfreport`, `/sparkreport`, and `/playtest start` for individual test sessions.'
+      }
+    );
+}
+
 export function sparkReportEmbed(report: SparkReportRecord, session?: PlaytestSessionRecord | null): EmbedBuilder {
   return baseEmbed(`Spark Report ${report.publicId}`, 'Spark report archived. Performance anomaly logged.')
     .setColor(colors.warning)
     .addFields(
       { name: 'Status', value: report.status, inline: true },
+      { name: 'Claimed by', value: claimedByText(report.claimedBy), inline: true },
       { name: 'Session ID', value: report.sessionPublicId, inline: true },
       { name: 'Tester', value: session ? truncate(session.testerName, 128) : `<@${report.userId}>`, inline: true },
       { name: 'Spark link', value: `[Open Spark viewer](${report.sparkUrl})` },

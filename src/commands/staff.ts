@@ -34,11 +34,19 @@ import {
   updateSparkReportStatus
 } from '../services/sparkReportService';
 import {
+  addQaAnswer,
+  getQaForward,
+  listQaAnswers,
+  qaForwardEmbed,
+  removeQaAnswer
+} from '../services/qaService';
+import {
   getPlaytestSession,
   listLinkedReports
 } from '../services/playtestSessionService';
 import {
   bugReportEmbed,
+  baseEmbed,
   changelogEmbed,
   crashReportEmbed,
   feedbackReportEmbed,
@@ -47,7 +55,8 @@ import {
   playtestSessionEmbed,
   searchResultsEmbed,
   sparkReportEmbed,
-  suggestionEmbed
+  suggestionEmbed,
+  truncate
 } from '../utils/embeds';
 
 const reportStatuses = [
@@ -255,6 +264,33 @@ export const staffCommand: SlashCommand = {
                 .setRequired(true)
             )
         )
+    )
+    .addSubcommandGroup((group) =>
+      group
+        .setName('qa')
+        .setDescription('Manage Q&A canned answers.')
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('add')
+            .setDescription('Add a Q&A answer.')
+        )
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('list')
+            .setDescription('List recent Q&A answers.')
+        )
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('remove')
+            .setDescription('Disable a Q&A answer.')
+            .addIntegerOption((option) =>
+              option
+                .setName('id')
+                .setDescription('Q&A answer numeric ID.')
+                .setMinValue(1)
+                .setRequired(true)
+            )
+        )
     ),
   async execute(interaction) {
     if (!(await requireStaff(interaction))) {
@@ -377,6 +413,29 @@ export const staffCommand: SlashCommand = {
         embeds: [searchResultsEmbed(keyword, searchReports(keyword))],
         ephemeral: true
       });
+      return;
+    }
+
+    if (group === 'qa' && subcommand === 'add') {
+      await interaction.showModal(qaAnswerModal());
+      return;
+    }
+
+    if (group === 'qa' && subcommand === 'list') {
+      await interaction.reply({
+        embeds: [qaAnswerListEmbed()],
+        ephemeral: true
+      });
+      return;
+    }
+
+    if (group === 'qa' && subcommand === 'remove') {
+      const id = interaction.options.getInteger('id', true);
+      const removed = removeQaAnswer(id);
+      await interaction.reply({
+        content: removed ? `Q&A answer #${id} disabled.` : `No Q&A answer found for #${id}.`,
+        ephemeral: true
+      });
     }
   }
 };
@@ -440,6 +499,22 @@ export async function handleStaffModal(interaction: ModalSubmitInteraction): Pro
     return true;
   }
 
+  if (interaction.customId === 'staff:qa-add') {
+    const answer = addQaAnswer({
+      triggerTerms: interaction.fields.getTextInputValue('trigger_terms'),
+      title: interaction.fields.getTextInputValue('title'),
+      answer: interaction.fields.getTextInputValue('answer'),
+      addedBy: interaction.user.id
+    });
+
+    await interaction.reply({
+      content: `Q&A answer #${answer.id} added.`,
+      embeds: [qaAnswerListEmbed()],
+      ephemeral: true
+    });
+    return true;
+  }
+
   if (interaction.customId.startsWith('staff:spark-notes:')) {
     const publicId = interaction.customId.split(':')[2];
     const report = updateSparkReportNotes(publicId, interaction.fields.getTextInputValue('staff_notes'));
@@ -483,6 +558,17 @@ function changelogModal(): ModalBuilder {
     );
 }
 
+function qaAnswerModal(): ModalBuilder {
+  return new ModalBuilder()
+    .setCustomId('staff:qa-add')
+    .setTitle('Add Q&A Answer')
+    .addComponents(
+      staffTextInputRow('trigger_terms', 'Trigger terms', TextInputStyle.Short, true, 'comma separated, like java, jdk, class file'),
+      staffTextInputRow('title', 'Answer title', TextInputStyle.Short, true, 'Example: Java Version'),
+      staffTextInputRow('answer', 'Answer text', TextInputStyle.Paragraph, true, 'The response players should receive.')
+    );
+}
+
 function sparkNotesModal(publicId: string): ModalBuilder {
   return new ModalBuilder()
     .setCustomId(`staff:spark-notes:${publicId}`)
@@ -490,6 +576,24 @@ function sparkNotesModal(publicId: string): ModalBuilder {
     .addComponents(
       staffTextInputRow('staff_notes', 'Staff notes', TextInputStyle.Paragraph, true, 'Bottleneck notes, follow-up steps, or why the data was insufficient.')
     );
+}
+
+function qaAnswerListEmbed() {
+  const answers = listQaAnswers();
+  const embed = baseEmbed('Q&A Answers', 'Recent staff-defined canned answers.');
+
+  if (answers.length === 0) {
+    return embed.setDescription('No Q&A answers have been added yet.');
+  }
+
+  for (const answer of answers) {
+    embed.addFields({
+      name: `#${answer.id} - ${truncate(answer.title, 180)}${answer.enabled ? '' : ' (disabled)'}`,
+      value: `Triggers: ${truncate(answer.triggerTerms, 300)}\n${truncate(answer.answer, 650)}`
+    });
+  }
+
+  return embed;
 }
 
 function suggestionReportEmbed(id: string) {
@@ -506,6 +610,11 @@ function suggestionReportEmbed(id: string) {
   const playtest = getPlaytestSession(id);
   if (playtest) {
     return playtestSessionEmbed(playtest, listLinkedReports(playtest.publicId));
+  }
+
+  const qaForward = getQaForward(id);
+  if (qaForward) {
+    return qaForwardEmbed(qaForward);
   }
 
   return null;

@@ -30,3 +30,36 @@ export interface LinkedReportRecord {
   reportPublicId: string;
   createdAt: string;
 }
+
+export type PlaytestReleaseStatus = 'active' | 'closed';
+
+export interface PlaytestReleaseRecord {
+  id: number;
+  publicId: string;
+  guildId: string;
+  channelId: string | null;
+  messageId: string | null;
+  createdBy: string;
+  createdByUsername: string;
+  title: string;
+  modpackVersion: string;
+  testFocus: string;
+  expectedDuration: string;
+  packageName: string;
+  packageUrl: string;
+  packageSize: number | null;
+  termsUrl: string | null;
+  privacyUrl: string | null;
+  instructions: string | null;
+  status: PlaytestReleaseStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PlaytestReleaseAcceptanceRecord {
+  id: number;
+  releasePublicId: string;
+  userId: string;
+  username: string;
+  acceptedAt: string;
+}

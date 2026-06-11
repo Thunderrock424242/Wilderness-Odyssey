@@ -6,9 +6,11 @@ import {
   ButtonStyle,
   ChatInputCommandInteraction,
   Client,
+  EmbedBuilder,
   MessageCreateOptions,
   ModalBuilder,
   ModalSubmitInteraction,
+  StringSelectMenuInteraction,
   TextInputBuilder,
   TextInputStyle
 } from 'discord.js';
@@ -19,6 +21,7 @@ import type {
   CrashReportRecord,
   FeedbackReportRecord,
   PerformanceReportRecord,
+  ReportActionType,
   ReportSearchResult,
   ReportStatus
 } from '../types';
@@ -27,13 +30,20 @@ import { redactLog } from './logParser';
 import { linkReportToSession } from './playtestSessionService';
 import { isSparkReportUrl } from './sparkReportService';
 import { formatPublicId, normalizePublicId } from '../utils/ids';
-import { requireStaff } from '../utils/permissions';
+import { isStaff, requireStaff } from '../utils/permissions';
 import {
   bugReportEmbed,
   crashReportEmbed,
   feedbackReportEmbed,
-  performanceReportEmbed
+  performanceReportEmbed,
+  sparkReportEmbed
 } from '../utils/embeds';
+import {
+  getSparkReport
+} from './sparkReportService';
+import {
+  getPlaytestSession
+} from './playtestSessionService';
 
 interface BugDraft {
   userId: string;
@@ -92,6 +102,9 @@ interface BugRow {
   screenshot_name: string | null;
   log_file_name: string | null;
   redacted_log: string | null;
+  claimed_by: string | null;
+  claimed_by_username: string | null;
+  claimed_at: string | null;
   status: ReportStatus;
   created_at: string;
   updated_at: string;
@@ -108,6 +121,9 @@ interface CrashRow {
   likely_cause: string;
   confidence: string;
   next_steps: string;
+  claimed_by: string | null;
+  claimed_by_username: string | null;
+  claimed_at: string | null;
   status: ReportStatus;
   created_at: string;
   updated_at: string;
@@ -128,6 +144,9 @@ interface PerformanceRow {
   render_distance: number | null;
   lag_location: string;
   activity: string;
+  claimed_by: string | null;
+  claimed_by_username: string | null;
+  claimed_at: string | null;
   status: ReportStatus;
   created_at: string;
   updated_at: string;
@@ -238,17 +257,32 @@ export async function beginBugReport(interaction: ChatInputCommandInteraction): 
     playtestSessionId: interaction.options.getString('playtest_session')
   });
 
-  const modal = new ModalBuilder()
-    .setCustomId(`bugreport:${draftId}`)
-    .setTitle('Wilderness Oddesy Bug Report')
-    .addComponents(
-      textInputRow('modpack_version', 'Modpack version', TextInputStyle.Short, true, 'Example: 0.1.0'),
-      textInputRow('happened', 'What happened?', TextInputStyle.Paragraph, true, 'Describe the bug clearly.'),
-      textInputRow('expected', 'What did you expect?', TextInputStyle.Paragraph, true, 'What should have happened instead?'),
-      textInputRow('steps', 'Steps to reproduce', TextInputStyle.Paragraph, true, 'List the steps staff can try.')
-    );
+  await interaction.showModal(bugReportModal(draftId));
+}
 
-  await interaction.showModal(modal);
+export async function beginBugReportFromPanel(interaction: StringSelectMenuInteraction): Promise<void> {
+  const draftId = randomUUID().slice(0, 10);
+
+  bugDrafts.set(draftId, {
+    userId: interaction.user.id,
+    minecraftVersion: null,
+    loaderVersion: null,
+    playMode: 'Not specified from support panel',
+    location: null,
+    anomalyContext: null,
+    repeatable: null,
+    sparkLink: null,
+    attachmentUrl: null,
+    attachmentName: null,
+    screenshotUrl: null,
+    screenshotName: null,
+    logAttachmentUrl: null,
+    logAttachmentName: null,
+    logAttachmentSize: null,
+    playtestSessionId: null
+  });
+
+  await interaction.showModal(bugReportModal(draftId));
 }
 
 export async function handleBugReportModal(interaction: ModalSubmitInteraction): Promise<void> {
@@ -309,11 +343,12 @@ export async function handleBugReportModal(interaction: ModalSubmitInteraction):
 
   const posted = await sendToConfiguredChannel(interaction.client, config.channelIds.bugReports, {
     embeds: [bugReportEmbed(report)],
-    components: [bugStatusButtons(report.publicId)]
+    components: [bugStatusButtons(report.publicId), reportClaimButtons('bug', report.publicId)]
   });
 
   await interaction.editReply({
-    content: `Bug report received. The dev team has been notified. Your bug ID is **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but the report was saved locally.'}`
+    content: `Bug report received. The dev team has been notified. Your bug ID is **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but the report was saved locally.'}`,
+    components: [reportReceiptButtons('bug', report.publicId)]
   });
 }
 
@@ -329,18 +364,22 @@ export async function beginPerformanceReport(interaction: ChatInputCommandIntera
     renderDistance: interaction.options.getInteger('render_distance')
   });
 
-  const modal = new ModalBuilder()
-    .setCustomId(`perfreport:${draftId}`)
-    .setTitle('Optional Performance Report')
-    .addComponents(
-      textInputRow('modpack_version', 'Modpack version', TextInputStyle.Short, true, 'Example: 0.1.0'),
-      textInputRow('fps_average', 'FPS average', TextInputStyle.Short, true, 'Example: 45 FPS'),
-      textInputRow('ram_allocated', 'RAM allocated', TextInputStyle.Short, true, 'Example: 8 GB'),
-      textInputRow('lag_location', 'Where does lag happen?', TextInputStyle.Paragraph, true, 'Structures, rifts, anomalies, dimensions, entities, etc.'),
-      textInputRow('activity', 'What were you doing?', TextInputStyle.Paragraph, true, 'Exploring, fighting, generating chunks, using shaders, etc.')
-    );
+  await interaction.showModal(performanceReportModal(draftId));
+}
 
-  await interaction.showModal(modal);
+export async function beginPerformanceReportFromPanel(interaction: StringSelectMenuInteraction): Promise<void> {
+  const draftId = randomUUID().slice(0, 10);
+
+  performanceDrafts.set(draftId, {
+    userId: interaction.user.id,
+    cpuGpu: null,
+    javaVersion: null,
+    launcher: null,
+    shaders: null,
+    renderDistance: null
+  });
+
+  await interaction.showModal(performanceReportModal(draftId));
 }
 
 export async function handlePerformanceReportModal(interaction: ModalSubmitInteraction): Promise<void> {
@@ -373,11 +412,13 @@ export async function handlePerformanceReportModal(interaction: ModalSubmitInter
   });
 
   const posted = await sendToConfiguredChannel(interaction.client, config.channelIds.performanceReports, {
-    embeds: [performanceReportEmbed(report)]
+    embeds: [performanceReportEmbed(report)],
+    components: [reportClaimButtons('performance', report.publicId)]
   });
 
   await interaction.reply({
     content: `Performance report received. Your report ID is **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but the report was saved locally.'}`,
+    components: [reportReceiptButtons('performance', report.publicId)],
     ephemeral: true
   });
 }
@@ -392,15 +433,20 @@ export async function beginFeedbackReport(interaction: ChatInputCommandInteracti
     playtestSessionId: interaction.options.getString('playtest_session')
   });
 
-  const modal = new ModalBuilder()
-    .setCustomId(`feedback:${draftId}`)
-    .setTitle('Wilderness Oddesy Feedback')
-    .addComponents(
-      textInputRow('summary', 'Short summary', TextInputStyle.Short, true, 'Example: Rifts feel too punishing early.'),
-      textInputRow('details', 'Details', TextInputStyle.Paragraph, true, 'Tell staff what you noticed and what would help.')
-    );
+  await interaction.showModal(feedbackReportModal(draftId));
+}
 
-  await interaction.showModal(modal);
+export async function beginFeedbackReportFromPanel(interaction: StringSelectMenuInteraction): Promise<void> {
+  const draftId = randomUUID().slice(0, 10);
+
+  feedbackDrafts.set(draftId, {
+    userId: interaction.user.id,
+    category: 'General playtest feedback',
+    modpackVersion: null,
+    playtestSessionId: null
+  });
+
+  await interaction.showModal(feedbackReportModal(draftId));
 }
 
 export async function handleFeedbackModal(interaction: ModalSubmitInteraction): Promise<void> {
@@ -436,11 +482,14 @@ export async function handleFeedbackModal(interaction: ModalSubmitInteraction): 
 
   await interaction.reply({
     content: `Field notes received. Your feedback ID is **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but the report was saved locally.'}`,
+    components: [reportReceiptButtons('feedback', report.publicId)],
     ephemeral: true
   });
 }
 
-export function createBugReport(input: Omit<BugReportRecord, 'id' | 'publicId' | 'status' | 'createdAt' | 'updatedAt'>): BugReportRecord {
+export function createBugReport(
+  input: Omit<BugReportRecord, 'id' | 'publicId' | 'claimedBy' | 'claimedByUsername' | 'claimedAt' | 'status' | 'createdAt' | 'updatedAt'>
+): BugReportRecord {
   const database = getDb();
   const info = database.prepare(`
     INSERT INTO bug_reports (
@@ -468,7 +517,9 @@ export function createBugReport(input: Omit<BugReportRecord, 'id' | 'publicId' |
   return report;
 }
 
-export function createCrashReport(input: Omit<CrashReportRecord, 'id' | 'publicId' | 'status' | 'createdAt' | 'updatedAt'>): CrashReportRecord {
+export function createCrashReport(
+  input: Omit<CrashReportRecord, 'id' | 'publicId' | 'claimedBy' | 'claimedByUsername' | 'claimedAt' | 'status' | 'createdAt' | 'updatedAt'>
+): CrashReportRecord {
   const database = getDb();
   const info = database.prepare(`
     INSERT INTO crash_reports (
@@ -491,7 +542,7 @@ export function createCrashReport(input: Omit<CrashReportRecord, 'id' | 'publicI
 }
 
 export function createPerformanceReport(
-  input: Omit<PerformanceReportRecord, 'id' | 'publicId' | 'status' | 'createdAt' | 'updatedAt'>
+  input: Omit<PerformanceReportRecord, 'id' | 'publicId' | 'claimedBy' | 'claimedByUsername' | 'claimedAt' | 'status' | 'createdAt' | 'updatedAt'>
 ): PerformanceReportRecord {
   const database = getDb();
   const info = database.prepare(`
@@ -622,6 +673,234 @@ export function updateReportStatus(type: 'bug' | 'crash' | 'performance', public
   return result.changes > 0;
 }
 
+export function reportClaimButtons(type: Exclude<ReportActionType, 'feedback'>, publicId: string): ActionRowBuilder<ButtonBuilder> {
+  return new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setCustomId(`reportclaim:${type}:${publicId}`)
+      .setLabel('Claim / Reassign')
+      .setStyle(ButtonStyle.Primary)
+  );
+}
+
+export function reportReceiptButtons(type: ReportActionType, publicId: string): ActionRowBuilder<ButtonBuilder> {
+  return new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setCustomId(`reportinfo:${type}:${publicId}`)
+      .setLabel('Add more info')
+      .setStyle(ButtonStyle.Secondary)
+  );
+}
+
+export async function handleReportActionButton(interaction: ButtonInteraction): Promise<boolean> {
+  if (interaction.customId.startsWith('reportclaim:')) {
+    if (!(await requireStaff(interaction))) {
+      return true;
+    }
+
+    const [, type, publicId] = interaction.customId.split(':') as [string, Exclude<ReportActionType, 'feedback'>, string];
+    const updated = claimReport(type, publicId, interaction.user.id, interaction.user.tag);
+    if (!updated) {
+      await interaction.reply({ content: `No report found for ${publicId}.`, ephemeral: true });
+      return true;
+    }
+
+    const messageUpdate = reportMessageUpdate(type, publicId);
+    if (messageUpdate) {
+      await interaction.update(messageUpdate);
+    } else {
+      await interaction.reply({ content: `Claimed ${publicId}.`, ephemeral: true });
+    }
+    return true;
+  }
+
+  if (interaction.customId.startsWith('reportinfo:')) {
+    const [, type, publicId] = interaction.customId.split(':') as [string, ReportActionType, string];
+    const owner = getReportOwner(type, publicId);
+    if (!owner) {
+      await interaction.reply({ content: `No report found for ${publicId}.`, ephemeral: true });
+      return true;
+    }
+
+    if (owner.userId !== interaction.user.id && !isStaff(interaction)) {
+      await interaction.reply({
+        content: 'Only the report submitter or staff can add more information to this report.',
+        ephemeral: true
+      });
+      return true;
+    }
+
+    await interaction.showModal(new ModalBuilder()
+      .setCustomId(`reportinfo:${type}:${publicId}`)
+      .setTitle(`Add Info ${publicId}`)
+      .addComponents(textInputRow('details', 'New details', TextInputStyle.Paragraph, true, 'Add reproduction notes, extra context, or what changed.'))
+    );
+    return true;
+  }
+
+  return false;
+}
+
+export async function handleReportUpdateModal(interaction: ModalSubmitInteraction): Promise<boolean> {
+  if (!interaction.customId.startsWith('reportinfo:')) {
+    return false;
+  }
+
+  const [, type, publicId] = interaction.customId.split(':') as [string, ReportActionType, string];
+  const owner = getReportOwner(type, publicId);
+  if (!owner) {
+    await interaction.reply({ content: `No report found for ${publicId}.`, ephemeral: true });
+    return true;
+  }
+
+  if (owner.userId !== interaction.user.id && !isStaff(interaction)) {
+    await interaction.reply({
+      content: 'Only the report submitter or staff can add more information to this report.',
+      ephemeral: true
+    });
+    return true;
+  }
+
+  const details = interaction.fields.getTextInputValue('details');
+  appendReportUpdate({
+    reportType: type,
+    reportPublicId: publicId,
+    userId: interaction.user.id,
+    username: interaction.user.tag,
+    details
+  });
+
+  await sendToConfiguredChannel(interaction.client, reportChannelForType(type), {
+    embeds: [
+      feedbackReportUpdateEmbed(type, normalizeReportId(publicId), interaction.user.id, details)
+    ]
+  });
+
+  await interaction.reply({
+    content: `Added more information to **${normalizeReportId(publicId)}**.`,
+    ephemeral: true
+  });
+  return true;
+}
+
+function claimReport(type: Exclude<ReportActionType, 'feedback'>, publicId: string, userId: string, username: string): boolean {
+  const table = reportTableForClaim(type);
+  if (!table) {
+    return false;
+  }
+
+  const result = getDb().prepare(`
+    UPDATE ${table}
+    SET claimed_by = @userId,
+        claimed_by_username = @username,
+        claimed_at = datetime('now'),
+        updated_at = datetime('now')
+    WHERE public_id = @publicId
+  `).run({ userId, username, publicId: normalizeReportId(publicId) });
+
+  return result.changes > 0;
+}
+
+function reportMessageUpdate(type: Exclude<ReportActionType, 'feedback'>, publicId: string) {
+  if (type === 'bug') {
+    const report = getBugReport(publicId);
+    return report
+      ? { embeds: [bugReportEmbed(report)], components: [bugStatusButtons(report.publicId), reportClaimButtons('bug', report.publicId)] }
+      : null;
+  }
+
+  if (type === 'crash') {
+    const report = getCrashReport(publicId);
+    return report
+      ? { embeds: [crashReportEmbed(report)], components: [reportClaimButtons('crash', report.publicId)] }
+      : null;
+  }
+
+  if (type === 'performance') {
+    const report = getPerformanceReport(publicId);
+    return report
+      ? { embeds: [performanceReportEmbed(report)], components: [reportClaimButtons('performance', report.publicId)] }
+      : null;
+  }
+
+  const spark = getSparkReport(publicId);
+  return spark
+    ? { embeds: [sparkReportEmbed(spark, getPlaytestSession(spark.sessionPublicId))], components: [reportClaimButtons('spark', spark.publicId)] }
+    : null;
+}
+
+function getReportOwner(type: ReportActionType, publicId: string): { userId: string } | null {
+  const table = reportTableForOwner(type);
+  if (!table) {
+    return null;
+  }
+
+  const row = getDb()
+    .prepare(`SELECT user_id FROM ${table} WHERE public_id = ?`)
+    .get(normalizeReportId(publicId)) as { user_id: string } | undefined;
+
+  return row ? { userId: row.user_id } : null;
+}
+
+function appendReportUpdate(input: {
+  reportType: ReportActionType;
+  reportPublicId: string;
+  userId: string;
+  username: string;
+  details: string;
+}): void {
+  getDb().prepare(`
+    INSERT INTO report_updates (
+      report_type, report_public_id, user_id, username, details
+    ) VALUES (
+      @reportType, @reportPublicId, @userId, @username, @details
+    )
+  `).run({
+    ...input,
+    reportPublicId: normalizeReportId(input.reportPublicId)
+  });
+}
+
+function reportTableForClaim(type: Exclude<ReportActionType, 'feedback'>): string | null {
+  return {
+    bug: 'bug_reports',
+    crash: 'crash_reports',
+    performance: 'performance_reports',
+    spark: 'spark_reports'
+  }[type] ?? null;
+}
+
+function reportTableForOwner(type: ReportActionType): string | null {
+  return {
+    bug: 'bug_reports',
+    crash: 'crash_reports',
+    performance: 'performance_reports',
+    feedback: 'feedback_reports',
+    spark: 'spark_reports'
+  }[type] ?? null;
+}
+
+function reportChannelForType(type: ReportActionType): string | undefined {
+  return {
+    bug: config.channelIds.bugReports,
+    crash: config.channelIds.crashReports,
+    performance: config.channelIds.performanceReports,
+    feedback: config.channelIds.feedbackReports,
+    spark: config.channelIds.sparkReports
+  }[type];
+}
+
+function feedbackReportUpdateEmbed(type: ReportActionType, publicId: string, userId: string, details: string): EmbedBuilder {
+  return new EmbedBuilder()
+    .setTitle(`Report Update ${publicId}`)
+    .setColor(0x4f7f5f)
+    .setTimestamp()
+    .addFields(
+      { name: 'Report type', value: type, inline: true },
+      { name: 'Submitted by', value: `<@${userId}>`, inline: true },
+      { name: 'New details', value: details.slice(0, 1024) }
+    );
+}
+
 export function searchReports(keyword: string): ReportSearchResult[] {
   const like = `%${keyword.trim()}%`;
   const database = getDb();
@@ -689,7 +968,15 @@ export function searchReports(keyword: string): ReportSearchResult[] {
     LIMIT 10
   `).all({ like }) as unknown as ReportSearchResult[];
 
-  return [...bugs, ...crashes, ...performance, ...feedback, ...suggestions, ...spark, ...playtests]
+  const qaForwards = database.prepare(`
+    SELECT 'qa' AS type, public_id AS publicId, question AS title, status, created_at AS createdAt
+    FROM qa_forwards
+    WHERE public_id LIKE @like OR question LIKE @like OR username LIKE @like
+    ORDER BY id DESC
+    LIMIT 10
+  `).all({ like }) as unknown as ReportSearchResult[];
+
+  return [...bugs, ...crashes, ...performance, ...feedback, ...suggestions, ...spark, ...playtests, ...qaForwards]
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
     .slice(0, 10);
 }
@@ -752,7 +1039,7 @@ export async function handleBugStatusButton(interaction: ButtonInteraction): Pro
 
   await interaction.update({
     embeds: [bugReportEmbed(report)],
-    components: [bugStatusButtons(report.publicId)]
+    components: [bugStatusButtons(report.publicId), reportClaimButtons('bug', report.publicId)]
   });
 
   return true;
@@ -781,6 +1068,9 @@ function mapBug(row: BugRow): BugReportRecord {
     screenshotName: row.screenshot_name,
     logFileName: row.log_file_name,
     redactedLog: row.redacted_log,
+    claimedBy: row.claimed_by,
+    claimedByUsername: row.claimed_by_username,
+    claimedAt: row.claimed_at,
     status: row.status,
     createdAt: row.created_at,
     updatedAt: row.updated_at
@@ -799,6 +1089,9 @@ function mapCrash(row: CrashRow): CrashReportRecord {
     likelyCause: row.likely_cause,
     confidence: row.confidence,
     nextSteps: row.next_steps,
+    claimedBy: row.claimed_by,
+    claimedByUsername: row.claimed_by_username,
+    claimedAt: row.claimed_at,
     status: row.status,
     createdAt: row.created_at,
     updatedAt: row.updated_at
@@ -821,6 +1114,9 @@ function mapPerformance(row: PerformanceRow): PerformanceReportRecord {
     renderDistance: row.render_distance,
     lagLocation: row.lag_location,
     activity: row.activity,
+    claimedBy: row.claimed_by,
+    claimedByUsername: row.claimed_by_username,
+    claimedAt: row.claimed_at,
     status: row.status,
     createdAt: row.created_at,
     updatedAt: row.updated_at
@@ -839,6 +1135,41 @@ function mapFeedback(row: FeedbackRow): FeedbackReportRecord {
     details: row.details,
     createdAt: row.created_at
   };
+}
+
+function bugReportModal(draftId: string): ModalBuilder {
+  return new ModalBuilder()
+    .setCustomId(`bugreport:${draftId}`)
+    .setTitle('Wilderness Oddesy Bug Report')
+    .addComponents(
+      textInputRow('modpack_version', 'Modpack version', TextInputStyle.Short, true, 'Example: 0.1.0'),
+      textInputRow('happened', 'What happened?', TextInputStyle.Paragraph, true, 'Describe the bug clearly.'),
+      textInputRow('expected', 'What did you expect?', TextInputStyle.Paragraph, true, 'What should have happened instead?'),
+      textInputRow('steps', 'Steps to reproduce', TextInputStyle.Paragraph, true, 'List the steps staff can try.')
+    );
+}
+
+function performanceReportModal(draftId: string): ModalBuilder {
+  return new ModalBuilder()
+    .setCustomId(`perfreport:${draftId}`)
+    .setTitle('Optional Performance Report')
+    .addComponents(
+      textInputRow('modpack_version', 'Modpack version', TextInputStyle.Short, true, 'Example: 0.1.0'),
+      textInputRow('fps_average', 'FPS average', TextInputStyle.Short, true, 'Example: 45 FPS'),
+      textInputRow('ram_allocated', 'RAM allocated', TextInputStyle.Short, true, 'Example: 8 GB'),
+      textInputRow('lag_location', 'Where does lag happen?', TextInputStyle.Paragraph, true, 'Structures, rifts, anomalies, dimensions, entities, etc.'),
+      textInputRow('activity', 'What were you doing?', TextInputStyle.Paragraph, true, 'Exploring, fighting, generating chunks, using shaders, etc.')
+    );
+}
+
+function feedbackReportModal(draftId: string): ModalBuilder {
+  return new ModalBuilder()
+    .setCustomId(`feedback:${draftId}`)
+    .setTitle('Wilderness Oddesy Feedback')
+    .addComponents(
+      textInputRow('summary', 'Short summary', TextInputStyle.Short, true, 'Example: Rifts feel too punishing early.'),
+      textInputRow('details', 'Details', TextInputStyle.Paragraph, true, 'Tell staff what you noticed and what would help.')
+    );
 }
 
 function textInputRow(

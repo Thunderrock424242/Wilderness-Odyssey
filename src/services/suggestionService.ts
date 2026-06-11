@@ -6,6 +6,7 @@ import {
   ChatInputCommandInteraction,
   ModalBuilder,
   ModalSubmitInteraction,
+  StringSelectMenuInteraction,
   TextInputBuilder,
   TextInputStyle
 } from 'discord.js';
@@ -48,15 +49,18 @@ export async function beginSuggestion(interaction: ChatInputCommandInteraction):
     modpackVersion: interaction.options.getString('modpack_version')
   });
 
-  const modal = new ModalBuilder()
-    .setCustomId(`suggest:${draftId}`)
-    .setTitle('Wilderness Oddesy Suggestion')
-    .addComponents(
-      textInputRow('title', 'Suggestion title', TextInputStyle.Short, true, 'Short, clear title.'),
-      textInputRow('details', 'Suggestion details', TextInputStyle.Paragraph, true, 'What should be added or changed, and why?')
-    );
+  await interaction.showModal(suggestionModal(draftId));
+}
 
-  await interaction.showModal(modal);
+export async function beginSuggestionFromPanel(interaction: StringSelectMenuInteraction): Promise<void> {
+  const draftId = randomUUID().slice(0, 10);
+  suggestionDrafts.set(draftId, {
+    userId: interaction.user.id,
+    category: 'Other',
+    modpackVersion: null
+  });
+
+  await interaction.showModal(suggestionModal(draftId));
 }
 
 export async function handleSuggestionModal(interaction: ModalSubmitInteraction): Promise<void> {
@@ -261,6 +265,16 @@ function mapSuggestion(row: SuggestionRow): SuggestionRecord {
     createdAt: row.created_at,
     updatedAt: row.updated_at
   };
+}
+
+function suggestionModal(draftId: string): ModalBuilder {
+  return new ModalBuilder()
+    .setCustomId(`suggest:${draftId}`)
+    .setTitle('Wilderness Oddesy Suggestion')
+    .addComponents(
+      textInputRow('title', 'Suggestion title', TextInputStyle.Short, true, 'Short, clear title.'),
+      textInputRow('details', 'Suggestion details', TextInputStyle.Paragraph, true, 'What should be added or changed, and why?')
+    );
 }
 
 function textInputRow(
