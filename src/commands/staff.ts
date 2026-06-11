@@ -19,6 +19,7 @@ import {
   updateKnownIssue
 } from '../services/knownIssuesService';
 import {
+  applyBugForumStatusTags,
   getAnyReport,
   searchReports,
   updateReportStatus
@@ -58,6 +59,17 @@ import {
   suggestionEmbed,
   truncate
 } from '../utils/embeds';
+
+const bugReportStatuses = [
+  { name: 'open', value: 'open' },
+  { name: 'investigating', value: 'investigating' },
+  { name: 'confirmed', value: 'confirmed' },
+  { name: 'solved', value: 'solved' },
+  { name: 'fixed', value: 'fixed' },
+  { name: 'duplicate', value: 'duplicate' },
+  { name: 'needs more info', value: 'needs_more_info' },
+  { name: 'wontfix', value: 'wontfix' }
+] as const;
 
 const reportStatuses = [
   { name: 'open', value: 'open' },
@@ -108,7 +120,7 @@ export const staffCommand: SlashCommand = {
                 .setName('status')
                 .setDescription('New report status.')
                 .setRequired(true)
-                .addChoices(...reportStatuses)
+                .addChoices(...bugReportStatuses)
             )
         )
     )
@@ -303,7 +315,11 @@ export const staffCommand: SlashCommand = {
     if (group === 'bug' && subcommand === 'status') {
       const id = interaction.options.getString('id', true);
       const status = interaction.options.getString('status', true) as ReportStatus;
-      const updated = updateReportStatus('bug', id, status);
+      const updated = updateReportStatus('bug', id, status, { addedBy: interaction.user.id });
+      if (updated) {
+        await applyBugForumStatusTags(interaction, status);
+      }
+
       await interaction.reply({
         content: updated ? `Bug report ${id.toUpperCase()} marked **${status}**.` : `No bug report found for ${id}.`,
         ephemeral: true

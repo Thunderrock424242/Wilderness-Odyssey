@@ -288,20 +288,29 @@ export function sparkReportEmbed(report: SparkReportRecord, session?: PlaytestSe
 }
 
 export function knownIssuesEmbed(issues: KnownIssueRecord[]): EmbedBuilder {
-  const embed = baseEmbed('Known Issues', 'Current instability notes from the Wilderness Oddesy staff console.');
+  const embed = baseEmbed('Known Issues & Upcoming Fixes', 'Current instability notes and solved bugs queued by the Wilderness Oddesy staff console.');
 
   if (issues.length === 0) {
     return embed.setDescription('No known issues are listed right now. That is either good news or the forest is being quiet.');
   }
 
   for (const issue of issues.slice(0, 10)) {
+    const source = issue.sourceReportPublicId ? ` | Source: ${issue.sourceReportPublicId}` : '';
     embed.addFields({
       name: `#${issue.id} - ${truncate(issue.title, 220)}`,
-      value: `Status: ${issue.status} | Severity: ${issue.severity}\n${truncate(issue.description, 700)}`
+      value: `Status: ${knownIssueStatusLabel(issue.status)} | Severity: ${issue.severity}${source}\n${truncate(issue.description, 700)}`
     });
   }
 
   return embed;
+}
+
+function knownIssueStatusLabel(status: string): string {
+  if (status === 'solved') {
+    return 'solved - upcoming fix';
+  }
+
+  return status;
 }
 
 export function changelogEmbed(entries: ChangelogEntryRecord[]): EmbedBuilder {

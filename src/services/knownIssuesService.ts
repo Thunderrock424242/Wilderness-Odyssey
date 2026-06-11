@@ -1,5 +1,5 @@
 import { getDb } from '../db';
-import type { ChangelogEntryRecord, KnownIssueRecord } from '../types';
+import type { BugReportRecord, ChangelogEntryRecord, KnownIssueRecord } from '../types';
 
 interface KnownIssueRow {
   id: number;
@@ -8,6 +8,8 @@ interface KnownIssueRow {
   status: string;
   severity: string;
   added_by: string;
+  source_report_type: string | null;
+  source_report_public_id: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -26,9 +28,11 @@ export function listKnownIssues(limit = 10): KnownIssueRecord[] {
     SELECT * FROM known_issues
     ORDER BY
       CASE status
+        WHEN 'confirmed' THEN 0
         WHEN 'open' THEN 0
         WHEN 'investigating' THEN 1
-        WHEN 'monitoring' THEN 2
+        WHEN 'solved' THEN 2
+        WHEN 'monitoring' THEN 3
         ELSE 3
       END,
       id DESC
@@ -54,6 +58,60 @@ export function addKnownIssue(input: {
   const issue = getKnownIssue(Number(info.lastInsertRowid));
   if (!issue) {
     throw new Error('Failed to read created known issue.');
+  }
+
+  return issue;
+}
+
+export function syncKnownIssueFromBugStatus(input: {
+  report: BugReportRecord;
+  status: 'confirmed' | 'solved';
+  addedBy: string;
+}): KnownIssueRecord {
+  const database = getDb();
+  const existing = database.prepare(`
+    SELECT id FROM known_issues
+    WHERE source_report_type = 'bug' AND source_report_public_id = ?
+  `).get(input.report.publicId) as { id: number } | undefined;
+
+  const values = {
+    title: `${input.report.publicId}: ${input.report.happened}`.slice(0, 240),
+    description: bugKnownIssueDescription(input.report, input.status),
+    status: input.status,
+    severity: 'medium',
+    addedBy: input.addedBy,
+    sourceReportType: 'bug',
+    sourceReportPublicId: input.report.publicId
+  };
+
+  if (existing) {
+    database.prepare(`
+      UPDATE known_issues
+      SET title = @title,
+          description = @description,
+          status = @status,
+          severity = @severity,
+          updated_at = datetime('now')
+      WHERE id = @id
+    `).run({ ...values, id: existing.id });
+
+    const issue = getKnownIssue(existing.id);
+    if (issue) {
+      return issue;
+    }
+  }
+
+  const info = database.prepare(`
+    INSERT INTO known_issues (
+      title, description, status, severity, added_by, source_report_type, source_report_public_id
+    ) VALUES (
+      @title, @description, @status, @severity, @addedBy, @sourceReportType, @sourceReportPublicId
+    )
+  `).run(values);
+
+  const issue = getKnownIssue(Number(info.lastInsertRowid));
+  if (!issue) {
+    throw new Error('Failed to read synced known issue.');
   }
 
   return issue;
@@ -126,9 +184,30 @@ function mapKnownIssue(row: KnownIssueRow): KnownIssueRecord {
     status: row.status,
     severity: row.severity,
     addedBy: row.added_by,
+    sourceReportType: row.source_report_type,
+    sourceReportPublicId: row.source_report_public_id,
     createdAt: row.created_at,
     updatedAt: row.updated_at
   };
+}
+
+function bugKnownIssueDescription(report: BugReportRecord, status: 'confirmed' | 'solved'): string {
+  const heading = status === 'solved'
+    ? 'Solved by devs and queued for an upcoming fix.'
+    : 'Confirmed by devs as a legitimate bug.';
+
+  return [
+    heading,
+    '',
+    `Source bug: ${report.publicId}`,
+    `Modpack version: ${report.modpackVersion}`,
+    report.minecraftVersion ? `Minecraft version: ${report.minecraftVersion}` : null,
+    report.loaderVersion ? `Loader version: ${report.loaderVersion}` : null,
+    '',
+    `What happens: ${report.happened}`,
+    `Expected: ${report.expected}`,
+    `Steps: ${report.steps}`
+  ].filter(Boolean).join('\n');
 }
 
 function mapChangelog(row: ChangelogRow): ChangelogEntryRecord {

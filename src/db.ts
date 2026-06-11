@@ -105,6 +105,8 @@ function migrate(database: DatabaseSync): void {
       status TEXT NOT NULL DEFAULT 'open',
       severity TEXT NOT NULL DEFAULT 'medium',
       added_by TEXT NOT NULL,
+      source_report_type TEXT,
+      source_report_public_id TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
@@ -321,6 +323,9 @@ function migrate(database: DatabaseSync): void {
   ensureColumn(database, 'bug_reports', 'screenshot_name', 'TEXT');
   ensureColumn(database, 'bug_reports', 'log_file_name', 'TEXT');
   ensureColumn(database, 'bug_reports', 'redacted_log', 'TEXT');
+  ensureColumn(database, 'known_issues', 'source_report_type', 'TEXT');
+  ensureColumn(database, 'known_issues', 'source_report_public_id', 'TEXT');
+  database.exec('CREATE INDEX IF NOT EXISTS idx_known_issues_source ON known_issues(source_report_type, source_report_public_id);');
   ensureReportClaimColumns(database, 'bug_reports');
   ensureReportClaimColumns(database, 'crash_reports');
   ensureReportClaimColumns(database, 'performance_reports');

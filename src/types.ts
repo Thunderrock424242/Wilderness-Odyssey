@@ -15,7 +15,15 @@ export interface SlashCommand {
   execute(interaction: ChatInputCommandInteraction): Promise<void>;
 }
 
-export type ReportStatus = 'open' | 'investigating' | 'fixed' | 'duplicate' | 'needs_more_info' | 'wontfix';
+export type ReportStatus =
+  | 'open'
+  | 'investigating'
+  | 'confirmed'
+  | 'solved'
+  | 'fixed'
+  | 'duplicate'
+  | 'needs_more_info'
+  | 'wontfix';
 
 export interface BugReportRecord {
   id: number;
@@ -134,6 +142,8 @@ export interface KnownIssueRecord {
   status: string;
   severity: string;
   addedBy: string;
+  sourceReportType: string | null;
+  sourceReportPublicId: string | null;
   createdAt: string;
   updatedAt: string;
 }

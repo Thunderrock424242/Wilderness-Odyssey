@@ -57,7 +57,7 @@ export const config = {
     bugReports: optional('BUG_REPORTS_CHANNEL_ID'),
     crashReports: optional('CRASH_REPORTS_CHANNEL_ID'),
     performanceReports: optional('PERFORMANCE_REPORTS_CHANNEL_ID'),
-    feedbackReports: optional('FEEDBACK_CHANNEL_ID') ?? optional('FEEDBACK_REPORTS_CHANNEL_ID'),
+    feedbackReports: optional('FEEDBACK_CHANNEL_ID'),
     suggestions: optional('SUGGESTIONS_CHANNEL_ID'),
     sparkReports: optional('SPARK_REPORTS_CHANNEL_ID'),
     playtestSessions: optional('PLAYTEST_SESSIONS_CHANNEL_ID'),
@@ -67,14 +67,16 @@ export const config = {
     support: optional('SUPPORT_CHANNEL_ID')
   },
   forumChannels: {
-    issues: optional('ISSUES_FORUM_CHANNEL_ID') ?? optional('BUG_CRASH_FORUM_CHANNEL_ID'),
-    ideas: optional('IDEAS_FORUM_CHANNEL_ID') ?? optional('FEEDBACK_SUGGESTIONS_FORUM_CHANNEL_ID')
+    issues: optional('ISSUES_FORUM_CHANNEL_ID'),
+    ideas: optional('IDEAS_FORUM_CHANNEL_ID')
   },
   forumTags: {
-    bug: listFromEnv('BUG_FORUM_TAGS', listFromEnv('BUG_FORUM_TAG', ['Bug'])),
-    crash: listFromEnv('CRASH_FORUM_TAGS', listFromEnv('CRASH_FORUM_TAG', ['Crash'])),
-    feedback: listFromEnv('FEEDBACK_FORUM_TAGS', listFromEnv('FEEDBACK_FORUM_TAG', ['Feedback'])),
-    suggestion: listFromEnv('SUGGESTION_FORUM_TAGS', listFromEnv('SUGGESTION_FORUM_TAG', ['Suggestion']))
+    bug: listFromEnv('BUG_FORUM_TAG', ['Bug']),
+    bugConfirmed: listFromEnv('BUG_CONFIRMED_FORUM_TAG', ['Confirmed']),
+    bugSolved: listFromEnv('BUG_SOLVED_FORUM_TAG', ['Solved']),
+    crash: listFromEnv('CRASH_FORUM_TAG', ['Crash']),
+    feedback: listFromEnv('FEEDBACK_FORUM_TAG', ['Feedback']),
+    suggestion: listFromEnv('SUGGESTION_FORUM_TAG', ['Suggestion'])
   },
   status: {
     latestModpackVersion: optional('LATEST_MODPACK_VERSION') ?? 'Not configured',
@@ -96,7 +98,7 @@ export const config = {
   minecraftVerification: {
     apiEnabled: booleanFromEnv('MINECRAFT_VERIFY_API_ENABLED', false),
     apiHost: optional('MINECRAFT_VERIFY_API_HOST') ?? '0.0.0.0',
-    apiPort: numberFromEnv('MINECRAFT_VERIFY_API_PORT', numberFromEnv('PORT', 3000)),
+    apiPort: numberFromEnv('MINECRAFT_VERIFY_API_PORT', 3000),
     publicBaseUrl: optional('MINECRAFT_VERIFY_PUBLIC_URL'),
     codeTtlMinutes: numberFromEnv('MINECRAFT_VERIFY_CODE_TTL_MINUTES', 15)
   }

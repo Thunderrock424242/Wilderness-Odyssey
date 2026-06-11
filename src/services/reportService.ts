@@ -44,6 +44,7 @@ import {
 import {
   getPlaytestSession
 } from './playtestSessionService';
+import { syncKnownIssueFromBugStatus } from './knownIssuesService';
 
 interface BugDraft {
   userId: string;
@@ -442,7 +443,7 @@ export async function handleBugReportModal(interaction: ModalSubmitInteraction):
     reportDestinationForType('bug'),
     {
       embeds: [bugReportEmbed(report)],
-      components: [bugStatusButtons(report.publicId), reportClaimButtons('bug', report.publicId)]
+      components: [...bugStatusButtons(report.publicId), reportClaimButtons('bug', report.publicId)]
     },
     {
       forumPost: {
@@ -775,16 +776,33 @@ export function getAnyReport(publicId: string): AnyReport | null {
   return feedback ? { type: 'feedback', report: feedback } : null;
 }
 
-export function updateReportStatus(type: 'bug' | 'crash' | 'performance', publicId: string, status: ReportStatus): boolean {
+export function updateReportStatus(
+  type: 'bug' | 'crash' | 'performance',
+  publicId: string,
+  status: ReportStatus,
+  options: { addedBy?: string } = {}
+): boolean {
   const table = {
     bug: 'bug_reports',
     crash: 'crash_reports',
     performance: 'performance_reports'
   }[type];
 
+  const normalizedPublicId = normalizeReportId(publicId);
   const result = getDb()
     .prepare(`UPDATE ${table} SET status = @status, updated_at = datetime('now') WHERE public_id = @publicId`)
-    .run({ status, publicId: normalizeReportId(publicId) });
+    .run({ status, publicId: normalizedPublicId });
+
+  if (result.changes > 0 && type === 'bug' && isKnownIssueBugStatus(status)) {
+    const report = getBugReport(normalizedPublicId);
+    if (report) {
+      syncKnownIssueFromBugStatus({
+        report,
+        status,
+        addedBy: options.addedBy ?? report.claimedBy ?? report.userId
+      });
+    }
+  }
 
   return result.changes > 0;
 }
@@ -920,7 +938,7 @@ function reportMessageUpdate(type: Exclude<ReportActionType, 'feedback'>, public
   if (type === 'bug') {
     const report = getBugReport(publicId);
     return report
-      ? { embeds: [bugReportEmbed(report)], components: [bugStatusButtons(report.publicId), reportClaimButtons('bug', report.publicId)] }
+      ? { embeds: [bugReportEmbed(report)], components: [...bugStatusButtons(report.publicId), reportClaimButtons('bug', report.publicId)] }
       : null;
   }
 
@@ -1097,29 +1115,41 @@ export function searchReports(keyword: string): ReportSearchResult[] {
     .slice(0, 10);
 }
 
-export function bugStatusButtons(publicId: string): ActionRowBuilder<ButtonBuilder> {
-  return new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-      .setCustomId(`bugstatus:${publicId}:investigating`)
-      .setLabel('Mark investigating')
-      .setStyle(ButtonStyle.Primary),
-    new ButtonBuilder()
-      .setCustomId(`bugstatus:${publicId}:fixed`)
-      .setLabel('Mark fixed')
-      .setStyle(ButtonStyle.Success),
-    new ButtonBuilder()
-      .setCustomId(`bugstatus:${publicId}:duplicate`)
-      .setLabel('Mark duplicate')
-      .setStyle(ButtonStyle.Secondary),
-    new ButtonBuilder()
-      .setCustomId(`bugstatus:${publicId}:needs_more_info`)
-      .setLabel('Needs more info')
-      .setStyle(ButtonStyle.Secondary),
-    new ButtonBuilder()
-      .setCustomId(`bugstatus:${publicId}:wontfix`)
-      .setLabel('Mark wontfix')
-      .setStyle(ButtonStyle.Danger)
-  );
+export function bugStatusButtons(publicId: string): ActionRowBuilder<ButtonBuilder>[] {
+  return [
+    new ActionRowBuilder<ButtonBuilder>().addComponents(
+      new ButtonBuilder()
+        .setCustomId(`bugstatus:${publicId}:confirmed`)
+        .setLabel('Mark confirmed')
+        .setStyle(ButtonStyle.Success),
+      new ButtonBuilder()
+        .setCustomId(`bugstatus:${publicId}:solved`)
+        .setLabel('Mark solved')
+        .setStyle(ButtonStyle.Success),
+      new ButtonBuilder()
+        .setCustomId(`bugstatus:${publicId}:investigating`)
+        .setLabel('Investigating')
+        .setStyle(ButtonStyle.Primary),
+      new ButtonBuilder()
+        .setCustomId(`bugstatus:${publicId}:needs_more_info`)
+        .setLabel('Needs more info')
+        .setStyle(ButtonStyle.Secondary)
+    ),
+    new ActionRowBuilder<ButtonBuilder>().addComponents(
+      new ButtonBuilder()
+        .setCustomId(`bugstatus:${publicId}:fixed`)
+        .setLabel('Mark fixed')
+        .setStyle(ButtonStyle.Success),
+      new ButtonBuilder()
+        .setCustomId(`bugstatus:${publicId}:duplicate`)
+        .setLabel('Duplicate')
+        .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
+        .setCustomId(`bugstatus:${publicId}:wontfix`)
+        .setLabel('Wontfix')
+        .setStyle(ButtonStyle.Danger)
+    )
+  ];
 }
 
 export async function handleBugStatusButton(interaction: ButtonInteraction): Promise<boolean> {
@@ -1142,7 +1172,7 @@ export async function handleBugStatusButton(interaction: ButtonInteraction): Pro
     return true;
   }
 
-  const updated = updateReportStatus('bug', publicId, status);
+  const updated = updateReportStatus('bug', publicId, status, { addedBy: interaction.user.id });
   const report = getBugReport(publicId);
 
   if (!updated || !report) {
@@ -1153,12 +1183,66 @@ export async function handleBugStatusButton(interaction: ButtonInteraction): Pro
     return true;
   }
 
+  await applyBugForumStatusTags(interaction, status);
+
   await interaction.update({
     embeds: [bugReportEmbed(report)],
-    components: [bugStatusButtons(report.publicId), reportClaimButtons('bug', report.publicId)]
+    components: [...bugStatusButtons(report.publicId), reportClaimButtons('bug', report.publicId)]
   });
 
   return true;
+}
+
+export async function applyBugForumStatusTags(
+  interaction: ButtonInteraction | ChatInputCommandInteraction,
+  status: ReportStatus
+): Promise<void> {
+  const channel = interaction.channel;
+  if (!channel || !('appliedTags' in channel) || !('setAppliedTags' in channel) || !('parent' in channel)) {
+    return;
+  }
+
+  const thread = channel as {
+    appliedTags: string[];
+    parent: { availableTags: Array<{ id: string; name: string }> } | null;
+    setAppliedTags(tags: string[], reason?: string): Promise<unknown>;
+  };
+
+  if (!thread.parent) {
+    return;
+  }
+
+  const statusTagIds = resolveForumTagIds(thread.parent.availableTags, [
+    ...config.forumTags.bugConfirmed,
+    ...config.forumTags.bugSolved
+  ]);
+  const nextTags = thread.appliedTags.filter((tagId) => !statusTagIds.includes(tagId));
+  const newStatusTags = resolveForumTagIds(thread.parent.availableTags, bugForumTagsForStatus(status));
+
+  if (statusTagIds.length === 0 && newStatusTags.length === 0) {
+    return;
+  }
+
+  await thread.setAppliedTags(
+    [...new Set([...nextTags, ...newStatusTags])],
+    `Bug status marked ${status} by ${interaction.user.tag}`
+  ).catch(() => undefined);
+}
+
+function bugForumTagsForStatus(status: ReportStatus): string[] {
+  if (status === 'confirmed') {
+    return config.forumTags.bugConfirmed;
+  }
+
+  if (status === 'solved') {
+    return config.forumTags.bugSolved;
+  }
+
+  return [];
+}
+
+function isKnownIssueBugStatus(status: ReportStatus): status is 'confirmed' | 'solved' {
+  return status === 'confirmed' || status === 'solved';
 }
 
 function mapBug(row: BugRow): BugReportRecord {

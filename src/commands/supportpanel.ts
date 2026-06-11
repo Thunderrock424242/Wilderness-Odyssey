@@ -334,7 +334,7 @@ async function handleStaffPanelSelection(interaction: StringSelectMenuInteractio
     );
   } else if (category === 'statuses') {
     embed.addFields(
-      { name: 'Bug status', value: '`/staff bug status id:WO-BUG-0001 status:investigating`' },
+      { name: 'Bug status', value: '`/staff bug status id:WO-BUG-0001 status:confirmed` or `status:solved`' },
       { name: 'Crash status', value: '`/staff crash status id:WO-CRASH-0001 status:fixed`' },
       { name: 'Spark status', value: '`/staff spark status id:WO-SPARK-0001 status:needs_review`' }
     );

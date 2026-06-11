@@ -78,9 +78,12 @@ Recommended channels:
 - `CRASH_REPORTS_CHANNEL_ID`
 - `FEEDBACK_CHANNEL_ID`
 - `SUGGESTIONS_CHANNEL_ID`
+- `PERFORMANCE_REPORTS_CHANNEL_ID`
 - `ISSUES_FORUM_CHANNEL_ID`
 - `IDEAS_FORUM_CHANNEL_ID`
 - `BUG_FORUM_TAG`
+- `BUG_CONFIRMED_FORUM_TAG`
+- `BUG_SOLVED_FORUM_TAG`
 - `CRASH_FORUM_TAG`
 - `FEEDBACK_FORUM_TAG`
 - `SUGGESTION_FORUM_TAG`
@@ -88,6 +91,7 @@ Recommended channels:
 - `PLAYTEST_SESSIONS_CHANNEL_ID`
 - `PLAYTEST_CATEGORY_ID`
 - `STAFF_REVIEW_CHANNEL_ID`
+- `STAFF_LOG_CHANNEL_ID`
 - `QA_CHANNEL_IDS`
 - `QA_TEAM_CHANNEL_ID`
 - `QA_TEAM_ROLE_ID`
@@ -110,12 +114,6 @@ Other useful settings:
 - `MINECRAFT_VERIFY_CODE_TTL_MINUTES`
 - `DATABASE_PATH`
 - `MAX_LOG_BYTES`
-
-Legacy aliases still work:
-
-- `FEEDBACK_REPORTS_CHANNEL_ID`
-- `PERFORMANCE_REPORTS_CHANNEL_ID`
-- `STAFF_LOG_CHANNEL_ID`
 
 ## Database
 
@@ -173,7 +171,7 @@ Tables:
 
 Staff can run `/supportpanel` in a channel to post persistent button/menu panels. Use `panel_type:all` to post the player-facing support, info, and playtest panels together.
 
-For Discord forum channels, set `ISSUES_FORUM_CHANNEL_ID` for shared bug/crash posts and `IDEAS_FORUM_CHANNEL_ID` for shared feedback/suggestion posts. The bot applies the configured forum tags, defaulting to `Bug`, `Crash`, `Feedback`, and `Suggestion`.
+For Discord forum channels, set `ISSUES_FORUM_CHANNEL_ID` for shared bug/crash posts and `IDEAS_FORUM_CHANNEL_ID` for shared feedback/suggestion posts. The bot applies the configured forum tags, defaulting to `Bug`, `Crash`, `Feedback`, and `Suggestion`. Bug threads can also use status tags, defaulting to `Confirmed` and `Solved`, when staff marks the bug as confirmed or solved from inside the forum thread.
 
 Panel types:
 
@@ -301,10 +299,14 @@ Bug statuses:
 
 - `open`
 - `investigating`
+- `confirmed`
+- `solved`
 - `fixed`
 - `duplicate`
 - `needs_more_info`
 - `wontfix`
+
+Marking a bug `confirmed` creates or updates a sourced known-issues entry for that bug. Marking it `solved` updates that same known-issues entry as `solved`, which displays as an upcoming fix on `/knownissues`. When the status action happens inside a Discord forum thread, the bot also swaps the bug's forum status tag to `Confirmed` or `Solved`.
 
 Suggestion statuses:
 
@@ -322,7 +324,7 @@ Spark statuses:
 - `not_enough_data`
 - `resolved`
 
-Bug report embeds include staff buttons for investigating, fixed, duplicate, needs more info, and wontfix.
+Bug report embeds include staff buttons for confirmed, solved, investigating, fixed, duplicate, needs more info, and wontfix.
 
 ## Spark Playtesting Flow
 
