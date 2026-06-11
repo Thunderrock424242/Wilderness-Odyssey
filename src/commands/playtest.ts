@@ -3,6 +3,7 @@ import {
   ButtonBuilder,
   ButtonInteraction,
   ButtonStyle,
+  ChatInputCommandInteraction,
   ChannelType,
   ModalBuilder,
   ModalSubmitInteraction,
@@ -27,12 +28,19 @@ import {
   listLinkedReports,
   listRecentPlaytestSessions
 } from '../services/playtestSessionService';
+import { getMinecraftLinkByUserId } from '../services/minecraftVerificationService';
 import { sendToConfiguredChannel } from '../services/reportService';
 import { requireStaff } from '../utils/permissions';
 import { baseEmbed, playtestListEmbed, playtestReleaseEmbed, playtestSessionEmbed } from '../utils/embeds';
 
 const acceptReleasePrefix = 'playtest-release:accept:';
 const playtestPanelStartPrefix = 'playtest-panel:start';
+
+type PlaytestGateInteraction =
+  | ButtonInteraction
+  | ChatInputCommandInteraction
+  | ModalSubmitInteraction
+  | StringSelectMenuInteraction;
 
 const yesNoChoices = [
   { name: 'Yes', value: 'Yes' },
@@ -246,6 +254,10 @@ export const playtestCommand: SlashCommand = {
     const subcommand = interaction.options.getSubcommand(true);
 
     if (subcommand === 'start') {
+      if (!(await requireMinecraftVerification(interaction))) {
+        return;
+      }
+
       const session = createPlaytestSession({
         userId: interaction.user.id,
         username: interaction.user.tag,
@@ -446,6 +458,10 @@ export const playtestCommand: SlashCommand = {
 };
 
 export async function beginPlaytestSessionFromPanel(interaction: StringSelectMenuInteraction): Promise<void> {
+  if (!(await requireMinecraftVerification(interaction))) {
+    return;
+  }
+
   const modal = new ModalBuilder()
     .setCustomId(playtestPanelStartPrefix)
     .setTitle('Start Playtest Session')
@@ -463,6 +479,10 @@ export async function beginPlaytestSessionFromPanel(interaction: StringSelectMen
 export async function handlePlaytestPanelModal(interaction: ModalSubmitInteraction): Promise<boolean> {
   if (interaction.customId !== playtestPanelStartPrefix) {
     return false;
+  }
+
+  if (!(await requireMinecraftVerification(interaction))) {
+    return true;
   }
 
   const session = createPlaytestSession({
@@ -514,6 +534,10 @@ export async function handlePlaytestReleaseButton(interaction: ButtonInteraction
     return true;
   }
 
+  if (!(await requireMinecraftVerification(interaction))) {
+    return true;
+  }
+
   recordPlaytestReleaseAcceptance({
     releasePublicId: release.publicId,
     userId: interaction.user.id,
@@ -525,6 +549,32 @@ export async function handlePlaytestReleaseButton(interaction: ButtonInteraction
     ephemeral: true
   });
   return true;
+}
+
+async function requireMinecraftVerification(interaction: PlaytestGateInteraction): Promise<boolean> {
+  const link = getMinecraftLinkByUserId(interaction.user.id);
+  if (link) {
+    return true;
+  }
+
+  const configNote = config.minecraftVerification.apiEnabled
+    ? config.minecraftVerification.publicBaseUrl
+      ? null
+      : 'Staff note: the verification API is enabled, but `MINECRAFT_VERIFY_PUBLIC_URL` is not configured yet.'
+    : 'Staff note: the Minecraft verification API is disabled, so staff needs to enable it before testers can finish linking.';
+
+  await interaction.reply({
+    content: [
+      'Minecraft verification is required before joining a playtest.',
+      '',
+      'Run `/minecraft link` in Discord to get a one-time code, then run `/wo link CODE` in the playtest client.',
+      'After it links successfully, come back and try this playtest action again.',
+      configNote
+    ].filter(Boolean).join('\n'),
+    ephemeral: true
+  });
+
+  return false;
 }
 
 function playtestAcceptRow(publicId: string): ActionRowBuilder<ButtonBuilder> {

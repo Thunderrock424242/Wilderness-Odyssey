@@ -32,9 +32,9 @@ function startupWarnings(): string[] {
     warnings.push('- `GUILD_ID` is not configured; global slash command updates may take longer.');
   }
 
-  if (!config.channelIds.bugReports) warnings.push('- `BUG_REPORTS_CHANNEL_ID` is not configured.');
-  if (!config.channelIds.crashReports) warnings.push('- `CRASH_REPORTS_CHANNEL_ID` is not configured.');
-  if (!config.channelIds.feedbackReports) warnings.push('- `FEEDBACK_CHANNEL_ID` is not configured.');
+  if (!config.forumChannels.issues && !config.channelIds.bugReports) warnings.push('- `BUG_REPORTS_CHANNEL_ID` or `ISSUES_FORUM_CHANNEL_ID` is not configured.');
+  if (!config.forumChannels.issues && !config.channelIds.crashReports) warnings.push('- `CRASH_REPORTS_CHANNEL_ID` or `ISSUES_FORUM_CHANNEL_ID` is not configured.');
+  if (!config.forumChannels.ideas && !config.channelIds.feedbackReports) warnings.push('- `FEEDBACK_CHANNEL_ID` or `IDEAS_FORUM_CHANNEL_ID` is not configured.');
   if (!config.channelIds.performanceReports) warnings.push('- `PERFORMANCE_REPORTS_CHANNEL_ID` is not configured.');
   if (!config.channelIds.sparkReports) warnings.push('- `SPARK_REPORTS_CHANNEL_ID` is not configured.');
   if (!config.channelIds.playtestSessions) warnings.push('- `PLAYTEST_SESSIONS_CHANNEL_ID` is not configured.');

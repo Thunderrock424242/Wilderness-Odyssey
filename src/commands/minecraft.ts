@@ -43,7 +43,7 @@ export const minecraftCommand: SlashCommand = {
               { name: 'Code', value: `\`${code.code}\``, inline: true },
               { name: 'Expires', value: `${config.minecraftVerification.codeTtlMinutes} minutes`, inline: true },
               { name: 'In Minecraft', value: `Run \`/wo link ${code.code}\`.` },
-              { name: 'API endpoint for the mod', value: verificationEndpointText() }
+              { name: 'Client config', value: verificationClientConfigText() }
             )
         ],
         ephemeral: true
@@ -70,12 +70,12 @@ export const minecraftCommand: SlashCommand = {
   }
 };
 
-function verificationEndpointText(): string {
+function verificationClientConfigText(): string {
   if (config.minecraftVerification.publicBaseUrl) {
-    return `\`${config.minecraftVerification.publicBaseUrl.replace(/\/$/, '')}/api/minecraft/verify\``;
+    return `Set \`verification.apiBaseUrl\` to \`${config.minecraftVerification.publicBaseUrl.replace(/\/$/, '')}\`.`;
   }
 
   return config.minecraftVerification.apiEnabled
-    ? `API is enabled on port ${config.minecraftVerification.apiPort}; set MINECRAFT_VERIFY_PUBLIC_URL for a public URL.`
+    ? `API is enabled on port ${config.minecraftVerification.apiPort}; set \`MINECRAFT_VERIFY_PUBLIC_URL\` so the client config can use the public base URL.`
     : 'API is disabled. Set `MINECRAFT_VERIFY_API_ENABLED=true` on the bot host before using in-game linking.';
 }

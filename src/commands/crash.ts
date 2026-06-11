@@ -1,10 +1,12 @@
 import { SlashCommandBuilder } from 'discord.js';
 import type { SlashCommand } from '../types';
-import { config } from '../config';
 import { analyzeCrashLog } from '../services/logParser';
 import {
   createCrashReport,
   readTextAttachment,
+  reportDestinationForType,
+  reportForumTagsForType,
+  reportForumTitle,
   reportClaimButtons,
   reportReceiptButtons,
   sendToConfiguredChannel
@@ -54,10 +56,20 @@ export const crashCommand: SlashCommand = {
         linkReportToSession(playtestSessionId, 'crash', report.publicId);
       }
 
-      const posted = await sendToConfiguredChannel(interaction.client, config.channelIds.crashReports, {
-        embeds: [crashReportEmbed(report)],
-        components: [reportClaimButtons('crash', report.publicId)]
-      });
+      const posted = await sendToConfiguredChannel(
+        interaction.client,
+        reportDestinationForType('crash'),
+        {
+          embeds: [crashReportEmbed(report)],
+          components: [reportClaimButtons('crash', report.publicId)]
+        },
+        {
+          forumPost: {
+            title: reportForumTitle(report.publicId, 'Crash', report.likelyCause),
+            tags: reportForumTagsForType('crash')
+          }
+        }
+      );
 
       const embed = baseEmbed(`Crash Analysis ${report.publicId}`, 'Report received. Aether-style analysis complete.')
         .addFields(

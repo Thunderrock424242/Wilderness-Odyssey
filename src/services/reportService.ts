@@ -172,22 +172,118 @@ export function normalizeReportId(value: string): string {
   return normalizePublicId(value);
 }
 
+interface ForumPostOptions {
+  title: string;
+  tags?: string[];
+}
+
+interface ConfiguredPostResult {
+  posted: boolean;
+  channelId?: string;
+  messageId?: string;
+  threadId?: string;
+}
+
 export async function sendToConfiguredChannel(
   client: Client,
   channelId: string | undefined,
-  payload: MessageCreateOptions
+  payload: MessageCreateOptions,
+  options: { forumPost?: ForumPostOptions } = {}
 ): Promise<boolean> {
+  return (await postToConfiguredChannel(client, channelId, payload, options)).posted;
+}
+
+export async function postToConfiguredChannel(
+  client: Client,
+  channelId: string | undefined,
+  payload: MessageCreateOptions,
+  options: { forumPost?: ForumPostOptions } = {}
+): Promise<ConfiguredPostResult> {
   if (!channelId) {
-    return false;
+    return { posted: false };
   }
 
   const channel = await client.channels.fetch(channelId).catch(() => null);
-  if (!channel || !channel.isSendable()) {
-    return false;
+  if (!channel) {
+    return { posted: false };
   }
 
-  await channel.send(payload);
-  return true;
+  if (channel.isThreadOnly()) {
+    if (!options.forumPost) {
+      return { posted: false };
+    }
+
+    const thread = await channel.threads.create({
+      name: forumPostTitle(options.forumPost.title),
+      message: payload,
+      appliedTags: resolveForumTagIds(channel.availableTags, options.forumPost.tags ?? [])
+    });
+    const starterMessage = await thread.fetchStarterMessage().catch(() => null);
+
+    return {
+      posted: true,
+      channelId: thread.id,
+      messageId: starterMessage?.id ?? thread.id,
+      threadId: thread.id
+    };
+  }
+
+  if (!channel.isSendable()) {
+    return { posted: false };
+  }
+
+  const message = await channel.send(payload);
+  return {
+    posted: true,
+    channelId: message.channelId,
+    messageId: message.id
+  };
+}
+
+export function forumPostTitle(title: string): string {
+  const clean = title.replace(/\s+/g, ' ').trim();
+  return clean.length <= 100 ? clean : `${clean.slice(0, 97).trim()}...`;
+}
+
+export function reportForumTitle(publicId: string, label: string, summary: string): string {
+  return forumPostTitle(`${publicId} - ${label}: ${summary}`);
+}
+
+export function reportDestinationForType(type: ReportActionType): string | undefined {
+  return {
+    bug: config.forumChannels.issues ?? config.channelIds.bugReports,
+    crash: config.forumChannels.issues ?? config.channelIds.crashReports,
+    performance: config.channelIds.performanceReports,
+    feedback: config.forumChannels.ideas ?? config.channelIds.feedbackReports,
+    spark: config.channelIds.sparkReports
+  }[type];
+}
+
+export function reportForumTagsForType(type: 'bug' | 'crash' | 'feedback'): string[] {
+  return {
+    bug: config.forumTags.bug,
+    crash: config.forumTags.crash,
+    feedback: config.forumTags.feedback
+  }[type];
+}
+
+function resolveForumTagIds(
+  availableTags: Array<{ id: string; name: string }>,
+  requestedTags: string[]
+): string[] {
+  return requestedTags
+    .map((requestedTag) => {
+      const normalized = requestedTag.trim().toLowerCase();
+      if (!normalized) {
+        return undefined;
+      }
+
+      return availableTags.find((tag) =>
+        tag.id === requestedTag.trim()
+        || tag.name.toLowerCase() === normalized
+      )?.id;
+    })
+    .filter((tagId): tagId is string => Boolean(tagId));
 }
 
 export async function readTextAttachment(attachment: Attachment): Promise<string> {
@@ -260,7 +356,7 @@ export async function beginBugReport(interaction: ChatInputCommandInteraction): 
   await interaction.showModal(bugReportModal(draftId));
 }
 
-export async function beginBugReportFromPanel(interaction: StringSelectMenuInteraction): Promise<void> {
+export async function beginBugReportFromPanel(interaction: ButtonInteraction | StringSelectMenuInteraction): Promise<void> {
   const draftId = randomUUID().slice(0, 10);
 
   bugDrafts.set(draftId, {
@@ -341,10 +437,20 @@ export async function handleBugReportModal(interaction: ModalSubmitInteraction):
     linkReportToSession(draft.playtestSessionId, 'bug', report.publicId);
   }
 
-  const posted = await sendToConfiguredChannel(interaction.client, config.channelIds.bugReports, {
-    embeds: [bugReportEmbed(report)],
-    components: [bugStatusButtons(report.publicId), reportClaimButtons('bug', report.publicId)]
-  });
+  const posted = await sendToConfiguredChannel(
+    interaction.client,
+    reportDestinationForType('bug'),
+    {
+      embeds: [bugReportEmbed(report)],
+      components: [bugStatusButtons(report.publicId), reportClaimButtons('bug', report.publicId)]
+    },
+    {
+      forumPost: {
+        title: reportForumTitle(report.publicId, 'Bug', report.happened),
+        tags: reportForumTagsForType('bug')
+      }
+    }
+  );
 
   await interaction.editReply({
     content: `Bug report received. The dev team has been notified. Your bug ID is **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but the report was saved locally.'}`,
@@ -367,7 +473,7 @@ export async function beginPerformanceReport(interaction: ChatInputCommandIntera
   await interaction.showModal(performanceReportModal(draftId));
 }
 
-export async function beginPerformanceReportFromPanel(interaction: StringSelectMenuInteraction): Promise<void> {
+export async function beginPerformanceReportFromPanel(interaction: ButtonInteraction | StringSelectMenuInteraction): Promise<void> {
   const draftId = randomUUID().slice(0, 10);
 
   performanceDrafts.set(draftId, {
@@ -436,7 +542,7 @@ export async function beginFeedbackReport(interaction: ChatInputCommandInteracti
   await interaction.showModal(feedbackReportModal(draftId));
 }
 
-export async function beginFeedbackReportFromPanel(interaction: StringSelectMenuInteraction): Promise<void> {
+export async function beginFeedbackReportFromPanel(interaction: ButtonInteraction | StringSelectMenuInteraction): Promise<void> {
   const draftId = randomUUID().slice(0, 10);
 
   feedbackDrafts.set(draftId, {
@@ -476,9 +582,19 @@ export async function handleFeedbackModal(interaction: ModalSubmitInteraction): 
     linkReportToSession(draft.playtestSessionId, 'feedback', report.publicId);
   }
 
-  const posted = await sendToConfiguredChannel(interaction.client, config.channelIds.feedbackReports, {
-    embeds: [feedbackReportEmbed(report)]
-  });
+  const posted = await sendToConfiguredChannel(
+    interaction.client,
+    reportDestinationForType('feedback'),
+    {
+      embeds: [feedbackReportEmbed(report)]
+    },
+    {
+      forumPost: {
+        title: reportForumTitle(report.publicId, 'Feedback', report.summary),
+        tags: reportForumTagsForType('feedback')
+      }
+    }
+  );
 
   await interaction.reply({
     content: `Field notes received. Your feedback ID is **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but the report was saved locally.'}`,

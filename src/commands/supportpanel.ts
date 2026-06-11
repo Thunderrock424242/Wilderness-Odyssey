@@ -1,5 +1,8 @@
 import {
   ActionRowBuilder,
+  ButtonBuilder,
+  ButtonInteraction,
+  ButtonStyle,
   PermissionsBitField,
   SlashCommandBuilder,
   StringSelectMenuBuilder,
@@ -102,34 +105,44 @@ export const supportPanelCommand: SlashCommand = {
   }
 };
 
-export async function handleSupportPanelComponent(interaction: StringSelectMenuInteraction): Promise<boolean> {
-  if (![supportPanelCustomId, infoPanelCustomId, playtestPanelCustomId, staffPanelCustomId, setupPanelCustomId].includes(interaction.customId)) {
+export async function handleSupportPanelComponent(interaction: ButtonInteraction | StringSelectMenuInteraction): Promise<boolean> {
+  const supportButtonPrefix = `${supportPanelCustomId}:`;
+  const isSupportButton = interaction.isButton() && interaction.customId.startsWith(supportButtonPrefix);
+  const isPanelMenu = interaction.isStringSelectMenu()
+    && [supportPanelCustomId, infoPanelCustomId, playtestPanelCustomId, staffPanelCustomId, setupPanelCustomId].includes(interaction.customId);
+
+  if (!isSupportButton && !isPanelMenu) {
     return false;
   }
 
-  const category = interaction.values[0];
-  if (interaction.customId === infoPanelCustomId) {
-    await handleInfoPanelSelection(interaction, category);
-    return true;
-  }
+  const category = interaction.isButton()
+    ? interaction.customId.slice(supportButtonPrefix.length)
+    : interaction.values[0];
 
-  if (interaction.customId === playtestPanelCustomId) {
-    await handlePlaytestPanelSelection(interaction, category);
-    return true;
-  }
-
-  if (interaction.customId === staffPanelCustomId) {
-    await handleStaffPanelSelection(interaction, category);
-    return true;
-  }
-
-  if (interaction.customId === setupPanelCustomId) {
-    if (!(await requireStaff(interaction))) {
+  if (interaction.isStringSelectMenu()) {
+    if (interaction.customId === infoPanelCustomId) {
+      await handleInfoPanelSelection(interaction, category);
       return true;
     }
 
-    await interaction.reply({ embeds: [await setupDoctorEmbed(interaction)], ephemeral: true });
-    return true;
+    if (interaction.customId === playtestPanelCustomId) {
+      await handlePlaytestPanelSelection(interaction, category);
+      return true;
+    }
+
+    if (interaction.customId === staffPanelCustomId) {
+      await handleStaffPanelSelection(interaction, category);
+      return true;
+    }
+
+    if (interaction.customId === setupPanelCustomId) {
+      if (!(await requireStaff(interaction))) {
+        return true;
+      }
+
+      await interaction.reply({ embeds: [await setupDoctorEmbed(interaction)], ephemeral: true });
+      return true;
+    }
   }
 
   if (category === 'bug') {
@@ -180,6 +193,14 @@ export async function handleSupportPanelComponent(interaction: StringSelectMenuI
         'Ask your question in a configured Q&A channel.',
         'If I recognize the issue, I will answer with the matching support steps. If I do not, I will forward it to the Q&A team.'
       ].join('\n'),
+      ephemeral: true
+    });
+    return true;
+  }
+
+  if (category === 'other') {
+    await interaction.reply({
+      embeds: [otherHelpEmbed()],
       ephemeral: true
     });
     return true;
@@ -383,39 +404,65 @@ function supportPanelPayload(input: {
   const embed = baseEmbed(
     input.title ?? 'Wilderness Oddesy Support Desk',
     input.description ?? [
-      'Select the closest category for your issue.',
-      'Use bug reports for broken gameplay, feedback for playtest impressions, and Q&A for questions that need an answer before you can continue.'
+      'Choose the button that matches what you need.',
+      'Bugs, crashes, feedback, and suggestions are separate workflows so staff can triage them cleanly.'
     ].join('\n')
   )
     .addFields(
       { name: 'Bug report', value: 'Broken gameplay, bad behavior, missing content, or reproducible issues.', inline: true },
       { name: 'Crash or log', value: 'Crash reports, latest.log, Java/loader errors, or launch failures.', inline: true },
       { name: 'Feedback', value: 'Playtest impressions, balance notes, pacing, difficulty, and polish.', inline: true },
-      { name: 'Performance', value: 'FPS drops, stutter, RAM, shaders, worldgen lag, and Spark profiling.', inline: true },
-      { name: 'Q&A', value: 'Questions the bot can answer or forward to the Q&A team.', inline: true }
+      { name: 'Suggestion', value: 'New ideas, quality-of-life requests, content proposals, and voting.', inline: true },
+      { name: 'Other help', value: 'Performance, playtest ZIPs, Minecraft linking, status, privacy, or Q&A.', inline: true }
     );
 
   if (input.imageUrl) {
     embed.setImage(input.imageUrl);
   }
 
-  const menu = new StringSelectMenuBuilder()
+  const primaryButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    supportButton('bug', 'Report Bug', ButtonStyle.Danger),
+    supportButton('crash', 'Crash / Log', ButtonStyle.Danger),
+    supportButton('feedback', 'Feedback', ButtonStyle.Primary),
+    supportButton('suggestion', 'Suggestion', ButtonStyle.Primary),
+    supportButton('other', 'Other Help', ButtonStyle.Secondary)
+  );
+
+  const secondaryMenu = new StringSelectMenuBuilder()
     .setCustomId(supportPanelCustomId)
-    .setPlaceholder('Select a support category')
+    .setPlaceholder('More support options')
     .addOptions(
-      { label: 'Gameplay bug', value: 'bug', description: 'Open a structured bug report.' },
-      { label: 'Crash or log', value: 'crash', description: 'Get crash/log upload instructions.' },
-      { label: 'Playtest feedback', value: 'feedback', description: 'Send playtest notes to staff.' },
       { label: 'Performance issue', value: 'performance', description: 'Report lag, FPS drops, or stutter.' },
-      { label: 'Suggestion', value: 'suggestion', description: 'Submit an idea for review.' },
       { label: 'Playtest help', value: 'playtest', description: 'ZIP, CurseForge, session, and Spark guidance.' },
-      { label: 'Q&A question', value: 'question', description: 'Ask in a Q&A channel for bot or team help.' }
+      { label: 'Q&A question', value: 'question', description: 'Ask in a Q&A channel for bot or team help.' },
+      { label: 'Other help', value: 'other', description: 'Show the extra help menu.' }
     );
 
   return {
     embeds: [embed],
-    components: [new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(menu)]
+    components: [
+      primaryButtons,
+      new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(secondaryMenu)
+    ]
   };
+}
+
+function supportButton(category: string, label: string, style: ButtonStyle): ButtonBuilder {
+  return new ButtonBuilder()
+    .setCustomId(`${supportPanelCustomId}:${category}`)
+    .setLabel(label)
+    .setStyle(style);
+}
+
+function otherHelpEmbed() {
+  return baseEmbed('Other Help', 'Use these when your issue is not a bug, crash, feedback note, or suggestion.')
+    .addFields(
+      { name: 'Performance', value: 'Use `/performance` for guidance or `/perfreport` to submit FPS, RAM, shader, render distance, and lag-location details.' },
+      { name: 'Playtest help', value: 'Use `/playtest start`, `/playtest checklist`, or the Playtest Center panel for ZIP, CurseForge, Spark, and session help.' },
+      { name: 'Minecraft link', value: 'Use `/minecraft link` to generate a one-time code for in-game account linking.' },
+      { name: 'Status and docs', value: 'Use `/status`, `/knownissues`, `/changelog`, `/privacy`, or `/help` for general information.' },
+      { name: 'Still not sure', value: 'Ask in a configured Q&A channel and I can answer known support topics or forward it to the Q&A team.' }
+    );
 }
 
 function infoPanelPayload() {
@@ -453,7 +500,7 @@ function playtestPanelPayload() {
     'Use this panel during test builds so sessions, reports, and Spark links stay organized.'
   )
     .addFields(
-      { name: 'Start session', value: 'Create a tester session before you begin.', inline: true },
+      { name: 'Start session', value: 'Create a tester session before you begin. Requires Minecraft verification.', inline: true },
       { name: 'Checklist', value: 'Use a repeatable stability route.', inline: true },
       { name: 'Spark help', value: 'Profile lag and submit viewer links.', inline: true },
       { name: 'Report while testing', value: 'Send bugs, feedback, performance notes, and crash logs.', inline: false }

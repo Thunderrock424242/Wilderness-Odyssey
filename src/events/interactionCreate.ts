@@ -90,6 +90,10 @@ export async function handleInteraction(
         if (await handlePlaytestReleaseButton(interaction)) {
           return;
         }
+
+        if (await handleSupportPanelComponent(interaction)) {
+          return;
+        }
       }
 
       if (interaction.isStringSelectMenu() && await handleSupportPanelComponent(interaction)) {

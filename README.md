@@ -78,6 +78,12 @@ Recommended channels:
 - `CRASH_REPORTS_CHANNEL_ID`
 - `FEEDBACK_CHANNEL_ID`
 - `SUGGESTIONS_CHANNEL_ID`
+- `ISSUES_FORUM_CHANNEL_ID`
+- `IDEAS_FORUM_CHANNEL_ID`
+- `BUG_FORUM_TAG`
+- `CRASH_FORUM_TAG`
+- `FEEDBACK_FORUM_TAG`
+- `SUGGESTION_FORUM_TAG`
 - `SPARK_REPORTS_CHANNEL_ID`
 - `PLAYTEST_SESSIONS_CHANNEL_ID`
 - `PLAYTEST_CATEGORY_ID`
@@ -165,7 +171,9 @@ Tables:
 
 ## Panels
 
-Staff can run `/supportpanel` in a channel to post persistent dropdown panels. Use `panel_type:all` to post the player-facing support, info, and playtest panels together.
+Staff can run `/supportpanel` in a channel to post persistent button/menu panels. Use `panel_type:all` to post the player-facing support, info, and playtest panels together.
+
+For Discord forum channels, set `ISSUES_FORUM_CHANNEL_ID` for shared bug/crash posts and `IDEAS_FORUM_CHANNEL_ID` for shared feedback/suggestion posts. The bot applies the configured forum tags, defaulting to `Bug`, `Crash`, `Feedback`, and `Suggestion`.
 
 Panel types:
 
@@ -176,17 +184,21 @@ Panel types:
 - Setup doctor - staff-only config, channel, and permission health checks.
 - All player panels - posts support intake, player info, and playtest center.
 
-Support intake options:
+Support intake buttons:
 
 - Gameplay bug - opens a basic bug report modal.
 - Crash or log - tells the player to use `/crash` with a `.txt` or `.log` attachment.
 - Playtest feedback - opens a feedback modal.
-- Performance issue - opens a performance report modal.
 - Suggestion - opens a suggestion modal.
+- Other help - shows extra support paths for performance, playtests, Minecraft linking, status, privacy, and Q&A.
+
+More support options:
+
+- Performance issue - opens a performance report modal.
 - Playtest help - explains playtest ZIP acceptance, `/playtest start`, and report linking.
 - Q&A question - points players to configured Q&A channels.
 
-Panel-submitted bug reports do not collect screenshots or logs because Discord select menus cannot request attachments. Players who need attachments should use `/bugreport` or `/crash`.
+Panel-submitted bug reports do not collect screenshots or logs because Discord buttons/menus cannot request attachments. Players who need attachments should use `/bugreport` or `/crash`.
 
 Playtest panel sessions create normal `WO-TEST-0001` records, so later bug reports, feedback, crashes, performance reports, and Spark reports can still be linked to the tester session.
 
@@ -218,6 +230,19 @@ MINECRAFT_VERIFY_API_HOST=0.0.0.0
 MINECRAFT_VERIFY_API_PORT=3000
 MINECRAFT_VERIFY_PUBLIC_URL=https://your-bot-api.example.com
 ```
+
+In the `wildernessodysseyapi-4.1.0.jar` client config, set the base URL only:
+
+```toml
+# config/wildernessodysseyapi/wildernessodysseyapi-playtest-client.toml
+[verification]
+enabled = true
+apiBaseUrl = "https://your-bot-api.example.com"
+requestTimeoutSeconds = 10
+rememberLinkedAccount = true
+```
+
+Do not include `/api/minecraft/verify` in `verification.apiBaseUrl`; the mod appends that endpoint path itself.
 
 The client mod should send:
 
@@ -253,7 +278,7 @@ If `STAFF_LOG_CHANNEL_ID` or `STAFF_REVIEW_CHANNEL_ID` is configured, the bot po
 
 Staff commands require administrator, manage server, or moderator permissions.
 
-- `/supportpanel` - posts support/info/playtest/staff dropdown panels.
+- `/supportpanel` - posts support/info/playtest/staff button/menu panels.
 - `/staff bug status <id> <status>`
 - `/staff crash status <id> <status>`
 - `/staff suggestion status <id> <status>`
@@ -303,13 +328,14 @@ Bug report embeds include staff buttons for investigating, fixed, duplicate, nee
 
 The bot organizes Spark links; it does not run Minecraft commands inside a player game.
 
-1. Run `/playtest start`.
-2. Start Minecraft and load into the test world.
-3. If testing server TPS or world lag, run Spark during the lag period.
-4. For servers, use `/spark profiler start --timeout 120`.
-5. For Forge/Fabric client installs, Spark may use `/sparkc` instead of `/spark`.
-6. After Spark finishes, copy the Spark viewer link.
-7. Submit it with `/sparkreport`.
+1. Verify your Minecraft account with `/minecraft link`, then `/wo link CODE` in the playtest client.
+2. Run `/playtest start`.
+3. Start Minecraft and load into the test world.
+4. If testing server TPS or world lag, run Spark during the lag period.
+5. For servers, use `/spark profiler start --timeout 120`.
+6. For Forge/Fabric client installs, Spark may use `/sparkc` instead of `/spark`.
+7. After Spark finishes, copy the Spark viewer link.
+8. Submit it with `/sparkreport`.
 
 ## Staff Playtest Package Flow
 
@@ -318,10 +344,11 @@ Use `/playtest publish` when a dev wants to distribute a closed playtest build.
 1. Staff runs `/playtest publish` with the playtest title, modpack version, focus, expected duration, and CurseForge export ZIP.
 2. The bot creates a new playtest channel in `PLAYTEST_CATEGORY_ID` when configured, otherwise in the current channel category.
 3. The bot posts the playtest instructions and an acceptance button.
-4. Players can read the terms/privacy notice before clicking `I accept terms and privacy`.
-5. After acceptance, the bot privately sends the ZIP download link and CurseForge import steps.
-6. The bot records one acceptance per user for the playtest package.
-7. Players use `/playtest start`, `/bugreport`, `/crash`, `/feedback`, `/perfreport`, and `/sparkreport` during the test.
+4. Players verify their Minecraft account with `/minecraft link`, then `/wo link CODE` in the playtest client.
+5. Players can read the terms/privacy notice before clicking `I accept terms and privacy`.
+6. After a verified player accepts, the bot privately sends the ZIP download link and CurseForge import steps.
+7. The bot records one acceptance per user for the playtest package.
+8. Verified players use `/playtest start`, `/bugreport`, `/crash`, `/feedback`, `/perfreport`, and `/sparkreport` during the test.
 
 Recommended ZIP instructions sent to testers:
 

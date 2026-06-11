@@ -66,6 +66,16 @@ export const config = {
     staffLog: optional('STAFF_LOG_CHANNEL_ID'),
     support: optional('SUPPORT_CHANNEL_ID')
   },
+  forumChannels: {
+    issues: optional('ISSUES_FORUM_CHANNEL_ID') ?? optional('BUG_CRASH_FORUM_CHANNEL_ID'),
+    ideas: optional('IDEAS_FORUM_CHANNEL_ID') ?? optional('FEEDBACK_SUGGESTIONS_FORUM_CHANNEL_ID')
+  },
+  forumTags: {
+    bug: listFromEnv('BUG_FORUM_TAGS', listFromEnv('BUG_FORUM_TAG', ['Bug'])),
+    crash: listFromEnv('CRASH_FORUM_TAGS', listFromEnv('CRASH_FORUM_TAG', ['Crash'])),
+    feedback: listFromEnv('FEEDBACK_FORUM_TAGS', listFromEnv('FEEDBACK_FORUM_TAG', ['Feedback'])),
+    suggestion: listFromEnv('SUGGESTION_FORUM_TAGS', listFromEnv('SUGGESTION_FORUM_TAG', ['Suggestion']))
+  },
   status: {
     latestModpackVersion: optional('LATEST_MODPACK_VERSION') ?? 'Not configured',
     recommendedJavaVersion: optional('RECOMMENDED_JAVA_VERSION') ?? 'Not configured',

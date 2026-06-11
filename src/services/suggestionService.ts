@@ -16,6 +16,7 @@ import { getDb } from '../db';
 import type { SuggestionRecord, SuggestionStatus, SuggestionVoteCounts, SuggestionVoteValue } from '../types';
 import { suggestionEmbed } from '../utils/embeds';
 import { formatPublicId, normalizePublicId } from '../utils/ids';
+import { forumPostTitle, postToConfiguredChannel } from './reportService';
 
 interface SuggestionDraft {
   userId: string;
@@ -52,7 +53,7 @@ export async function beginSuggestion(interaction: ChatInputCommandInteraction):
   await interaction.showModal(suggestionModal(draftId));
 }
 
-export async function beginSuggestionFromPanel(interaction: StringSelectMenuInteraction): Promise<void> {
+export async function beginSuggestionFromPanel(interaction: ButtonInteraction | StringSelectMenuInteraction): Promise<void> {
   const draftId = randomUUID().slice(0, 10);
   suggestionDrafts.set(draftId, {
     userId: interaction.user.id,
@@ -231,22 +232,26 @@ export async function handleSuggestionVoteButton(interaction: ButtonInteraction)
 }
 
 async function postSuggestion(interaction: ModalSubmitInteraction, suggestion: SuggestionRecord): Promise<boolean> {
-  if (!config.channelIds.suggestions) {
-    return false;
+  const result = await postToConfiguredChannel(
+    interaction.client,
+    config.forumChannels.ideas ?? config.channelIds.suggestions,
+    {
+      embeds: [suggestionEmbed(suggestion, getSuggestionVoteCounts(suggestion.publicId))],
+      components: [suggestionVoteButtons(suggestion.publicId)]
+    },
+    {
+      forumPost: {
+        title: forumPostTitle(`${suggestion.publicId} - Suggestion: ${suggestion.title}`),
+        tags: config.forumTags.suggestion
+      }
+    }
+  );
+
+  if (result.posted && result.channelId && result.messageId) {
+    updateSuggestionMessageReference(suggestion.publicId, result.channelId, result.messageId);
   }
 
-  const channel = await interaction.client.channels.fetch(config.channelIds.suggestions).catch(() => null);
-  if (!channel || !channel.isSendable()) {
-    return false;
-  }
-
-  const message = await channel.send({
-    embeds: [suggestionEmbed(suggestion, getSuggestionVoteCounts(suggestion.publicId))],
-    components: [suggestionVoteButtons(suggestion.publicId)]
-  });
-
-  updateSuggestionMessageReference(suggestion.publicId, message.channelId, message.id);
-  return true;
+  return result.posted;
 }
 
 function mapSuggestion(row: SuggestionRow): SuggestionRecord {

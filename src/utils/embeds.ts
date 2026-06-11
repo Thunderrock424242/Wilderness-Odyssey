@@ -245,6 +245,7 @@ export function playtestReleaseEmbed(release: PlaytestReleaseRecord): EmbedBuild
       {
         name: 'Before you download',
         value: [
+          'Verify your Minecraft account with `/minecraft link` before accepting.',
           'Read the playtest instructions and privacy notice.',
           'Click the acceptance button only if you agree to test the unreleased build and report issues through the support commands.',
           'After acceptance, the bot will privately send the ZIP link and CurseForge import steps.'

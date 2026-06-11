@@ -57,7 +57,7 @@ function requiredConfigChecks(): CheckLine[] {
         ? `Enabled on ${config.minecraftVerification.apiHost}:${config.minecraftVerification.apiPort}.`
         : 'Disabled; in-game /wo link cannot complete codes.'
     },
-    checkValue('Minecraft verify URL', config.minecraftVerification.publicBaseUrl, 'Recommended so Discord can show the endpoint the mod should call.')
+    checkValue('Minecraft verify URL', config.minecraftVerification.publicBaseUrl, 'Recommended so Discord can show the base URL for the mod client config.')
   ];
 }
 
@@ -70,6 +70,7 @@ function permissionChecks(interaction: StringSelectMenuInteraction): CheckLine[]
   const required = [
     [PermissionsBitField.Flags.ViewChannel, 'View channel', 'Needed to see configured channels.'],
     [PermissionsBitField.Flags.SendMessages, 'Send messages', 'Needed for panels and report posts.'],
+    [PermissionsBitField.Flags.CreatePublicThreads, 'Create public threads', 'Needed for report posts in Discord forum channels.'],
     [PermissionsBitField.Flags.EmbedLinks, 'Embed links', 'Needed for clean support cards.'],
     [PermissionsBitField.Flags.ReadMessageHistory, 'Read history', 'Useful for Q&A and context.']
   ] as const;
@@ -101,11 +102,13 @@ function permissionChecks(interaction: StringSelectMenuInteraction): CheckLine[]
 
 async function channelChecks(interaction: StringSelectMenuInteraction): Promise<CheckLine[]> {
   const channelMap: Array<[string, string | undefined, boolean]> = [
-    ['Bug reports', config.channelIds.bugReports, true],
-    ['Crash reports', config.channelIds.crashReports, true],
-    ['Feedback', config.channelIds.feedbackReports, true],
+    ['Issues forum', config.forumChannels.issues, false],
+    ['Feedback/suggestions forum', config.forumChannels.ideas, false],
+    ['Bug reports', config.channelIds.bugReports, !config.forumChannels.issues],
+    ['Crash reports', config.channelIds.crashReports, !config.forumChannels.issues],
+    ['Feedback', config.channelIds.feedbackReports, !config.forumChannels.ideas],
     ['Performance reports', config.channelIds.performanceReports, true],
-    ['Suggestions', config.channelIds.suggestions, false],
+    ['Suggestions', config.channelIds.suggestions, !config.forumChannels.ideas],
     ['Spark reports', config.channelIds.sparkReports, true],
     ['Playtest sessions', config.channelIds.playtestSessions, true],
     ['Support', config.channelIds.support, false],
@@ -131,10 +134,11 @@ async function channelChecks(interaction: StringSelectMenuInteraction): Promise<
     }
 
     const sendable = 'isSendable' in channel && channel.isSendable();
+    const threadOnly = 'isThreadOnly' in channel && channel.isThreadOnly();
     checks.push({
-      state: sendable || label === 'Playtest category' ? 'OK' : 'WARN',
+      state: sendable || threadOnly || label === 'Playtest category' ? 'OK' : 'WARN',
       label,
-      detail: sendable || label === 'Playtest category' ? `Configured: <#${channelId}>.` : `Found <#${channelId}>, but it may not be sendable.`
+      detail: sendable || threadOnly || label === 'Playtest category' ? `Configured: <#${channelId}>.` : `Found <#${channelId}>, but it may not be sendable.`
     });
   }
 
@@ -172,6 +176,7 @@ const configLabels = new Set([
 const permissionLabels = new Set([
   'View channel',
   'Send messages',
+  'Create public threads',
   'Embed links',
   'Read history',
   'Manage channels',
@@ -179,6 +184,8 @@ const permissionLabels = new Set([
 ]);
 
 const channelLabels = new Set([
+  'Issues forum',
+  'Feedback/suggestions forum',
   'Bug reports',
   'Crash reports',
   'Feedback',
