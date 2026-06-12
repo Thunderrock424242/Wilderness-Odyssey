@@ -16,6 +16,7 @@ import { getDb } from '../db';
 import type { SuggestionRecord, SuggestionStatus, SuggestionVoteCounts, SuggestionVoteValue } from '../types';
 import { suggestionEmbed } from '../utils/embeds';
 import { formatPublicId, normalizePublicId } from '../utils/ids';
+import { supportTeamAllowedMentions, supportTeamPing } from '../utils/supportTeam';
 import { forumPostTitle, postToConfiguredChannel } from './reportService';
 
 interface SuggestionDraft {
@@ -236,6 +237,8 @@ async function postSuggestion(interaction: ModalSubmitInteraction, suggestion: S
     interaction.client,
     config.forumChannels.ideas ?? config.channelIds.suggestions,
     {
+      content: supportTeamPing('New suggestion needs review.'),
+      allowedMentions: supportTeamAllowedMentions(),
       embeds: [suggestionEmbed(suggestion, getSuggestionVoteCounts(suggestion.publicId))],
       components: [suggestionVoteButtons(suggestion.publicId)]
     },

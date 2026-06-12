@@ -38,6 +38,8 @@ function startupWarnings(): string[] {
   if (!config.channelIds.performanceReports) warnings.push('- `PERFORMANCE_REPORTS_CHANNEL_ID` is not configured.');
   if (!config.channelIds.sparkReports) warnings.push('- `SPARK_REPORTS_CHANNEL_ID` is not configured.');
   if (!config.channelIds.playtestSessions) warnings.push('- `PLAYTEST_SESSIONS_CHANNEL_ID` is not configured.');
+  if (!config.support.teamRoleId) warnings.push('- `SUPPORT_TEAM_ROLE_ID` is not configured; report pings and Other Help ticket staff access will be limited.');
+  if (!config.channelIds.supportTicketCategory) warnings.push('- `SUPPORT_TICKET_CATEGORY_ID` is recommended so Other Help tickets do not appear in the hub category.');
 
   if (config.qa.channelIds.length > 0 && !config.qa.teamChannelId) {
     warnings.push('- `QA_CHANNEL_IDS` is configured, but `QA_TEAM_CHANNEL_ID` is missing.');

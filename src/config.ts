@@ -62,6 +62,7 @@ export const config = {
     sparkReports: optional('SPARK_REPORTS_CHANNEL_ID'),
     playtestSessions: optional('PLAYTEST_SESSIONS_CHANNEL_ID'),
     playtestCategory: optional('PLAYTEST_CATEGORY_ID'),
+    supportTicketCategory: optional('SUPPORT_TICKET_CATEGORY_ID'),
     staffReview: optional('STAFF_REVIEW_CHANNEL_ID'),
     staffLog: optional('STAFF_LOG_CHANNEL_ID'),
     support: optional('SUPPORT_CHANNEL_ID')
@@ -89,6 +90,9 @@ export const config = {
   playtest: {
     termsUrl: optional('PLAYTEST_TERMS_URL'),
     privacyUrl: optional('PLAYTEST_PRIVACY_URL')
+  },
+  support: {
+    teamRoleId: optional('SUPPORT_TEAM_ROLE_ID')
   },
   qa: {
     channelIds: listFromEnv('QA_CHANNEL_IDS', []),

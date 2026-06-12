@@ -13,6 +13,7 @@ import {
 } from '../services/reportService';
 import { linkReportToSession } from '../services/playtestSessionService';
 import { baseEmbed, crashReportEmbed } from '../utils/embeds';
+import { supportTeamAllowedMentions, supportTeamPing } from '../utils/supportTeam';
 
 export const crashCommand: SlashCommand = {
   data: new SlashCommandBuilder()
@@ -60,6 +61,8 @@ export const crashCommand: SlashCommand = {
         interaction.client,
         reportDestinationForType('crash'),
         {
+          content: supportTeamPing('New crash report needs triage.'),
+          allowedMentions: supportTeamAllowedMentions(),
           embeds: [crashReportEmbed(report)],
           components: [reportClaimButtons('crash', report.publicId)]
         },

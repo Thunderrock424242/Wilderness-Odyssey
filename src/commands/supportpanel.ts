@@ -22,6 +22,7 @@ import {
 } from '../services/knownIssuesService';
 import { setupDoctorEmbed } from '../services/setupDoctorService';
 import { beginSuggestionFromPanel } from '../services/suggestionService';
+import { createOtherHelpTicket } from '../services/supportTicketService';
 import { requireStaff } from '../utils/permissions';
 import {
   baseEmbed,
@@ -199,10 +200,7 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
   }
 
   if (category === 'other') {
-    await interaction.reply({
-      embeds: [otherHelpEmbed()],
-      ephemeral: true
-    });
+    await createOtherHelpTicket(interaction);
     return true;
   }
 
@@ -402,10 +400,10 @@ function supportPanelPayload(input: {
   imageUrl: string | null;
 }) {
   const embed = baseEmbed(
-    input.title ?? 'Wilderness Oddesy Support Desk',
+    input.title ?? 'Wilderness Oddesy Support Hub',
     input.description ?? [
-      'Choose the button that matches what you need.',
-      'Bugs, crashes, feedback, and suggestions are separate workflows so staff can triage them cleanly.'
+      'Choose one button and I will route it to the right place.',
+      'Reports become public forum posts for triage. Other Help opens a private staff ticket.'
     ].join('\n')
   )
     .addFields(
@@ -413,7 +411,7 @@ function supportPanelPayload(input: {
       { name: 'Crash or log', value: 'Crash reports, latest.log, Java/loader errors, or launch failures.', inline: true },
       { name: 'Feedback', value: 'Playtest impressions, balance notes, pacing, difficulty, and polish.', inline: true },
       { name: 'Suggestion', value: 'New ideas, quality-of-life requests, content proposals, and voting.', inline: true },
-      { name: 'Other help', value: 'Performance, playtest ZIPs, Minecraft linking, status, privacy, or Q&A.', inline: true }
+      { name: 'Other help', value: 'Private staff ticket for anything that does not fit the report buttons.', inline: true }
     );
 
   if (input.imageUrl) {
@@ -435,7 +433,7 @@ function supportPanelPayload(input: {
       { label: 'Performance issue', value: 'performance', description: 'Report lag, FPS drops, or stutter.' },
       { label: 'Playtest help', value: 'playtest', description: 'ZIP, CurseForge, session, and Spark guidance.' },
       { label: 'Q&A question', value: 'question', description: 'Ask in a Q&A channel for bot or team help.' },
-      { label: 'Other help', value: 'other', description: 'Show the extra help menu.' }
+      { label: 'Other help', value: 'other', description: 'Open a private staff ticket.' }
     );
 
   return {
@@ -452,17 +450,6 @@ function supportButton(category: string, label: string, style: ButtonStyle): But
     .setCustomId(`${supportPanelCustomId}:${category}`)
     .setLabel(label)
     .setStyle(style);
-}
-
-function otherHelpEmbed() {
-  return baseEmbed('Other Help', 'Use these when your issue is not a bug, crash, feedback note, or suggestion.')
-    .addFields(
-      { name: 'Performance', value: 'Use `/performance` for guidance or `/perfreport` to submit FPS, RAM, shader, render distance, and lag-location details.' },
-      { name: 'Playtest help', value: 'Use `/playtest start`, `/playtest checklist`, or the Playtest Center panel for ZIP, CurseForge, Spark, and session help.' },
-      { name: 'Minecraft link', value: 'Use `/minecraft link` to generate a one-time code for in-game account linking.' },
-      { name: 'Status and docs', value: 'Use `/status`, `/knownissues`, `/changelog`, `/privacy`, or `/help` for general information.' },
-      { name: 'Still not sure', value: 'Ask in a configured Q&A channel and I can answer known support topics or forward it to the Q&A team.' }
-    );
 }
 
 function infoPanelPayload() {

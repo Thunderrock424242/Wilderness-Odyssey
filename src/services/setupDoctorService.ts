@@ -42,6 +42,7 @@ function requiredConfigChecks(): CheckLine[] {
     checkValue('Discord token', config.discordToken ? 'configured' : null, 'Required for login.'),
     checkValue('Client ID', config.clientId ? 'configured' : null, 'Required for slash command deployment.'),
     checkValue('Guild ID', config.guildId, 'Recommended for fast guild command deployment.'),
+    checkValue('Support team role', config.support.teamRoleId, 'Recommended for report pings and Other Help ticket access.'),
     checkValue('Q&A team channel', config.qa.teamChannelId, 'Required only if Q&A forwarding is enabled.'),
     {
       state: config.qa.channelIds.length > 0 ? 'OK' : 'WARN',
@@ -76,7 +77,7 @@ function permissionChecks(interaction: StringSelectMenuInteraction): CheckLine[]
   ] as const;
 
   const optional = [
-    [PermissionsBitField.Flags.ManageChannels, 'Manage channels', 'Needed for /playtest publish channel creation.'],
+    [PermissionsBitField.Flags.ManageChannels, 'Manage channels', 'Needed for /playtest publish and Other Help ticket creation.'],
     [PermissionsBitField.Flags.AttachFiles, 'Attach files', 'Useful for future generated exports or logs.']
   ] as const;
 
@@ -113,6 +114,7 @@ async function channelChecks(interaction: StringSelectMenuInteraction): Promise<
     ['Playtest sessions', config.channelIds.playtestSessions, true],
     ['Support', config.channelIds.support, false],
     ['Q&A team', config.qa.teamChannelId, config.qa.channelIds.length > 0],
+    ['Support ticket category', config.channelIds.supportTicketCategory, false],
     ['Playtest category', config.channelIds.playtestCategory, false]
   ];
 
@@ -136,9 +138,9 @@ async function channelChecks(interaction: StringSelectMenuInteraction): Promise<
     const sendable = 'isSendable' in channel && channel.isSendable();
     const threadOnly = 'isThreadOnly' in channel && channel.isThreadOnly();
     checks.push({
-      state: sendable || threadOnly || label === 'Playtest category' ? 'OK' : 'WARN',
+      state: sendable || threadOnly || label.endsWith('category') ? 'OK' : 'WARN',
       label,
-      detail: sendable || threadOnly || label === 'Playtest category' ? `Configured: <#${channelId}>.` : `Found <#${channelId}>, but it may not be sendable.`
+      detail: sendable || threadOnly || label.endsWith('category') ? `Configured: <#${channelId}>.` : `Found <#${channelId}>, but it may not be sendable.`
     });
   }
 
@@ -165,6 +167,7 @@ const configLabels = new Set([
   'Discord token',
   'Client ID',
   'Guild ID',
+  'Support team role',
   'Q&A team channel',
   'Q&A watch channels',
   'Playtest terms URL',
@@ -195,5 +198,6 @@ const channelLabels = new Set([
   'Playtest sessions',
   'Support',
   'Q&A team',
+  'Support ticket category',
   'Playtest category'
 ]);

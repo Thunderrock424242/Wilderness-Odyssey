@@ -66,54 +66,18 @@ npm run dev
 
 ## Environment Variables
 
-Required:
+Use `.env.example` as the source of truth. It is grouped in setup order and has comments next to each section.
 
-- `DISCORD_TOKEN`
-- `CLIENT_ID`
-- `GUILD_ID`
+Fast path:
 
-Recommended channels:
+1. Fill `DISCORD_TOKEN`, `CLIENT_ID`, and `GUILD_ID`.
+2. Fill the support hub values: `SUPPORT_CHANNEL_ID`, `SUPPORT_TEAM_ROLE_ID`, and `SUPPORT_TICKET_CATEGORY_ID`.
+3. Fill the forum IDs: `ISSUES_FORUM_CHANNEL_ID` and `IDEAS_FORUM_CHANNEL_ID`.
+4. Make sure your Discord forum tags match `BUG_FORUM_TAG`, `BUG_CONFIRMED_FORUM_TAG`, `BUG_SOLVED_FORUM_TAG`, `CRASH_FORUM_TAG`, `FEEDBACK_FORUM_TAG`, and `SUGGESTION_FORUM_TAG`.
+5. Fill report/playtest channels: `PERFORMANCE_REPORTS_CHANNEL_ID`, `SPARK_REPORTS_CHANNEL_ID`, `PLAYTEST_SESSIONS_CHANNEL_ID`, and `PLAYTEST_CATEGORY_ID`.
+6. Leave optional Q&A, status text, policy links, and Minecraft verification values blank until you are ready to use those features.
 
-- `BUG_REPORTS_CHANNEL_ID`
-- `CRASH_REPORTS_CHANNEL_ID`
-- `FEEDBACK_CHANNEL_ID`
-- `SUGGESTIONS_CHANNEL_ID`
-- `PERFORMANCE_REPORTS_CHANNEL_ID`
-- `ISSUES_FORUM_CHANNEL_ID`
-- `IDEAS_FORUM_CHANNEL_ID`
-- `BUG_FORUM_TAG`
-- `BUG_CONFIRMED_FORUM_TAG`
-- `BUG_SOLVED_FORUM_TAG`
-- `CRASH_FORUM_TAG`
-- `FEEDBACK_FORUM_TAG`
-- `SUGGESTION_FORUM_TAG`
-- `SPARK_REPORTS_CHANNEL_ID`
-- `PLAYTEST_SESSIONS_CHANNEL_ID`
-- `PLAYTEST_CATEGORY_ID`
-- `STAFF_REVIEW_CHANNEL_ID`
-- `STAFF_LOG_CHANNEL_ID`
-- `QA_CHANNEL_IDS`
-- `QA_TEAM_CHANNEL_ID`
-- `QA_TEAM_ROLE_ID`
-- `SUPPORT_CHANNEL_ID`
-
-Other useful settings:
-
-- `LATEST_MODPACK_VERSION`
-- `RECOMMENDED_JAVA_VERSION`
-- `RECOMMENDED_RAM`
-- `SUPPORT_CHANNELS`
-- `KNOWN_UNSTABLE_FEATURES`
-- `SERVER_STATUS_LABEL`
-- `PLAYTEST_TERMS_URL`
-- `PLAYTEST_PRIVACY_URL`
-- `MINECRAFT_VERIFY_API_ENABLED`
-- `MINECRAFT_VERIFY_API_HOST`
-- `MINECRAFT_VERIFY_API_PORT`
-- `MINECRAFT_VERIFY_PUBLIC_URL`
-- `MINECRAFT_VERIFY_CODE_TTL_MINUTES`
-- `DATABASE_PATH`
-- `MAX_LOG_BYTES`
+For every Discord channel, category, forum, server, or role value, paste the copied Discord ID number. Do not use `#channel-name` or `@role-name` for ID fields.
 
 ## Database
 
@@ -171,7 +135,15 @@ Tables:
 
 Staff can run `/supportpanel` in a channel to post persistent button/menu panels. Use `panel_type:all` to post the player-facing support, info, and playtest panels together.
 
+Recommended server layout:
+
+- Put the public support hub in an Information, Start Here, or Welcome category.
+- Put bug/crash and feedback/suggestion forums in a Support or Triage category.
+- Put private Other Help ticket channels in a staff/private support category through `SUPPORT_TICKET_CATEGORY_ID`.
+
 For Discord forum channels, set `ISSUES_FORUM_CHANNEL_ID` for shared bug/crash posts and `IDEAS_FORUM_CHANNEL_ID` for shared feedback/suggestion posts. The bot applies the configured forum tags, defaulting to `Bug`, `Crash`, `Feedback`, and `Suggestion`. Bug threads can also use status tags, defaulting to `Confirmed` and `Solved`, when staff marks the bug as confirmed or solved from inside the forum thread.
+
+Set `SUPPORT_TEAM_ROLE_ID` to the staff/support role that should be pinged on new bug, crash, feedback, and suggestion posts. The same role gets access to private Other Help tickets.
 
 Panel types:
 
@@ -188,7 +160,7 @@ Support intake buttons:
 - Crash or log - tells the player to use `/crash` with a `.txt` or `.log` attachment.
 - Playtest feedback - opens a feedback modal.
 - Suggestion - opens a suggestion modal.
-- Other help - shows extra support paths for performance, playtests, Minecraft linking, status, privacy, and Q&A.
+- Other help - creates a private staff ticket for anything that does not fit the report buttons.
 
 More support options:
 
