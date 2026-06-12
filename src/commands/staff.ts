@@ -21,6 +21,7 @@ import {
 import {
   applyBugForumStatusTags,
   getAnyReport,
+  notifyBugReporterOfStatus,
   searchReports,
   updateReportStatus
 } from '../services/reportService';
@@ -318,6 +319,7 @@ export const staffCommand: SlashCommand = {
       const updated = updateReportStatus('bug', id, status, { addedBy: interaction.user.id });
       if (updated) {
         await applyBugForumStatusTags(interaction, status);
+        await notifyBugReporterOfStatus(interaction.client, id, status);
       }
 
       await interaction.reply({

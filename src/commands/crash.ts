@@ -1,19 +1,9 @@
 import { SlashCommandBuilder } from 'discord.js';
 import type { SlashCommand } from '../types';
-import { analyzeCrashLog } from '../services/logParser';
 import {
-  createCrashReport,
-  readTextAttachment,
-  reportDestinationForType,
-  reportForumTagsForType,
-  reportForumTitle,
-  reportClaimButtons,
-  reportReceiptButtons,
-  sendToConfiguredChannel
+  reportReceiptButtons
 } from '../services/reportService';
-import { linkReportToSession } from '../services/playtestSessionService';
-import { baseEmbed, crashReportEmbed } from '../utils/embeds';
-import { supportTeamAllowedMentions, supportTeamPing } from '../utils/supportTeam';
+import { archiveCrashAttachment } from '../services/crashReportService';
 
 export const crashCommand: SlashCommand = {
   data: new SlashCommandBuilder()
@@ -37,57 +27,19 @@ export const crashCommand: SlashCommand = {
 
     try {
       const attachment = interaction.options.getAttachment('file', true);
-      const logText = await readTextAttachment(attachment);
-      const analysis = analyzeCrashLog(logText);
-      const nextSteps = analysis.nextSteps.map((step) => `- ${step}`).join('\n');
-
-      const report = createCrashReport({
-        userId: interaction.user.id,
-        username: interaction.user.tag,
-        fileName: attachment.name,
-        fileSize: attachment.size,
-        redactedLog: analysis.redactedLog,
-        likelyCause: analysis.likelyCause,
-        confidence: `${analysis.confidence} (${Math.round(analysis.confidenceScore * 100)}%)`,
-        nextSteps
+      const result = await archiveCrashAttachment({
+        client: interaction.client,
+        user: interaction.user,
+        attachment,
+        playtestSessionId: interaction.options.getString('playtest_session')
       });
 
-      const playtestSessionId = interaction.options.getString('playtest_session');
-      if (playtestSessionId) {
-        linkReportToSession(playtestSessionId, 'crash', report.publicId);
-      }
-
-      const posted = await sendToConfiguredChannel(
-        interaction.client,
-        reportDestinationForType('crash'),
-        {
-          content: supportTeamPing('New crash report needs triage.'),
-          allowedMentions: supportTeamAllowedMentions(),
-          embeds: [crashReportEmbed(report)],
-          components: [reportClaimButtons('crash', report.publicId)]
-        },
-        {
-          forumPost: {
-            title: reportForumTitle(report.publicId, 'Crash', report.likelyCause),
-            tags: reportForumTagsForType('crash')
-          }
-        }
-      );
-
-      const embed = baseEmbed(`Crash Analysis ${report.publicId}`, 'Report received. Aether-style analysis complete.')
-        .addFields(
-          { name: 'Likely cause', value: analysis.likelyCause, inline: true },
-          { name: 'Confidence', value: `${analysis.confidence} (${Math.round(analysis.confidenceScore * 100)}%)`, inline: true },
-          { name: 'Detected signals', value: analysis.signals.join('\n').slice(0, 1024) },
-          { name: 'Next steps', value: nextSteps.slice(0, 1024) }
-        );
-
       await interaction.editReply({
-        content: posted
-          ? `Crash signature detected. Staff copy archived as **${report.publicId}**.`
-          : `Crash signature detected. Saved locally as **${report.publicId}**. Staff channel posting is not configured yet.`,
-        embeds: [embed],
-        components: [reportReceiptButtons('crash', report.publicId)]
+        content: result.posted
+          ? `Crash signature detected. Staff copy archived as **${result.report.publicId}**.`
+          : `Crash signature detected. Saved locally as **${result.report.publicId}**. Staff channel posting is not configured yet.`,
+        embeds: [result.embed],
+        components: [reportReceiptButtons('crash', result.report.publicId)]
       });
     } catch (error) {
       await interaction.editReply({

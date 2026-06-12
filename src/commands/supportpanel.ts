@@ -16,13 +16,14 @@ import {
   beginFeedbackReportFromPanel,
   beginPerformanceReportFromPanel
 } from '../services/reportService';
+import { beginCrashUploadIntake } from '../services/crashIntakeService';
 import {
   listChangelogEntries,
   listKnownIssues
 } from '../services/knownIssuesService';
 import { setupDoctorEmbed } from '../services/setupDoctorService';
 import { beginSuggestionFromPanel } from '../services/suggestionService';
-import { createOtherHelpTicket } from '../services/supportTicketService';
+import { beginOtherHelpTicket } from '../services/supportTicketService';
 import { requireStaff } from '../utils/permissions';
 import {
   baseEmbed,
@@ -32,6 +33,8 @@ import {
 } from '../utils/embeds';
 
 const supportPanelCustomId = 'supportpanel:category';
+const supportContinueCustomId = 'supportpanel:continue';
+const supportTriageCustomId = 'supportpanel:triage';
 const infoPanelCustomId = 'panel:info';
 const playtestPanelCustomId = 'panel:playtest';
 const staffPanelCustomId = 'panel:staff';
@@ -48,7 +51,7 @@ export const supportPanelCommand: SlashCommand = {
         .setDescription('Which panel should be posted?')
         .setRequired(false)
         .addChoices(
-          { name: 'Support intake', value: 'support' },
+          { name: 'Support Hub', value: 'support' },
           { name: 'Player info center', value: 'info' },
           { name: 'Playtest center', value: 'playtest' },
           { name: 'Staff console', value: 'staff' },
@@ -108,19 +111,28 @@ export const supportPanelCommand: SlashCommand = {
 
 export async function handleSupportPanelComponent(interaction: ButtonInteraction | StringSelectMenuInteraction): Promise<boolean> {
   const supportButtonPrefix = `${supportPanelCustomId}:`;
+  const supportContinuePrefix = `${supportContinueCustomId}:`;
   const isSupportButton = interaction.isButton() && interaction.customId.startsWith(supportButtonPrefix);
+  const isContinueButton = interaction.isButton() && interaction.customId.startsWith(supportContinuePrefix);
   const isPanelMenu = interaction.isStringSelectMenu()
-    && [supportPanelCustomId, infoPanelCustomId, playtestPanelCustomId, staffPanelCustomId, setupPanelCustomId].includes(interaction.customId);
+    && [supportPanelCustomId, supportTriageCustomId, infoPanelCustomId, playtestPanelCustomId, staffPanelCustomId, setupPanelCustomId].includes(interaction.customId);
 
-  if (!isSupportButton && !isPanelMenu) {
+  if (!isSupportButton && !isContinueButton && !isPanelMenu) {
     return false;
   }
 
-  const category = interaction.isButton()
+  const category = isContinueButton
+    ? interaction.customId.slice(supportContinuePrefix.length)
+    : interaction.isButton()
     ? interaction.customId.slice(supportButtonPrefix.length)
     : interaction.values[0];
 
   if (interaction.isStringSelectMenu()) {
+    if (interaction.customId === supportTriageCustomId) {
+      await handleSupportTriageSelection(interaction, category);
+      return true;
+    }
+
     if (interaction.customId === infoPanelCustomId) {
       await handleInfoPanelSelection(interaction, category);
       return true;
@@ -147,6 +159,11 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
   }
 
   if (category === 'bug') {
+    if (!isContinueButton) {
+      await showKnownIssuesGate(interaction, 'bug');
+      return true;
+    }
+
     await beginBugReportFromPanel(interaction);
     return true;
   }
@@ -167,13 +184,12 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
   }
 
   if (category === 'crash') {
-    await interaction.reply({
-      content: [
-        'Use `/crash file:<crash-report-or-latest.log>` and attach a `.txt` or `.log` file.',
-        'I will redact sensitive values, analyze common crash signatures, and forward the report to staff.'
-      ].join('\n'),
-      ephemeral: true
-    });
+    if (!isContinueButton) {
+      await showKnownIssuesGate(interaction, 'crash');
+      return true;
+    }
+
+    await beginCrashUploadIntake(interaction);
     return true;
   }
 
@@ -200,11 +216,78 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
   }
 
   if (category === 'other') {
-    await createOtherHelpTicket(interaction);
+    await beginOtherHelpTicket(interaction);
+    return true;
+  }
+
+  if (category === 'knownissues') {
+    await interaction.reply({ embeds: [knownIssuesEmbed(listKnownIssues())], ephemeral: true });
+    return true;
+  }
+
+  if (category === 'notsure') {
+    await interaction.reply({
+      embeds: [
+        baseEmbed('Help Me Pick', 'Choose the closest match and I will route you to the right flow.')
+          .addFields(
+            { name: 'Game closed or will not launch', value: 'Use crash upload.' },
+            { name: 'Something is broken in-game', value: 'Use bug report.' },
+            { name: 'Idea or request', value: 'Use suggestion.' },
+            { name: 'Opinion, balance, pacing, or playtest notes', value: 'Use feedback.' },
+            { name: 'Private or account/install help', value: 'Use Other Help.' }
+          )
+      ],
+      components: [supportTriageMenu()],
+      ephemeral: true
+    });
     return true;
   }
 
   return false;
+}
+
+async function handleSupportTriageSelection(interaction: StringSelectMenuInteraction, category: string): Promise<void> {
+  if (category === 'bug') {
+    await showKnownIssuesGate(interaction, 'bug');
+    return;
+  }
+
+  if (category === 'crash') {
+    await showKnownIssuesGate(interaction, 'crash');
+    return;
+  }
+
+  if (category === 'feedback') {
+    await beginFeedbackReportFromPanel(interaction);
+    return;
+  }
+
+  if (category === 'suggestion') {
+    await beginSuggestionFromPanel(interaction);
+    return;
+  }
+
+  if (category === 'performance') {
+    await beginPerformanceReportFromPanel(interaction);
+    return;
+  }
+
+  await beginOtherHelpTicket(interaction);
+}
+
+async function showKnownIssuesGate(interaction: ButtonInteraction | StringSelectMenuInteraction, category: 'bug' | 'crash'): Promise<void> {
+  const label = category === 'bug' ? 'bug report' : 'crash upload';
+  await interaction.reply({
+    embeds: [
+      baseEmbed('Quick Duplicate Check', `Before starting the ${label}, you can check known issues or continue now.`)
+        .addFields({
+          name: 'Why this exists',
+          value: 'If staff already knows about it, you can skip filing another report. If you are not sure, continue anyway.'
+        })
+    ],
+    components: [knownIssuesGateButtons(category)],
+    ephemeral: true
+  });
 }
 
 async function handleInfoPanelSelection(interaction: StringSelectMenuInteraction, category: string): Promise<void> {
@@ -306,10 +389,7 @@ async function handlePlaytestPanelSelection(interaction: StringSelectMenuInterac
     return;
   }
 
-  await interaction.reply({
-    content: 'Use `/crash file:<crash-report-or-latest.log>` with a `.txt` or `.log` attachment so I can redact and analyze it.',
-    ephemeral: true
-  });
+  await beginCrashUploadIntake(interaction);
 }
 
 async function handleStaffPanelSelection(interaction: StringSelectMenuInteraction, category: string): Promise<void> {
@@ -408,7 +488,7 @@ function supportPanelPayload(input: {
   )
     .addFields(
       { name: 'Bug report', value: 'Broken gameplay, bad behavior, missing content, or reproducible issues.', inline: true },
-      { name: 'Crash or log', value: 'Crash reports, latest.log, Java/loader errors, or launch failures.', inline: true },
+      { name: 'Crash', value: 'Crash reports, latest.log, Java/loader errors, or launch failures.', inline: true },
       { name: 'Feedback', value: 'Playtest impressions, balance notes, pacing, difficulty, and polish.', inline: true },
       { name: 'Suggestion', value: 'New ideas, quality-of-life requests, content proposals, and voting.', inline: true },
       { name: 'Other help', value: 'Private staff ticket for anything that does not fit the report buttons.', inline: true }
@@ -419,11 +499,15 @@ function supportPanelPayload(input: {
   }
 
   const primaryButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    supportButton('bug', 'Report Bug', ButtonStyle.Danger),
-    supportButton('crash', 'Crash / Log', ButtonStyle.Danger),
+    supportButton('bug', 'Bug', ButtonStyle.Danger),
+    supportButton('crash', 'Crash', ButtonStyle.Danger),
     supportButton('feedback', 'Feedback', ButtonStyle.Primary),
-    supportButton('suggestion', 'Suggestion', ButtonStyle.Primary),
-    supportButton('other', 'Other Help', ButtonStyle.Secondary)
+    supportButton('suggestion', 'Suggestion', ButtonStyle.Primary)
+  );
+
+  const helpButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    supportButton('notsure', 'Help Me Pick', ButtonStyle.Secondary),
+    supportButton('other', 'Other', ButtonStyle.Secondary)
   );
 
   const secondaryMenu = new StringSelectMenuBuilder()
@@ -433,16 +517,43 @@ function supportPanelPayload(input: {
       { label: 'Performance issue', value: 'performance', description: 'Report lag, FPS drops, or stutter.' },
       { label: 'Playtest help', value: 'playtest', description: 'ZIP, CurseForge, session, and Spark guidance.' },
       { label: 'Q&A question', value: 'question', description: 'Ask in a Q&A channel for bot or team help.' },
-      { label: 'Other help', value: 'other', description: 'Open a private staff ticket.' }
+      { label: 'Other', value: 'other', description: 'Open a private staff ticket.' }
     );
 
   return {
     embeds: [embed],
     components: [
       primaryButtons,
+      helpButtons,
       new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(secondaryMenu)
     ]
   };
+}
+
+function knownIssuesGateButtons(category: 'bug' | 'crash'): ActionRowBuilder<ButtonBuilder> {
+  return new ActionRowBuilder<ButtonBuilder>().addComponents(
+    supportButton('knownissues', 'View Known Issues', ButtonStyle.Secondary),
+    new ButtonBuilder()
+      .setCustomId(`${supportContinueCustomId}:${category}`)
+      .setLabel(category === 'bug' ? 'Continue Bug Report' : 'Continue Crash Upload')
+      .setStyle(ButtonStyle.Primary)
+  );
+}
+
+function supportTriageMenu(): ActionRowBuilder<StringSelectMenuBuilder> {
+  return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+    new StringSelectMenuBuilder()
+      .setCustomId(supportTriageCustomId)
+      .setPlaceholder('Pick what sounds closest')
+      .addOptions(
+        { label: 'Game crashed or will not launch', value: 'crash', description: 'Upload latest.log or a crash report privately.' },
+        { label: 'Something is broken in-game', value: 'bug', description: 'File a bug report for reproducible issues.' },
+        { label: 'I have an idea', value: 'suggestion', description: 'Create a suggestion with voting.' },
+        { label: 'I have feedback', value: 'feedback', description: 'Balance, pacing, playtest, or polish notes.' },
+        { label: 'Lag or performance trouble', value: 'performance', description: 'Report FPS, stutter, RAM, or shader issues.' },
+        { label: 'Private / other help', value: 'other', description: 'Open a private support ticket.' }
+      )
+  );
 }
 
 function supportButton(category: string, label: string, style: ButtonStyle): ButtonBuilder {
@@ -505,7 +616,7 @@ function playtestPanelPayload() {
       { label: 'Report gameplay bug', value: 'bug', description: 'Open a bug report modal.' },
       { label: 'Send feedback', value: 'feedback', description: 'Open a playtest feedback modal.' },
       { label: 'Report performance', value: 'performance', description: 'Open a performance report modal.' },
-      { label: 'Crash or log help', value: 'crash', description: 'Get crash/log upload instructions.' }
+      { label: 'Game crashed or will not launch', value: 'crash', description: 'Open a private crash upload channel.' }
     );
 
   return {

@@ -19,6 +19,12 @@ import {
   handleSuggestionModal,
   handleSuggestionVoteButton
 } from '../services/suggestionService';
+import {
+  handleSupportTicketButton,
+  handleSupportTicketModal
+} from '../services/supportTicketService';
+import { captureException } from '../services/errorTracking';
+import { interactionCounter } from '../services/metricsService';
 
 export async function handleInteraction(
   interaction: Interaction,
@@ -26,6 +32,7 @@ export async function handleInteraction(
 ): Promise<void> {
   try {
     if (interaction.isChatInputCommand()) {
+      interactionCounter.inc({ kind: 'command', name: interaction.commandName });
       const command = commands.get(interaction.commandName);
       if (!command) {
         await interaction.reply({
@@ -40,6 +47,7 @@ export async function handleInteraction(
     }
 
     if (interaction.isModalSubmit()) {
+      interactionCounter.inc({ kind: 'modal', name: interaction.customId.split(':')[0] });
       if (interaction.customId.startsWith('bugreport:')) {
         await handleBugReportModal(interaction);
         return;
@@ -64,6 +72,10 @@ export async function handleInteraction(
         return;
       }
 
+      if (await handleSupportTicketModal(interaction)) {
+        return;
+      }
+
       if (await handleReportUpdateModal(interaction)) {
         return;
       }
@@ -74,6 +86,10 @@ export async function handleInteraction(
     }
 
     if (interaction.isStringSelectMenu() || interaction.isButton()) {
+      interactionCounter.inc({
+        kind: interaction.isButton() ? 'button' : 'select',
+        name: interaction.customId.split(':')[0]
+      });
       if (interaction.isButton()) {
         if (await handleBugStatusButton(interaction)) {
           return;
@@ -91,6 +107,10 @@ export async function handleInteraction(
           return;
         }
 
+        if (await handleSupportTicketButton(interaction)) {
+          return;
+        }
+
         if (await handleSupportPanelComponent(interaction)) {
           return;
         }
@@ -105,7 +125,11 @@ export async function handleInteraction(
       }
     }
   } catch (error) {
-    console.error('Interaction handler error:', error);
+    captureException(error, {
+      source: 'interaction',
+      id: interaction.id,
+      type: interaction.type
+    });
 
     if (interaction.isRepliable()) {
       const message = {

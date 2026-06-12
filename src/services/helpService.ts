@@ -14,13 +14,13 @@ type HelpTopic = 'install' | 'crash' | 'bug' | 'suggestions' | 'performance' | '
 export function helpPayload() {
   const embed = baseEmbed(
     'Wilderness Oddesy Help',
-    'Select a support topic below. I will keep the lantern steady while we sort the strange parts.'
+    'Select a support topic below.'
   )
     .addFields(
       { name: 'Install help', value: 'Setup, Java, RAM, launcher, and clean profile checks.', inline: true },
-      { name: 'Crash help', value: 'Upload `.txt` or `.log` files with `/crash` for signature analysis.', inline: true },
-      { name: 'Bug report', value: 'Use `/bugreport` for reproducible gameplay/content issues.', inline: true },
-      { name: 'Suggestions', value: 'Use `/suggest` for modpack ideas and vote in the suggestions channel.', inline: true },
+      { name: 'Crash help', value: 'Use the Support Hub crash button for private log upload.', inline: true },
+      { name: 'Bug report', value: 'Use the Support Hub for reproducible gameplay/content issues.', inline: true },
+      { name: 'Suggestions', value: 'Use the Support Hub to submit ideas and vote in the suggestions forum.', inline: true },
       { name: 'Performance help', value: 'Use `/performance` or optional `/perfreport` for lag/FPS reports.', inline: true },
       { name: 'Spark reports', value: 'Use `/playtest start` and `/sparkreport` to archive profiler links.', inline: true },
       { name: 'Known issues', value: 'Use `/knownissues` for staff-maintained instability notes.', inline: true },
@@ -93,16 +93,17 @@ function helpTopicEmbed(topic: HelpTopic): EmbedBuilder {
           { name: 'Still stuck?', value: 'Tell staff your launcher, modpack version, Java version, and the exact error text.' }
         );
     case 'crash':
-      return baseEmbed('Crash Help', 'Use `/crash file:<crash-report-or-latest.log>`.')
+      return baseEmbed('Crash Help', 'Use the Support Hub button **Crash** for private log upload.')
         .addFields(
-          { name: 'Accepted files', value: 'Attach `.txt` or `.log` files. Large files are rejected before parsing.' },
+          { name: 'Accepted files', value: 'Upload `.txt` or `.log` files. Large files are rejected before parsing.' },
+          { name: 'Slash fallback', value: 'Power users can still use `/crash file:<crash-report-or-latest.log>`.' },
           { name: 'Analysis', value: 'The bot checks common signatures like Java mismatch, duplicate mods, out-of-memory, worldgen, mixins, renderer issues, and Wilderness Oddesy API/content crashes.' }
         );
     case 'bug':
-      return baseEmbed('Bug Report Help', 'Use `/bugreport` when the game runs but something behaves incorrectly.')
+      return baseEmbed('Bug Report Help', 'Use **Bug** in the Support Hub when the game runs but something behaves incorrectly.')
         .addFields(
           { name: 'Best reports include', value: 'Pack version, Minecraft version, NeoForge/Forge version, singleplayer/multiplayer, what happened, expected behavior, reproduction steps, dimension/location, repeatability, nearby special content, optional screenshots, optional redacted logs, and optional Spark links.' },
-          { name: 'Crash logs', value: 'Use `/crash` for dedicated crash analysis. `/bugreport` also accepts optional latest.log/crash logs and redacts them before storage.' }
+          { name: 'Crash logs', value: 'Use **Crash** for dedicated crash analysis. `/bugreport` also accepts optional latest.log/crash logs and redacts them before storage.' }
         );
     case 'suggestions':
       return baseEmbed('Suggestions', 'Use `/suggest` to submit modpack ideas.')

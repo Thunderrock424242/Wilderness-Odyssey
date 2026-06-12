@@ -1,7 +1,41 @@
 import path from 'node:path';
 import dotenv from 'dotenv';
+import { z } from 'zod';
 
 dotenv.config();
+
+const blankToUndefined = (value: unknown): unknown =>
+  typeof value === 'string' && value.trim() === '' ? undefined : value;
+const optionalTrimmedString = z.preprocess(blankToUndefined, z.string().trim().optional());
+const optionalPositiveNumber = z.preprocess(blankToUndefined, z.coerce.number().positive().optional());
+const optionalPositiveInteger = z.preprocess(blankToUndefined, z.coerce.number().int().positive().optional());
+const optionalUrl = z.preprocess(blankToUndefined, z.string().trim().url().optional());
+const optionalLogLevel = z.preprocess(
+  blankToUndefined,
+  z.enum(['trace', 'debug', 'info', 'warn', 'error', 'fatal', 'silent']).optional()
+);
+
+const envSchema = z.object({
+  DISCORD_TOKEN: z.string().trim().min(1, 'DISCORD_TOKEN is required.'),
+  CLIENT_ID: z.string().trim().min(1, 'CLIENT_ID is required.'),
+  GUILD_ID: optionalTrimmedString,
+  DATABASE_PATH: optionalTrimmedString,
+  MAX_LOG_BYTES: optionalPositiveNumber,
+  LOG_LEVEL: optionalLogLevel,
+  SENTRY_DSN: optionalUrl,
+  METRICS_ENABLED: optionalTrimmedString,
+  METRICS_PATH: optionalTrimmedString,
+  MINECRAFT_VERIFY_API_PORT: optionalPositiveInteger,
+  MINECRAFT_VERIFY_CODE_TTL_MINUTES: optionalPositiveNumber
+});
+
+const parsedEnv = envSchema.safeParse(process.env);
+if (!parsedEnv.success) {
+  const details = parsedEnv.error.issues
+    .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
+    .join('\n');
+  throw new Error(`Invalid environment configuration:\n${details}`);
+}
 
 function required(name: string): string {
   const value = process.env[name]?.trim();
@@ -105,5 +139,15 @@ export const config = {
     apiPort: numberFromEnv('MINECRAFT_VERIFY_API_PORT', 3000),
     publicBaseUrl: optional('MINECRAFT_VERIFY_PUBLIC_URL'),
     codeTtlMinutes: numberFromEnv('MINECRAFT_VERIFY_CODE_TTL_MINUTES', 15)
+  },
+  logging: {
+    level: optional('LOG_LEVEL') ?? 'info'
+  },
+  sentry: {
+    dsn: optional('SENTRY_DSN')
+  },
+  metrics: {
+    enabled: booleanFromEnv('METRICS_ENABLED', false),
+    path: optional('METRICS_PATH') ?? '/metrics'
   }
 };

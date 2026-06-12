@@ -11,6 +11,7 @@ import {
   TextInputStyle
 } from 'discord.js';
 import { randomUUID } from 'node:crypto';
+import { LRUCache } from 'lru-cache';
 import { config } from '../config';
 import { getDb } from '../db';
 import type { SuggestionRecord, SuggestionStatus, SuggestionVoteCounts, SuggestionVoteValue } from '../types';
@@ -18,6 +19,7 @@ import { suggestionEmbed } from '../utils/embeds';
 import { formatPublicId, normalizePublicId } from '../utils/ids';
 import { supportTeamAllowedMentions, supportTeamPing } from '../utils/supportTeam';
 import { forumPostTitle, postToConfiguredChannel } from './reportService';
+import { reportCounter } from './metricsService';
 
 interface SuggestionDraft {
   userId: string;
@@ -41,14 +43,17 @@ interface SuggestionRow {
   updated_at: string;
 }
 
-const suggestionDrafts = new Map<string, SuggestionDraft>();
+const suggestionDrafts = new LRUCache<string, SuggestionDraft>({
+  max: 500,
+  ttl: 30 * 60_000
+});
 
 export async function beginSuggestion(interaction: ChatInputCommandInteraction): Promise<void> {
   const draftId = randomUUID().slice(0, 10);
   suggestionDrafts.set(draftId, {
     userId: interaction.user.id,
     category: interaction.options.getString('category', true),
-    modpackVersion: interaction.options.getString('modpack_version')
+    modpackVersion: interaction.options.getString('modpack_version') ?? defaultModpackVersion()
   });
 
   await interaction.showModal(suggestionModal(draftId));
@@ -59,7 +64,7 @@ export async function beginSuggestionFromPanel(interaction: ButtonInteraction | 
   suggestionDrafts.set(draftId, {
     userId: interaction.user.id,
     category: 'Other',
-    modpackVersion: null
+    modpackVersion: defaultModpackVersion()
   });
 
   await interaction.showModal(suggestionModal(draftId));
@@ -119,6 +124,7 @@ export function createSuggestion(input: {
     throw new Error(`Failed to read created suggestion ${publicId}`);
   }
 
+  reportCounter.inc({ type: 'suggestion' });
   return suggestion;
 }
 
@@ -303,4 +309,9 @@ function textInputRow(
   }
 
   return new ActionRowBuilder<TextInputBuilder>().addComponents(input);
+}
+
+function defaultModpackVersion(): string | null {
+  const value = config.status.latestModpackVersion.trim();
+  return value && value !== 'Not configured' ? value : null;
 }

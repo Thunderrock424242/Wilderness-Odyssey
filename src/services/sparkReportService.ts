@@ -1,6 +1,7 @@
 import { getDb } from '../db';
 import type { SparkReportRecord, SparkReportStatus } from '../types/spark';
 import { formatPublicId, normalizePublicId } from '../utils/ids';
+import { reportCounter } from './metricsService';
 import { getPlaytestSession, linkReportToSession } from './playtestSessionService';
 
 interface SparkReportRow {
@@ -98,6 +99,7 @@ export function createSparkReport(input: {
     throw new Error(`Failed to read created Spark report ${publicId}`);
   }
 
+  reportCounter.inc({ type: 'spark' });
   return report;
 }
 

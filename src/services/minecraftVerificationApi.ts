@@ -1,9 +1,18 @@
 import http, { IncomingMessage, ServerResponse } from 'node:http';
+import { z } from 'zod';
 import { config } from '../config';
+import { metricsEnabled, metricsRegistry } from './metricsService';
 import { completeMinecraftLink } from './minecraftVerificationService';
+import { logger } from '../utils/logger';
+
+const minecraftVerifyRequestSchema = z.object({
+  code: z.string().trim().min(1),
+  minecraftUuid: z.string().trim().min(1),
+  minecraftName: z.string().trim().min(1)
+});
 
 export function startMinecraftVerificationApi(): http.Server | null {
-  if (!config.minecraftVerification.apiEnabled) {
+  if (!config.minecraftVerification.apiEnabled && !metricsEnabled()) {
     return null;
   }
 
@@ -12,13 +21,16 @@ export function startMinecraftVerificationApi(): http.Server | null {
   });
 
   server.listen(config.minecraftVerification.apiPort, config.minecraftVerification.apiHost, () => {
-    console.log(
-      `Minecraft verification API listening on ${config.minecraftVerification.apiHost}:${config.minecraftVerification.apiPort}.`
-    );
+    logger.info({
+      host: config.minecraftVerification.apiHost,
+      port: config.minecraftVerification.apiPort,
+      minecraftVerifyEnabled: config.minecraftVerification.apiEnabled,
+      metricsEnabled: metricsEnabled()
+    }, 'Support HTTP API listening.');
   });
 
   server.on('error', (error) => {
-    console.error('Minecraft verification API error:', error);
+    logger.error({ error }, 'Support HTTP API error.');
   });
 
   return server;
@@ -30,6 +42,25 @@ async function handleRequest(request: IncomingMessage, response: ServerResponse)
     return;
   }
 
+  if (request.method === 'GET' && request.url === config.metrics.path) {
+    if (!metricsEnabled()) {
+      sendJson(response, 404, { ok: false, error: 'not_found' });
+      return;
+    }
+
+    response.writeHead(200, {
+      'Content-Type': metricsRegistry.contentType,
+      'Cache-Control': 'no-store'
+    });
+    response.end(await metricsRegistry.metrics());
+    return;
+  }
+
+  if (!config.minecraftVerification.apiEnabled) {
+    sendJson(response, 404, { ok: false, error: 'not_found' });
+    return;
+  }
+
   if (request.method !== 'POST' || request.url !== '/api/minecraft/verify') {
     sendJson(response, 404, { ok: false, error: 'not_found' });
     return;
@@ -37,10 +68,16 @@ async function handleRequest(request: IncomingMessage, response: ServerResponse)
 
   try {
     const body = await readJsonBody(request);
+    const parsed = minecraftVerifyRequestSchema.safeParse(body);
+    if (!parsed.success) {
+      sendJson(response, 400, { ok: false, error: 'invalid_request' });
+      return;
+    }
+
     const result = completeMinecraftLink({
-      code: stringFromBody(body.code),
-      minecraftUuid: stringFromBody(body.minecraftUuid),
-      minecraftName: stringFromBody(body.minecraftName)
+      code: parsed.data.code,
+      minecraftUuid: parsed.data.minecraftUuid,
+      minecraftName: parsed.data.minecraftName
     });
 
     if (!result.ok) {
@@ -86,10 +123,6 @@ async function readJsonBody(request: IncomingMessage): Promise<Record<string, un
   }
 
   return parsed as Record<string, unknown>;
-}
-
-function stringFromBody(value: unknown): string {
-  return typeof value === 'string' ? value : '';
 }
 
 function sendJson(response: ServerResponse, status: number, payload: unknown): void {

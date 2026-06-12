@@ -155,7 +155,7 @@ function answerKnownQuestion(question: string): KnownAnswer | null {
   if (matchesAny(normalized, ['crash', 'crashed', 'crashing', 'latest.log', 'crash report'])) {
     return {
       title: 'Crash Reports',
-      body: 'Use `/crash file:<crash-report-or-latest.log>` and attach a `.txt` or `.log` file. I will redact sensitive values and send staff the analysis.'
+      body: 'Use the Support Hub button **Crash** for a private upload channel, or use `/crash file:<crash-report-or-latest.log>` if you prefer slash commands.'
     };
   }
 

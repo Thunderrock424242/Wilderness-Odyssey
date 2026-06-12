@@ -1,6 +1,10 @@
 import { REST, Routes } from 'discord.js';
 import { config } from './config';
 import { commands } from './commands';
+import { captureException, initErrorTracking } from './services/errorTracking';
+import { logger } from './utils/logger';
+
+initErrorTracking();
 
 async function main(): Promise<void> {
   const body = commands.map((command) => command.data.toJSON());
@@ -10,12 +14,15 @@ async function main(): Promise<void> {
     ? Routes.applicationGuildCommands(config.clientId, config.guildId)
     : Routes.applicationCommands(config.clientId);
 
-  console.log(`Deploying ${body.length} slash commands ${config.guildId ? `to guild ${config.guildId}` : 'globally'}...`);
+  logger.info({
+    commandCount: body.length,
+    guildId: config.guildId ?? null
+  }, 'Deploying slash commands.');
   await rest.put(route, { body });
-  console.log('Slash command deployment complete.');
+  logger.info('Slash command deployment complete.');
 }
 
 main().catch((error) => {
-  console.error('Failed to deploy slash commands:', error);
+  captureException(error, { source: 'deployCommands' });
   process.exitCode = 1;
 });

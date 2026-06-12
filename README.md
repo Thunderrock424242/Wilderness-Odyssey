@@ -79,6 +79,12 @@ Fast path:
 
 For every Discord channel, category, forum, server, or role value, paste the copied Discord ID number. Do not use `#channel-name` or `@role-name` for ID fields.
 
+Reliability settings:
+
+- `LOG_LEVEL` controls structured bot logs. Use `info` normally and `debug` while troubleshooting.
+- `SENTRY_DSN` enables optional hosted error tracking through Sentry.
+- `METRICS_ENABLED=true` exposes Prometheus metrics at `METRICS_PATH`, defaulting to `/metrics`, on the bot HTTP API port.
+
 ## Database
 
 The SQLite database is created or migrated on startup at:
@@ -139,7 +145,7 @@ Recommended server layout:
 
 - Put the public support hub in an Information, Start Here, or Welcome category.
 - Put bug/crash and feedback/suggestion forums in a Support or Triage category.
-- Put private Other Help ticket channels in a staff/private support category through `SUPPORT_TICKET_CATEGORY_ID`.
+- Put private Other Help and crash upload channels in a staff/private support category through `SUPPORT_TICKET_CATEGORY_ID`.
 
 For Discord forum channels, set `ISSUES_FORUM_CHANNEL_ID` for shared bug/crash posts and `IDEAS_FORUM_CHANNEL_ID` for shared feedback/suggestion posts. The bot applies the configured forum tags, defaulting to `Bug`, `Crash`, `Feedback`, and `Suggestion`. Bug threads can also use status tags, defaulting to `Confirmed` and `Solved`, when staff marks the bug as confirmed or solved from inside the forum thread.
 
@@ -147,20 +153,21 @@ Set `SUPPORT_TEAM_ROLE_ID` to the staff/support role that should be pinged on ne
 
 Panel types:
 
-- Support intake - report bugs, crashes/logs, feedback, performance, suggestions, playtest help, and Q&A.
+- Support Hub - report bugs, crashes/logs, feedback, performance, suggestions, playtest help, and Q&A.
 - Player info center - status, known issues, changelog, privacy, and command map.
 - Playtest center - start a tester session, view checklist, get ZIP/Spark guidance, and open report forms.
 - Staff console - staff-only reference for report lookup, statuses, known issues, changelog, playtest publishing, and Q&A handoffs.
 - Setup doctor - staff-only config, channel, and permission health checks.
-- All player panels - posts support intake, player info, and playtest center.
+- All player panels - posts Support Hub, player info, and playtest center.
 
-Support intake buttons:
+Support Hub buttons:
 
-- Gameplay bug - opens a basic bug report modal.
-- Crash or log - tells the player to use `/crash` with a `.txt` or `.log` attachment.
-- Playtest feedback - opens a feedback modal.
-- Suggestion - opens a suggestion modal.
-- Other help - creates a private staff ticket for anything that does not fit the report buttons.
+- Bug - shows a quick known-issues check, then opens a bug report modal.
+- Crash - shows a quick known-issues check, then opens a private crash upload channel.
+- Feedback - opens a feedback modal.
+- Suggestion - opens a suggestion modal with voting on the created forum post.
+- Help Me Pick - shows a short routing menu for users who are not sure.
+- Other - asks for a summary/details, then creates a private staff ticket.
 
 More support options:
 
@@ -168,11 +175,13 @@ More support options:
 - Playtest help - explains playtest ZIP acceptance, `/playtest start`, and report linking.
 - Q&A question - points players to configured Q&A channels.
 
-Panel-submitted bug reports do not collect screenshots or logs because Discord buttons/menus cannot request attachments. Players who need attachments should use `/bugreport` or `/crash`.
+Panel-submitted bug reports do not collect screenshots or logs because Discord buttons/menus cannot request attachments. Players who need attachments can use `/bugreport`, or use **Crash** for private crash/latest.log upload.
 
 Playtest panel sessions create normal `WO-TEST-0001` records, so later bug reports, feedback, crashes, performance reports, and Spark reports can still be linked to the tester session.
 
 Report receipts include an `Add more info` button so the submitter can append details later. Staff report posts include a `Claim / Reassign` button for bug, crash, performance, and Spark reports.
+
+Other Help tickets include staff buttons for Claim, Close, Move to Bug, Move to Suggestion, and Move to Feedback. Move buttons give staff routing instructions so incomplete private tickets do not become low-quality public reports.
 
 ## Q&A Channels
 

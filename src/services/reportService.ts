@@ -15,6 +15,7 @@ import {
   TextInputStyle
 } from 'discord.js';
 import { randomUUID } from 'node:crypto';
+import { LRUCache } from 'lru-cache';
 import { getDb } from '../db';
 import type {
   BugReportRecord,
@@ -46,6 +47,7 @@ import {
 } from './playtestSessionService';
 import { syncKnownIssueFromBugStatus } from './knownIssuesService';
 import { supportTeamAllowedMentions, supportTeamPing } from '../utils/supportTeam';
+import { reportCounter } from './metricsService';
 
 interface BugDraft {
   userId: string;
@@ -166,9 +168,10 @@ interface FeedbackRow {
   created_at: string;
 }
 
-const bugDrafts = new Map<string, BugDraft>();
-const performanceDrafts = new Map<string, PerformanceDraft>();
-const feedbackDrafts = new Map<string, FeedbackDraft>();
+const draftCacheOptions = { max: 500, ttl: 30 * 60_000 };
+const bugDrafts = new LRUCache<string, BugDraft>(draftCacheOptions);
+const performanceDrafts = new LRUCache<string, PerformanceDraft>(draftCacheOptions);
+const feedbackDrafts = new LRUCache<string, FeedbackDraft>(draftCacheOptions);
 
 export function normalizeReportId(value: string): string {
   return normalizePublicId(value);
@@ -416,7 +419,7 @@ export async function handleBugReportModal(interaction: ModalSubmitInteraction):
   const report = createBugReport({
     userId: interaction.user.id,
     username: interaction.user.tag,
-    modpackVersion: interaction.fields.getTextInputValue('modpack_version'),
+    modpackVersion: modpackVersionFromInput(interaction.fields.getTextInputValue('modpack_version')),
     minecraftVersion: draft.minecraftVersion,
     loaderVersion: draft.loaderVersion,
     playMode: draft.playMode,
@@ -509,7 +512,7 @@ export async function handlePerformanceReportModal(interaction: ModalSubmitInter
   const report = createPerformanceReport({
     userId: interaction.user.id,
     username: interaction.user.tag,
-    modpackVersion: interaction.fields.getTextInputValue('modpack_version'),
+    modpackVersion: modpackVersionFromInput(interaction.fields.getTextInputValue('modpack_version')),
     fpsAverage: interaction.fields.getTextInputValue('fps_average'),
     ramAllocated: interaction.fields.getTextInputValue('ram_allocated'),
     cpuGpu: draft.cpuGpu,
@@ -539,7 +542,7 @@ export async function beginFeedbackReport(interaction: ChatInputCommandInteracti
   feedbackDrafts.set(draftId, {
     userId: interaction.user.id,
     category: interaction.options.getString('category', true),
-    modpackVersion: interaction.options.getString('modpack_version'),
+    modpackVersion: interaction.options.getString('modpack_version') ?? defaultModpackVersion(),
     playtestSessionId: interaction.options.getString('playtest_session')
   });
 
@@ -552,7 +555,7 @@ export async function beginFeedbackReportFromPanel(interaction: ButtonInteractio
   feedbackDrafts.set(draftId, {
     userId: interaction.user.id,
     category: 'General playtest feedback',
-    modpackVersion: null,
+    modpackVersion: defaultModpackVersion(),
     playtestSessionId: null
   });
 
@@ -636,6 +639,7 @@ export function createBugReport(
     throw new Error(`Failed to read created bug report ${publicId}`);
   }
 
+  reportCounter.inc({ type: 'bug' });
   return report;
 }
 
@@ -660,6 +664,7 @@ export function createCrashReport(
     throw new Error(`Failed to read created crash report ${publicId}`);
   }
 
+  reportCounter.inc({ type: 'crash' });
   return report;
 }
 
@@ -686,6 +691,7 @@ export function createPerformanceReport(
     throw new Error(`Failed to read created performance report ${publicId}`);
   }
 
+  reportCounter.inc({ type: 'performance' });
   return report;
 }
 
@@ -710,6 +716,7 @@ export function createFeedbackReport(
     throw new Error(`Failed to read created feedback report ${publicId}`);
   }
 
+  reportCounter.inc({ type: 'feedback' });
   return report;
 }
 
@@ -810,6 +817,28 @@ export function updateReportStatus(
   }
 
   return result.changes > 0;
+}
+
+export async function notifyBugReporterOfStatus(client: Client, publicId: string, status: ReportStatus): Promise<void> {
+  if (!isKnownIssueBugStatus(status)) {
+    return;
+  }
+
+  const report = getBugReport(publicId);
+  if (!report) {
+    return;
+  }
+
+  const user = await client.users.fetch(report.userId).catch(() => null);
+  if (!user) {
+    return;
+  }
+
+  const message = status === 'confirmed'
+    ? `Your bug report **${report.publicId}** was confirmed by the dev team. It is now on the known issues list.`
+    : `Your bug report **${report.publicId}** was solved and queued for an upcoming fix.`;
+
+  await user.send(message).catch(() => undefined);
 }
 
 export function reportClaimButtons(type: Exclude<ReportActionType, 'feedback'>, publicId: string): ActionRowBuilder<ButtonBuilder> {
@@ -1189,6 +1218,7 @@ export async function handleBugStatusButton(interaction: ButtonInteraction): Pro
   }
 
   await applyBugForumStatusTags(interaction, status);
+  await notifyBugReporterOfStatus(interaction.client, publicId, status);
 
   await interaction.update({
     embeds: [bugReportEmbed(report)],
@@ -1347,7 +1377,7 @@ function bugReportModal(draftId: string): ModalBuilder {
     .setCustomId(`bugreport:${draftId}`)
     .setTitle('Wilderness Oddesy Bug Report')
     .addComponents(
-      textInputRow('modpack_version', 'Modpack version', TextInputStyle.Short, true, 'Example: 0.1.0'),
+      textInputRow('modpack_version', 'Modpack version', TextInputStyle.Short, true, 'Example: 0.1.0', defaultModpackVersion() ?? undefined),
       textInputRow('happened', 'What happened?', TextInputStyle.Paragraph, true, 'Describe the bug clearly.'),
       textInputRow('expected', 'What did you expect?', TextInputStyle.Paragraph, true, 'What should have happened instead?'),
       textInputRow('steps', 'Steps to reproduce', TextInputStyle.Paragraph, true, 'List the steps staff can try.')
@@ -1359,7 +1389,7 @@ function performanceReportModal(draftId: string): ModalBuilder {
     .setCustomId(`perfreport:${draftId}`)
     .setTitle('Optional Performance Report')
     .addComponents(
-      textInputRow('modpack_version', 'Modpack version', TextInputStyle.Short, true, 'Example: 0.1.0'),
+      textInputRow('modpack_version', 'Modpack version', TextInputStyle.Short, true, 'Example: 0.1.0', defaultModpackVersion() ?? undefined),
       textInputRow('fps_average', 'FPS average', TextInputStyle.Short, true, 'Example: 45 FPS'),
       textInputRow('ram_allocated', 'RAM allocated', TextInputStyle.Short, true, 'Example: 8 GB'),
       textInputRow('lag_location', 'Where does lag happen?', TextInputStyle.Paragraph, true, 'Structures, rifts, anomalies, dimensions, entities, etc.'),
@@ -1382,7 +1412,8 @@ function textInputRow(
   label: string,
   style: TextInputStyle,
   required: boolean,
-  placeholder?: string
+  placeholder?: string,
+  value?: string
 ): ActionRowBuilder<TextInputBuilder> {
   const input = new TextInputBuilder()
     .setCustomId(customId)
@@ -1394,5 +1425,19 @@ function textInputRow(
     input.setPlaceholder(placeholder);
   }
 
+  if (value) {
+    input.setValue(value.slice(0, style === TextInputStyle.Paragraph ? 4000 : 100));
+  }
+
   return new ActionRowBuilder<TextInputBuilder>().addComponents(input);
+}
+
+function defaultModpackVersion(): string | null {
+  const value = config.status.latestModpackVersion.trim();
+  return value && value !== 'Not configured' ? value : null;
+}
+
+function modpackVersionFromInput(value: string): string {
+  const trimmed = value.trim();
+  return trimmed || defaultModpackVersion() || 'Not specified';
 }

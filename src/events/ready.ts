@@ -2,9 +2,10 @@ import type { Client } from 'discord.js';
 import { config } from '../config';
 import { sendToConfiguredChannel } from '../services/reportService';
 import { baseEmbed } from '../utils/embeds';
+import { logger } from '../utils/logger';
 
 export async function handleReady(client: Client<true>): Promise<void> {
-  console.log(`Wilderness Oddesy systems online as ${client.user.tag}.`);
+  logger.info({ bot: client.user.tag }, 'Wilderness Oddesy systems online.');
 
   const warnings = startupWarnings();
   const targetChannel = config.channelIds.staffLog ?? config.channelIds.staffReview;
@@ -21,7 +22,7 @@ export async function handleReady(client: Client<true>): Promise<void> {
         )
     ]
   }).catch((error) => {
-    console.warn('Failed to send startup notice:', error);
+    logger.warn({ error }, 'Failed to send startup notice.');
   });
 }
 
