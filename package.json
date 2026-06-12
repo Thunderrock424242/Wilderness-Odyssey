@@ -40,5 +40,7 @@
   "engines": {
     "node": ">=22.5.0"
   },
-  "allowScripts": {}
+  "allowScripts": {
+    "esbuild": true
+  }
 }
