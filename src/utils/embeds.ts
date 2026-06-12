@@ -85,6 +85,106 @@ export function privacyEmbed(): EmbedBuilder {
     );
 }
 
+export function playtestTermsEmbeds(): EmbedBuilder[] {
+  return [
+    baseEmbed(
+      'Wilderness Odyssey Playtest Terms',
+      'By accepting a playtest gate, you agree to these playtest rules before receiving the test build.'
+    )
+      .addFields(
+        {
+          name: 'Who can participate',
+          value: 'You must be allowed to use Discord and Minecraft, be at least 13, have parent/guardian permission if required where you live, follow server rules, and complete Minecraft verification when required.'
+        },
+        {
+          name: 'What the playtest is',
+          value: 'Playtests are temporary access to unreleased or experimental builds. Builds may crash, lag, corrupt worlds, break balance, or include unfinished content. Back up worlds before testing.'
+        },
+        {
+          name: 'Access rules',
+          value: 'Do not share the ZIP, download link, private channel access, private instructions, unreleased spoilers, or test build unless staff says it is allowed. Do not reupload, sell, or claim the build as your own.'
+        },
+        {
+          name: 'Feedback and reports',
+          value: 'Reports, logs, screenshots, Spark links, suggestions, and feedback may be used by staff to debug, reproduce issues, plan changes, update known issues, and write changelogs. Staff may merge, summarize, close, or reject reports.'
+        }
+      ),
+    baseEmbed('Playtest Terms Continued')
+      .addFields(
+        {
+          name: 'Public and private reports',
+          value: 'Bug, crash, feedback, and suggestion posts may be public in Discord forums so other testers can help confirm details. Use private staff tickets for personal account issues, exploits, security issues, or private information.'
+        },
+        {
+          name: 'Privacy and logs',
+          value: 'The bot may record that you accepted the playtest gate. Do not upload passwords, tokens, private files, or personal information. Log redaction is best-effort and may not catch everything.'
+        },
+        {
+          name: 'No warranty',
+          value: 'Playtest builds are provided as-is for testing. Stability, compatibility, world safety, performance, and availability are not guaranteed.'
+        },
+        {
+          name: 'Third-party services',
+          value: 'Discord, Minecraft/Microsoft, CurseForge or another launcher, Spark, and file hosts may be involved. Those services have their own rules and privacy practices.'
+        },
+        {
+          name: 'Changes and questions',
+          value: 'Staff may update these terms as the playtest changes. Ask staff before accepting if something is unclear.'
+        }
+      )
+  ];
+}
+
+export function playtestPrivacyPolicyEmbeds(): EmbedBuilder[] {
+  return [
+    baseEmbed(
+      'Wilderness Odyssey Privacy Policy',
+      'This explains what the support bot and playtest flow collect, why it is collected, and how it is used.'
+    )
+      .addFields(
+        {
+          name: 'Short version',
+          value: 'We collect only what is needed for support, reports, suggestions, Minecraft verification, and playtest access. We do not sell personal information.'
+        },
+        {
+          name: 'Age',
+          value: 'The playtest and support bot are not intended for children under 13. If you are under 13, do not use playtest access, submit reports, or link a Minecraft account.'
+        },
+        {
+          name: 'What the bot may collect',
+          value: 'Discord user ID/name, timestamps, report text, channel/message/report IDs, uploaded crash/latest.log files, redacted log excerpts, attachment links, suggestion votes, playtest sessions, acceptance records, Minecraft UUID/name, and staff actions.'
+        },
+        {
+          name: 'What the bot does not intentionally collect',
+          value: 'Discord tokens, passwords, Minecraft/Microsoft credentials, payment details, private Discord DMs, whole-computer files, or background gameplay telemetry.'
+        }
+      ),
+    baseEmbed('Privacy Policy Continued')
+      .addFields(
+        {
+          name: 'Why this is collected',
+          value: 'To run support, diagnose crashes, verify playtesters, gate ZIP delivery, prevent duplicate reports, track known issues/upcoming fixes, let staff follow up, and improve Wilderness Odyssey.'
+        },
+        {
+          name: 'Who can see it',
+          value: 'Public report forum posts may be visible to server members. Private tickets are visible to the user, bot, and support staff. Staff-only logs and database records are visible to authorized staff.'
+        },
+        {
+          name: 'Third-party services',
+          value: 'Discord, Minecraft/Microsoft, CurseForge or another launcher/file host, Spark, Sentry if enabled, and Prometheus-compatible metrics if enabled may process related data under their own policies.'
+        },
+        {
+          name: 'Retention and deletion',
+          value: 'Reports and playtest records are kept while useful for support, debugging, moderation, known issues, changelogs, or project history. Use `/minecraft unlink` to remove your Minecraft link. Ask staff about deletion or anonymization requests.'
+        },
+        {
+          name: 'Security',
+          value: 'Staff should limit access to bot tokens, the database, the bot host, staff channels, and private tickets. The Minecraft client must never contain the Discord bot token.'
+        }
+      )
+  ];
+}
+
 export function bugReportEmbed(report: BugReportRecord): EmbedBuilder {
   const embed = baseEmbed(`Bug Report ${report.publicId}`, 'Anomaly report archived.')
     .setColor(colors.warning)
@@ -246,14 +346,16 @@ export function playtestReleaseEmbed(release: PlaytestReleaseRecord): EmbedBuild
         name: 'Before you download',
         value: [
           'Verify your Minecraft account with `/minecraft link` before accepting.',
-          'Read the playtest instructions and privacy notice.',
+          'Use the View Terms and View Privacy buttons below before accepting.',
           'Click the acceptance button only if you agree to test the unreleased build and report issues through the support commands.',
           'After acceptance, the bot will privately send the ZIP link and CurseForge import steps.'
         ].join('\n')
       },
       {
-        name: 'Policy links',
-        value: policyLinks.length > 0 ? policyLinks.join(' | ') : 'Use `/privacy` and follow any staff terms posted in this channel.'
+        name: 'Policy',
+        value: policyLinks.length > 0
+          ? `Use the in-bot policy buttons below. Optional external copies: ${policyLinks.join(' | ')}`
+          : 'Use the in-bot policy buttons below. No external policy links are required.'
       },
       {
         name: 'Report issues with',

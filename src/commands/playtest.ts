@@ -31,9 +31,18 @@ import {
 import { getMinecraftLinkByUserId } from '../services/minecraftVerificationService';
 import { sendToConfiguredChannel } from '../services/reportService';
 import { requireStaff } from '../utils/permissions';
-import { baseEmbed, playtestListEmbed, playtestReleaseEmbed, playtestSessionEmbed } from '../utils/embeds';
+import {
+  baseEmbed,
+  playtestListEmbed,
+  playtestPrivacyPolicyEmbeds,
+  playtestReleaseEmbed,
+  playtestSessionEmbed,
+  playtestTermsEmbeds
+} from '../utils/embeds';
 
 const acceptReleasePrefix = 'playtest-release:accept:';
+const termsReleasePrefix = 'playtest-release:terms:';
+const privacyReleasePrefix = 'playtest-release:privacy:';
 const playtestPanelStartPrefix = 'playtest-panel:start';
 
 type PlaytestGateInteraction =
@@ -147,14 +156,14 @@ export const playtestCommand: SlashCommand = {
         .addStringOption((option) =>
           option
             .setName('terms_url')
-            .setDescription('Optional playtest terms URL. Falls back to PLAYTEST_TERMS_URL.')
+            .setDescription('Optional external terms URL. The bot also shows in-house terms with a button.')
             .setMaxLength(500)
             .setRequired(false)
         )
         .addStringOption((option) =>
           option
             .setName('privacy_url')
-            .setDescription('Optional privacy policy URL. Falls back to PLAYTEST_PRIVACY_URL.')
+            .setDescription('Optional external privacy URL. The bot also shows in-house privacy with a button.')
             .setMaxLength(500)
             .setRequired(false)
         )
@@ -357,7 +366,7 @@ export const playtestCommand: SlashCommand = {
           ? `<@&${audienceRoleId}> New Wilderness Oddesy playtest build is ready.`
           : 'New Wilderness Oddesy playtest build is ready.',
         embeds: [playtestReleaseEmbed(release)],
-        components: [playtestAcceptRow(release.publicId)],
+        components: [playtestPolicyRow(release.publicId)],
         allowedMentions: audienceRoleId ? { roles: [audienceRoleId] } : { parse: [] }
       });
 
@@ -512,15 +521,31 @@ export async function handlePlaytestPanelModal(interaction: ModalSubmitInteracti
 }
 
 export async function handlePlaytestReleaseButton(interaction: ButtonInteraction): Promise<boolean> {
-  if (!interaction.customId.startsWith(acceptReleasePrefix)) {
+  const releaseAction = playtestReleaseAction(interaction.customId);
+  if (!releaseAction) {
     return false;
   }
 
-  const publicId = interaction.customId.slice(acceptReleasePrefix.length);
-  const release = getPlaytestRelease(publicId);
+  const release = getPlaytestRelease(releaseAction.publicId);
   if (!release) {
     await interaction.reply({
       content: 'That playtest package could not be found. Ask staff to republish the playtest gate.',
+      ephemeral: true
+    });
+    return true;
+  }
+
+  if (releaseAction.type === 'terms') {
+    await interaction.reply({
+      embeds: playtestTermsEmbeds(),
+      ephemeral: true
+    });
+    return true;
+  }
+
+  if (releaseAction.type === 'privacy') {
+    await interaction.reply({
+      embeds: playtestPrivacyPolicyEmbeds(),
       ephemeral: true
     });
     return true;
@@ -577,8 +602,32 @@ async function requireMinecraftVerification(interaction: PlaytestGateInteraction
   return false;
 }
 
-function playtestAcceptRow(publicId: string): ActionRowBuilder<ButtonBuilder> {
+function playtestReleaseAction(customId: string): { type: 'accept' | 'terms' | 'privacy'; publicId: string } | null {
+  if (customId.startsWith(acceptReleasePrefix)) {
+    return { type: 'accept', publicId: customId.slice(acceptReleasePrefix.length) };
+  }
+
+  if (customId.startsWith(termsReleasePrefix)) {
+    return { type: 'terms', publicId: customId.slice(termsReleasePrefix.length) };
+  }
+
+  if (customId.startsWith(privacyReleasePrefix)) {
+    return { type: 'privacy', publicId: customId.slice(privacyReleasePrefix.length) };
+  }
+
+  return null;
+}
+
+function playtestPolicyRow(publicId: string): ActionRowBuilder<ButtonBuilder> {
   return new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setCustomId(`${termsReleasePrefix}${publicId}`)
+      .setLabel('View Terms')
+      .setStyle(ButtonStyle.Secondary),
+    new ButtonBuilder()
+      .setCustomId(`${privacyReleasePrefix}${publicId}`)
+      .setLabel('View Privacy')
+      .setStyle(ButtonStyle.Secondary),
     new ButtonBuilder()
       .setCustomId(`${acceptReleasePrefix}${publicId}`)
       .setLabel('I accept terms and privacy')
@@ -607,8 +656,8 @@ function playtestDownloadInstructions(release: {
   instructions: string | null;
 }): string {
   const policy = [
-    release.termsUrl ? `Terms: ${release.termsUrl}` : null,
-    release.privacyUrl ? `Privacy: ${release.privacyUrl}` : null
+    release.termsUrl ? `External terms copy: ${release.termsUrl}` : null,
+    release.privacyUrl ? `External privacy copy: ${release.privacyUrl}` : null
   ].filter(Boolean);
 
   return [
@@ -616,6 +665,8 @@ function playtestDownloadInstructions(release: {
     '',
     `Download: **${release.packageName}**${release.packageSize ? ` (${formatBytes(release.packageSize)})` : ''}`,
     release.packageUrl,
+    '',
+    'You accepted the in-house playtest terms and privacy notice shown on the playtest gate.',
     '',
     '**CurseForge import**',
     '1. Download the ZIP above. Do not unzip it.',

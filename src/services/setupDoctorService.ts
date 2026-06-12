@@ -49,8 +49,21 @@ function requiredConfigChecks(): CheckLine[] {
       label: 'Q&A watch channels',
       detail: config.qa.channelIds.length > 0 ? `${config.qa.channelIds.length} configured.` : 'No Q&A watch channels configured.'
     },
-    checkValue('Playtest terms URL', config.playtest.termsUrl, 'Recommended for gated playtest ZIPs.'),
-    checkValue('Playtest privacy URL', config.playtest.privacyUrl, 'Recommended for gated playtest ZIPs.'),
+    {
+      state: 'OK',
+      label: 'In-bot playtest policies',
+      detail: 'Terms and privacy are available from playtest gate buttons.'
+    },
+    {
+      state: 'OK',
+      label: 'External terms URL',
+      detail: config.playtest.termsUrl ? 'Configured.' : 'Optional external copy not configured.'
+    },
+    {
+      state: 'OK',
+      label: 'External privacy URL',
+      detail: config.playtest.privacyUrl ? 'Configured.' : 'Optional external copy not configured.'
+    },
     {
       state: config.minecraftVerification.apiEnabled ? 'OK' : 'WARN',
       label: 'Minecraft verify API',
@@ -105,11 +118,19 @@ async function channelChecks(interaction: StringSelectMenuInteraction): Promise<
   const channelMap: Array<[string, string | undefined, boolean]> = [
     ['Issues forum', config.forumChannels.issues, false],
     ['Feedback/suggestions forum', config.forumChannels.ideas, false],
-    ['Bug reports', config.channelIds.bugReports, !config.forumChannels.issues],
-    ['Crash reports', config.channelIds.crashReports, !config.forumChannels.issues],
-    ['Feedback', config.channelIds.feedbackReports, !config.forumChannels.ideas],
-    ['Performance reports', config.channelIds.performanceReports, true],
-    ['Suggestions', config.channelIds.suggestions, !config.forumChannels.ideas],
+    ...(!config.forumChannels.issues
+      ? [
+        ['Bug reports', config.channelIds.bugReports, true] as [string, string | undefined, boolean],
+        ['Crash reports', config.channelIds.crashReports, true] as [string, string | undefined, boolean],
+        ['Performance reports', config.channelIds.performanceReports, true] as [string, string | undefined, boolean]
+      ]
+      : []),
+    ...(!config.forumChannels.ideas
+      ? [
+        ['Feedback', config.channelIds.feedbackReports, true] as [string, string | undefined, boolean],
+        ['Suggestions', config.channelIds.suggestions, true] as [string, string | undefined, boolean]
+      ]
+      : []),
     ['Spark reports', config.channelIds.sparkReports, true],
     ['Playtest sessions', config.channelIds.playtestSessions, true],
     ['Support', config.channelIds.support, false],
@@ -170,8 +191,9 @@ const configLabels = new Set([
   'Support team role',
   'Q&A team channel',
   'Q&A watch channels',
-  'Playtest terms URL',
-  'Playtest privacy URL',
+  'In-bot playtest policies',
+  'External terms URL',
+  'External privacy URL',
   'Minecraft verify API',
   'Minecraft verify URL'
 ]);

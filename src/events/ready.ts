@@ -35,8 +35,8 @@ function startupWarnings(): string[] {
 
   if (!config.forumChannels.issues && !config.channelIds.bugReports) warnings.push('- `BUG_REPORTS_CHANNEL_ID` or `ISSUES_FORUM_CHANNEL_ID` is not configured.');
   if (!config.forumChannels.issues && !config.channelIds.crashReports) warnings.push('- `CRASH_REPORTS_CHANNEL_ID` or `ISSUES_FORUM_CHANNEL_ID` is not configured.');
+  if (!config.forumChannels.issues && !config.channelIds.performanceReports) warnings.push('- `PERFORMANCE_REPORTS_CHANNEL_ID` or `ISSUES_FORUM_CHANNEL_ID` is not configured.');
   if (!config.forumChannels.ideas && !config.channelIds.feedbackReports) warnings.push('- `FEEDBACK_CHANNEL_ID` or `IDEAS_FORUM_CHANNEL_ID` is not configured.');
-  if (!config.channelIds.performanceReports) warnings.push('- `PERFORMANCE_REPORTS_CHANNEL_ID` is not configured.');
   if (!config.channelIds.sparkReports) warnings.push('- `SPARK_REPORTS_CHANNEL_ID` is not configured.');
   if (!config.channelIds.playtestSessions) warnings.push('- `PLAYTEST_SESSIONS_CHANNEL_ID` is not configured.');
   if (!config.support.teamRoleId) warnings.push('- `SUPPORT_TEAM_ROLE_ID` is not configured; report pings and Other Help ticket staff access will be limited.');
@@ -44,10 +44,6 @@ function startupWarnings(): string[] {
 
   if (config.qa.channelIds.length > 0 && !config.qa.teamChannelId) {
     warnings.push('- `QA_CHANNEL_IDS` is configured, but `QA_TEAM_CHANNEL_ID` is missing.');
-  }
-
-  if (!config.playtest.termsUrl || !config.playtest.privacyUrl) {
-    warnings.push('- Playtest terms/privacy URLs are recommended before gated ZIP distribution.');
   }
 
   if (!config.minecraftVerification.apiEnabled) {

@@ -232,6 +232,7 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
           .addFields(
             { name: 'Game closed or will not launch', value: 'Use crash upload.' },
             { name: 'Something is broken in-game', value: 'Use bug report.' },
+            { name: 'Lag, stutter, FPS, or freezes', value: 'Use performance report.' },
             { name: 'Idea or request', value: 'Use suggestion.' },
             { name: 'Opinion, balance, pacing, or playtest notes', value: 'Use feedback.' },
             { name: 'Private or account/install help', value: 'Use Other Help.' }
@@ -489,6 +490,7 @@ function supportPanelPayload(input: {
     .addFields(
       { name: 'Bug report', value: 'Broken gameplay, bad behavior, missing content, or reproducible issues.', inline: true },
       { name: 'Crash', value: 'Crash reports, latest.log, Java/loader errors, or launch failures.', inline: true },
+      { name: 'Performance issue', value: 'Lag, FPS drops, stutter, freezes, RAM pressure, shaders, or worldgen performance.', inline: true },
       { name: 'Feedback', value: 'Playtest impressions, balance notes, pacing, difficulty, and polish.', inline: true },
       { name: 'Suggestion', value: 'New ideas, quality-of-life requests, content proposals, and voting.', inline: true },
       { name: 'Other help', value: 'Private staff ticket for anything that does not fit the report buttons.', inline: true }
@@ -501,6 +503,7 @@ function supportPanelPayload(input: {
   const primaryButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
     supportButton('bug', 'Bug', ButtonStyle.Danger),
     supportButton('crash', 'Crash', ButtonStyle.Danger),
+    supportButton('performance', 'Performance', ButtonStyle.Primary),
     supportButton('feedback', 'Feedback', ButtonStyle.Primary),
     supportButton('suggestion', 'Suggestion', ButtonStyle.Primary)
   );
@@ -514,7 +517,6 @@ function supportPanelPayload(input: {
     .setCustomId(supportPanelCustomId)
     .setPlaceholder('More support options')
     .addOptions(
-      { label: 'Performance issue', value: 'performance', description: 'Report lag, FPS drops, or stutter.' },
       { label: 'Playtest help', value: 'playtest', description: 'ZIP, CurseForge, session, and Spark guidance.' },
       { label: 'Q&A question', value: 'question', description: 'Ask in a Q&A channel for bot or team help.' },
       { label: 'Other', value: 'other', description: 'Open a private staff ticket.' }

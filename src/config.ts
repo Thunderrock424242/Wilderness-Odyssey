@@ -110,6 +110,7 @@ export const config = {
     bugConfirmed: listFromEnv('BUG_CONFIRMED_FORUM_TAG', ['Confirmed']),
     bugSolved: listFromEnv('BUG_SOLVED_FORUM_TAG', ['Solved']),
     crash: listFromEnv('CRASH_FORUM_TAG', ['Crash']),
+    performance: listFromEnv('PERFORMANCE_FORUM_TAG', ['Performance Issues']),
     feedback: listFromEnv('FEEDBACK_FORUM_TAG', ['Feedback']),
     suggestion: listFromEnv('SUGGESTION_FORUM_TAG', ['Suggestion'])
   },

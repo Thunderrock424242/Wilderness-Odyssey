@@ -73,8 +73,8 @@ Fast path:
 1. Fill `DISCORD_TOKEN`, `CLIENT_ID`, and `GUILD_ID`.
 2. Fill the support hub values: `SUPPORT_CHANNEL_ID`, `SUPPORT_TEAM_ROLE_ID`, and `SUPPORT_TICKET_CATEGORY_ID`.
 3. Fill the forum IDs: `ISSUES_FORUM_CHANNEL_ID` and `IDEAS_FORUM_CHANNEL_ID`.
-4. Make sure your Discord forum tags match `BUG_FORUM_TAG`, `BUG_CONFIRMED_FORUM_TAG`, `BUG_SOLVED_FORUM_TAG`, `CRASH_FORUM_TAG`, `FEEDBACK_FORUM_TAG`, and `SUGGESTION_FORUM_TAG`.
-5. Fill report/playtest channels: `PERFORMANCE_REPORTS_CHANNEL_ID`, `SPARK_REPORTS_CHANNEL_ID`, `PLAYTEST_SESSIONS_CHANNEL_ID`, and `PLAYTEST_CATEGORY_ID`.
+4. Make sure your Discord forum tags match `BUG_FORUM_TAG`, `BUG_CONFIRMED_FORUM_TAG`, `BUG_SOLVED_FORUM_TAG`, `CRASH_FORUM_TAG`, `PERFORMANCE_FORUM_TAG`, `FEEDBACK_FORUM_TAG`, and `SUGGESTION_FORUM_TAG`.
+5. Fill report/playtest channels: `SPARK_REPORTS_CHANNEL_ID`, `PLAYTEST_SESSIONS_CHANNEL_ID`, and `PLAYTEST_CATEGORY_ID`. `PERFORMANCE_REPORTS_CHANNEL_ID` is only needed if you are not using `ISSUES_FORUM_CHANNEL_ID`.
 6. Leave optional Q&A, status text, policy links, and Minecraft verification values blank until you are ready to use those features.
 
 For every Discord channel, category, forum, server, or role value, paste the copied Discord ID number. Do not use `#channel-name` or `@role-name` for ID fields.
@@ -144,12 +144,12 @@ Staff can run `/supportpanel` in a channel to post persistent button/menu panels
 Recommended server layout:
 
 - Put the public support hub in an Information, Start Here, or Welcome category.
-- Put bug/crash and feedback/suggestion forums in a Support or Triage category.
+- Put bug/crash/performance and feedback/suggestion forums in a Support or Triage category.
 - Put private Other Help and crash upload channels in a staff/private support category through `SUPPORT_TICKET_CATEGORY_ID`.
 
-For Discord forum channels, set `ISSUES_FORUM_CHANNEL_ID` for shared bug/crash posts and `IDEAS_FORUM_CHANNEL_ID` for shared feedback/suggestion posts. The bot applies the configured forum tags, defaulting to `Bug`, `Crash`, `Feedback`, and `Suggestion`. Bug threads can also use status tags, defaulting to `Confirmed` and `Solved`, when staff marks the bug as confirmed or solved from inside the forum thread.
+For Discord forum channels, set `ISSUES_FORUM_CHANNEL_ID` for shared bug/crash/performance posts and `IDEAS_FORUM_CHANNEL_ID` for shared feedback/suggestion posts. The bot applies the configured forum tags, defaulting to `Bug`, `Crash`, `Performance Issues`, `Feedback`, and `Suggestion`. Bug threads can also use status tags, defaulting to `Confirmed` and `Solved`, when staff marks the bug as confirmed or solved from inside the forum thread.
 
-Set `SUPPORT_TEAM_ROLE_ID` to the staff/support role that should be pinged on new bug, crash, feedback, and suggestion posts. The same role gets access to private Other Help tickets.
+Set `SUPPORT_TEAM_ROLE_ID` to the staff/support role that should be pinged on new bug, crash, performance, feedback, and suggestion posts. The same role gets access to private Other Help tickets.
 
 Panel types:
 
@@ -164,6 +164,7 @@ Support Hub buttons:
 
 - Bug - shows a quick known-issues check, then opens a bug report modal.
 - Crash - shows a quick known-issues check, then opens a private crash upload channel.
+- Performance - opens a performance report modal and posts to the issues forum with the performance tag.
 - Feedback - opens a feedback modal.
 - Suggestion - opens a suggestion modal with voting on the created forum post.
 - Help Me Pick - shows a short routing menu for users who are not sure.
@@ -171,7 +172,6 @@ Support Hub buttons:
 
 More support options:
 
-- Performance issue - opens a performance report modal.
 - Playtest help - explains playtest ZIP acceptance, `/playtest start`, and report linking.
 - Q&A question - points players to configured Q&A channels.
 
@@ -324,11 +324,18 @@ The bot organizes Spark links; it does not run Minecraft commands inside a playe
 
 Use `/playtest publish` when a dev wants to distribute a closed playtest build.
 
+In-house policy source docs are available in:
+
+- `docs/playtest-terms.md`
+- `docs/privacy-policy.md`
+
+The bot shows compact versions of these policies directly in Discord through `View Terms` and `View Privacy` buttons on each playtest gate. `PLAYTEST_TERMS_URL` and `PLAYTEST_PRIVACY_URL` are optional external copies only.
+
 1. Staff runs `/playtest publish` with the playtest title, modpack version, focus, expected duration, and CurseForge export ZIP.
 2. The bot creates a new playtest channel in `PLAYTEST_CATEGORY_ID` when configured, otherwise in the current channel category.
-3. The bot posts the playtest instructions and an acceptance button.
+3. The bot posts playtest instructions with `View Terms`, `View Privacy`, and `I accept terms and privacy` buttons.
 4. Players verify their Minecraft account with `/minecraft link`, then `/wo link CODE` in the playtest client.
-5. Players can read the terms/privacy notice before clicking `I accept terms and privacy`.
+5. Players can read the in-bot terms/privacy embeds before clicking `I accept terms and privacy`.
 6. After a verified player accepts, the bot privately sends the ZIP download link and CurseForge import steps.
 7. The bot records one acceptance per user for the playtest package.
 8. Verified players use `/playtest start`, `/bugreport`, `/crash`, `/feedback`, `/perfreport`, and `/sparkreport` during the test.

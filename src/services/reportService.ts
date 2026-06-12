@@ -258,16 +258,17 @@ export function reportDestinationForType(type: ReportActionType): string | undef
   return {
     bug: config.forumChannels.issues ?? config.channelIds.bugReports,
     crash: config.forumChannels.issues ?? config.channelIds.crashReports,
-    performance: config.channelIds.performanceReports,
+    performance: config.forumChannels.issues ?? config.channelIds.performanceReports,
     feedback: config.forumChannels.ideas ?? config.channelIds.feedbackReports,
     spark: config.channelIds.sparkReports
   }[type];
 }
 
-export function reportForumTagsForType(type: 'bug' | 'crash' | 'feedback'): string[] {
+export function reportForumTagsForType(type: 'bug' | 'crash' | 'performance' | 'feedback'): string[] {
   return {
     bug: config.forumTags.bug,
     crash: config.forumTags.crash,
+    performance: config.forumTags.performance,
     feedback: config.forumTags.feedback
   }[type];
 }
@@ -524,13 +525,25 @@ export async function handlePerformanceReportModal(interaction: ModalSubmitInter
     activity: interaction.fields.getTextInputValue('activity')
   });
 
-  const posted = await sendToConfiguredChannel(interaction.client, config.channelIds.performanceReports, {
-    embeds: [performanceReportEmbed(report)],
-    components: [reportClaimButtons('performance', report.publicId)]
-  });
+  const posted = await sendToConfiguredChannel(
+    interaction.client,
+    reportDestinationForType('performance'),
+    {
+      content: supportTeamPing('New performance report needs triage.'),
+      allowedMentions: supportTeamAllowedMentions(),
+      embeds: [performanceReportEmbed(report)],
+      components: [reportClaimButtons('performance', report.publicId)]
+    },
+    {
+      forumPost: {
+        title: reportForumTitle(report.publicId, 'Performance', report.lagLocation),
+        tags: reportForumTagsForType('performance')
+      }
+    }
+  );
 
   await interaction.reply({
-    content: `Performance report received. Your report ID is **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but the report was saved locally.'}`,
+    content: `Performance report received. The dev team has been notified. Your report ID is **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but the report was saved locally.'}`,
     components: [reportReceiptButtons('performance', report.publicId)],
     ephemeral: true
   });
