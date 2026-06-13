@@ -26,7 +26,7 @@ The personality is light in-universe support AI: helpful, calm, and a little eer
 - Reports should not include chat logs, passwords, tokens, IP addresses, or personal files.
 - In configured Q&A channels, the bot reads question messages so it can answer known support topics or forward unknown questions to the Q&A team.
 - The bot stores submitted Spark viewer links, but does not scrape private Spark data or run Minecraft commands.
-- A future Minecraft companion mod must call a small backend API/webhook endpoint. Never put the Discord bot token inside a Minecraft mod.
+- A Minecraft server-side mod can complete account verification through a private Discord webhook relay. Never put the Discord bot token inside a Minecraft mod.
 
 ## Setup
 
@@ -37,7 +37,7 @@ The personality is light in-universe support AI: helpful, calm, and a little eer
 5. Invite the bot with OAuth2 scopes:
    - `bot`
    - `applications.commands`
-6. If using Q&A auto-responses, enable Message Content Intent for the bot in the Discord Developer Portal.
+6. If using Q&A auto-responses or Minecraft server verification relay, enable Message Content Intent for the bot in the Discord Developer Portal.
 7. Give the bot permission to send messages, embeds, and buttons in configured report channels.
 8. Install dependencies:
 
@@ -160,18 +160,15 @@ Panel types:
 - Setup doctor - staff-only config, channel, and permission health checks.
 - All player panels - posts Support Hub, player info, and playtest center.
 
-Support Hub buttons:
+Support Hub dropdown options:
 
-- Bug - shows a quick known-issues check, then opens a bug report modal.
-- Crash - shows a quick known-issues check, then opens a private crash upload channel.
-- Performance - opens a performance report modal and posts to the issues forum with the performance tag.
+- Bug report - shows a quick known-issues check, then opens a bug report modal.
+- Crash / logs - shows a quick known-issues check, then opens a private crash upload channel.
+- Performance issue - opens a performance report modal and posts to the issues forum with the performance tag.
 - Feedback - opens a feedback modal.
 - Suggestion - opens a suggestion modal with voting on the created forum post.
-- Help Me Pick - shows a short routing menu for users who are not sure.
-- Other - asks for a summary/details, then creates a private staff ticket.
-
-More support options:
-
+- Help me pick - shows a short routing menu for users who are not sure.
+- Other help - asks for a summary/details, then creates a private staff ticket.
 - Playtest help - explains playtest ZIP acceptance, `/playtest start`, and report linking.
 - Q&A question - points players to configured Q&A channels.
 
@@ -191,17 +188,43 @@ Staff can add reusable canned answers with `/staff qa add`. Each answer has comm
 
 ## Minecraft Verification
 
-Minecraft verification links a Discord user to a Minecraft player without putting a Discord token or shared secret in the playtest client.
+Minecraft verification links a Discord user to a Minecraft player without putting a Discord bot token in a Minecraft mod.
 
-Flow:
+Recommended server relay flow:
 
 1. Player runs `/minecraft link` in Discord.
 2. The bot gives a one-time code that expires after `MINECRAFT_VERIFY_CODE_TTL_MINUTES`.
-3. Player runs `/wo link <code>` in the playtest client.
-4. The Wilderness Oddesy API mod sends the code, Minecraft UUID, and Minecraft name to the bot API.
-5. The bot stores the link in `minecraft_links`.
+3. Player joins the official playtest Minecraft server.
+4. Player runs `/wo link <code>` on that server.
+5. The server-side Wilderness Oddesy API mod sends the code, Minecraft UUID, and Minecraft name to a private Discord webhook relay channel.
+6. The Discord bot reads that private relay message and stores the link in `minecraft_links`.
+7. If `MINECRAFT_VERIFIED_ROLE_ID` is configured, the bot also gives the player that Discord role.
 
-Enable the API on the Discord bot host:
+Create a private text channel for the relay, then create a Discord webhook in that channel. Put the webhook URL only in the Minecraft server config. Put the channel ID and optional exact webhook ID in the bot `.env`:
+
+```env
+MINECRAFT_VERIFY_RELAY_CHANNEL_ID=123456789012345678
+MINECRAFT_VERIFY_RELAY_WEBHOOK_ID=123456789012345678
+MINECRAFT_VERIFIED_ROLE_ID=123456789012345678
+MINECRAFT_VERIFY_CODE_TTL_MINUTES=15
+```
+
+The server-side mod should post this JSON as the webhook message content:
+
+```json
+{
+  "type": "wo_minecraft_verify",
+  "code": "ABC234",
+  "minecraftUuid": "player-uuid",
+  "minecraftName": "PlayerName"
+}
+```
+
+If `MINECRAFT_VERIFY_RELAY_WEBHOOK_ID` is set, the bot rejects relay messages from any other webhook. If it is blank, keep the relay channel private so only the server webhook and staff can post there.
+
+Optional client API fallback:
+
+Enable the API on the Discord bot host only if the bot has a public URL that playtest clients can reach:
 
 ```env
 MINECRAFT_VERIFY_API_ENABLED=true
@@ -221,7 +244,7 @@ requestTimeoutSeconds = 10
 rememberLinkedAccount = true
 ```
 
-Do not include `/api/minecraft/verify` in `verification.apiBaseUrl`; the mod appends that endpoint path itself.
+Do not include `/api/minecraft/verify` in `verification.apiBaseUrl`; the client mod appends that endpoint path itself.
 
 The client mod should send:
 
@@ -255,9 +278,10 @@ If `STAFF_LOG_CHANNEL_ID` or `STAFF_REVIEW_CHANNEL_ID` is configured, the bot po
 
 ## Staff Commands
 
-Staff commands require administrator, manage server, or moderator permissions.
+Staff commands require administrator, manage server, or moderator permissions. `/shutdown` is more restricted and requires administrator or manage server permissions plus `confirm:shutdown`.
 
 - `/supportpanel` - posts support/info/playtest/staff button/menu panels.
+- `/shutdown confirm:shutdown reason:<optional>` - safely shuts down the bot process after replying.
 - `/staff bug status <id> <status>`
 - `/staff crash status <id> <status>`
 - `/staff suggestion status <id> <status>`
@@ -311,7 +335,7 @@ Bug report embeds include staff buttons for confirmed, solved, investigating, fi
 
 The bot organizes Spark links; it does not run Minecraft commands inside a player game.
 
-1. Verify your Minecraft account with `/minecraft link`, then `/wo link CODE` in the playtest client.
+1. Verify your Minecraft account with `/minecraft link`, then join the playtest server and run `/wo link CODE`.
 2. Run `/playtest start`.
 3. Start Minecraft and load into the test world.
 4. If testing server TPS or world lag, run Spark during the lag period.
@@ -334,7 +358,7 @@ The bot shows compact versions of these policies directly in Discord through `Vi
 1. Staff runs `/playtest publish` with the playtest title, modpack version, focus, expected duration, and CurseForge export ZIP.
 2. The bot creates a new playtest channel in `PLAYTEST_CATEGORY_ID` when configured, otherwise in the current channel category.
 3. The bot posts playtest instructions with `View Terms`, `View Privacy`, and `I accept terms and privacy` buttons.
-4. Players verify their Minecraft account with `/minecraft link`, then `/wo link CODE` in the playtest client.
+4. Players verify their Minecraft account with `/minecraft link`, then join the playtest server and run `/wo link CODE`.
 5. Players can read the in-bot terms/privacy embeds before clicking `I accept terms and privacy`.
 6. After a verified player accepts, the bot privately sends the ZIP download link and CurseForge import steps.
 7. The bot records one acceptance per user for the playtest package.

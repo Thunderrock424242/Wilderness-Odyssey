@@ -9,7 +9,7 @@ export const helpCommand: SlashCommand = {
   async execute(interaction) {
     await interaction.reply({
       ...helpPayload(),
-      ephemeral: true
+      flags: 'Ephemeral'
     });
   }
 };

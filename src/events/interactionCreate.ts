@@ -37,7 +37,7 @@ export async function handleInteraction(
       if (!command) {
         await interaction.reply({
           content: 'That command is not loaded in the local support console.',
-          ephemeral: true
+          flags: 'Ephemeral'
         });
         return;
       }
@@ -134,8 +134,8 @@ export async function handleInteraction(
     if (interaction.isRepliable()) {
       const message = {
         content: 'The support console hit an error while processing that. Please try again or contact staff.',
-        ephemeral: true
-      };
+        flags: 'Ephemeral'
+      } as const;
 
       if (interaction.deferred || interaction.replied) {
         await interaction.followUp(message).catch(() => undefined);

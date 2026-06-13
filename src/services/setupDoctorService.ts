@@ -65,13 +65,39 @@ function requiredConfigChecks(): CheckLine[] {
       detail: config.playtest.privacyUrl ? 'Configured.' : 'Optional external copy not configured.'
     },
     {
-      state: config.minecraftVerification.apiEnabled ? 'OK' : 'WARN',
-      label: 'Minecraft verify API',
-      detail: config.minecraftVerification.apiEnabled
-        ? `Enabled on ${config.minecraftVerification.apiHost}:${config.minecraftVerification.apiPort}.`
-        : 'Disabled; in-game /wo link cannot complete codes.'
+      state: config.minecraftVerification.relayChannelId || config.minecraftVerification.apiEnabled ? 'OK' : 'WARN',
+      label: 'Minecraft verify method',
+      detail: config.minecraftVerification.relayChannelId
+        ? 'Server relay enabled; in-game /wo link posts through a private Discord webhook.'
+        : config.minecraftVerification.apiEnabled
+          ? `Client API enabled on ${config.minecraftVerification.apiHost}:${config.minecraftVerification.apiPort}.`
+          : 'Not configured; enable server relay or the client API path.'
     },
-    checkValue('Minecraft verify URL', config.minecraftVerification.publicBaseUrl, 'Recommended so Discord can show the base URL for the mod client config.')
+    {
+      state: config.minecraftVerification.relayChannelId && !config.minecraftVerification.relayWebhookId ? 'WARN' : 'OK',
+      label: 'Minecraft relay webhook',
+      detail: config.minecraftVerification.relayWebhookId
+        ? 'Exact webhook ID restriction configured.'
+        : config.minecraftVerification.relayChannelId
+          ? 'Recommended so only the server webhook can complete links.'
+          : 'Not needed unless server relay is enabled.'
+    },
+    {
+      state: config.minecraftVerification.verifiedRoleId ? 'OK' : 'WARN',
+      label: 'Minecraft verified role',
+      detail: config.minecraftVerification.verifiedRoleId
+        ? 'Configured.'
+        : 'Optional; configure this if verified players should get a Discord role.'
+    },
+    {
+      state: !config.minecraftVerification.apiEnabled || config.minecraftVerification.publicBaseUrl ? 'OK' : 'WARN',
+      label: 'Minecraft verify URL',
+      detail: config.minecraftVerification.apiEnabled
+        ? config.minecraftVerification.publicBaseUrl
+          ? 'Configured.'
+          : 'Needed only for the client API path.'
+        : 'Not needed unless the client API path is enabled.'
+    }
   ];
 }
 
@@ -133,6 +159,7 @@ async function channelChecks(interaction: StringSelectMenuInteraction): Promise<
       : []),
     ['Spark reports', config.channelIds.sparkReports, true],
     ['Playtest sessions', config.channelIds.playtestSessions, true],
+    ['Minecraft verify relay', config.minecraftVerification.relayChannelId, false],
     ['Support', config.channelIds.support, false],
     ['Q&A team', config.qa.teamChannelId, config.qa.channelIds.length > 0],
     ['Support ticket category', config.channelIds.supportTicketCategory, false],
@@ -194,7 +221,9 @@ const configLabels = new Set([
   'In-bot playtest policies',
   'External terms URL',
   'External privacy URL',
-  'Minecraft verify API',
+  'Minecraft verify method',
+  'Minecraft relay webhook',
+  'Minecraft verified role',
   'Minecraft verify URL'
 ]);
 
@@ -218,6 +247,7 @@ const channelLabels = new Set([
   'Suggestions',
   'Spark reports',
   'Playtest sessions',
+  'Minecraft verify relay',
   'Support',
   'Q&A team',
   'Support ticket category',

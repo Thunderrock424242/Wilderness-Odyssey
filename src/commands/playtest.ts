@@ -291,7 +291,7 @@ export const playtestCommand: SlashCommand = {
           'For Forge/Fabric client installs, Spark may use `/sparkc` instead of `/spark`.',
           'After Spark finishes, copy the Spark viewer link and submit it with `/sparkreport`.'
         ].join('\n'),
-        ephemeral: true
+        flags: 'Ephemeral'
       });
       return;
     }
@@ -302,7 +302,7 @@ export const playtestCommand: SlashCommand = {
       }
 
       if (!interaction.guild) {
-        await interaction.reply({ content: 'Playtest channels can only be created inside a Discord server.', ephemeral: true });
+        await interaction.reply({ content: 'Playtest channels can only be created inside a Discord server.', flags: 'Ephemeral' });
         return;
       }
 
@@ -310,7 +310,7 @@ export const playtestCommand: SlashCommand = {
       if (!botMember?.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
         await interaction.reply({
           content: 'I need the Manage Channels permission before I can create playtest channels.',
-          ephemeral: true
+          flags: 'Ephemeral'
         });
         return;
       }
@@ -319,7 +319,7 @@ export const playtestCommand: SlashCommand = {
       if (!packageFile.name.toLowerCase().endsWith('.zip')) {
         await interaction.reply({
           content: 'Please attach a CurseForge export ZIP. The file name should end with `.zip`.',
-          ephemeral: true
+          flags: 'Ephemeral'
         });
         return;
       }
@@ -377,7 +377,7 @@ export const playtestCommand: SlashCommand = {
 
       await interaction.reply({
         content: `Published ${release.publicId} in <#${channel.id}>. Testers will receive the ZIP link only after accepting the playtest terms/privacy notice.`,
-        ephemeral: true
+        flags: 'Ephemeral'
       });
       return;
     }
@@ -395,7 +395,7 @@ export const playtestCommand: SlashCommand = {
       });
 
       if (!session) {
-        await interaction.reply({ content: `No playtest session found for ${sessionId}.`, ephemeral: true });
+        await interaction.reply({ content: `No playtest session found for ${sessionId}.`, flags: 'Ephemeral' });
         return;
       }
 
@@ -406,7 +406,7 @@ export const playtestCommand: SlashCommand = {
 
       await interaction.reply({
         content: `Playtest session **${session.publicId}** ended and summarized.`,
-        ephemeral: true
+        flags: 'Ephemeral'
       });
       return;
     }
@@ -418,7 +418,7 @@ export const playtestCommand: SlashCommand = {
 
       await interaction.reply({
         embeds: [playtestListEmbed(listRecentPlaytestSessions())],
-        ephemeral: true
+        flags: 'Ephemeral'
       });
       return;
     }
@@ -431,13 +431,13 @@ export const playtestCommand: SlashCommand = {
       const sessionId = interaction.options.getString('session_id', true);
       const session = getPlaytestSession(sessionId);
       if (!session) {
-        await interaction.reply({ content: `No playtest session found for ${sessionId}.`, ephemeral: true });
+        await interaction.reply({ content: `No playtest session found for ${sessionId}.`, flags: 'Ephemeral' });
         return;
       }
 
       await interaction.reply({
         embeds: [playtestSessionEmbed(session, listLinkedReports(session.publicId))],
-        ephemeral: true
+        flags: 'Ephemeral'
       });
       return;
     }
@@ -461,7 +461,7 @@ export const playtestCommand: SlashCommand = {
         baseEmbed('Playtesting Checklist', 'Singleplayer stability route for brave testers.')
           .addFields({ name: 'Checklist', value: checklist.map((item) => `- ${item}`).join('\n') })
       ],
-      ephemeral: true
+      flags: 'Ephemeral'
     });
   }
 };
@@ -514,7 +514,7 @@ export async function handlePlaytestPanelModal(interaction: ModalSubmitInteracti
       'Use this session ID when submitting bugs, feedback, crashes, performance reports, or Spark links.',
       'If testing lag, run Spark during the lag period and submit the viewer link from the playtest panel or `/sparkreport`.'
     ].join('\n'),
-    ephemeral: true
+    flags: 'Ephemeral'
   });
 
   return true;
@@ -530,7 +530,7 @@ export async function handlePlaytestReleaseButton(interaction: ButtonInteraction
   if (!release) {
     await interaction.reply({
       content: 'That playtest package could not be found. Ask staff to republish the playtest gate.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -538,7 +538,7 @@ export async function handlePlaytestReleaseButton(interaction: ButtonInteraction
   if (releaseAction.type === 'terms') {
     await interaction.reply({
       embeds: playtestTermsEmbeds(),
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -546,7 +546,7 @@ export async function handlePlaytestReleaseButton(interaction: ButtonInteraction
   if (releaseAction.type === 'privacy') {
     await interaction.reply({
       embeds: playtestPrivacyPolicyEmbeds(),
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -554,7 +554,7 @@ export async function handlePlaytestReleaseButton(interaction: ButtonInteraction
   if (release.status !== 'active') {
     await interaction.reply({
       content: `${release.publicId} is no longer accepting new testers.`,
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -571,7 +571,7 @@ export async function handlePlaytestReleaseButton(interaction: ButtonInteraction
 
   await interaction.reply({
     content: playtestDownloadInstructions(release),
-    ephemeral: true
+    flags: 'Ephemeral'
   });
   return true;
 }
@@ -582,24 +582,38 @@ async function requireMinecraftVerification(interaction: PlaytestGateInteraction
     return true;
   }
 
-  const configNote = config.minecraftVerification.apiEnabled
-    ? config.minecraftVerification.publicBaseUrl
-      ? null
-      : 'Staff note: the verification API is enabled, but `MINECRAFT_VERIFY_PUBLIC_URL` is not configured yet.'
-    : 'Staff note: the Minecraft verification API is disabled, so staff needs to enable it before testers can finish linking.';
-
   await interaction.reply({
     content: [
       'Minecraft verification is required before joining a playtest.',
       '',
-      'Run `/minecraft link` in Discord to get a one-time code, then run `/wo link CODE` in the playtest client.',
+      minecraftVerificationGateInstruction(),
       'After it links successfully, come back and try this playtest action again.',
-      configNote
+      minecraftVerificationGateSetupNote()
     ].filter(Boolean).join('\n'),
-    ephemeral: true
+    flags: 'Ephemeral'
   });
 
   return false;
+}
+
+function minecraftVerificationGateInstruction(): string {
+  return config.minecraftVerification.relayChannelId
+    ? 'Run `/minecraft link` in Discord to get a one-time code, then join the playtest server and run `/wo link CODE` there.'
+    : 'Run `/minecraft link` in Discord to get a one-time code, then run `/wo link CODE` in the playtest client.';
+}
+
+function minecraftVerificationGateSetupNote(): string | null {
+  if (config.minecraftVerification.relayChannelId) {
+    return null;
+  }
+
+  if (config.minecraftVerification.apiEnabled) {
+    return config.minecraftVerification.publicBaseUrl
+      ? null
+      : 'Staff note: the verification API is enabled, but `MINECRAFT_VERIFY_PUBLIC_URL` is not configured yet.';
+  }
+
+  return 'Staff note: Minecraft verification is not configured yet. Staff can enable the server relay or the client API path.';
 }
 
 function playtestReleaseAction(customId: string): { type: 'accept' | 'terms' | 'privacy'; publicId: string } | null {

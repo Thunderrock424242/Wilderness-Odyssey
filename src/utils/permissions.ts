@@ -30,7 +30,7 @@ export async function requireStaff(interaction: StaffInteraction): Promise<boole
 
   await interaction.reply({
     content: 'Staff systems are locked. You need administrator, manage server, or moderator permissions to use this.',
-    ephemeral: true
+    flags: 'Ephemeral'
   });
 
   return false;

@@ -335,7 +335,7 @@ export async function beginBugReport(interaction: ChatInputCommandInteraction): 
   if (sparkLink && !isSparkReportUrl(sparkLink)) {
     await interaction.reply({
       content: 'That Spark link does not look like a public Spark viewer/report URL. You can leave it blank or submit a valid Spark link.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return;
   }
@@ -394,13 +394,13 @@ export async function handleBugReportModal(interaction: ModalSubmitInteraction):
   if (!draft || draft.userId !== interaction.user.id) {
     await interaction.reply({
       content: 'That bug report form expired. Please run `/bugreport` again.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return;
   }
 
   bugDrafts.delete(draftId);
-  await interaction.deferReply({ ephemeral: true });
+  await interaction.deferReply({ flags: 'Ephemeral' });
 
   let redactedLog: string | null = null;
   if (draft.logAttachmentUrl && draft.logAttachmentName && draft.logAttachmentSize !== null) {
@@ -503,7 +503,7 @@ export async function handlePerformanceReportModal(interaction: ModalSubmitInter
   if (!draft || draft.userId !== interaction.user.id) {
     await interaction.reply({
       content: 'That performance report form expired. Please run `/perfreport` again.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return;
   }
@@ -545,7 +545,7 @@ export async function handlePerformanceReportModal(interaction: ModalSubmitInter
   await interaction.reply({
     content: `Performance report received. The dev team has been notified. Your report ID is **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but the report was saved locally.'}`,
     components: [reportReceiptButtons('performance', report.publicId)],
-    ephemeral: true
+    flags: 'Ephemeral'
   });
 }
 
@@ -582,7 +582,7 @@ export async function handleFeedbackModal(interaction: ModalSubmitInteraction): 
   if (!draft || draft.userId !== interaction.user.id) {
     await interaction.reply({
       content: 'That feedback form expired. Please run `/feedback` again.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return;
   }
@@ -621,7 +621,7 @@ export async function handleFeedbackModal(interaction: ModalSubmitInteraction): 
   await interaction.reply({
     content: `Field notes received. Your feedback ID is **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but the report was saved locally.'}`,
     components: [reportReceiptButtons('feedback', report.publicId)],
-    ephemeral: true
+    flags: 'Ephemeral'
   });
 }
 
@@ -881,7 +881,7 @@ export async function handleReportActionButton(interaction: ButtonInteraction): 
     const [, type, publicId] = interaction.customId.split(':') as [string, Exclude<ReportActionType, 'feedback'>, string];
     const updated = claimReport(type, publicId, interaction.user.id, interaction.user.tag);
     if (!updated) {
-      await interaction.reply({ content: `No report found for ${publicId}.`, ephemeral: true });
+      await interaction.reply({ content: `No report found for ${publicId}.`, flags: 'Ephemeral' });
       return true;
     }
 
@@ -889,7 +889,7 @@ export async function handleReportActionButton(interaction: ButtonInteraction): 
     if (messageUpdate) {
       await interaction.update(messageUpdate);
     } else {
-      await interaction.reply({ content: `Claimed ${publicId}.`, ephemeral: true });
+      await interaction.reply({ content: `Claimed ${publicId}.`, flags: 'Ephemeral' });
     }
     return true;
   }
@@ -898,14 +898,14 @@ export async function handleReportActionButton(interaction: ButtonInteraction): 
     const [, type, publicId] = interaction.customId.split(':') as [string, ReportActionType, string];
     const owner = getReportOwner(type, publicId);
     if (!owner) {
-      await interaction.reply({ content: `No report found for ${publicId}.`, ephemeral: true });
+      await interaction.reply({ content: `No report found for ${publicId}.`, flags: 'Ephemeral' });
       return true;
     }
 
     if (owner.userId !== interaction.user.id && !isStaff(interaction)) {
       await interaction.reply({
         content: 'Only the report submitter or staff can add more information to this report.',
-        ephemeral: true
+        flags: 'Ephemeral'
       });
       return true;
     }
@@ -929,14 +929,14 @@ export async function handleReportUpdateModal(interaction: ModalSubmitInteractio
   const [, type, publicId] = interaction.customId.split(':') as [string, ReportActionType, string];
   const owner = getReportOwner(type, publicId);
   if (!owner) {
-    await interaction.reply({ content: `No report found for ${publicId}.`, ephemeral: true });
+    await interaction.reply({ content: `No report found for ${publicId}.`, flags: 'Ephemeral' });
     return true;
   }
 
   if (owner.userId !== interaction.user.id && !isStaff(interaction)) {
     await interaction.reply({
       content: 'Only the report submitter or staff can add more information to this report.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -958,7 +958,7 @@ export async function handleReportUpdateModal(interaction: ModalSubmitInteractio
 
   await interaction.reply({
     content: `Added more information to **${normalizeReportId(publicId)}**.`,
-    ephemeral: true
+    flags: 'Ephemeral'
   });
   return true;
 }
@@ -1214,7 +1214,7 @@ export async function handleBugStatusButton(interaction: ButtonInteraction): Pro
   if (!publicId || !status) {
     await interaction.reply({
       content: 'That bug status button is malformed.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -1225,7 +1225,7 @@ export async function handleBugStatusButton(interaction: ButtonInteraction): Pro
   if (!updated || !report) {
     await interaction.reply({
       content: `No bug report found for ${publicId}.`,
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }

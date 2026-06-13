@@ -23,7 +23,7 @@ export const crashCommand: SlashCommand = {
         .setRequired(false)
     ),
   async execute(interaction) {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ flags: 'Ephemeral' });
 
     try {
       const attachment = interaction.options.getAttachment('file', true);

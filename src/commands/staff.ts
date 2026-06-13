@@ -324,7 +324,7 @@ export const staffCommand: SlashCommand = {
 
       await interaction.reply({
         content: updated ? `Bug report ${id.toUpperCase()} marked **${status}**.` : `No bug report found for ${id}.`,
-        ephemeral: true
+        flags: 'Ephemeral'
       });
       return;
     }
@@ -335,7 +335,7 @@ export const staffCommand: SlashCommand = {
       const updated = updateReportStatus('crash', id, status);
       await interaction.reply({
         content: updated ? `Crash report ${id.toUpperCase()} marked **${status}**.` : `No crash report found for ${id}.`,
-        ephemeral: true
+        flags: 'Ephemeral'
       });
       return;
     }
@@ -350,7 +350,7 @@ export const staffCommand: SlashCommand = {
       const removed = removeKnownIssue(id);
       await interaction.reply({
         content: removed ? `Known issue #${id} removed.` : `No known issue found for #${id}.`,
-        ephemeral: true
+        flags: 'Ephemeral'
       });
       return;
     }
@@ -359,7 +359,7 @@ export const staffCommand: SlashCommand = {
       const id = interaction.options.getInteger('id', true);
       const issue = getKnownIssue(id);
       if (!issue) {
-        await interaction.reply({ content: `No known issue found for #${id}.`, ephemeral: true });
+        await interaction.reply({ content: `No known issue found for #${id}.`, flags: 'Ephemeral' });
         return;
       }
 
@@ -379,7 +379,7 @@ export const staffCommand: SlashCommand = {
       await interaction.reply({
         content: suggestion ? `Suggestion ${suggestion.publicId} marked **${status}**.` : `No suggestion found for ${id}.`,
         embeds: suggestion ? [suggestionEmbed(suggestion, getSuggestionVoteCounts(suggestion.publicId))] : [],
-        ephemeral: true
+        flags: 'Ephemeral'
       });
       return;
     }
@@ -391,7 +391,7 @@ export const staffCommand: SlashCommand = {
       await interaction.reply({
         content: report ? `Spark report ${report.publicId} marked **${status}**.` : `No Spark report found for ${id}.`,
         embeds: report ? [sparkReportEmbed(report, getPlaytestSession(report.sessionPublicId))] : [],
-        ephemeral: true
+        flags: 'Ephemeral'
       });
       return;
     }
@@ -417,11 +417,11 @@ export const staffCommand: SlashCommand = {
               : suggestionReportEmbed(id);
 
       if (!embed) {
-        await interaction.reply({ content: `No report found for ${id}.`, ephemeral: true });
+        await interaction.reply({ content: `No report found for ${id}.`, flags: 'Ephemeral' });
         return;
       }
 
-      await interaction.reply({ embeds: [embed], ephemeral: true });
+      await interaction.reply({ embeds: [embed], flags: 'Ephemeral' });
       return;
     }
 
@@ -429,7 +429,7 @@ export const staffCommand: SlashCommand = {
       const keyword = interaction.options.getString('keyword', true);
       await interaction.reply({
         embeds: [searchResultsEmbed(keyword, searchReports(keyword))],
-        ephemeral: true
+        flags: 'Ephemeral'
       });
       return;
     }
@@ -442,7 +442,7 @@ export const staffCommand: SlashCommand = {
     if (group === 'qa' && subcommand === 'list') {
       await interaction.reply({
         embeds: [qaAnswerListEmbed()],
-        ephemeral: true
+        flags: 'Ephemeral'
       });
       return;
     }
@@ -452,7 +452,7 @@ export const staffCommand: SlashCommand = {
       const removed = removeQaAnswer(id);
       await interaction.reply({
         content: removed ? `Q&A answer #${id} disabled.` : `No Q&A answer found for #${id}.`,
-        ephemeral: true
+        flags: 'Ephemeral'
       });
     }
   }
@@ -479,7 +479,7 @@ export async function handleStaffModal(interaction: ModalSubmitInteraction): Pro
     await interaction.reply({
       content: `Known issue #${issue.id} added.`,
       embeds: [knownIssuesEmbed([issue])],
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -496,7 +496,7 @@ export async function handleStaffModal(interaction: ModalSubmitInteraction): Pro
     await interaction.reply({
       content: issue ? `Known issue #${id} updated.` : `No known issue found for #${id}.`,
       embeds: issue ? [knownIssuesEmbed([issue])] : [],
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -512,7 +512,7 @@ export async function handleStaffModal(interaction: ModalSubmitInteraction): Pro
     await interaction.reply({
       content: `Changelog entry for ${entry.version} added.`,
       embeds: [changelogEmbed([entry])],
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -528,7 +528,7 @@ export async function handleStaffModal(interaction: ModalSubmitInteraction): Pro
     await interaction.reply({
       content: `Q&A answer #${answer.id} added.`,
       embeds: [qaAnswerListEmbed()],
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -540,7 +540,7 @@ export async function handleStaffModal(interaction: ModalSubmitInteraction): Pro
     await interaction.reply({
       content: report ? `Staff notes updated for ${report.publicId}.` : `No Spark report found for ${publicId}.`,
       embeds: report ? [sparkReportEmbed(report, getPlaytestSession(report.sessionPublicId))] : [],
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }

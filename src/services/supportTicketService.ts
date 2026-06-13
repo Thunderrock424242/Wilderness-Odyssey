@@ -53,7 +53,7 @@ export async function handleSupportTicketButton(interaction: ButtonInteraction):
   if (!isSupportTeamMember(interaction)) {
     await interaction.reply({
       content: 'Only staff/support can use ticket controls.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -77,7 +77,7 @@ export async function handleSupportTicketButton(interaction: ButtonInteraction):
     const target = action.slice('route:'.length);
     await interaction.reply({
       content: routeInstructions(target),
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -95,7 +95,7 @@ async function createOtherHelpTicket(input: {
   if (!interaction.guild) {
     await interaction.reply({
       content: 'Other Help tickets can only be created inside the Discord server.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return;
   }
@@ -104,7 +104,7 @@ async function createOtherHelpTicket(input: {
   if (!botMember?.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
     await interaction.reply({
       content: 'I need the Manage Channels permission before I can create private support tickets.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return;
   }
@@ -135,7 +135,7 @@ async function createOtherHelpTicket(input: {
 
   await interaction.reply({
     content: `Created your private support ticket: <#${channel.id}>.`,
-    ephemeral: true
+    flags: 'Ephemeral'
   });
 }
 
@@ -262,7 +262,7 @@ function isSupportTeamMember(interaction: ButtonInteraction): boolean {
 async function closeTicket(interaction: ButtonInteraction): Promise<void> {
   const channel = interaction.channel;
   if (!channel || channel.type !== ChannelType.GuildText) {
-    await interaction.reply({ content: 'This ticket control can only be used in a server text channel.', ephemeral: true });
+    await interaction.reply({ content: 'This ticket control can only be used in a server text channel.', flags: 'Ephemeral' });
     return;
   }
 

@@ -38,15 +38,15 @@ export const minecraftCommand: SlashCommand = {
 
       await interaction.reply({
         embeds: [
-          baseEmbed('Minecraft Verification', 'Use this one-time code in your playtest client.')
+          baseEmbed('Minecraft Verification', minecraftVerificationIntro())
             .addFields(
               { name: 'Code', value: `\`${code.code}\``, inline: true },
               { name: 'Expires', value: `${config.minecraftVerification.codeTtlMinutes} minutes`, inline: true },
-              { name: 'In Minecraft', value: `Run \`/wo link ${code.code}\`.` },
-              { name: 'Client config', value: verificationClientConfigText() }
+              { name: 'In Minecraft', value: minecraftLinkCommandText(code.code) },
+              { name: 'Verification setup', value: verificationSetupText() }
             )
         ],
-        ephemeral: true
+        flags: 'Ephemeral'
       });
       return;
     }
@@ -57,7 +57,7 @@ export const minecraftCommand: SlashCommand = {
         content: link
           ? `Linked to **${link.minecraftName}** (\`${link.minecraftUuid}\`).`
           : 'No Minecraft account is linked yet. Use `/minecraft link` to generate a code.',
-        ephemeral: true
+        flags: 'Ephemeral'
       });
       return;
     }
@@ -65,12 +65,28 @@ export const minecraftCommand: SlashCommand = {
     const removed = removeMinecraftLink(interaction.user.id);
     await interaction.reply({
       content: removed ? 'Your Minecraft account link was removed.' : 'No Minecraft account link was found.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
   }
 };
 
-function verificationClientConfigText(): string {
+function minecraftVerificationIntro(): string {
+  return config.minecraftVerification.relayChannelId
+    ? 'Use this one-time code on the official playtest Minecraft server.'
+    : 'Use this one-time code in your playtest client.';
+}
+
+function minecraftLinkCommandText(code: string): string {
+  return config.minecraftVerification.relayChannelId
+    ? `Join the playtest server and run \`/wo link ${code}\` there.`
+    : `Run \`/wo link ${code}\` in the playtest client.`;
+}
+
+function verificationSetupText(): string {
+  if (config.minecraftVerification.relayChannelId) {
+    return 'Server relay is configured. Players do not need a bot API URL in their client config.';
+  }
+
   if (config.minecraftVerification.publicBaseUrl) {
     return `Set \`verification.apiBaseUrl\` to \`${config.minecraftVerification.publicBaseUrl.replace(/\/$/, '')}\`.`;
   }

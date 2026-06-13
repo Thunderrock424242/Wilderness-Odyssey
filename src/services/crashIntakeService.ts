@@ -33,7 +33,7 @@ export async function beginCrashUploadIntake(interaction: CrashIntakeInteraction
   if (!interaction.guild) {
     await interaction.reply({
       content: 'Crash upload intake can only be created inside the Discord server.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return;
   }
@@ -42,7 +42,7 @@ export async function beginCrashUploadIntake(interaction: CrashIntakeInteraction
   if (!botMember?.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
     await interaction.reply({
       content: 'I need the Manage Channels permission before I can create a private crash upload channel. Use `/crash file:` for now.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return;
   }
@@ -80,7 +80,7 @@ export async function beginCrashUploadIntake(interaction: CrashIntakeInteraction
 
   await interaction.reply({
     content: `Created a private crash upload channel: <#${channel.id}>. Upload your log there.`,
-    ephemeral: true
+    flags: 'Ephemeral'
   });
 }
 

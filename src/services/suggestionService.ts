@@ -77,13 +77,13 @@ export async function handleSuggestionModal(interaction: ModalSubmitInteraction)
   if (!draft || draft.userId !== interaction.user.id) {
     await interaction.reply({
       content: 'That suggestion form expired. Please run `/suggest` again.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return;
   }
 
   suggestionDrafts.delete(draftId);
-  await interaction.deferReply({ ephemeral: true });
+  await interaction.deferReply({ flags: 'Ephemeral' });
 
   const suggestion = createSuggestion({
     userId: interaction.user.id,
@@ -197,7 +197,7 @@ export async function handleSuggestionVoteButton(interaction: ButtonInteraction)
   if (!publicId || !vote) {
     await interaction.reply({
       content: 'That suggestion vote button is malformed.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -207,7 +207,7 @@ export async function handleSuggestionVoteButton(interaction: ButtonInteraction)
   if (!suggestion) {
     await interaction.reply({
       content: `No suggestion found for ${publicId}.`,
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -232,7 +232,7 @@ export async function handleSuggestionVoteButton(interaction: ButtonInteraction)
 
   await interaction.followUp({
     content: `Vote recorded for **${suggestion.publicId}**.`,
-    ephemeral: true
+    flags: 'Ephemeral'
   });
 
   return true;

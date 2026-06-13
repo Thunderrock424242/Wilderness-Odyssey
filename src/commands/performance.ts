@@ -18,6 +18,6 @@ export const performanceCommand: SlashCommand = {
         { name: 'Submit a report', value: 'Use `/perfreport` when you want staff to archive a structured performance report.' }
       );
 
-    await interaction.reply({ embeds: [embed], ephemeral: true });
+    await interaction.reply({ embeds: [embed], flags: 'Ephemeral' });
   }
 };

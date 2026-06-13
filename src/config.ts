@@ -139,6 +139,9 @@ export const config = {
     apiHost: optional('MINECRAFT_VERIFY_API_HOST') ?? '0.0.0.0',
     apiPort: numberFromEnv('MINECRAFT_VERIFY_API_PORT', 3000),
     publicBaseUrl: optional('MINECRAFT_VERIFY_PUBLIC_URL'),
+    relayChannelId: optional('MINECRAFT_VERIFY_RELAY_CHANNEL_ID'),
+    relayWebhookId: optional('MINECRAFT_VERIFY_RELAY_WEBHOOK_ID'),
+    verifiedRoleId: optional('MINECRAFT_VERIFIED_ROLE_ID'),
     codeTtlMinutes: numberFromEnv('MINECRAFT_VERIFY_CODE_TTL_MINUTES', 15)
   },
   logging: {

@@ -15,6 +15,7 @@ import { statusCommand } from './status';
 import { suggestCommand } from './suggest';
 import { sparkReportCommand } from './sparkreport';
 import { supportPanelCommand } from './supportpanel';
+import { shutdownCommand } from './shutdown';
 
 export const commands: SlashCommand[] = [
   helpCommand,
@@ -31,6 +32,7 @@ export const commands: SlashCommand[] = [
   suggestCommand,
   sparkReportCommand,
   supportPanelCommand,
+  shutdownCommand,
   staffCommand,
   privacyCommand
 ];

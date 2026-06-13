@@ -115,7 +115,7 @@ export const sparkReportCommand: SlashCommand = {
         .setRequired(false)
     ),
   async execute(interaction) {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ flags: 'Ephemeral' });
 
     try {
       const sparkUrl = interaction.options.getString('spark_url', true);

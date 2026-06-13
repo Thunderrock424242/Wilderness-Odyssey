@@ -9,7 +9,7 @@ export const privacyCommand: SlashCommand = {
   async execute(interaction) {
     await interaction.reply({
       embeds: [privacyEmbed()],
-      ephemeral: true
+      flags: 'Ephemeral'
     });
   }
 };

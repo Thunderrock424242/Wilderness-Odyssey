@@ -7,9 +7,10 @@ import { handleInteraction } from './events/interactionCreate';
 import { handleReady } from './events/ready';
 import { captureException, initErrorTracking } from './services/errorTracking';
 import { handleCrashIntakeMessage } from './services/crashIntakeService';
+import { handleMinecraftVerificationRelayMessage } from './services/minecraftVerificationRelayService';
 import { handleQuestionMessage } from './services/qaService';
 import { startMinecraftVerificationApi } from './services/minecraftVerificationApi';
-import { logger } from './utils/logger';
+import { registerRuntime, shutdown } from './services/runtimeService';
 
 initErrorTracking();
 getDb();
@@ -22,6 +23,7 @@ const client = new Client({
     GatewayIntentBits.MessageContent
   ]
 });
+registerRuntime({ client, verificationApiServer });
 
 const commandMap = new Collection<string, SlashCommand>();
 for (const command of commands) {
@@ -36,6 +38,10 @@ client.on(Events.InteractionCreate, (interaction) => {
 });
 client.on(Events.MessageCreate, (message) => {
   void (async () => {
+    if (await handleMinecraftVerificationRelayMessage(message)) {
+      return;
+    }
+
     if (await handleCrashIntakeMessage(message)) {
       return;
     }
@@ -61,11 +67,3 @@ client.login(config.discordToken).catch((error) => {
   closeDb();
   process.exitCode = 1;
 });
-
-function shutdown(exitCode = 0): void {
-  logger.info('Shutting down Wilderness Oddesy systems.');
-  verificationApiServer?.close();
-  closeDb();
-  client.destroy();
-  process.exit(exitCode);
-}

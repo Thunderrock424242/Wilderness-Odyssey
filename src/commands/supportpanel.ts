@@ -3,11 +3,13 @@ import {
   ButtonBuilder,
   ButtonInteraction,
   ButtonStyle,
+  ChatInputCommandInteraction,
   PermissionsBitField,
   SlashCommandBuilder,
   StringSelectMenuBuilder,
   StringSelectMenuInteraction
 } from 'discord.js';
+import { RESTJSONErrorCodes } from 'discord-api-types/v10';
 import type { SlashCommand } from '../types';
 import { config } from '../config';
 import { beginPlaytestSessionFromPanel } from './playtest';
@@ -39,6 +41,91 @@ const infoPanelCustomId = 'panel:info';
 const playtestPanelCustomId = 'panel:playtest';
 const staffPanelCustomId = 'panel:staff';
 const setupPanelCustomId = 'panel:setup';
+
+type SupportActionCategory =
+  | 'bug'
+  | 'crash'
+  | 'performance'
+  | 'feedback'
+  | 'suggestion'
+  | 'notsure'
+  | 'other'
+  | 'playtest'
+  | 'question';
+
+interface SupportActionPreset {
+  value: SupportActionCategory;
+  label: string;
+  fieldTitle: string;
+  fieldDescription: string;
+  optionDescription: string;
+}
+
+const supportActionPresets: SupportActionPreset[] = [
+  {
+    value: 'bug',
+    label: 'Bug report',
+    fieldTitle: 'Bug report',
+    fieldDescription: 'Broken gameplay, bad behavior, missing content, or reproducible issues.',
+    optionDescription: 'Known-issues check, then a bug report form.'
+  },
+  {
+    value: 'crash',
+    label: 'Crash / logs',
+    fieldTitle: 'Crash / logs',
+    fieldDescription: 'Crash reports, latest.log, Java/loader errors, or launch failures.',
+    optionDescription: 'Known-issues check, then private log upload.'
+  },
+  {
+    value: 'performance',
+    label: 'Performance issue',
+    fieldTitle: 'Performance issue',
+    fieldDescription: 'Lag, FPS drops, stutter, freezes, RAM pressure, shaders, or worldgen performance.',
+    optionDescription: 'Open a performance report form.'
+  },
+  {
+    value: 'feedback',
+    label: 'Feedback',
+    fieldTitle: 'Feedback',
+    fieldDescription: 'Playtest impressions, balance notes, pacing, difficulty, and polish.',
+    optionDescription: 'Open a feedback form.'
+  },
+  {
+    value: 'suggestion',
+    label: 'Suggestion',
+    fieldTitle: 'Suggestion',
+    fieldDescription: 'New ideas, quality-of-life requests, content proposals, and voting.',
+    optionDescription: 'Create a suggestion with voting.'
+  },
+  {
+    value: 'notsure',
+    label: 'Help me pick',
+    fieldTitle: 'Help me pick',
+    fieldDescription: 'A short routing menu for players who are not sure where their issue belongs.',
+    optionDescription: 'Show a guided routing menu.'
+  },
+  {
+    value: 'other',
+    label: 'Other help',
+    fieldTitle: 'Other help',
+    fieldDescription: 'Private staff ticket for anything that does not fit the structured report options.',
+    optionDescription: 'Open a private staff ticket.'
+  },
+  {
+    value: 'playtest',
+    label: 'Playtest help',
+    fieldTitle: 'Playtest help',
+    fieldDescription: 'ZIP, CurseForge import, tester sessions, report linking, and Spark guidance.',
+    optionDescription: 'Get ZIP, session, and Spark guidance.'
+  },
+  {
+    value: 'question',
+    label: 'Q&A question',
+    fieldTitle: 'Q&A question',
+    fieldDescription: 'Points players to configured Q&A channels for bot answers or team handoff.',
+    optionDescription: 'Learn where to ask Q&A questions.'
+  }
+];
 
 export const supportPanelCommand: SlashCommand = {
   data: new SlashCommandBuilder()
@@ -88,7 +175,16 @@ export const supportPanelCommand: SlashCommand = {
     if (!interaction.channel?.isSendable()) {
       await interaction.reply({
         content: 'I can only post a support panel in a channel where I can send messages.',
-        ephemeral: true
+        flags: 'Ephemeral'
+      });
+      return;
+    }
+
+    const missingPermissions = missingSupportPanelPermissions(interaction);
+    if (missingPermissions.length > 0) {
+      await interaction.reply({
+        content: supportPanelPermissionMessage(missingPermissions),
+        flags: 'Ephemeral'
       });
       return;
     }
@@ -98,13 +194,25 @@ export const supportPanelCommand: SlashCommand = {
     const description = interaction.options.getString('description');
     const imageUrl = interaction.options.getString('image_url');
 
-    for (const payload of panelPayloads(panelType, { title, description, imageUrl })) {
-      await interaction.channel.send(payload);
+    try {
+      for (const payload of panelPayloads(panelType, { title, description, imageUrl })) {
+        await interaction.channel.send(payload);
+      }
+    } catch (error) {
+      if (isMissingPermissionsError(error)) {
+        await interaction.reply({
+          content: supportPanelPermissionMessage(),
+          flags: 'Ephemeral'
+        });
+        return;
+      }
+
+      throw error;
     }
 
     await interaction.reply({
       content: panelType === 'all' ? 'Player panels posted.' : 'Panel posted.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
   }
 };
@@ -153,7 +261,7 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
         return true;
       }
 
-      await interaction.reply({ embeds: [await setupDoctorEmbed(interaction)], ephemeral: true });
+      await interaction.reply({ embeds: [await setupDoctorEmbed(interaction)], flags: 'Ephemeral' });
       return true;
     }
   }
@@ -199,7 +307,7 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
         'For a published playtest, accept the terms/privacy button in the playtest channel to get the ZIP and CurseForge import steps.',
         'When you begin testing, use `/playtest start` so bugs, crashes, feedback, and Spark links can be tied to your session.'
       ].join('\n'),
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -210,7 +318,7 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
         'Ask your question in a configured Q&A channel.',
         'If I recognize the issue, I will answer with the matching support steps. If I do not, I will forward it to the Q&A team.'
       ].join('\n'),
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -221,7 +329,7 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
   }
 
   if (category === 'knownissues') {
-    await interaction.reply({ embeds: [knownIssuesEmbed(listKnownIssues())], ephemeral: true });
+    await interaction.reply({ embeds: [knownIssuesEmbed(listKnownIssues())], flags: 'Ephemeral' });
     return true;
   }
 
@@ -239,7 +347,7 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
           )
       ],
       components: [supportTriageMenu()],
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -287,28 +395,28 @@ async function showKnownIssuesGate(interaction: ButtonInteraction | StringSelect
         })
     ],
     components: [knownIssuesGateButtons(category)],
-    ephemeral: true
+    flags: 'Ephemeral'
   });
 }
 
 async function handleInfoPanelSelection(interaction: StringSelectMenuInteraction, category: string): Promise<void> {
   if (category === 'status') {
-    await interaction.reply({ embeds: [statusPanelEmbed()], ephemeral: true });
+    await interaction.reply({ embeds: [statusPanelEmbed()], flags: 'Ephemeral' });
     return;
   }
 
   if (category === 'knownissues') {
-    await interaction.reply({ embeds: [knownIssuesEmbed(listKnownIssues())], ephemeral: true });
+    await interaction.reply({ embeds: [knownIssuesEmbed(listKnownIssues())], flags: 'Ephemeral' });
     return;
   }
 
   if (category === 'changelog') {
-    await interaction.reply({ embeds: [changelogEmbed(listChangelogEntries())], ephemeral: true });
+    await interaction.reply({ embeds: [changelogEmbed(listChangelogEntries())], flags: 'Ephemeral' });
     return;
   }
 
   if (category === 'privacy') {
-    await interaction.reply({ embeds: [privacyEmbed()], ephemeral: true });
+    await interaction.reply({ embeds: [privacyEmbed()], flags: 'Ephemeral' });
     return;
   }
 
@@ -321,7 +429,7 @@ async function handleInfoPanelSelection(interaction: StringSelectMenuInteraction
           { name: 'Playtesting', value: '`/playtest start`, `/playtest end`, `/playtest checklist`' }
         )
     ],
-    ephemeral: true
+    flags: 'Ephemeral'
   });
 }
 
@@ -332,7 +440,7 @@ async function handlePlaytestPanelSelection(interaction: StringSelectMenuInterac
   }
 
   if (category === 'checklist') {
-    await interaction.reply({ embeds: [playtestChecklistEmbed()], ephemeral: true });
+    await interaction.reply({ embeds: [playtestChecklistEmbed()], flags: 'Ephemeral' });
     return;
   }
 
@@ -346,7 +454,7 @@ async function handlePlaytestPanelSelection(interaction: StringSelectMenuInterac
             { name: 'Archive', value: 'Submit the public Spark viewer link with `/sparkreport` so staff can tie it to your playtest session.' }
           )
       ],
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return;
   }
@@ -358,7 +466,7 @@ async function handlePlaytestPanelSelection(interaction: StringSelectMenuInterac
         'After acceptance, I will privately send the ZIP link and CurseForge import steps.',
         'Download the ZIP, do not unzip it, then import it into CurseForge as an existing ZIP/profile.'
       ].join('\n'),
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return;
   }
@@ -367,10 +475,12 @@ async function handlePlaytestPanelSelection(interaction: StringSelectMenuInterac
     await interaction.reply({
       content: [
         'Use `/minecraft link` in Discord to get a one-time code.',
-        'Then run `/wo link CODE` in the playtest client.',
+        config.minecraftVerification.relayChannelId
+          ? 'Then join the playtest server and run `/wo link CODE` there.'
+          : 'Then run `/wo link CODE` in the playtest client.',
         'This links your Discord account to your Minecraft player for playtest reports.'
       ].join('\n'),
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return;
   }
@@ -399,7 +509,7 @@ async function handleStaffPanelSelection(interaction: StringSelectMenuInteractio
   }
 
   if (category === 'setup') {
-    await interaction.reply({ embeds: [await setupDoctorEmbed(interaction)], ephemeral: true });
+    await interaction.reply({ embeds: [await setupDoctorEmbed(interaction)], flags: 'Ephemeral' });
     return;
   }
 
@@ -440,7 +550,7 @@ async function handleStaffPanelSelection(interaction: StringSelectMenuInteractio
     );
   }
 
-  await interaction.reply({ embeds: [embed], ephemeral: true });
+  await interaction.reply({ embeds: [embed], flags: 'Ephemeral' });
 }
 
 function panelPayloads(panelType: string, input: {
@@ -475,6 +585,40 @@ function panelPayloads(panelType: string, input: {
   return [supportPanelPayload(input)];
 }
 
+function missingSupportPanelPermissions(interaction: ChatInputCommandInteraction): string[] {
+  const sendPermission = interaction.channel?.isThread()
+    ? { flag: PermissionsBitField.Flags.SendMessagesInThreads, label: 'Send Messages in Threads' }
+    : { flag: PermissionsBitField.Flags.SendMessages, label: 'Send Messages' };
+  const requiredPermissions = [
+    { flag: PermissionsBitField.Flags.ViewChannel, label: 'View Channel' },
+    sendPermission,
+    { flag: PermissionsBitField.Flags.EmbedLinks, label: 'Embed Links' }
+  ];
+
+  return requiredPermissions
+    .filter(({ flag }) => !interaction.appPermissions.has(flag))
+    .map(({ label }) => label);
+}
+
+function supportPanelPermissionMessage(missingPermissions: string[] = []): string {
+  const missingText = missingPermissions.length > 0
+    ? ` Missing: ${missingPermissions.join(', ')}.`
+    : '';
+
+  return [
+    'I cannot post the support panel in this channel because Discord denied the send request.',
+    `Give me View Channel, Send Messages, and Embed Links here, then run \`/supportpanel\` again.${missingText}`
+  ].join(' ');
+}
+
+function isMissingPermissionsError(error: unknown): boolean {
+  if (typeof error !== 'object' || error === null) {
+    return false;
+  }
+
+  return (error as { code?: unknown }).code === RESTJSONErrorCodes.MissingPermissions;
+}
+
 function supportPanelPayload(input: {
   title: string | null;
   description: string | null;
@@ -482,53 +626,16 @@ function supportPanelPayload(input: {
 }) {
   const embed = baseEmbed(
     input.title ?? 'Wilderness Oddesy Support Hub',
-    input.description ?? [
-      'Choose one button and I will route it to the right place.',
-      'Reports become public forum posts for triage. Other Help opens a private staff ticket.'
-    ].join('\n')
-  )
-    .addFields(
-      { name: 'Bug report', value: 'Broken gameplay, bad behavior, missing content, or reproducible issues.', inline: true },
-      { name: 'Crash', value: 'Crash reports, latest.log, Java/loader errors, or launch failures.', inline: true },
-      { name: 'Performance issue', value: 'Lag, FPS drops, stutter, freezes, RAM pressure, shaders, or worldgen performance.', inline: true },
-      { name: 'Feedback', value: 'Playtest impressions, balance notes, pacing, difficulty, and polish.', inline: true },
-      { name: 'Suggestion', value: 'New ideas, quality-of-life requests, content proposals, and voting.', inline: true },
-      { name: 'Other help', value: 'Private staff ticket for anything that does not fit the report buttons.', inline: true }
-    );
+    input.description ?? supportPanelDescription()
+  );
 
   if (input.imageUrl) {
     embed.setImage(input.imageUrl);
   }
 
-  const primaryButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    supportButton('bug', 'Bug', ButtonStyle.Danger),
-    supportButton('crash', 'Crash', ButtonStyle.Danger),
-    supportButton('performance', 'Performance', ButtonStyle.Primary),
-    supportButton('feedback', 'Feedback', ButtonStyle.Primary),
-    supportButton('suggestion', 'Suggestion', ButtonStyle.Primary)
-  );
-
-  const helpButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    supportButton('notsure', 'Help Me Pick', ButtonStyle.Secondary),
-    supportButton('other', 'Other', ButtonStyle.Secondary)
-  );
-
-  const secondaryMenu = new StringSelectMenuBuilder()
-    .setCustomId(supportPanelCustomId)
-    .setPlaceholder('More support options')
-    .addOptions(
-      { label: 'Playtest help', value: 'playtest', description: 'ZIP, CurseForge, session, and Spark guidance.' },
-      { label: 'Q&A question', value: 'question', description: 'Ask in a Q&A channel for bot or team help.' },
-      { label: 'Other', value: 'other', description: 'Open a private staff ticket.' }
-    );
-
   return {
     embeds: [embed],
-    components: [
-      primaryButtons,
-      helpButtons,
-      new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(secondaryMenu)
-    ]
+    components: [supportActionMenu(supportPanelCustomId, 'Select a support option')]
   };
 }
 
@@ -543,18 +650,10 @@ function knownIssuesGateButtons(category: 'bug' | 'crash'): ActionRowBuilder<But
 }
 
 function supportTriageMenu(): ActionRowBuilder<StringSelectMenuBuilder> {
-  return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-    new StringSelectMenuBuilder()
-      .setCustomId(supportTriageCustomId)
-      .setPlaceholder('Pick what sounds closest')
-      .addOptions(
-        { label: 'Game crashed or will not launch', value: 'crash', description: 'Upload latest.log or a crash report privately.' },
-        { label: 'Something is broken in-game', value: 'bug', description: 'File a bug report for reproducible issues.' },
-        { label: 'I have an idea', value: 'suggestion', description: 'Create a suggestion with voting.' },
-        { label: 'I have feedback', value: 'feedback', description: 'Balance, pacing, playtest, or polish notes.' },
-        { label: 'Lag or performance trouble', value: 'performance', description: 'Report FPS, stutter, RAM, or shader issues.' },
-        { label: 'Private / other help', value: 'other', description: 'Open a private support ticket.' }
-      )
+  return supportActionMenu(
+    supportTriageCustomId,
+    'Pick what sounds closest',
+    ['crash', 'bug', 'suggestion', 'feedback', 'performance', 'other']
   );
 }
 
@@ -563,6 +662,37 @@ function supportButton(category: string, label: string, style: ButtonStyle): But
     .setCustomId(`${supportPanelCustomId}:${category}`)
     .setLabel(label)
     .setStyle(style);
+}
+
+function supportPanelDescription(): string {
+  return [
+    'Choose one support option from the dropdown and I will route it to the right place.',
+    'Reports become public forum posts for triage. Other Help opens a private staff ticket.',
+    '',
+    ...supportActionPresets.map((preset) => `**${preset.fieldTitle}** - ${preset.fieldDescription}`)
+  ].join('\n');
+}
+
+function supportActionMenu(
+  customId: string,
+  placeholder: string,
+  categories: SupportActionCategory[] = supportActionPresets.map((preset) => preset.value)
+): ActionRowBuilder<StringSelectMenuBuilder> {
+  const options = categories
+    .map((category) => supportActionPresets.find((preset) => preset.value === category))
+    .filter((preset): preset is SupportActionPreset => Boolean(preset))
+    .map((preset) => ({
+      label: preset.label,
+      value: preset.value,
+      description: preset.optionDescription
+    }));
+
+  return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+    new StringSelectMenuBuilder()
+      .setCustomId(customId)
+      .setPlaceholder(placeholder)
+      .addOptions(options)
+  );
 }
 
 function infoPanelPayload() {

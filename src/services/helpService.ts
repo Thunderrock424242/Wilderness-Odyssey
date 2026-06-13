@@ -70,7 +70,7 @@ export async function handleHelpComponent(interaction: StringSelectMenuInteracti
   if (topic === 'status') {
     await interaction.reply({
       content: 'Use `/status` for the current support/status page.',
-      ephemeral: true
+      flags: 'Ephemeral'
     });
     return true;
   }
@@ -78,7 +78,7 @@ export async function handleHelpComponent(interaction: StringSelectMenuInteracti
   const embed = topic === 'privacy' ? privacyEmbed() : helpTopicEmbed(topic);
   await interaction.reply({
     embeds: [embed],
-    ephemeral: true
+    flags: 'Ephemeral'
   });
 
   return true;
