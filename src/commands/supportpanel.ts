@@ -66,15 +66,15 @@ const supportActionPresets: SupportActionPreset[] = [
     value: 'bug',
     label: 'Bug report',
     fieldTitle: 'Bug report',
-    fieldDescription: 'Broken gameplay, bad behavior, missing content, or reproducible issues.',
+    fieldDescription: 'Broken gameplay, bad behavior, missing content, or reproducible issues. For screenshots or logs, use `/bugreport` so Discord shows attachment fields.',
     optionDescription: 'Known-issues check, then a bug report form.'
   },
   {
     value: 'crash',
     label: 'Crash / logs',
     fieldTitle: 'Crash / logs',
-    fieldDescription: 'Crash reports, latest.log, Java/loader errors, or launch failures.',
-    optionDescription: 'Known-issues check, then private log upload.'
+    fieldDescription: 'Crash reports, latest.log, Java/loader errors, or launch failures. Use `/crash file:<log>` to create a redacted Crash forum post.',
+    optionDescription: 'Known-issues check, then log upload guidance.'
   },
   {
     value: 'performance',
@@ -314,10 +314,7 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
 
   if (category === 'question') {
     await interaction.reply({
-      content: [
-        'Ask your question in a configured Q&A channel.',
-        'If I recognize the issue, I will answer with the matching support steps. If I do not, I will forward it to the Q&A team.'
-      ].join('\n'),
+      content: qaQuestionHelpText(),
       flags: 'Ephemeral'
     });
     return true;
@@ -386,13 +383,22 @@ async function handleSupportTriageSelection(interaction: StringSelectMenuInterac
 
 async function showKnownIssuesGate(interaction: ButtonInteraction | StringSelectMenuInteraction, category: 'bug' | 'crash'): Promise<void> {
   const label = category === 'bug' ? 'bug report' : 'crash upload';
+  const uploadGuidance = category === 'crash'
+    ? 'Discord modals cannot upload files. Use `/crash file:<latest.log>` to create a redacted Crash forum post. Continue Crash Upload opens a private fallback channel if slash command upload is awkward.'
+    : 'Discord modals cannot upload files. If you need to attach screenshots or logs to a bug report, use `/bugreport` instead.';
   await interaction.reply({
     embeds: [
       baseEmbed('Quick Duplicate Check', `Before starting the ${label}, you can check known issues or continue now.`)
-        .addFields({
-          name: 'Why this exists',
-          value: 'If staff already knows about it, you can skip filing another report. If you are not sure, continue anyway.'
-        })
+        .addFields(
+          {
+            name: 'Why this exists',
+            value: 'If staff already knows about it, you can skip filing another report. If you are not sure, continue anyway.'
+          },
+          {
+            name: 'File uploads',
+            value: uploadGuidance
+          }
+        )
     ],
     components: [knownIssuesGateButtons(category)],
     flags: 'Ephemeral'
@@ -629,6 +635,16 @@ function supportPanelPayload(input: {
     input.description ?? supportPanelDescription()
   );
 
+  if (!input.description) {
+    embed.addFields(
+      ...supportActionPresets.map((preset) => ({
+        name: preset.fieldTitle,
+        value: preset.fieldDescription,
+        inline: false
+      }))
+    );
+  }
+
   if (input.imageUrl) {
     embed.setImage(input.imageUrl);
   }
@@ -666,11 +682,27 @@ function supportButton(category: string, label: string, style: ButtonStyle): But
 
 function supportPanelDescription(): string {
   return [
-    'Choose one support option from the dropdown and I will route it to the right place.',
-    'Reports become public forum posts for triage. Other Help opens a private staff ticket.',
-    '',
-    ...supportActionPresets.map((preset) => `**${preset.fieldTitle}** - ${preset.fieldDescription}`)
+    'Pick the support route that fits best. If you are unsure, choose Help me pick.',
+    'Reports go to staff triage. Other Help opens a private ticket.'
   ].join('\n');
+}
+
+function qaQuestionHelpText(): string {
+  if (config.qa.forumChannelId) {
+    return [
+      `Open a post in <#${config.qa.forumChannelId}> for community Q&A.`,
+      'I will answer if I recognize the question, alert support for visibility, and pull in devs if it looks like a crash or bug.'
+    ].join('\n');
+  }
+
+  if (config.qa.channelIds.length > 0) {
+    return [
+      `Ask your question in ${config.qa.channelIds.map((channelId) => `<#${channelId}>`).join(', ')}.`,
+      'If I recognize the issue, I will answer with the matching support steps. If I do not, I will alert support.'
+    ].join('\n');
+  }
+
+  return 'The community Q&A forum is not configured yet. Use the other support options here for now.';
 }
 
 function supportActionMenu(

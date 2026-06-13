@@ -8,7 +8,7 @@ import { archiveCrashAttachment } from '../services/crashReportService';
 export const crashCommand: SlashCommand = {
   data: new SlashCommandBuilder()
     .setName('crash')
-    .setDescription('Analyze and archive a Minecraft crash report or latest.log.')
+    .setDescription('Analyze a crash log and create a redacted Crash forum report.')
     .addAttachmentOption((option) =>
       option
         .setName('file')

@@ -24,7 +24,7 @@ The personality is light in-universe support AI: helpful, calm, and a little eer
 - The bot does not ask for private/personal information.
 - Log parsing redacts tokens, emails, IP addresses, and common local file paths before storage.
 - Reports should not include chat logs, passwords, tokens, IP addresses, or personal files.
-- In configured Q&A channels, the bot reads question messages so it can answer known support topics or forward unknown questions to the Q&A team.
+- In the configured community Q&A forum, the bot reads new forum posts so it can answer known support topics, alert support, and pull in devs for crash or bug-looking posts.
 - The bot stores submitted Spark viewer links, but does not scrape private Spark data or run Minecraft commands.
 - A Minecraft server-side mod can complete account verification through a private Discord webhook relay. Never put the Discord bot token inside a Minecraft mod.
 
@@ -149,7 +149,7 @@ Recommended server layout:
 
 For Discord forum channels, set `ISSUES_FORUM_CHANNEL_ID` for shared bug/crash/performance posts and `IDEAS_FORUM_CHANNEL_ID` for shared feedback/suggestion posts. The bot applies the configured forum tags, defaulting to `Bug`, `Crash`, `Performance Issues`, `Feedback`, and `Suggestion`. Bug threads can also use status tags, defaulting to `Confirmed` and `Solved`, when staff marks the bug as confirmed or solved from inside the forum thread.
 
-Set `SUPPORT_TEAM_ROLE_ID` to the staff/support role that should be pinged on new bug, crash, performance, feedback, and suggestion posts. The same role gets access to private Other Help tickets.
+Set `SUPPORT_TEAM_ROLE_ID` to the staff/support role that should be pinged on new support items, including Q&A forum posts, performance reports, feedback, suggestions, and private tickets. Set `DEV_TEAM_ROLE_ID` so crash and bug reports also alert the dev team.
 
 Panel types:
 
@@ -170,7 +170,7 @@ Support Hub dropdown options:
 - Help me pick - shows a short routing menu for users who are not sure.
 - Other help - asks for a summary/details, then creates a private staff ticket.
 - Playtest help - explains playtest ZIP acceptance, `/playtest start`, and report linking.
-- Q&A question - points players to configured Q&A channels.
+- Q&A question - points players to the community Q&A forum when configured.
 
 Panel-submitted bug reports do not collect screenshots or logs because Discord buttons/menus cannot request attachments. Players who need attachments can use `/bugreport`, or use **Crash** for private crash/latest.log upload.
 
@@ -180,9 +180,15 @@ Report receipts include an `Add more info` button so the submitter can append de
 
 Other Help tickets include staff buttons for Claim, Close, Move to Bug, Move to Suggestion, and Move to Feedback. Move buttons give staff routing instructions so incomplete private tickets do not become low-quality public reports.
 
-## Q&A Channels
+## Community Q&A Forum
 
-Set `QA_CHANNEL_IDS` to the channels where the bot should watch for questions. The bot answers known support topics such as Java, RAM, crashes, bugs, performance, Spark, CurseForge ZIP import, and known issues. If it does not have a confident canned answer, it stores the question as `WO-QA-0001` and forwards it to `QA_TEAM_CHANNEL_ID`, optionally mentioning `QA_TEAM_ROLE_ID`.
+Create a Discord forum for player questions and set `QA_FORUM_CHANNEL_ID` to that forum. Each new forum post becomes one organized Q&A thread. The bot answers known support topics such as Java, RAM, crashes, bugs, performance, Spark, CurseForge ZIP import, and known issues.
+
+Set `QA_ALERT_CHANNEL_ID` to a private support alert channel. New Q&A forum posts are saved as `WO-QA-0001` records and posted there. By default the alert pings `QA_ALERT_ROLE_ID`; if that is blank, it falls back to `QA_TEAM_ROLE_ID`, then `SUPPORT_TEAM_ROLE_ID`.
+
+If a Q&A forum post looks like a crash or bug report from its title, body, or forum tags, the alert also pings `DEV_TEAM_ROLE_ID`. Performance-looking Q&A posts alert support for triage.
+
+`QA_CHANNEL_IDS` is still supported as a legacy text-channel fallback. In those channels, the bot answers known questions and forwards unknown questions to `QA_ALERT_CHANNEL_ID`.
 
 Staff can add reusable canned answers with `/staff qa add`. Each answer has comma-separated trigger terms, a title, and answer text. Use `/staff qa list` to review recent entries and `/staff qa remove <id>` to disable one.
 

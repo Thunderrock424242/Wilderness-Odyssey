@@ -46,7 +46,12 @@ import {
   getPlaytestSession
 } from './playtestSessionService';
 import { syncKnownIssueFromBugStatus } from './knownIssuesService';
-import { supportTeamAllowedMentions, supportTeamPing } from '../utils/supportTeam';
+import {
+  supportTeamAllowedMentions,
+  supportTeamPing,
+  teamAlertAllowedMentions,
+  teamAlertContent
+} from '../utils/supportTeam';
 import { reportCounter } from './metricsService';
 
 interface BugDraft {
@@ -447,8 +452,8 @@ export async function handleBugReportModal(interaction: ModalSubmitInteraction):
     interaction.client,
     reportDestinationForType('bug'),
     {
-      content: supportTeamPing('New bug report needs triage.'),
-      allowedMentions: supportTeamAllowedMentions(),
+      content: teamAlertContent('New bug report needs triage.', ['support', 'dev']),
+      allowedMentions: teamAlertAllowedMentions(['support', 'dev']),
       embeds: [bugReportEmbed(report)],
       components: [...bugStatusButtons(report.publicId), reportClaimButtons('bug', report.publicId)]
     },

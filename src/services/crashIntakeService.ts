@@ -6,14 +6,14 @@ import {
   StringSelectMenuInteraction
 } from 'discord.js';
 import { LRUCache } from 'lru-cache';
-import { config } from '../config';
 import { baseEmbed } from '../utils/embeds';
 import { reportReceiptButtons } from './reportService';
 import { archiveCrashAttachment } from './crashReportService';
 import {
   ticketChannelName,
   ticketControlRows,
-  ticketPermissionOverwrites
+  ticketPermissionOverwrites,
+  resolveSupportTicketParentId
 } from './supportTicketService';
 
 type CrashIntakeInteraction = ButtonInteraction | StringSelectMenuInteraction;
@@ -47,13 +47,19 @@ export async function beginCrashUploadIntake(interaction: CrashIntakeInteraction
     return;
   }
 
-  const parent = config.channelIds.supportTicketCategory
-    ?? (interaction.channel && 'parentId' in interaction.channel ? interaction.channel.parentId : null)
-    ?? undefined;
+  const parent = await resolveSupportTicketParentId(interaction);
+  if (parent.error) {
+    await interaction.reply({
+      content: `${parent.error} Fix \`SUPPORT_TICKET_CATEGORY_ID\` or use \`/crash file:\` for now.`,
+      flags: 'Ephemeral'
+    });
+    return;
+  }
+
   const channel = await interaction.guild.channels.create({
     name: ticketChannelName('crash', interaction.user.username),
     type: ChannelType.GuildText,
-    parent,
+    parent: parent.parentId,
     topic: `Crash upload intake for ${interaction.user.tag} (${interaction.user.id})`,
     reason: `Crash upload intake opened by ${interaction.user.tag}`,
     permissionOverwrites: ticketPermissionOverwrites(interaction.guild.roles.everyone.id, interaction.user.id, botMember.id)
@@ -71,8 +77,9 @@ export async function beginCrashUploadIntake(interaction: CrashIntakeInteraction
       baseEmbed('Crash Upload', 'Upload your `latest.log` or crash report here.')
         .addFields(
           { name: 'Accepted files', value: '`.log` or `.txt` files.' },
+          { name: 'How to upload', value: 'Send the log as a normal message attachment in this channel. Discord modals do not have upload buttons.' },
           { name: 'What happens next', value: 'I will redact sensitive values, analyze common crash signatures, create the public crash forum post, and ping support.' },
-          { name: 'Fallback', value: 'You can also use `/crash file:<log>` if you prefer slash commands.' }
+          { name: 'Crash forum shortcut', value: 'You can also use `/crash file:<log>` in the server to create the Crash forum post directly after redaction.' }
         )
     ],
     components: ticketControlRows()

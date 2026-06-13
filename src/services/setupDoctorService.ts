@@ -1,4 +1,5 @@
 import {
+  ChannelType,
   EmbedBuilder,
   PermissionsBitField,
   StringSelectMenuInteraction
@@ -43,11 +44,17 @@ function requiredConfigChecks(): CheckLine[] {
     checkValue('Client ID', config.clientId ? 'configured' : null, 'Required for slash command deployment.'),
     checkValue('Guild ID', config.guildId, 'Recommended for fast guild command deployment.'),
     checkValue('Support team role', config.support.teamRoleId, 'Recommended for report pings and Other Help ticket access.'),
-    checkValue('Q&A team channel', config.qa.teamChannelId, 'Required only if Q&A forwarding is enabled.'),
+    checkValue('Dev team role', config.dev.teamRoleId, 'Recommended so crash and bug reports can alert devs directly.'),
+    checkValue('Q&A alert channel', config.qa.alertChannelId, 'Required if Q&A forum or channel forwarding is enabled.'),
+    checkValue('Q&A forum ID', config.qa.forumChannelId, 'Recommended for organized player questions.'),
     {
-      state: config.qa.channelIds.length > 0 ? 'OK' : 'WARN',
+      state: config.qa.channelIds.length > 0 || config.qa.forumChannelId ? 'OK' : 'WARN',
       label: 'Q&A watch channels',
-      detail: config.qa.channelIds.length > 0 ? `${config.qa.channelIds.length} configured.` : 'No Q&A watch channels configured.'
+      detail: config.qa.channelIds.length > 0
+        ? `${config.qa.channelIds.length} legacy text channel(s) configured.`
+        : config.qa.forumChannelId
+          ? 'Using the community Q&A forum.'
+          : 'No Q&A forum or watch channels configured.'
     },
     {
       state: 'OK',
@@ -161,7 +168,8 @@ async function channelChecks(interaction: StringSelectMenuInteraction): Promise<
     ['Playtest sessions', config.channelIds.playtestSessions, true],
     ['Minecraft verify relay', config.minecraftVerification.relayChannelId, false],
     ['Support', config.channelIds.support, false],
-    ['Q&A team', config.qa.teamChannelId, config.qa.channelIds.length > 0],
+    ['Community Q&A forum', config.qa.forumChannelId, false],
+    ['Q&A alert', config.qa.alertChannelId, config.qa.channelIds.length > 0 || Boolean(config.qa.forumChannelId)],
     ['Support ticket category', config.channelIds.supportTicketCategory, false],
     ['Playtest category', config.channelIds.playtestCategory, false]
   ];
@@ -183,12 +191,23 @@ async function channelChecks(interaction: StringSelectMenuInteraction): Promise<
       continue;
     }
 
+    if (label.endsWith('category')) {
+      checks.push({
+        state: channel.type === ChannelType.GuildCategory ? 'OK' : 'MISSING',
+        label,
+        detail: channel.type === ChannelType.GuildCategory
+          ? `Configured category: ${channelId}.`
+          : `Configured ID ${channelId} is <#${channelId}>, but it must be a Discord category.`
+      });
+      continue;
+    }
+
     const sendable = 'isSendable' in channel && channel.isSendable();
     const threadOnly = 'isThreadOnly' in channel && channel.isThreadOnly();
     checks.push({
-      state: sendable || threadOnly || label.endsWith('category') ? 'OK' : 'WARN',
+      state: sendable || threadOnly ? 'OK' : 'WARN',
       label,
-      detail: sendable || threadOnly || label.endsWith('category') ? `Configured: <#${channelId}>.` : `Found <#${channelId}>, but it may not be sendable.`
+      detail: sendable || threadOnly ? `Configured: <#${channelId}>.` : `Found <#${channelId}>, but it may not be sendable.`
     });
   }
 
@@ -216,7 +235,9 @@ const configLabels = new Set([
   'Client ID',
   'Guild ID',
   'Support team role',
-  'Q&A team channel',
+  'Dev team role',
+  'Q&A alert channel',
+  'Q&A forum ID',
   'Q&A watch channels',
   'In-bot playtest policies',
   'External terms URL',
@@ -249,7 +270,8 @@ const channelLabels = new Set([
   'Playtest sessions',
   'Minecraft verify relay',
   'Support',
-  'Q&A team',
+  'Community Q&A forum',
+  'Q&A alert',
   'Support ticket category',
   'Playtest category'
 ]);

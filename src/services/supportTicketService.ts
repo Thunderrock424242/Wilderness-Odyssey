@@ -18,6 +18,12 @@ import { isStaff } from '../utils/permissions';
 import { supportTeamAllowedMentions, supportTeamPing } from '../utils/supportTeam';
 
 type SupportTicketStartInteraction = ButtonInteraction | StringSelectMenuInteraction;
+type TicketParentInteraction = ModalSubmitInteraction | SupportTicketStartInteraction;
+
+interface TicketParentResult {
+  parentId?: string;
+  error?: string;
+}
 
 const ticketCreateCustomId = 'support-ticket:create';
 const ticketButtonPrefix = 'support-ticket:';
@@ -109,11 +115,19 @@ async function createOtherHelpTicket(input: {
     return;
   }
 
-  const parent = config.channelIds.supportTicketCategory ?? currentParentId(interaction) ?? undefined;
+  const parent = await resolveSupportTicketParentId(interaction);
+  if (parent.error) {
+    await interaction.reply({
+      content: `${parent.error} Fix \`SUPPORT_TICKET_CATEGORY_ID\` or run this from a channel inside the private support category.`,
+      flags: 'Ephemeral'
+    });
+    return;
+  }
+
   const channel = await interaction.guild.channels.create({
     name: ticketChannelName('help', interaction.user.username),
     type: ChannelType.GuildText,
-    parent,
+    parent: parent.parentId,
     topic: `Other Help ticket for ${interaction.user.tag} (${interaction.user.id})`,
     reason: `Other Help ticket opened by ${interaction.user.tag}`,
     permissionOverwrites: ticketPermissionOverwrites(interaction.guild.roles.everyone.id, interaction.user.id, botMember.id)
@@ -207,6 +221,39 @@ export function ticketChannelName(prefix: string, username: string): string {
   return `${prefix}-${slug || 'player'}-${randomUUID().slice(0, 6)}`;
 }
 
+export async function resolveSupportTicketParentId(interaction: TicketParentInteraction): Promise<TicketParentResult> {
+  const configuredParent = config.channelIds.supportTicketCategory;
+  if (configuredParent) {
+    return supportTicketCategoryResult(interaction, configuredParent, '`SUPPORT_TICKET_CATEGORY_ID`');
+  }
+
+  const currentParent = currentParentId(interaction);
+  if (!currentParent) {
+    return {};
+  }
+
+  return supportTicketCategoryResult(interaction, currentParent, 'the current channel parent');
+}
+
+async function supportTicketCategoryResult(
+  interaction: TicketParentInteraction,
+  channelId: string,
+  source: string
+): Promise<TicketParentResult> {
+  const channel = await interaction.client.channels.fetch(channelId).catch(() => null);
+  if (!channel) {
+    return { error: `${source} is set to ${channelId}, but I cannot find that channel.` };
+  }
+
+  if (channel.type !== ChannelType.GuildCategory) {
+    return {
+      error: `${source} points at <#${channelId}>, but private crash/help channels need a Discord category as their parent.`
+    };
+  }
+
+  return { parentId: channel.id };
+}
+
 function ticketPermissions() {
   return [
     PermissionsBitField.Flags.ViewChannel,
@@ -217,7 +264,7 @@ function ticketPermissions() {
   ];
 }
 
-function currentParentId(interaction: ModalSubmitInteraction): string | null {
+function currentParentId(interaction: TicketParentInteraction): string | null {
   return interaction.channel && 'parentId' in interaction.channel ? interaction.channel.parentId : null;
 }
 

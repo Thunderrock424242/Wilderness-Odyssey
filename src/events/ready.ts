@@ -40,10 +40,16 @@ function startupWarnings(): string[] {
   if (!config.channelIds.sparkReports) warnings.push('- `SPARK_REPORTS_CHANNEL_ID` is not configured.');
   if (!config.channelIds.playtestSessions) warnings.push('- `PLAYTEST_SESSIONS_CHANNEL_ID` is not configured.');
   if (!config.support.teamRoleId) warnings.push('- `SUPPORT_TEAM_ROLE_ID` is not configured; report pings and Other Help ticket staff access will be limited.');
+  if (!config.dev.teamRoleId) warnings.push('- `DEV_TEAM_ROLE_ID` is not configured; crash and bug alerts will only mention support.');
   if (!config.channelIds.supportTicketCategory) warnings.push('- `SUPPORT_TICKET_CATEGORY_ID` is recommended so Other Help tickets do not appear in the hub category.');
 
-  if (config.qa.channelIds.length > 0 && !config.qa.teamChannelId) {
-    warnings.push('- `QA_CHANNEL_IDS` is configured, but `QA_TEAM_CHANNEL_ID` is missing.');
+  const qaEnabled = config.qa.channelIds.length > 0 || Boolean(config.qa.forumChannelId);
+  if (qaEnabled && !config.qa.alertChannelId) {
+    warnings.push('- Q&A is configured, but `QA_ALERT_CHANNEL_ID` is missing.');
+  }
+
+  if (!config.qa.forumChannelId && config.qa.channelIds.length === 0) {
+    warnings.push('- `QA_FORUM_CHANNEL_ID` is not configured; community Q&A forum alerts are disabled.');
   }
 
   if (config.minecraftVerification.relayChannelId) {

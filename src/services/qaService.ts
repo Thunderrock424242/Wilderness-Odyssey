@@ -5,6 +5,11 @@ import type { QaForwardRecord } from '../types';
 import { formatPublicId, normalizePublicId } from '../utils/ids';
 import { colors, truncate } from '../utils/embeds';
 import { sendToConfiguredChannel } from './reportService';
+import {
+  teamAlertAllowedMentions,
+  teamAlertContent,
+  type AlertTeam
+} from '../utils/supportTeam';
 
 interface QaForwardRow {
   id: number;
@@ -23,6 +28,14 @@ interface QaForwardRow {
 interface KnownAnswer {
   title: string;
   body: string;
+}
+
+type QaRoute = 'question' | 'bug' | 'crash' | 'performance';
+
+interface QaClassification {
+  route: QaRoute;
+  label: string;
+  alertTeams: AlertTeam[];
 }
 
 export interface QaAnswerRecord {
@@ -48,7 +61,16 @@ interface QaAnswerRow {
 }
 
 export async function handleQuestionMessage(message: Message): Promise<void> {
-  if (message.author.bot || !message.guild || !config.qa.channelIds.includes(message.channelId)) {
+  if (message.author.bot || !message.guild) {
+    return;
+  }
+
+  if (isQaForumStarterMessage(message)) {
+    await handleQaForumPost(message);
+    return;
+  }
+
+  if (!config.qa.channelIds.includes(message.channelId)) {
     return;
   }
 
@@ -80,16 +102,63 @@ export async function handleQuestionMessage(message: Message): Promise<void> {
     question
   });
 
-  const posted = await sendToConfiguredChannel(message.client, config.qa.teamChannelId, {
-    content: config.qa.teamRoleId ? `<@&${config.qa.teamRoleId}> New Q&A handoff: ${forward.publicId}` : `New Q&A handoff: ${forward.publicId}`,
+  const posted = await sendToConfiguredChannel(message.client, config.qa.alertChannelId, {
+    content: teamAlertContent(`New Q&A handoff: ${forward.publicId}`, ['qa']),
     embeds: [qaForwardEmbed(forward)],
-    allowedMentions: config.qa.teamRoleId ? { roles: [config.qa.teamRoleId] } : { parse: [] }
+    allowedMentions: teamAlertAllowedMentions(['qa'])
   });
 
   await message.reply({
     content: posted
       ? `I do not have a confident answer for that yet, so I forwarded it to the Q&A team as **${forward.publicId}**.`
       : `I do not have a confident answer for that yet. The Q&A team channel is not configured, but I saved this as **${forward.publicId}**.`,
+    allowedMentions: { repliedUser: false }
+  });
+}
+
+async function handleQaForumPost(message: Message): Promise<void> {
+  const question = forumQuestionText(message);
+  const knownAnswer = answerKnownQuestion(question);
+  const classification = classifyQaForumPost(message, question);
+  const forward = createQaForward({
+    userId: message.author.id,
+    username: message.author.tag,
+    channelId: message.channelId,
+    messageId: message.id,
+    messageUrl: message.url,
+    question
+  });
+
+  if (knownAnswer) {
+    markQaForwardAnswered(forward.publicId);
+  }
+
+  const posted = await sendToConfiguredChannel(message.client, config.qa.alertChannelId, {
+    content: teamAlertContent(`New ${classification.label} forum post: ${forward.publicId}`, classification.alertTeams),
+    embeds: [qaForumAlertEmbed(message, forward, classification, knownAnswer)],
+    allowedMentions: teamAlertAllowedMentions(classification.alertTeams)
+  });
+
+  if (knownAnswer) {
+    await message.reply({
+      content: [
+        `**${knownAnswer.title}**`,
+        knownAnswer.body,
+        '',
+        posted
+          ? 'I also alerted support so they can keep an eye on this post.'
+          : 'I saved this for support review, but the Q&A alert channel is not configured yet.',
+        'If that does not solve it, reply with what you tried and staff can step in.'
+      ].join('\n'),
+      allowedMentions: { repliedUser: false }
+    });
+    return;
+  }
+
+  await message.reply({
+    content: posted
+      ? `Thanks, I alerted support for this forum post as **${forward.publicId}**. Staff can follow up here.`
+      : `Thanks, I saved this forum post as **${forward.publicId}**. The Q&A alert channel is not configured yet, so staff alerts are not being sent.`,
     allowedMentions: { repliedUser: false }
   });
 }
@@ -123,12 +192,114 @@ function createQaForward(input: {
   return mapForward(row);
 }
 
+function markQaForwardAnswered(publicId: string): void {
+  getDb().prepare(`
+    UPDATE qa_forwards
+    SET status = 'answered',
+        updated_at = datetime('now')
+    WHERE public_id = ?
+  `).run(normalizePublicId(publicId));
+}
+
 export function getQaForward(publicId: string): QaForwardRecord | null {
   const row = getDb()
     .prepare('SELECT * FROM qa_forwards WHERE public_id = ?')
     .get(normalizePublicId(publicId)) as QaForwardRow | undefined;
 
   return row ? mapForward(row) : null;
+}
+
+function isQaForumStarterMessage(message: Message): boolean {
+  if (!config.qa.forumChannelId || !message.channel.isThread()) {
+    return false;
+  }
+
+  return message.channel.parentId === config.qa.forumChannelId && message.id === message.channel.id;
+}
+
+function forumQuestionText(message: Message): string {
+  const title = message.channel.isThread() ? message.channel.name.trim() : '';
+  const body = message.content.trim();
+
+  if (title && body) {
+    return `${title}\n\n${body}`;
+  }
+
+  return title || body || 'New Q&A forum post';
+}
+
+function classifyQaForumPost(message: Message, question: string): QaClassification {
+  const normalized = `${question} ${forumTagNames(message).join(' ')}`.toLowerCase();
+
+  if (matchesAny(normalized, [
+    ...config.forumTags.crash.map((tag) => tag.toLowerCase()),
+    'crash',
+    'crashed',
+    'crashing',
+    'latest.log',
+    'crash report',
+    'exception',
+    'error log'
+  ])) {
+    return {
+      route: 'crash',
+      label: 'crash Q&A',
+      alertTeams: ['qa', 'dev']
+    };
+  }
+
+  if (matchesAny(normalized, [
+    ...config.forumTags.bug.map((tag) => tag.toLowerCase()),
+    'bug',
+    'glitch',
+    'broken',
+    'not working',
+    'does not work'
+  ])) {
+    return {
+      route: 'bug',
+      label: 'bug Q&A',
+      alertTeams: ['qa', 'dev']
+    };
+  }
+
+  if (matchesAny(normalized, [
+    ...config.forumTags.performance.map((tag) => tag.toLowerCase()),
+    'lag',
+    'fps',
+    'stutter',
+    'performance',
+    'freezing',
+    'freeze'
+  ])) {
+    return {
+      route: 'performance',
+      label: 'performance Q&A',
+      alertTeams: ['qa']
+    };
+  }
+
+  return {
+    route: 'question',
+    label: 'community Q&A',
+    alertTeams: ['qa']
+  };
+}
+
+function forumTagNames(message: Message): string[] {
+  if (!message.channel.isThread()) {
+    return [];
+  }
+
+  const thread = message.channel;
+  const parent = thread.parent;
+  if (!parent || !('availableTags' in parent) || !('appliedTags' in thread)) {
+    return [];
+  }
+
+  const tags = parent.availableTags as Array<{ id: string; name: string }>;
+  const appliedTags = thread.appliedTags as string[];
+  return appliedTags.map((tagId) => tags.find((tag) => tag.id === tagId)?.name ?? tagId);
 }
 
 function answerKnownQuestion(question: string): KnownAnswer | null {
@@ -301,6 +472,43 @@ export function qaForwardEmbed(forward: QaForwardRecord): EmbedBuilder {
       { name: 'Source', value: `[Jump to message](${forward.messageUrl})`, inline: true },
       { name: 'Status', value: forward.status, inline: true }
     );
+}
+
+function qaForumAlertEmbed(
+  message: Message,
+  forward: QaForwardRecord,
+  classification: QaClassification,
+  knownAnswer: KnownAnswer | null
+): EmbedBuilder {
+  const title = message.channel.isThread() ? message.channel.name : 'Community Q&A post';
+  const tags = forumTagNames(message);
+
+  return new EmbedBuilder()
+    .setTitle(`Community Q&A ${forward.publicId}`)
+    .setColor(qaRouteColor(classification.route))
+    .setTimestamp()
+    .addFields(
+      { name: 'Forum post', value: truncate(title) },
+      { name: 'Question', value: truncate(forward.question) },
+      { name: 'Asked by', value: `<@${forward.userId}>`, inline: true },
+      { name: 'Route', value: classification.label, inline: true },
+      { name: 'Tags', value: tags.length > 0 ? tags.join(', ') : 'None', inline: true },
+      { name: 'Source', value: `[Open forum post](${forward.messageUrl})`, inline: true },
+      { name: 'Bot answer', value: knownAnswer ? knownAnswer.title : 'No canned answer matched.', inline: true },
+      { name: 'Status', value: knownAnswer ? 'answered by bot' : forward.status, inline: true }
+    );
+}
+
+function qaRouteColor(route: QaRoute): number {
+  if (route === 'bug' || route === 'crash') {
+    return colors.danger;
+  }
+
+  if (route === 'performance') {
+    return colors.warning;
+  }
+
+  return colors.staff;
 }
 
 function mapForward(row: QaForwardRow): QaForwardRecord {

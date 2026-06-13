@@ -11,7 +11,7 @@ import {
 } from './reportService';
 import { linkReportToSession } from './playtestSessionService';
 import { baseEmbed, crashReportEmbed } from '../utils/embeds';
-import { supportTeamAllowedMentions, supportTeamPing } from '../utils/supportTeam';
+import { teamAlertAllowedMentions, teamAlertContent } from '../utils/supportTeam';
 import { enqueueCrashTask } from './queueService';
 
 export async function archiveCrashAttachment(input: {
@@ -52,8 +52,8 @@ async function archiveCrashAttachmentNow(input: {
     input.client,
     reportDestinationForType('crash'),
     {
-      content: supportTeamPing('New crash report needs triage.'),
-      allowedMentions: supportTeamAllowedMentions(),
+      content: teamAlertContent('New crash report needs triage.', ['support', 'dev']),
+      allowedMentions: teamAlertAllowedMentions(['support', 'dev']),
       embeds: [crashReportEmbed(report)],
       components: [reportClaimButtons('crash', report.publicId)]
     },

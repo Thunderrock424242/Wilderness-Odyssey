@@ -129,8 +129,14 @@ export const config = {
   support: {
     teamRoleId: optional('SUPPORT_TEAM_ROLE_ID')
   },
+  dev: {
+    teamRoleId: optional('DEV_TEAM_ROLE_ID')
+  },
   qa: {
     channelIds: listFromEnv('QA_CHANNEL_IDS', []),
+    forumChannelId: optional('QA_FORUM_CHANNEL_ID'),
+    alertChannelId: optional('QA_ALERT_CHANNEL_ID') ?? optional('QA_TEAM_CHANNEL_ID'),
+    alertRoleId: optional('QA_ALERT_ROLE_ID') ?? optional('QA_TEAM_ROLE_ID') ?? optional('SUPPORT_TEAM_ROLE_ID'),
     teamChannelId: optional('QA_TEAM_CHANNEL_ID'),
     teamRoleId: optional('QA_TEAM_ROLE_ID')
   },
