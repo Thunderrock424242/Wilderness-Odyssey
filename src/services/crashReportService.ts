@@ -55,6 +55,7 @@ async function archiveCrashAttachmentNow(input: {
       content: teamAlertContent('New crash report needs triage.', ['support', 'dev']),
       allowedMentions: teamAlertAllowedMentions(['support', 'dev']),
       embeds: [crashReportEmbed(report)],
+      files: [redactedCrashLogFile(report.publicId, report.redactedLog)],
       components: [reportClaimButtons('crash', report.publicId)]
     },
     {
@@ -77,5 +78,13 @@ async function archiveCrashAttachmentNow(input: {
         { name: 'Detected signals', value: analysis.signals.join('\n').slice(0, 1024) },
         { name: 'Next steps', value: nextSteps.slice(0, 1024) }
       )
+  };
+}
+
+function redactedCrashLogFile(publicId: string, redactedLog: string) {
+  return {
+    attachment: Buffer.from(redactedLog, 'utf8'),
+    name: `${publicId.toLowerCase()}-redacted-log.txt`,
+    description: 'Best-effort redacted crash/latest.log copy.'
   };
 }

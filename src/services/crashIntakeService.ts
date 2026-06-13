@@ -78,7 +78,7 @@ export async function beginCrashUploadIntake(interaction: CrashIntakeInteraction
         .addFields(
           { name: 'Accepted files', value: '`.log` or `.txt` files.' },
           { name: 'How to upload', value: 'Send the log as a normal message attachment in this channel. Discord modals do not have upload buttons.' },
-          { name: 'What happens next', value: 'I will redact sensitive values, analyze common crash signatures, create the public crash forum post, and ping support.' },
+          { name: 'What happens next', value: 'I copy the file, delete your raw upload here when permissions allow it, redact sensitive values, analyze common crash signatures, and create the public Crash forum post.' },
           { name: 'Crash forum shortcut', value: 'You can also use `/crash file:<log>` in the server to create the Crash forum post directly after redaction.' }
         )
     ],
@@ -131,14 +131,29 @@ export async function handleCrashIntakeMessage(message: Message): Promise<boolea
     });
 
     pendingCrashIntakes.delete(message.channelId);
-    await message.reply({
+    const resultMessage = {
       content: result.posted
         ? `Crash report created as **${result.report.publicId}** and sent to staff.`
         : `Crash report saved as **${result.report.publicId}**. Staff channel posting is not configured yet.`,
       embeds: [result.embed],
       components: [reportReceiptButtons('crash', result.report.publicId)],
-      allowedMentions: { repliedUser: false }
-    });
+      allowedMentions: { parse: [] }
+    } as const;
+
+    if ('send' in message.channel) {
+      const rawUploadDeleted = await deleteRawCrashUpload(message);
+      await message.channel.send({
+        ...resultMessage,
+        content: rawUploadDeleted
+          ? `${resultMessage.content} Your raw upload was deleted from this channel.`
+          : resultMessage.content
+      });
+    } else {
+      await message.reply({
+        ...resultMessage,
+        allowedMentions: { repliedUser: false }
+      });
+    }
   } catch (error) {
     await message.reply({
       content: error instanceof Error
@@ -149,4 +164,14 @@ export async function handleCrashIntakeMessage(message: Message): Promise<boolea
   }
 
   return true;
+}
+
+async function deleteRawCrashUpload(message: Message): Promise<boolean> {
+  if (!message.deletable) {
+    return false;
+  }
+
+  return message.delete()
+    .then(() => true)
+    .catch(() => false);
 }
