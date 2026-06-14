@@ -90,6 +90,7 @@ function helpTopicEmbed(topic: HelpTopic): EmbedBuilder {
       return baseEmbed('Install Help', 'Clean installs solve many wilderness disturbances.')
         .addFields(
           { name: 'Checklist', value: 'Use the recommended Java version from `/status`, allocate the recommended RAM, install the exact pack version, and avoid extra mods during troubleshooting.' },
+          { name: 'Guided topics', value: 'Use `/installhelp` for CurseForge ZIP import, Modrinth, Prism Launcher, Java/RAM, clean profile repair, or server/client mismatch help.' },
           { name: 'Still stuck?', value: 'Tell staff your launcher, modpack version, Java version, and the exact error text.' }
         );
     case 'crash':

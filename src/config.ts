@@ -26,7 +26,8 @@ const envSchema = z.object({
   METRICS_ENABLED: optionalTrimmedString,
   METRICS_PATH: optionalTrimmedString,
   MINECRAFT_VERIFY_API_PORT: optionalPositiveInteger,
-  MINECRAFT_VERIFY_CODE_TTL_MINUTES: optionalPositiveNumber
+  MINECRAFT_VERIFY_CODE_TTL_MINUTES: optionalPositiveNumber,
+  GITHUB_API_BASE_URL: optionalUrl
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
@@ -159,5 +160,11 @@ export const config = {
   metrics: {
     enabled: booleanFromEnv('METRICS_ENABLED', false),
     path: optional('METRICS_PATH') ?? '/metrics'
+  },
+  github: {
+    repository: optional('GITHUB_REPOSITORY'),
+    token: optional('GITHUB_TOKEN'),
+    apiBaseUrl: optional('GITHUB_API_BASE_URL') ?? 'https://api.github.com',
+    knownIssueLabels: listFromEnv('GITHUB_KNOWN_ISSUE_LABELS', ['known issue', 'known-issue', 'bug'])
   }
 };

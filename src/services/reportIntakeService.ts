@@ -47,6 +47,11 @@ import {
   teamAlertContent
 } from '../utils/supportTeam';
 import { postStaffLog } from './staffLogService';
+import {
+  addDuplicateHintsField,
+  duplicateHintsText,
+  findDuplicateHints
+} from './duplicateDetectionService';
 
 type ReportIntakeType = 'bug' | 'crash' | 'performance';
 type IntakeMode = 'answering' | 'review' | 'submitted';
@@ -778,6 +783,13 @@ function reviewEmbed(session: IntakeSession) {
       value: displayAnswer(session, question)
     });
   }
+  if (session.type !== 'crash') {
+    const hints = findDuplicateHints(intakeDuplicateInput(session));
+    embed.addFields({
+      name: 'Possible duplicates',
+      value: duplicateHintsText(hints)
+    });
+  }
   return embed;
 }
 
@@ -896,6 +908,13 @@ async function submitBugReport(
   if (playtestSessionId) {
     linkReportToSession(playtestSessionId, 'bug', report.publicId);
   }
+  const duplicateHints = findDuplicateHints({
+    type: 'bug',
+    text: bugDuplicateText(report),
+    modpackVersion: report.modpackVersion,
+    excludePublicId: report.publicId
+  });
+  const reportEmbed = addDuplicateHintsField(bugReportEmbed(report), duplicateHints);
 
   const posted = await sendToConfiguredChannel(
     client,
@@ -903,7 +922,7 @@ async function submitBugReport(
     {
       content: teamAlertContent('New bug report needs triage.', ['support', 'dev']),
       allowedMentions: teamAlertAllowedMentions(['support', 'dev']),
-      embeds: [bugReportEmbed(report)],
+      embeds: [reportEmbed],
       components: [...bugStatusButtons(report.publicId), reportClaimButtons('bug', report.publicId)]
     },
     {
@@ -916,7 +935,7 @@ async function submitBugReport(
 
   await sendResult({
     content: `Thanks, your bug report was submitted as **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but I saved the report locally.'}`,
-    embeds: [bugReportEmbed(report)],
+    embeds: [reportEmbed],
     components: [reportReceiptButtons('bug', report.publicId)],
     allowedMentions: { parse: [] }
   });
@@ -952,6 +971,13 @@ async function submitPerformanceReport(
     lagLocation: requiredAnswer(session, 'lagLocation'),
     activity: requiredAnswer(session, 'activity')
   });
+  const duplicateHints = findDuplicateHints({
+    type: 'performance',
+    text: performanceDuplicateText(report),
+    modpackVersion: report.modpackVersion,
+    excludePublicId: report.publicId
+  });
+  const reportEmbed = addDuplicateHintsField(performanceReportEmbed(report), duplicateHints);
 
   const posted = await sendToConfiguredChannel(
     client,
@@ -959,7 +985,7 @@ async function submitPerformanceReport(
     {
       content: supportTeamPing('New performance report needs triage.'),
       allowedMentions: supportTeamAllowedMentions(),
-      embeds: [performanceReportEmbed(report)],
+      embeds: [reportEmbed],
       components: [reportClaimButtons('performance', report.publicId)]
     },
     {
@@ -972,7 +998,7 @@ async function submitPerformanceReport(
 
   await sendResult({
     content: `Thanks, your performance report was submitted as **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but I saved the report locally.'}`,
-    embeds: [performanceReportEmbed(report)],
+    embeds: [reportEmbed],
     components: [reportReceiptButtons('performance', report.publicId)],
     allowedMentions: { parse: [] }
   });
@@ -1081,6 +1107,75 @@ function reportLabel(type: ReportIntakeType): string {
     crash: 'Crash Report',
     performance: 'Performance Report'
   }[type];
+}
+
+function intakeDuplicateInput(session: IntakeSession): Parameters<typeof findDuplicateHints>[0] {
+  if (session.type === 'performance') {
+    return {
+      type: 'performance',
+      text: [
+        answer(session, 'lagLocation'),
+        answer(session, 'activity'),
+        answer(session, 'cpuGpu'),
+        answer(session, 'javaVersion'),
+        answer(session, 'launcher'),
+        answer(session, 'shaders')
+      ].filter(Boolean).join(' '),
+      modpackVersion: answer(session, 'modpackVersion')
+    };
+  }
+
+  return {
+    type: 'bug',
+    text: [
+      answer(session, 'happened'),
+      answer(session, 'expected'),
+      answer(session, 'steps'),
+      answer(session, 'bugContext'),
+      answer(session, 'location'),
+      answer(session, 'anomalyContext'),
+      answer(session, 'repeatable')
+    ].filter(Boolean).join(' '),
+    modpackVersion: answer(session, 'modpackVersion')
+  };
+}
+
+function bugDuplicateText(report: {
+  happened: string;
+  expected: string;
+  steps: string;
+  bugContext: string | null;
+  location: string | null;
+  anomalyContext: string | null;
+  repeatable: string | null;
+}): string {
+  return [
+    report.happened,
+    report.expected,
+    report.steps,
+    report.bugContext,
+    report.location,
+    report.anomalyContext,
+    report.repeatable
+  ].filter(Boolean).join(' ');
+}
+
+function performanceDuplicateText(report: {
+  lagLocation: string;
+  activity: string;
+  cpuGpu: string | null;
+  javaVersion: string | null;
+  launcher: string | null;
+  shaders: string | null;
+}): string {
+  return [
+    report.lagLocation,
+    report.activity,
+    report.cpuGpu,
+    report.javaVersion,
+    report.launcher,
+    report.shaders
+  ].filter(Boolean).join(' ');
 }
 
 function isTextLogAttachment(attachment: Attachment): boolean {

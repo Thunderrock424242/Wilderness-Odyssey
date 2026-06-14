@@ -144,6 +144,10 @@ export interface KnownIssueRecord {
   description: string;
   status: string;
   severity: string;
+  affectedVersions: string | null;
+  fixedInVersion: string | null;
+  externalKey: string | null;
+  externalUrl: string | null;
   addedBy: string;
   sourceReportType: string | null;
   sourceReportPublicId: string | null;

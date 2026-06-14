@@ -10,7 +10,12 @@ import type {
   SuggestionRecord,
   SuggestionVoteCounts
 } from '../types';
-import type { LinkedReportRecord, PlaytestReleaseRecord, PlaytestSessionRecord } from '../types/playtest';
+import type {
+  LinkedReportRecord,
+  PlaytestReleaseAcceptanceRecord,
+  PlaytestReleaseRecord,
+  PlaytestSessionRecord
+} from '../types/playtest';
 import type { SparkReportRecord } from '../types/spark';
 
 export const colors = {
@@ -444,6 +449,61 @@ export function playtestReleaseEmbed(release: PlaytestReleaseRecord): EmbedBuild
     );
 }
 
+export function playtestReleaseListEmbed(
+  releases: Array<PlaytestReleaseRecord & { acceptanceCount?: number }>
+): EmbedBuilder {
+  const embed = baseEmbed('Playtest Releases', 'Recent gated playtest packages.').setColor(colors.staff);
+
+  if (releases.length === 0) {
+    return embed.setDescription('No playtest releases have been published yet.');
+  }
+
+  for (const release of releases.slice(0, 10)) {
+    embed.addFields({
+      name: `${release.publicId} - ${truncate(release.title, 170)}`,
+      value: [
+        `Status: ${release.status}`,
+        `Version: ${truncate(release.modpackVersion, 80)}`,
+        `Acceptances: ${release.acceptanceCount ?? 0}`,
+        release.channelId ? `Channel: <#${release.channelId}>` : 'Channel: not recorded',
+        `Created: ${release.createdAt}`
+      ].join(' | ')
+    });
+  }
+
+  return embed;
+}
+
+export function playtestReleaseStaffEmbed(
+  release: PlaytestReleaseRecord,
+  acceptances: PlaytestReleaseAcceptanceRecord[]
+): EmbedBuilder {
+  const embed = baseEmbed(`Playtest Release ${release.publicId}`, release.title)
+    .setColor(release.status === 'active' ? colors.staff : colors.warning)
+    .addFields(
+      { name: 'Status', value: release.status, inline: true },
+      { name: 'Modpack version', value: truncate(release.modpackVersion, 128), inline: true },
+      { name: 'Expected duration', value: truncate(release.expectedDuration, 128), inline: true },
+      { name: 'Package', value: truncate(release.packageName, 256), inline: true },
+      { name: 'Channel', value: release.channelId ? `<#${release.channelId}>` : 'Not recorded', inline: true },
+      { name: 'Published by', value: `<@${release.createdBy}>`, inline: true },
+      { name: 'Test focus', value: truncate(release.testFocus) },
+      { name: 'Staff instructions', value: truncate(release.instructions) }
+    );
+
+  embed.addFields({
+    name: `Acceptances (${acceptances.length} shown)`,
+    value: acceptances.length > 0
+      ? acceptances
+        .map((acceptance) => `<@${acceptance.userId}> (${truncate(acceptance.username, 80)}) - ${acceptance.acceptedAt}`)
+        .join('\n')
+        .slice(0, 1024)
+      : 'No acceptances recorded yet.'
+  });
+
+  return embed;
+}
+
 export function sparkReportEmbed(report: SparkReportRecord, session?: PlaytestSessionRecord | null): EmbedBuilder {
   return baseEmbed(`Spark Report ${report.publicId}`, 'Spark report archived and ready for review.')
     .setColor(colors.warning)
@@ -478,9 +538,18 @@ export function knownIssuesEmbed(issues: KnownIssueRecord[]): EmbedBuilder {
 
   for (const issue of issues.slice(0, 10)) {
     const source = issue.sourceReportPublicId ? ` | Source: ${issue.sourceReportPublicId}` : '';
+    const external = issue.externalUrl ? ` | [External](${issue.externalUrl})` : '';
+    const versions = [
+      issue.affectedVersions ? `Affected: ${issue.affectedVersions}` : null,
+      issue.fixedInVersion ? `Fixed in: ${issue.fixedInVersion}` : null
+    ].filter(Boolean).join(' | ');
     embed.addFields({
       name: `#${issue.id} - ${truncate(issue.title, 220)}`,
-      value: `Status: ${knownIssueStatusLabel(issue.status)} | Severity: ${issue.severity}${source}\n${truncate(issue.description, 700)}`
+      value: [
+        `Status: ${knownIssueStatusLabel(issue.status)} | Severity: ${issue.severity}${source}${external}`,
+        versions || null,
+        truncate(issue.description, versions ? 620 : 700)
+      ].filter(Boolean).join('\n')
     });
   }
 

@@ -107,6 +107,10 @@ function migrate(database: DatabaseSync): void {
       description TEXT NOT NULL,
       status TEXT NOT NULL DEFAULT 'open',
       severity TEXT NOT NULL DEFAULT 'medium',
+      affected_versions TEXT,
+      fixed_in_version TEXT,
+      external_key TEXT,
+      external_url TEXT,
       added_by TEXT NOT NULL,
       source_report_type TEXT,
       source_report_public_id TEXT,
@@ -297,6 +301,7 @@ function migrate(database: DatabaseSync): void {
     CREATE INDEX IF NOT EXISTS idx_performance_reports_public_id ON performance_reports(public_id);
     CREATE INDEX IF NOT EXISTS idx_feedback_reports_public_id ON feedback_reports(public_id);
     CREATE INDEX IF NOT EXISTS idx_known_issues_status ON known_issues(status);
+    CREATE INDEX IF NOT EXISTS idx_known_issues_external ON known_issues(external_key);
     CREATE INDEX IF NOT EXISTS idx_changelog_entries_version ON changelog_entries(version);
     CREATE INDEX IF NOT EXISTS idx_suggestions_public_id ON suggestions(public_id);
     CREATE INDEX IF NOT EXISTS idx_suggestion_votes_public_id ON suggestion_votes(suggestion_public_id);
@@ -331,7 +336,12 @@ function migrate(database: DatabaseSync): void {
   ensureColumn(database, 'crash_reports', 'steps', 'TEXT');
   ensureColumn(database, 'known_issues', 'source_report_type', 'TEXT');
   ensureColumn(database, 'known_issues', 'source_report_public_id', 'TEXT');
+  ensureColumn(database, 'known_issues', 'affected_versions', 'TEXT');
+  ensureColumn(database, 'known_issues', 'fixed_in_version', 'TEXT');
+  ensureColumn(database, 'known_issues', 'external_key', 'TEXT');
+  ensureColumn(database, 'known_issues', 'external_url', 'TEXT');
   database.exec('CREATE INDEX IF NOT EXISTS idx_known_issues_source ON known_issues(source_report_type, source_report_public_id);');
+  database.exec('CREATE INDEX IF NOT EXISTS idx_known_issues_external ON known_issues(external_key);');
   ensureReportClaimColumns(database, 'bug_reports');
   ensureReportClaimColumns(database, 'crash_reports');
   ensureReportClaimColumns(database, 'performance_reports');

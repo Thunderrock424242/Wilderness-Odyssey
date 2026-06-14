@@ -13,6 +13,7 @@ import { linkReportToSession } from './playtestSessionService';
 import { baseEmbed, crashReportEmbed } from '../utils/embeds';
 import { teamAlertAllowedMentions, teamAlertContent } from '../utils/supportTeam';
 import { enqueueCrashTask } from './queueService';
+import { addDuplicateHintsField, findDuplicateHints } from './duplicateDetectionService';
 
 export async function archiveCrashAttachment(input: {
   client: Client;
@@ -53,6 +54,13 @@ async function archiveCrashAttachmentNow(input: {
   if (input.playtestSessionId) {
     linkReportToSession(input.playtestSessionId, 'crash', report.publicId);
   }
+  const duplicateHints = findDuplicateHints({
+    type: 'crash',
+    text: `${analysis.likelyCause} ${analysis.signals.join(' ')} ${input.activity ?? ''} ${input.steps ?? ''} ${analysis.redactedLog.slice(0, 5000)}`,
+    likelyCause: analysis.likelyCause,
+    excludePublicId: report.publicId
+  });
+  const reportEmbed = addDuplicateHintsField(crashReportEmbed(report), duplicateHints);
 
   const posted = await sendToConfiguredChannel(
     input.client,
@@ -60,7 +68,7 @@ async function archiveCrashAttachmentNow(input: {
     {
       content: teamAlertContent('New crash report needs triage.', ['support', 'dev']),
       allowedMentions: teamAlertAllowedMentions(['support', 'dev']),
-      embeds: [crashReportEmbed(report)],
+      embeds: [reportEmbed],
       files: [redactedCrashLogFile(report.publicId, report.redactedLog)],
       components: [reportClaimButtons('crash', report.publicId)]
     },

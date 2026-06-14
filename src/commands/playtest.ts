@@ -16,8 +16,12 @@ import {
 import type { SlashCommand } from '../types';
 import { config } from '../config';
 import {
+  closePlaytestRelease,
+  countPlaytestReleaseAcceptances,
   createPlaytestRelease,
   getPlaytestRelease,
+  listPlaytestReleaseAcceptances,
+  listRecentPlaytestReleases,
   recordPlaytestReleaseAcceptance,
   updatePlaytestReleaseMessage
 } from '../services/playtestReleaseService';
@@ -37,6 +41,8 @@ import {
   playtestListEmbed,
   playtestPrivacyPolicyEmbeds,
   playtestReleaseEmbed,
+  playtestReleaseListEmbed,
+  playtestReleaseStaffEmbed,
   playtestSessionEmbed,
   playtestTermsEmbeds
 } from '../utils/embeds';
@@ -174,6 +180,35 @@ export const playtestCommand: SlashCommand = {
             .setDescription('Optional extra tester instructions.')
             .setMaxLength(1000)
             .setRequired(false)
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('release_list')
+        .setDescription('Staff-only: list recent gated playtest releases.')
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('release_view')
+        .setDescription('Staff-only: view a playtest release and recent acceptances.')
+        .addStringOption((option) =>
+          option
+            .setName('release_id')
+            .setDescription('Playtest release ID, like WO-DROP-0001.')
+            .setMaxLength(40)
+            .setRequired(true)
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('release_close')
+        .setDescription('Staff-only: close a gated playtest release.')
+        .addStringOption((option) =>
+          option
+            .setName('release_id')
+            .setDescription('Playtest release ID, like WO-DROP-0001.')
+            .setMaxLength(40)
+            .setRequired(true)
         )
     )
     .addSubcommand((subcommand) =>
@@ -406,6 +441,73 @@ export const playtestCommand: SlashCommand = {
       return;
     }
 
+    if (subcommand === 'release_list') {
+      if (!(await requireStaff(interaction))) {
+        return;
+      }
+
+      const releases = listRecentPlaytestReleases().map((release) => ({
+        ...release,
+        acceptanceCount: countPlaytestReleaseAcceptances(release.publicId)
+      }));
+
+      await interaction.reply({
+        embeds: [playtestReleaseListEmbed(releases)],
+        flags: 'Ephemeral'
+      });
+      return;
+    }
+
+    if (subcommand === 'release_view') {
+      if (!(await requireStaff(interaction))) {
+        return;
+      }
+
+      const releaseId = interaction.options.getString('release_id', true);
+      const release = getPlaytestRelease(releaseId);
+      if (!release) {
+        await interaction.reply({ content: `I could not find playtest release **${releaseId}**.`, flags: 'Ephemeral' });
+        return;
+      }
+
+      await interaction.reply({
+        embeds: [playtestReleaseStaffEmbed(release, listPlaytestReleaseAcceptances(release.publicId))],
+        flags: 'Ephemeral'
+      });
+      return;
+    }
+
+    if (subcommand === 'release_close') {
+      if (!(await requireStaff(interaction))) {
+        return;
+      }
+
+      const releaseId = interaction.options.getString('release_id', true);
+      const release = closePlaytestRelease(releaseId);
+      if (!release) {
+        await interaction.reply({ content: `I could not find playtest release **${releaseId}**.`, flags: 'Ephemeral' });
+        return;
+      }
+
+      await removePlaytestGateButtons(interaction, release);
+      await interaction.reply({
+        content: `All set. ${release.publicId} is now closed and will not send new ZIP links.`,
+        embeds: [playtestReleaseStaffEmbed(release, listPlaytestReleaseAcceptances(release.publicId))],
+        flags: 'Ephemeral'
+      });
+
+      await postStaffLog(interaction.client, {
+        title: 'Playtest Release Closed',
+        description: `${release.publicId} was closed.`,
+        fields: [
+          { name: 'Release', value: release.publicId, inline: true },
+          { name: 'Closed by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+          { name: 'Title', value: release.title }
+        ]
+      });
+      return;
+    }
+
     if (subcommand === 'end') {
       const sessionId = interaction.options.getString('session_id', true);
       const session = endPlaytestSession(sessionId, {
@@ -631,6 +733,30 @@ export async function handlePlaytestReleaseButton(interaction: ButtonInteraction
     ]
   });
   return true;
+}
+
+async function removePlaytestGateButtons(
+  interaction: ChatInputCommandInteraction,
+  release: Parameters<typeof playtestReleaseEmbed>[0]
+): Promise<void> {
+  if (!release.channelId || !release.messageId) {
+    return;
+  }
+
+  const channel = await interaction.client.channels.fetch(release.channelId).catch(() => null);
+  const messageChannel = channel as {
+    messages?: {
+      fetch(id: string): Promise<{
+        edit(payload: { embeds: unknown[]; components: unknown[] }): Promise<unknown>;
+      } | null>;
+    };
+  } | null;
+
+  const message = await messageChannel?.messages?.fetch(release.messageId).catch(() => null);
+  await message?.edit({
+    embeds: [playtestReleaseEmbed(release)],
+    components: []
+  }).catch(() => undefined);
 }
 
 async function requireMinecraftVerification(interaction: PlaytestGateInteraction): Promise<boolean> {

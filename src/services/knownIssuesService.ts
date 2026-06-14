@@ -7,6 +7,10 @@ interface KnownIssueRow {
   description: string;
   status: string;
   severity: string;
+  affected_versions: string | null;
+  fixed_in_version: string | null;
+  external_key: string | null;
+  external_url: string | null;
   added_by: string;
   source_report_type: string | null;
   source_report_public_id: string | null;
@@ -23,9 +27,16 @@ interface ChangelogRow {
   created_at: string;
 }
 
-export function listKnownIssues(limit = 10): KnownIssueRecord[] {
+export function listKnownIssues(limit = 10, version?: string | null): KnownIssueRecord[] {
+  const normalizedVersion = version?.trim() || null;
+  const versionFilter = normalizedVersion ? `%${normalizedVersion}%` : null;
   const rows = getDb().prepare(`
     SELECT * FROM known_issues
+    WHERE @versionFilter IS NULL
+      OR affected_versions IS NULL
+      OR affected_versions = ''
+      OR affected_versions LIKE @versionFilter
+      OR fixed_in_version LIKE @versionFilter
     ORDER BY
       CASE status
         WHEN 'confirmed' THEN 0
@@ -36,8 +47,8 @@ export function listKnownIssues(limit = 10): KnownIssueRecord[] {
         ELSE 3
       END,
       id DESC
-    LIMIT ?
-  `).all(limit) as unknown as KnownIssueRow[];
+    LIMIT @limit
+  `).all({ versionFilter, limit }) as unknown as KnownIssueRow[];
 
   return rows.map(mapKnownIssue);
 }
@@ -47,13 +58,28 @@ export function addKnownIssue(input: {
   description: string;
   status: string;
   severity: string;
+  affectedVersions?: string | null;
+  fixedInVersion?: string | null;
+  externalKey?: string | null;
+  externalUrl?: string | null;
   addedBy: string;
 }): KnownIssueRecord {
   const database = getDb();
   const info = database.prepare(`
-    INSERT INTO known_issues (title, description, status, severity, added_by)
-    VALUES (@title, @description, @status, @severity, @addedBy)
-  `).run(input);
+    INSERT INTO known_issues (
+      title, description, status, severity, affected_versions, fixed_in_version,
+      external_key, external_url, added_by
+    ) VALUES (
+      @title, @description, @status, @severity, @affectedVersions, @fixedInVersion,
+      @externalKey, @externalUrl, @addedBy
+    )
+  `).run({
+    ...input,
+    affectedVersions: cleanOptional(input.affectedVersions),
+    fixedInVersion: cleanOptional(input.fixedInVersion),
+    externalKey: cleanOptional(input.externalKey),
+    externalUrl: cleanOptional(input.externalUrl)
+  });
 
   const issue = getKnownIssue(Number(info.lastInsertRowid));
   if (!issue) {
@@ -79,6 +105,10 @@ export function syncKnownIssueFromBugStatus(input: {
     description: bugKnownIssueDescription(input.report, input.status),
     status: input.status,
     severity: 'medium',
+    affectedVersions: input.report.modpackVersion,
+    fixedInVersion: input.status === 'solved' ? 'upcoming' : null,
+    externalKey: null,
+    externalUrl: null,
     addedBy: input.addedBy,
     sourceReportType: 'bug',
     sourceReportPublicId: input.report.publicId
@@ -91,6 +121,8 @@ export function syncKnownIssueFromBugStatus(input: {
           description = @description,
           status = @status,
           severity = @severity,
+          affected_versions = @affectedVersions,
+          fixed_in_version = @fixedInVersion,
           updated_at = datetime('now')
       WHERE id = @id
     `).run({ ...values, id: existing.id });
@@ -103,9 +135,11 @@ export function syncKnownIssueFromBugStatus(input: {
 
   const info = database.prepare(`
     INSERT INTO known_issues (
-      title, description, status, severity, added_by, source_report_type, source_report_public_id
+      title, description, status, severity, affected_versions, fixed_in_version,
+      external_key, external_url, added_by, source_report_type, source_report_public_id
     ) VALUES (
-      @title, @description, @status, @severity, @addedBy, @sourceReportType, @sourceReportPublicId
+      @title, @description, @status, @severity, @affectedVersions, @fixedInVersion,
+      @externalKey, @externalUrl, @addedBy, @sourceReportType, @sourceReportPublicId
     )
   `).run(values);
 
@@ -122,6 +156,8 @@ export function updateKnownIssue(id: number, input: {
   description: string;
   status: string;
   severity: string;
+  affectedVersions?: string | null;
+  fixedInVersion?: string | null;
 }): KnownIssueRecord | null {
   const result = getDb().prepare(`
     UPDATE known_issues
@@ -129,11 +165,79 @@ export function updateKnownIssue(id: number, input: {
         description = @description,
         status = @status,
         severity = @severity,
+        affected_versions = @affectedVersions,
+        fixed_in_version = @fixedInVersion,
         updated_at = datetime('now')
     WHERE id = @id
-  `).run({ ...input, id });
+  `).run({
+    ...input,
+    id,
+    affectedVersions: cleanOptional(input.affectedVersions),
+    fixedInVersion: cleanOptional(input.fixedInVersion)
+  });
 
   return result.changes > 0 ? getKnownIssue(id) : null;
+}
+
+export function upsertKnownIssueFromExternal(input: {
+  externalKey: string;
+  externalUrl: string;
+  title: string;
+  description: string;
+  status: string;
+  severity: string;
+  affectedVersions?: string | null;
+  fixedInVersion?: string | null;
+  addedBy: string;
+}): KnownIssueRecord {
+  const database = getDb();
+  const existing = database.prepare(`
+    SELECT id FROM known_issues
+    WHERE external_key = ?
+  `).get(input.externalKey) as { id: number } | undefined;
+
+  const values = {
+    ...input,
+    affectedVersions: cleanOptional(input.affectedVersions),
+    fixedInVersion: cleanOptional(input.fixedInVersion)
+  };
+
+  if (existing) {
+    database.prepare(`
+      UPDATE known_issues
+      SET title = @title,
+          description = @description,
+          status = @status,
+          severity = @severity,
+          affected_versions = @affectedVersions,
+          fixed_in_version = @fixedInVersion,
+          external_url = @externalUrl,
+          updated_at = datetime('now')
+      WHERE id = @id
+    `).run({ ...values, id: existing.id });
+
+    const issue = getKnownIssue(existing.id);
+    if (issue) {
+      return issue;
+    }
+  }
+
+  const info = database.prepare(`
+    INSERT INTO known_issues (
+      title, description, status, severity, affected_versions, fixed_in_version,
+      external_key, external_url, added_by
+    ) VALUES (
+      @title, @description, @status, @severity, @affectedVersions, @fixedInVersion,
+      @externalKey, @externalUrl, @addedBy
+    )
+  `).run(values);
+
+  const issue = getKnownIssue(Number(info.lastInsertRowid));
+  if (!issue) {
+    throw new Error('Failed to read imported known issue.');
+  }
+
+  return issue;
 }
 
 export function removeKnownIssue(id: number): boolean {
@@ -183,6 +287,10 @@ function mapKnownIssue(row: KnownIssueRow): KnownIssueRecord {
     description: row.description,
     status: row.status,
     severity: row.severity,
+    affectedVersions: row.affected_versions,
+    fixedInVersion: row.fixed_in_version,
+    externalKey: row.external_key,
+    externalUrl: row.external_url,
     addedBy: row.added_by,
     sourceReportType: row.source_report_type,
     sourceReportPublicId: row.source_report_public_id,
@@ -208,6 +316,11 @@ function bugKnownIssueDescription(report: BugReportRecord, status: 'confirmed' |
     `Expected: ${report.expected}`,
     `Steps: ${report.steps}`
   ].filter(Boolean).join('\n');
+}
+
+function cleanOptional(value: string | null | undefined): string | null {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : null;
 }
 
 function mapChangelog(row: ChangelogRow): ChangelogEntryRecord {

@@ -46,6 +46,13 @@ import {
   getPlaytestSession,
   listLinkedReports
 } from '../services/playtestSessionService';
+import { triageDigestEmbed } from '../services/triageDigestService';
+import { importKnownIssuesFromGitHub } from '../services/githubIssueSyncService';
+import {
+  anonymizeUserData,
+  privacySummaryEmbed,
+  unlinkMinecraftForUser
+} from '../services/privacyAdminService';
 import { postStaffLog } from '../services/staffLogService';
 import {
   bugReportEmbed,
@@ -305,6 +312,79 @@ export const staffCommand: SlashCommand = {
                 .setRequired(true)
             )
         )
+    )
+    .addSubcommandGroup((group) =>
+      group
+        .setName('ops')
+        .setDescription('Staff operations summaries.')
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('digest')
+            .setDescription('Show the current triage digest.')
+        )
+    )
+    .addSubcommandGroup((group) =>
+      group
+        .setName('privacy')
+        .setDescription('Manage user data requests.')
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('view')
+            .setDescription('Show stored bot records for a user.')
+            .addUserOption((option) =>
+              option
+                .setName('user')
+                .setDescription('Discord user to review.')
+                .setRequired(true)
+            )
+        )
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('anonymize')
+            .setDescription('Anonymize stored report/playtest records for a user.')
+            .addUserOption((option) =>
+              option
+                .setName('user')
+                .setDescription('Discord user to anonymize.')
+                .setRequired(true)
+            )
+            .addStringOption((option) =>
+              option
+                .setName('reason')
+                .setDescription('Optional staff note for the audit log.')
+                .setMaxLength(500)
+                .setRequired(false)
+            )
+        )
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('unlink_minecraft')
+            .setDescription('Remove a user Minecraft verification link and pending link codes.')
+            .addUserOption((option) =>
+              option
+                .setName('user')
+                .setDescription('Discord user to unlink.')
+                .setRequired(true)
+            )
+        )
+    )
+    .addSubcommandGroup((group) =>
+      group
+        .setName('github')
+        .setDescription('Sync GitHub issues into bot tracking.')
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('import_knownissues')
+            .setDescription('Import labeled GitHub issues into the known issues list.')
+            .addIntegerOption((option) =>
+              option
+                .setName('limit')
+                .setDescription('Maximum GitHub issues to scan.')
+                .setMinValue(1)
+                .setMaxValue(100)
+                .setRequired(false)
+            )
+        )
     ),
   async execute(interaction) {
     if (!(await requireStaff(interaction))) {
@@ -529,6 +609,96 @@ export const staffCommand: SlashCommand = {
           ]
         });
       }
+      return;
+    }
+
+    if (group === 'ops' && subcommand === 'digest') {
+      await interaction.reply({
+        embeds: [triageDigestEmbed()],
+        flags: 'Ephemeral'
+      });
+      return;
+    }
+
+    if (group === 'privacy' && subcommand === 'view') {
+      const user = interaction.options.getUser('user', true);
+      await interaction.reply({
+        embeds: [privacySummaryEmbed(user.id)],
+        flags: 'Ephemeral'
+      });
+      return;
+    }
+
+    if (group === 'privacy' && subcommand === 'anonymize') {
+      const user = interaction.options.getUser('user', true);
+      const reason = interaction.options.getString('reason');
+      const result = anonymizeUserData(user.id);
+      await interaction.reply({
+        content: `All set. Anonymized ${result.changedRows} stored row(s) for ${user.tag}. Replacement ID: \`${result.anonymizedUserId}\`.`,
+        flags: 'Ephemeral'
+      });
+      await postStaffLog(interaction.client, {
+        title: 'User Data Anonymized',
+        description: `Stored report/playtest data was anonymized for ${user.tag}.`,
+        fields: [
+          { name: 'User', value: `<@${user.id}> (${user.tag})`, inline: true },
+          { name: 'Rows changed', value: String(result.changedRows), inline: true },
+          { name: 'Anonymized ID', value: result.anonymizedUserId, inline: true },
+          { name: 'Staff', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+          { name: 'Reason', value: reason?.trim() || 'Not provided.' }
+        ]
+      });
+      return;
+    }
+
+    if (group === 'privacy' && subcommand === 'unlink_minecraft') {
+      const user = interaction.options.getUser('user', true);
+      const changed = unlinkMinecraftForUser(user.id);
+      await interaction.reply({
+        content: changed > 0
+          ? `All set. Removed ${changed} Minecraft verification row(s) or code(s) for ${user.tag}.`
+          : `No Minecraft verification rows or codes were found for ${user.tag}.`,
+        flags: 'Ephemeral'
+      });
+      if (changed > 0) {
+        await postStaffLog(interaction.client, {
+          title: 'Minecraft Verification Unlinked',
+          description: `Minecraft verification data was removed for ${user.tag}.`,
+          fields: [
+            { name: 'User', value: `<@${user.id}> (${user.tag})`, inline: true },
+            { name: 'Rows removed', value: String(changed), inline: true },
+            { name: 'Staff', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true }
+          ]
+        });
+      }
+      return;
+    }
+
+    if (group === 'github' && subcommand === 'import_knownissues') {
+      await interaction.deferReply({ flags: 'Ephemeral' });
+      try {
+        const result = await importKnownIssuesFromGitHub({
+          limit: interaction.options.getInteger('limit') ?? 50,
+          addedBy: interaction.user.id
+        });
+        await interaction.editReply({
+          content: `Imported or refreshed ${result.imported.length} known issue(s) from ${result.repository}. Skipped ${result.skipped}.`,
+          embeds: result.imported.length > 0 ? [knownIssuesEmbed(result.imported.slice(0, 10))] : []
+        });
+        await postStaffLog(interaction.client, {
+          title: 'GitHub Known Issues Imported',
+          description: `${result.imported.length} known issue(s) imported from ${result.repository}.`,
+          fields: [
+            { name: 'Repository', value: result.repository, inline: true },
+            { name: 'Imported', value: String(result.imported.length), inline: true },
+            { name: 'Skipped', value: String(result.skipped), inline: true },
+            { name: 'Staff', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true }
+          ]
+        });
+      } catch (error) {
+        await interaction.editReply(error instanceof Error ? error.message : 'GitHub import failed.');
+      }
+      return;
     }
   }
 };
@@ -548,6 +718,7 @@ export async function handleStaffModal(interaction: ModalSubmitInteraction): Pro
       description: interaction.fields.getTextInputValue('issue_description'),
       status: interaction.fields.getTextInputValue('issue_status'),
       severity: interaction.fields.getTextInputValue('issue_severity'),
+      affectedVersions: interaction.fields.getTextInputValue('affected_versions'),
       addedBy: interaction.user.id
     });
 
@@ -575,7 +746,8 @@ export async function handleStaffModal(interaction: ModalSubmitInteraction): Pro
       title: interaction.fields.getTextInputValue('issue_title'),
       description: interaction.fields.getTextInputValue('issue_description'),
       status: interaction.fields.getTextInputValue('issue_status'),
-      severity: interaction.fields.getTextInputValue('issue_severity')
+      severity: interaction.fields.getTextInputValue('issue_severity'),
+      affectedVersions: interaction.fields.getTextInputValue('affected_versions')
     });
 
     await interaction.reply({
@@ -683,6 +855,7 @@ function issueModal(customId: string, existing?: {
   description: string;
   status: string;
   severity: string;
+  affectedVersions?: string | null;
 }): ModalBuilder {
   return new ModalBuilder()
     .setCustomId(customId)
@@ -691,7 +864,8 @@ function issueModal(customId: string, existing?: {
       staffTextInputRow('issue_title', 'Title', TextInputStyle.Short, true, 'Short issue title', existing?.title),
       staffTextInputRow('issue_description', 'Description', TextInputStyle.Paragraph, true, 'What players need to know.', existing?.description),
       staffTextInputRow('issue_status', 'Status', TextInputStyle.Short, true, 'open, investigating, monitoring, fixed', existing?.status ?? 'open'),
-      staffTextInputRow('issue_severity', 'Severity', TextInputStyle.Short, true, 'low, medium, high, critical', existing?.severity ?? 'medium')
+      staffTextInputRow('issue_severity', 'Severity', TextInputStyle.Short, true, 'low, medium, high, critical', existing?.severity ?? 'medium'),
+      staffTextInputRow('affected_versions', 'Affected versions', TextInputStyle.Short, false, 'Example: 0.1.0, 0.1.1', existing?.affectedVersions ?? undefined)
     );
 }
 

@@ -4,6 +4,7 @@ import { changelogCommand } from './changelog';
 import { crashCommand } from './crash';
 import { feedbackCommand } from './feedback';
 import { helpCommand } from './help';
+import { installHelpCommand } from './installhelp';
 import { knownIssuesCommand } from './knownissues';
 import { minecraftCommand } from './minecraft';
 import { performanceCommand } from './performance';
@@ -28,6 +29,7 @@ export const commands: SlashCommand[] = [
   changelogCommand,
   playtestCommand,
   feedbackCommand,
+  installHelpCommand,
   statusCommand,
   suggestCommand,
   sparkReportCommand,

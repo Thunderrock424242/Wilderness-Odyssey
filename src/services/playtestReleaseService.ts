@@ -91,12 +91,60 @@ export function updatePlaytestReleaseMessage(publicId: string, input: {
   return result.changes > 0 ? getPlaytestRelease(normalized) : null;
 }
 
+export function closePlaytestRelease(publicId: string): PlaytestReleaseRecord | null {
+  const normalized = normalizePublicId(publicId);
+  const result = getDb().prepare(`
+    UPDATE playtest_releases
+    SET status = 'closed',
+        updated_at = datetime('now')
+    WHERE public_id = @publicId
+  `).run({ publicId: normalized });
+
+  return result.changes > 0 ? getPlaytestRelease(normalized) : null;
+}
+
 export function getPlaytestRelease(publicId: string): PlaytestReleaseRecord | null {
   const row = getDb()
     .prepare('SELECT * FROM playtest_releases WHERE public_id = ?')
     .get(normalizePublicId(publicId)) as PlaytestReleaseRow | undefined;
 
   return row ? mapRelease(row) : null;
+}
+
+export function listRecentPlaytestReleases(limit = 10): PlaytestReleaseRecord[] {
+  const rows = getDb().prepare(`
+    SELECT * FROM playtest_releases
+    ORDER BY id DESC
+    LIMIT ?
+  `).all(limit) as unknown as PlaytestReleaseRow[];
+
+  return rows.map(mapRelease);
+}
+
+export function listPlaytestReleaseAcceptances(
+  releasePublicId: string,
+  limit = 25
+): PlaytestReleaseAcceptanceRecord[] {
+  const normalized = normalizePublicId(releasePublicId);
+  const rows = getDb().prepare(`
+    SELECT * FROM playtest_release_acceptances
+    WHERE release_public_id = ?
+    ORDER BY id DESC
+    LIMIT ?
+  `).all(normalized, limit) as unknown as PlaytestReleaseAcceptanceRow[];
+
+  return rows.map(mapAcceptance);
+}
+
+export function countPlaytestReleaseAcceptances(releasePublicId: string): number {
+  const normalized = normalizePublicId(releasePublicId);
+  const row = getDb().prepare(`
+    SELECT COUNT(*) AS total
+    FROM playtest_release_acceptances
+    WHERE release_public_id = ?
+  `).get(normalized) as { total: number } | undefined;
+
+  return row?.total ?? 0;
 }
 
 export function recordPlaytestReleaseAcceptance(input: {

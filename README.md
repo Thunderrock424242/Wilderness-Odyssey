@@ -119,6 +119,7 @@ Tables:
 ## Player Commands
 
 - `/help` - interactive support menu.
+- `/installhelp` - launcher/import troubleshooting for CurseForge ZIPs, Modrinth, Prism, Java/RAM, clean profiles, and server/client mismatch.
 - `/privacy` - explains what the bot collects and what it avoids.
 - `/bugreport` - opens a private guided intake channel and saves a structured bug report as `WO-BUG-0001`; supports Minecraft/loader version, repeatability, special-content context, screenshots, optional redacted log attachment, optional Spark link, and optional playtest session link.
 - `/suggest` - opens a suggestion modal, saves as `WO-SUG-0001`, posts to the suggestions channel, and adds Upvote, Downvote, and Needs discussion buttons.
@@ -133,7 +134,7 @@ Tables:
 - `/playtest start` - creates `WO-TEST-0001` and gives Spark profiling instructions.
 - `/playtest end` - ends a playtest session and posts a summary.
 - `/playtest checklist` - shows the singleplayer stability checklist.
-- `/knownissues` - shows staff-configured known issues.
+- `/knownissues` - shows staff-configured known issues; accepts an optional version filter.
 - `/changelog` - shows recent changelog entries.
 - `/status` - shows modpack version, Java/RAM recommendations, support channels, unstable features, and server status placeholder.
 
@@ -172,7 +173,7 @@ Support Hub dropdown options:
 - Playtest help - explains playtest ZIP acceptance, `/playtest start`, and report linking.
 - Q&A question - points players to the community Q&A forum when configured.
 
-Bug, crash, and performance intakes ask one question at a time in a private channel. Players can reply `n/a` for optional fields, review the answers, edit a selected field, and then confirm before the forum post is created.
+Bug, crash, and performance intakes ask one question at a time in a private channel. Players can reply `n/a` for optional fields, review the answers, edit a selected field, and then confirm before the forum post is created. Bug and performance reviews show local duplicate hints from known issues and previous reports when a strong match is found; crash posts show duplicate hints after the log signature is analyzed.
 
 Playtest panel sessions create normal `WO-TEST-0001` records, so later bug reports, feedback, crashes, performance reports, and Spark reports can still be linked to the tester session.
 
@@ -300,11 +301,32 @@ Staff commands require administrator, manage server, or moderator permissions. `
 - `/staff qa add`
 - `/staff qa list`
 - `/staff qa remove <id>`
+- `/staff ops digest`
+- `/staff privacy view <user>`
+- `/staff privacy anonymize <user> reason:<optional>`
+- `/staff privacy unlink_minecraft <user>`
+- `/staff github import_knownissues limit:<optional>`
 - `/staff report view <id>`
 - `/staff report search <keyword>`
 - `/playtest publish` - staff-only: creates a public playtest channel, posts a terms/privacy acceptance gate, and privately sends the playtest ZIP link plus CurseForge import steps after acceptance.
+- `/playtest release_list`
+- `/playtest release_view <release_id>`
+- `/playtest release_close <release_id>`
 - `/playtest list`
 - `/playtest view <session_id>`
+
+`/staff ops digest` summarizes open/unclaimed reports, top suggestions, active playtests, release acceptances, Q&A handoffs, and known issue count. `/staff privacy` provides data-request tooling for summaries, local anonymization, and Minecraft verification unlinking. `/staff github import_knownissues` imports or refreshes labeled GitHub issues as known issues when `GITHUB_REPOSITORY` is configured.
+
+GitHub known-issue import:
+
+```env
+GITHUB_REPOSITORY=owner/repo
+GITHUB_TOKEN=
+GITHUB_API_BASE_URL=https://api.github.com
+GITHUB_KNOWN_ISSUE_LABELS=known issue,known-issue,bug
+```
+
+`GITHUB_TOKEN` is optional for public repositories, but required for private repositories or stricter rate limits.
 
 Bug statuses:
 
