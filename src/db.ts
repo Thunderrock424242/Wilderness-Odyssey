@@ -35,6 +35,7 @@ function migrate(database: DatabaseSync): void {
       happened TEXT NOT NULL,
       expected TEXT NOT NULL,
       steps TEXT NOT NULL,
+      bug_context TEXT,
       location TEXT,
       anomaly_context TEXT,
       repeatable TEXT,
@@ -61,6 +62,8 @@ function migrate(database: DatabaseSync): void {
       likely_cause TEXT NOT NULL,
       confidence TEXT NOT NULL,
       next_steps TEXT NOT NULL,
+      activity TEXT,
+      steps TEXT,
       status TEXT NOT NULL DEFAULT 'open',
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -318,11 +321,14 @@ function migrate(database: DatabaseSync): void {
   ensureColumn(database, 'bug_reports', 'minecraft_version', 'TEXT');
   ensureColumn(database, 'bug_reports', 'loader_version', 'TEXT');
   ensureColumn(database, 'bug_reports', 'repeatable', 'TEXT');
+  ensureColumn(database, 'bug_reports', 'bug_context', 'TEXT');
   ensureColumn(database, 'bug_reports', 'spark_link', 'TEXT');
   ensureColumn(database, 'bug_reports', 'screenshot_url', 'TEXT');
   ensureColumn(database, 'bug_reports', 'screenshot_name', 'TEXT');
   ensureColumn(database, 'bug_reports', 'log_file_name', 'TEXT');
   ensureColumn(database, 'bug_reports', 'redacted_log', 'TEXT');
+  ensureColumn(database, 'crash_reports', 'activity', 'TEXT');
+  ensureColumn(database, 'crash_reports', 'steps', 'TEXT');
   ensureColumn(database, 'known_issues', 'source_report_type', 'TEXT');
   ensureColumn(database, 'known_issues', 'source_report_public_id', 'TEXT');
   database.exec('CREATE INDEX IF NOT EXISTS idx_known_issues_source ON known_issues(source_report_type, source_report_public_id);');

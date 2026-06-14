@@ -8,6 +8,7 @@ import {
   handleReportActionButton,
   handleReportUpdateModal
 } from '../services/reportService';
+import { handleReportIntakeComponent } from '../services/reportIntakeService';
 import { handleHelpComponent } from '../services/helpService';
 import { handleStaffModal } from '../commands/staff';
 import {
@@ -36,7 +37,7 @@ export async function handleInteraction(
       const command = commands.get(interaction.commandName);
       if (!command) {
         await interaction.reply({
-          content: 'That command is not loaded in the local support console.',
+          content: 'I do not have that command loaded right now. Staff may need to redeploy the bot commands.',
           flags: 'Ephemeral'
         });
         return;
@@ -91,6 +92,10 @@ export async function handleInteraction(
         name: interaction.customId.split(':')[0]
       });
       if (interaction.isButton()) {
+        if (await handleReportIntakeComponent(interaction)) {
+          return;
+        }
+
         if (await handleBugStatusButton(interaction)) {
           return;
         }
@@ -116,6 +121,10 @@ export async function handleInteraction(
         }
       }
 
+      if (interaction.isStringSelectMenu() && await handleReportIntakeComponent(interaction)) {
+        return;
+      }
+
       if (interaction.isStringSelectMenu() && await handleSupportPanelComponent(interaction)) {
         return;
       }
@@ -133,7 +142,7 @@ export async function handleInteraction(
 
     if (interaction.isRepliable()) {
       const message = {
-        content: 'The support console hit an error while processing that. Please try again or contact staff.',
+        content: 'Sorry, I hit an error while handling that. Please try once more, and if it keeps happening, let staff know.',
         flags: 'Ephemeral'
       } as const;
 

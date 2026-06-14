@@ -20,6 +20,7 @@ import { formatPublicId, normalizePublicId } from '../utils/ids';
 import { supportTeamAllowedMentions, supportTeamPing } from '../utils/supportTeam';
 import { forumPostTitle, postToConfiguredChannel } from './reportService';
 import { reportCounter } from './metricsService';
+import { postStaffLog } from './staffLogService';
 
 interface SuggestionDraft {
   userId: string;
@@ -76,7 +77,7 @@ export async function handleSuggestionModal(interaction: ModalSubmitInteraction)
 
   if (!draft || draft.userId !== interaction.user.id) {
     await interaction.reply({
-      content: 'That suggestion form expired. Please run `/suggest` again.',
+      content: 'This suggestion form expired. Please run `/suggest` again when you are ready.',
       flags: 'Ephemeral'
     });
     return;
@@ -97,7 +98,19 @@ export async function handleSuggestionModal(interaction: ModalSubmitInteraction)
   const posted = await postSuggestion(interaction, suggestion);
 
   await interaction.editReply({
-    content: `Suggestion received. The archive has been updated. Your suggestion ID is **${suggestion.publicId}**.${posted ? '' : ' Suggestions channel posting is not configured yet, but the suggestion was saved locally.'}`
+    content: `Thanks, your suggestion was received. Your suggestion ID is **${suggestion.publicId}**.${posted ? ' The archive has been updated.' : ' Suggestions channel posting is not configured yet, but I saved the suggestion locally.'}`
+  });
+
+  await postStaffLog(interaction.client, {
+    title: 'Suggestion Submitted',
+    description: `${suggestion.publicId} was submitted for review.`,
+    fields: [
+      { name: 'Suggestion', value: suggestion.publicId, inline: true },
+      { name: 'Category', value: suggestion.category, inline: true },
+      { name: 'Submitted by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+      { name: 'Posted to archive', value: posted ? 'Yes' : 'No', inline: true },
+      { name: 'Title', value: suggestion.title }
+    ]
   });
 }
 
@@ -196,7 +209,7 @@ export async function handleSuggestionVoteButton(interaction: ButtonInteraction)
   const vote = parts[2] as SuggestionVoteValue | undefined;
   if (!publicId || !vote) {
     await interaction.reply({
-      content: 'That suggestion vote button is malformed.',
+      content: 'This suggestion vote button is missing some information. Please refresh the message and try again.',
       flags: 'Ephemeral'
     });
     return true;
@@ -206,7 +219,7 @@ export async function handleSuggestionVoteButton(interaction: ButtonInteraction)
 
   if (!suggestion) {
     await interaction.reply({
-      content: `No suggestion found for ${publicId}.`,
+      content: `I could not find suggestion **${publicId}**. Please check the ID and try again.`,
       flags: 'Ephemeral'
     });
     return true;
@@ -231,8 +244,19 @@ export async function handleSuggestionVoteButton(interaction: ButtonInteraction)
   }).catch(() => undefined);
 
   await interaction.followUp({
-    content: `Vote recorded for **${suggestion.publicId}**.`,
+    content: `Thanks, your vote was recorded for **${suggestion.publicId}**.`,
     flags: 'Ephemeral'
+  });
+
+  await postStaffLog(interaction.client, {
+    title: 'Suggestion Vote Recorded',
+    description: `${suggestion.publicId} received a **${vote}** vote.`,
+    fields: [
+      { name: 'Suggestion', value: suggestion.publicId, inline: true },
+      { name: 'Vote', value: vote, inline: true },
+      { name: 'Voter', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+      { name: 'Totals', value: `Up: ${counts.up} | Down: ${counts.down} | Discussion: ${counts.discussion}` }
+    ]
   });
 
   return true;

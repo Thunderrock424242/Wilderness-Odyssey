@@ -93,17 +93,17 @@ function helpTopicEmbed(topic: HelpTopic): EmbedBuilder {
           { name: 'Still stuck?', value: 'Tell staff your launcher, modpack version, Java version, and the exact error text.' }
         );
     case 'crash':
-      return baseEmbed('Crash Help', 'Use the Support Hub button **Crash** for private log upload.')
+      return baseEmbed('Crash Help', 'Use the Support Hub button **Crash** for private guided log intake.')
         .addFields(
           { name: 'Accepted files', value: 'Upload `.txt` or `.log` files. Large files are rejected before parsing.' },
-          { name: 'Slash fallback', value: 'Power users can still use `/crash file:<crash-report-or-latest.log>`.' },
+          { name: 'Slash shortcut', value: '`/crash file:<crash-report-or-latest.log>` preloads the log, then opens the same private review flow.' },
           { name: 'Analysis', value: 'The bot checks common signatures like Java mismatch, duplicate mods, out-of-memory, worldgen, mixins, renderer issues, and Wilderness Oddesy API/content crashes.' }
         );
     case 'bug':
       return baseEmbed('Bug Report Help', 'Use **Bug** in the Support Hub when the game runs but something behaves incorrectly.')
         .addFields(
           { name: 'Best reports include', value: 'Pack version, Minecraft version, NeoForge/Forge version, singleplayer/multiplayer, what happened, expected behavior, reproduction steps, dimension/location, repeatability, nearby special content, optional screenshots, optional redacted logs, and optional Spark links.' },
-          { name: 'Crash logs', value: 'Use **Crash** for dedicated crash analysis. `/bugreport` also accepts optional latest.log/crash logs and redacts them before storage.' }
+          { name: 'Crash logs', value: 'Use **Crash** for dedicated crash analysis. **Bug** can collect optional latest.log/crash logs in the private intake and redacts them before storage.' }
         );
     case 'suggestions':
       return baseEmbed('Suggestions', 'Use `/suggest` to submit modpack ideas.')

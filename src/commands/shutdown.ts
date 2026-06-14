@@ -2,6 +2,7 @@ import { PermissionsBitField, SlashCommandBuilder } from 'discord.js';
 import type { SlashCommand } from '../types';
 import { scheduleShutdown } from '../services/runtimeService';
 import { logger } from '../utils/logger';
+import { postStaffLog } from '../services/staffLogService';
 
 function canShutdownBot(interaction: Parameters<SlashCommand['execute']>[0]): boolean {
   const permissions = interaction.memberPermissions;
@@ -36,7 +37,7 @@ export const shutdownCommand: SlashCommand = {
   async execute(interaction) {
     if (!canShutdownBot(interaction)) {
       await interaction.reply({
-        content: 'Shutdown is locked. You need administrator or manage server permissions to use this.',
+        content: 'Shutdown is staff-only. You need administrator or manage server permissions to use this.',
         flags: 'Ephemeral'
       });
       return;
@@ -45,7 +46,7 @@ export const shutdownCommand: SlashCommand = {
     const confirmation = interaction.options.getString('confirm', true).toLowerCase();
     if (confirmation !== 'shutdown') {
       await interaction.reply({
-        content: 'Shutdown cancelled. Type `shutdown` in the confirm field to stop the bot.',
+        content: 'No problem, I did not shut down. Type `shutdown` in the confirm field when you really want me to go offline.',
         flags: 'Ephemeral'
       });
       return;
@@ -59,10 +60,28 @@ export const shutdownCommand: SlashCommand = {
       reason
     }, 'Bot shutdown requested from Discord command.');
 
+    const requestLogged = await postStaffLog(interaction.client, {
+      title: 'Shutdown Requested',
+      description: 'A staff member requested the bot process shut down.',
+      fields: [
+        { name: 'Requested by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+        { name: 'Channel', value: `<#${interaction.channelId}>`, inline: true },
+        { name: 'Reason', value: reason ?? 'No reason provided.' }
+      ]
+    });
+
     await interaction.reply({
-      content: 'Shutdown confirmed. I am going offline now.',
+      content: requestLogged
+        ? 'Shutdown confirmed and logged. I am going offline now.'
+        : 'Shutdown confirmed, but I could not post to `STAFF_LOG_CHANNEL_ID`. Please check that channel ID and my Send Messages permission.',
       flags: 'Ephemeral'
     });
-    scheduleShutdown();
+    scheduleShutdown(0, 750, {
+      source: '/shutdown',
+      requestedBy: interaction.user.id,
+      requestedByTag: interaction.user.tag,
+      channelId: interaction.channelId,
+      reason
+    });
   }
 };

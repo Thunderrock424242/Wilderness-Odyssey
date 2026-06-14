@@ -30,6 +30,7 @@ import {
 } from '../services/playtestSessionService';
 import { getMinecraftLinkByUserId } from '../services/minecraftVerificationService';
 import { sendToConfiguredChannel } from '../services/reportService';
+import { postStaffLog } from '../services/staffLogService';
 import { requireStaff } from '../utils/permissions';
 import {
   baseEmbed,
@@ -283,7 +284,7 @@ export const playtestCommand: SlashCommand = {
 
       await interaction.reply({
         content: [
-          `Playtest session created. Wilderness Oddesy systems are watching for instability. Session ID: **${session.publicId}**.`,
+          `All set. Your playtest session is **${session.publicId}**.`,
           '',
           'Start Minecraft and load into the test world.',
           'If testing server TPS or world lag, run Spark profiler during the lag period.',
@@ -292,6 +293,17 @@ export const playtestCommand: SlashCommand = {
           'After Spark finishes, copy the Spark viewer link and submit it with `/sparkreport`.'
         ].join('\n'),
         flags: 'Ephemeral'
+      });
+
+      await postStaffLog(interaction.client, {
+        title: 'Playtest Session Started',
+        description: `${session.publicId} was started.`,
+        fields: [
+          { name: 'Session', value: session.publicId, inline: true },
+          { name: 'Tester', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+          { name: 'Version', value: session.modpackVersion, inline: true },
+          { name: 'Test type', value: session.testType }
+        ]
       });
       return;
     }
@@ -302,14 +314,14 @@ export const playtestCommand: SlashCommand = {
       }
 
       if (!interaction.guild) {
-        await interaction.reply({ content: 'Playtest channels can only be created inside a Discord server.', flags: 'Ephemeral' });
+        await interaction.reply({ content: 'I can only create playtest channels inside the Discord server.', flags: 'Ephemeral' });
         return;
       }
 
       const botMember = interaction.guild.members.me;
       if (!botMember?.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
         await interaction.reply({
-          content: 'I need the Manage Channels permission before I can create playtest channels.',
+          content: 'I need the Manage Channels permission before I can create playtest channels. Please update that permission and try again.',
           flags: 'Ephemeral'
         });
         return;
@@ -376,8 +388,20 @@ export const playtestCommand: SlashCommand = {
       });
 
       await interaction.reply({
-        content: `Published ${release.publicId} in <#${channel.id}>. Testers will receive the ZIP link only after accepting the playtest terms/privacy notice.`,
+        content: `All set. I published ${release.publicId} in <#${channel.id}>. Testers will receive the ZIP link after accepting the playtest terms/privacy notice.`,
         flags: 'Ephemeral'
+      });
+
+      await postStaffLog(interaction.client, {
+        title: 'Playtest Release Published',
+        description: `${release.publicId} was published in <#${channel.id}>.`,
+        fields: [
+          { name: 'Release', value: release.publicId, inline: true },
+          { name: 'Channel', value: `<#${channel.id}>`, inline: true },
+          { name: 'Published by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+          { name: 'Title', value: release.title },
+          { name: 'Package', value: release.packageName }
+        ]
       });
       return;
     }
@@ -395,7 +419,7 @@ export const playtestCommand: SlashCommand = {
       });
 
       if (!session) {
-        await interaction.reply({ content: `No playtest session found for ${sessionId}.`, flags: 'Ephemeral' });
+        await interaction.reply({ content: `I could not find playtest session **${sessionId}**. Please check the ID and try again.`, flags: 'Ephemeral' });
         return;
       }
 
@@ -405,8 +429,20 @@ export const playtestCommand: SlashCommand = {
       });
 
       await interaction.reply({
-        content: `Playtest session **${session.publicId}** ended and summarized.`,
+        content: `All set. Playtest session **${session.publicId}** was ended and summarized.`,
         flags: 'Ephemeral'
+      });
+
+      await postStaffLog(interaction.client, {
+        title: 'Playtest Session Ended',
+        description: `${session.publicId} was ended and summarized.`,
+        fields: [
+          { name: 'Session', value: session.publicId, inline: true },
+          { name: 'Tester', value: `<@${session.userId}> (${session.username})`, inline: true },
+          { name: 'Ended by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+          { name: 'Rating', value: String(session.rating ?? 'n/a'), inline: true },
+          { name: 'Linked reports', value: links.length ? links.map((link) => `${link.reportType}: ${link.reportPublicId}`).join('\n') : 'None' }
+        ]
       });
       return;
     }
@@ -431,7 +467,7 @@ export const playtestCommand: SlashCommand = {
       const sessionId = interaction.options.getString('session_id', true);
       const session = getPlaytestSession(sessionId);
       if (!session) {
-        await interaction.reply({ content: `No playtest session found for ${sessionId}.`, flags: 'Ephemeral' });
+        await interaction.reply({ content: `I could not find playtest session **${sessionId}**. Please check the ID and try again.`, flags: 'Ephemeral' });
         return;
       }
 
@@ -510,11 +546,22 @@ export async function handlePlaytestPanelModal(interaction: ModalSubmitInteracti
 
   await interaction.reply({
     content: [
-      `Playtest session created: **${session.publicId}**.`,
+      `All set. Your playtest session is **${session.publicId}**.`,
       'Use this session ID when submitting bugs, feedback, crashes, performance reports, or Spark links.',
       'If testing lag, run Spark during the lag period and submit the viewer link from the playtest panel or `/sparkreport`.'
     ].join('\n'),
     flags: 'Ephemeral'
+  });
+
+  await postStaffLog(interaction.client, {
+    title: 'Playtest Session Started',
+    description: `${session.publicId} was started from the playtest panel.`,
+    fields: [
+      { name: 'Session', value: session.publicId, inline: true },
+      { name: 'Tester', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+      { name: 'Version', value: session.modpackVersion, inline: true },
+      { name: 'Test type', value: session.testType }
+    ]
   });
 
   return true;
@@ -529,7 +576,7 @@ export async function handlePlaytestReleaseButton(interaction: ButtonInteraction
   const release = getPlaytestRelease(releaseAction.publicId);
   if (!release) {
     await interaction.reply({
-      content: 'That playtest package could not be found. Ask staff to republish the playtest gate.',
+      content: 'I could not find that playtest package. Please ask staff to republish the playtest gate.',
       flags: 'Ephemeral'
     });
     return true;
@@ -553,7 +600,7 @@ export async function handlePlaytestReleaseButton(interaction: ButtonInteraction
 
   if (release.status !== 'active') {
     await interaction.reply({
-      content: `${release.publicId} is no longer accepting new testers.`,
+      content: `${release.publicId} is no longer accepting new testers. Please ask staff which playtest build is current.`,
       flags: 'Ephemeral'
     });
     return true;
@@ -572,6 +619,16 @@ export async function handlePlaytestReleaseButton(interaction: ButtonInteraction
   await interaction.reply({
     content: playtestDownloadInstructions(release),
     flags: 'Ephemeral'
+  });
+
+  await postStaffLog(interaction.client, {
+    title: 'Playtest Release Accepted',
+    description: `${release.publicId} was accepted by a tester.`,
+    fields: [
+      { name: 'Release', value: release.publicId, inline: true },
+      { name: 'Tester', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+      { name: 'Title', value: release.title }
+    ]
   });
   return true;
 }

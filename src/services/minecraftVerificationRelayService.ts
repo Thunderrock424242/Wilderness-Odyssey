@@ -118,7 +118,7 @@ async function grantVerifiedRole(message: Message, userId: string): Promise<stri
 
   const member = await message.guild.members.fetch(userId).catch(() => null);
   if (!member) {
-    return `Configured verified role <@&${roleId}> was not added because the user is not in this server.`;
+    return `Minecraft link saved, but I could not add verified role <@&${roleId}> because the user is not in this server.`;
   }
 
   const added = await member.roles
@@ -131,7 +131,7 @@ async function grantVerifiedRole(message: Message, userId: string): Promise<stri
 
   return added
     ? `Added verified role <@&${roleId}>.`
-    : `Minecraft link was saved, but I could not add verified role <@&${roleId}>.`;
+    : `Minecraft link saved, but I could not add verified role <@&${roleId}>. Please check my role permissions.`;
 }
 
 async function notifyLinkedUser(

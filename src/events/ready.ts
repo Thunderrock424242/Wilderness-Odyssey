@@ -42,6 +42,7 @@ function startupWarnings(): string[] {
   if (!config.support.teamRoleId) warnings.push('- `SUPPORT_TEAM_ROLE_ID` is not configured; report pings and Other Help ticket staff access will be limited.');
   if (!config.dev.teamRoleId) warnings.push('- `DEV_TEAM_ROLE_ID` is not configured; crash and bug alerts will only mention support.');
   if (!config.channelIds.supportTicketCategory) warnings.push('- `SUPPORT_TICKET_CATEGORY_ID` is recommended so Other Help tickets do not appear in the hub category.');
+  if (!config.channelIds.staffLog) warnings.push('- `STAFF_LOG_CHANNEL_ID` is required for ticket transcripts, ticket deletion, shutdown audit logs, and staff action audit logs.');
 
   const qaEnabled = config.qa.channelIds.length > 0 || Boolean(config.qa.forumChannelId);
   if (qaEnabled && !config.qa.alertChannelId) {

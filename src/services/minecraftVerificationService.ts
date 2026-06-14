@@ -84,12 +84,12 @@ export function completeMinecraftLink(input: {
   `).get(normalizedCode) as MinecraftLinkCodeRow | undefined;
 
   if (!codeRow) {
-    return { ok: false, reason: 'That code is invalid or has already been used.' };
+    return { ok: false, reason: 'This code is invalid or has already been used. Please generate a fresh code in Discord and try again.' };
   }
 
   if (new Date(codeRow.expires_at).getTime() < Date.now()) {
     database.prepare('UPDATE minecraft_link_codes SET used_at = datetime(\'now\') WHERE id = ?').run(codeRow.id);
-    return { ok: false, reason: 'That code expired. Generate a new one in Discord.' };
+    return { ok: false, reason: 'This code expired. Please generate a new one in Discord and try again.' };
   }
 
   database.prepare(`
@@ -115,7 +115,7 @@ export function completeMinecraftLink(input: {
 
   const link = getMinecraftLinkByUserId(codeRow.user_id);
   if (!link) {
-    return { ok: false, reason: 'Verification was accepted, but the link could not be read back.' };
+    return { ok: false, reason: 'Verification was accepted, but I could not read the link back yet. Please ask staff to check the bot logs.' };
   }
 
   return { ok: true, link };

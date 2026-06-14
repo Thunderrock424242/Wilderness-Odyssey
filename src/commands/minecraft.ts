@@ -55,8 +55,8 @@ export const minecraftCommand: SlashCommand = {
       const link = getMinecraftLinkByUserId(interaction.user.id);
       await interaction.reply({
         content: link
-          ? `Linked to **${link.minecraftName}** (\`${link.minecraftUuid}\`).`
-          : 'No Minecraft account is linked yet. Use `/minecraft link` to generate a code.',
+          ? `You are linked to **${link.minecraftName}** (\`${link.minecraftUuid}\`).`
+          : 'You do not have a Minecraft account linked yet. Use `/minecraft link` and I will give you a one-time code.',
         flags: 'Ephemeral'
       });
       return;
@@ -64,7 +64,9 @@ export const minecraftCommand: SlashCommand = {
 
     const removed = removeMinecraftLink(interaction.user.id);
     await interaction.reply({
-      content: removed ? 'Your Minecraft account link was removed.' : 'No Minecraft account link was found.',
+      content: removed
+        ? 'All set. Your Minecraft account link was removed.'
+        : 'I could not find a Minecraft account link for you yet.',
       flags: 'Ephemeral'
     });
   }
@@ -72,8 +74,8 @@ export const minecraftCommand: SlashCommand = {
 
 function minecraftVerificationIntro(): string {
   return config.minecraftVerification.relayChannelId
-    ? 'Use this one-time code on the official playtest Minecraft server.'
-    : 'Use this one-time code in your playtest client.';
+    ? 'Here is your one-time code for the official playtest Minecraft server.'
+    : 'Here is your one-time code for the playtest client.';
 }
 
 function minecraftLinkCommandText(code: string): string {

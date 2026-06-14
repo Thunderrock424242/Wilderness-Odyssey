@@ -29,6 +29,7 @@ The bot may collect and store:
 
 - Discord user ID, username, and timestamps.
 - Report text you submit through bug, crash, performance, feedback, suggestion, Spark, Q&A, or support forms.
+- Private support and report intake ticket transcripts created when staff close those channels.
 - Discord channel IDs, message IDs, message links, and report IDs needed to track reports.
 - Uploaded crash reports or latest.log files that you choose to submit.
 - Redacted log excerpts created from uploaded logs.
@@ -38,6 +39,7 @@ The bot may collect and store:
 - Playtest release acceptance records showing that you accepted the terms/privacy gate.
 - Minecraft verification link codes, Minecraft UUID, and Minecraft account name when you choose to link your account.
 - Staff actions such as report status changes, claims, known issue entries, and changelog entries.
+- Staff audit log entries such as ticket creation, ticket closure, report claims, status changes, and shutdown requests.
 
 ## 4. Information the bot does not intentionally collect
 
@@ -47,6 +49,7 @@ The bot does not intentionally collect:
 - Minecraft account passwords or Microsoft account credentials.
 - Payment information.
 - Private Discord direct messages.
+- General server chat outside configured support/report/Q&A workflows.
 - Whole-computer files or folders.
 - Background gameplay telemetry.
 - IP addresses, except where a third-party service used by the project may process them separately.
@@ -72,8 +75,8 @@ We use this information to:
 Visibility depends on where the information is submitted:
 
 - Public bug, crash, feedback, and suggestion forum posts may be visible to server members.
-- Private support tickets are visible to the user, the bot, and configured staff/support roles.
-- Staff-only channels, bot logs, database records, and moderation notes are visible to authorized staff.
+- Private support tickets are visible to the user, the bot, and configured staff/support roles. When closed, the ticket owner receives a transcript copy.
+- Staff-only channels, ticket transcripts, bot logs, database records, and moderation notes are visible to authorized staff.
 - A submitted Spark link may be viewable through Spark's own website.
 - Discord attachment links may be handled by Discord.
 

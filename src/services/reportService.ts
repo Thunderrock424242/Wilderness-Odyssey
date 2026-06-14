@@ -53,6 +53,7 @@ import {
   teamAlertContent
 } from '../utils/supportTeam';
 import { reportCounter } from './metricsService';
+import { postStaffLog } from './staffLogService';
 
 interface BugDraft {
   userId: string;
@@ -101,6 +102,7 @@ interface BugRow {
   happened: string;
   expected: string;
   steps: string;
+  bug_context: string | null;
   location: string | null;
   anomaly_context: string | null;
   repeatable: string | null;
@@ -130,6 +132,8 @@ interface CrashRow {
   likely_cause: string;
   confidence: string;
   next_steps: string;
+  activity: string | null;
+  steps: string | null;
   claimed_by: string | null;
   claimed_by_username: string | null;
   claimed_at: string | null;
@@ -308,7 +312,7 @@ export async function readTextAttachmentUrl(name: string, size: number, url: str
   }
 
   if (size > config.maxLogBytes) {
-    throw new Error(`That file is too large. The current limit is ${Math.floor(config.maxLogBytes / 1024)} KB.`);
+    throw new Error(`This file is too large. The current limit is ${Math.floor(config.maxLogBytes / 1024)} KB.`);
   }
 
   const controller = new AbortController();
@@ -322,7 +326,7 @@ export async function readTextAttachmentUrl(name: string, size: number, url: str
 
     const buffer = Buffer.from(await response.arrayBuffer());
     if (buffer.byteLength > config.maxLogBytes) {
-      throw new Error(`That file is too large. The current limit is ${Math.floor(config.maxLogBytes / 1024)} KB.`);
+      throw new Error(`This file is too large. The current limit is ${Math.floor(config.maxLogBytes / 1024)} KB.`);
     }
 
     return buffer.toString('utf8');
@@ -339,7 +343,7 @@ export async function beginBugReport(interaction: ChatInputCommandInteraction): 
 
   if (sparkLink && !isSparkReportUrl(sparkLink)) {
     await interaction.reply({
-      content: 'That Spark link does not look like a public Spark viewer/report URL. You can leave it blank or submit a valid Spark link.',
+      content: 'The Spark link does not look like a public Spark viewer/report URL. You can leave it blank or submit a valid Spark link.',
       flags: 'Ephemeral'
     });
     return;
@@ -398,7 +402,7 @@ export async function handleBugReportModal(interaction: ModalSubmitInteraction):
 
   if (!draft || draft.userId !== interaction.user.id) {
     await interaction.reply({
-      content: 'That bug report form expired. Please run `/bugreport` again.',
+      content: 'This bug report form expired. Please run `/bugreport` again when you are ready.',
       flags: 'Ephemeral'
     });
     return;
@@ -415,8 +419,8 @@ export async function handleBugReportModal(interaction: ModalSubmitInteraction):
     } catch (error) {
       await interaction.editReply({
         content: error instanceof Error
-          ? `I could not process the attached log: ${error.message}`
-          : 'I could not process the attached log.'
+          ? `Sorry, I could not process the attached log yet: ${error.message}`
+          : 'Sorry, I could not process the attached log yet.'
       });
       return;
     }
@@ -432,6 +436,7 @@ export async function handleBugReportModal(interaction: ModalSubmitInteraction):
     happened: interaction.fields.getTextInputValue('happened'),
     expected: interaction.fields.getTextInputValue('expected'),
     steps: interaction.fields.getTextInputValue('steps'),
+    bugContext: interaction.fields.getTextInputValue('bug_context').trim() || null,
     location: draft.location,
     anomalyContext: draft.anomalyContext,
     repeatable: draft.repeatable,
@@ -466,8 +471,19 @@ export async function handleBugReportModal(interaction: ModalSubmitInteraction):
   );
 
   await interaction.editReply({
-    content: `Bug report received. The dev team has been notified. Your bug ID is **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but the report was saved locally.'}`,
+    content: `Thanks, your bug report was received. Your bug ID is **${report.publicId}**.${posted ? ' The dev team has been notified.' : ' Staff channel posting is not configured yet, but I saved the report locally.'}`,
     components: [reportReceiptButtons('bug', report.publicId)]
+  });
+
+  await postStaffLog(interaction.client, {
+    title: 'Bug Report Submitted',
+    description: `${report.publicId} was submitted from the modal report flow.`,
+    fields: [
+      { name: 'Report', value: report.publicId, inline: true },
+      { name: 'Submitted by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+      { name: 'Posted to archive', value: posted ? 'Yes' : 'No', inline: true },
+      { name: 'Summary', value: report.happened }
+    ]
   });
 }
 
@@ -507,7 +523,7 @@ export async function handlePerformanceReportModal(interaction: ModalSubmitInter
 
   if (!draft || draft.userId !== interaction.user.id) {
     await interaction.reply({
-      content: 'That performance report form expired. Please run `/perfreport` again.',
+      content: 'This performance report form expired. Please run `/perfreport` again when you are ready.',
       flags: 'Ephemeral'
     });
     return;
@@ -548,9 +564,20 @@ export async function handlePerformanceReportModal(interaction: ModalSubmitInter
   );
 
   await interaction.reply({
-    content: `Performance report received. The dev team has been notified. Your report ID is **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but the report was saved locally.'}`,
+    content: `Thanks, your performance report was received. Your report ID is **${report.publicId}**.${posted ? ' The dev team has been notified.' : ' Staff channel posting is not configured yet, but I saved the report locally.'}`,
     components: [reportReceiptButtons('performance', report.publicId)],
     flags: 'Ephemeral'
+  });
+
+  await postStaffLog(interaction.client, {
+    title: 'Performance Report Submitted',
+    description: `${report.publicId} was submitted from the modal report flow.`,
+    fields: [
+      { name: 'Report', value: report.publicId, inline: true },
+      { name: 'Submitted by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+      { name: 'Posted to archive', value: posted ? 'Yes' : 'No', inline: true },
+      { name: 'Where lag happens', value: report.lagLocation }
+    ]
   });
 }
 
@@ -586,7 +613,7 @@ export async function handleFeedbackModal(interaction: ModalSubmitInteraction): 
 
   if (!draft || draft.userId !== interaction.user.id) {
     await interaction.reply({
-      content: 'That feedback form expired. Please run `/feedback` again.',
+      content: 'This feedback form expired. Please run `/feedback` again when you are ready.',
       flags: 'Ephemeral'
     });
     return;
@@ -624,9 +651,21 @@ export async function handleFeedbackModal(interaction: ModalSubmitInteraction): 
   );
 
   await interaction.reply({
-    content: `Field notes received. Your feedback ID is **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but the report was saved locally.'}`,
+    content: `Thanks, your field notes were received. Your feedback ID is **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but I saved the report locally.'}`,
     components: [reportReceiptButtons('feedback', report.publicId)],
     flags: 'Ephemeral'
+  });
+
+  await postStaffLog(interaction.client, {
+    title: 'Feedback Submitted',
+    description: `${report.publicId} was submitted for review.`,
+    fields: [
+      { name: 'Report', value: report.publicId, inline: true },
+      { name: 'Category', value: report.category, inline: true },
+      { name: 'Submitted by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+      { name: 'Posted to archive', value: posted ? 'Yes' : 'No', inline: true },
+      { name: 'Summary', value: report.summary }
+    ]
   });
 }
 
@@ -637,12 +676,12 @@ export function createBugReport(
   const info = database.prepare(`
     INSERT INTO bug_reports (
       user_id, username, modpack_version, minecraft_version, loader_version,
-      play_mode, happened, expected, steps, location, anomaly_context,
+      play_mode, happened, expected, steps, bug_context, location, anomaly_context,
       repeatable, spark_link, attachment_url, attachment_name, screenshot_url,
       screenshot_name, log_file_name, redacted_log
     ) VALUES (
       @userId, @username, @modpackVersion, @minecraftVersion, @loaderVersion,
-      @playMode, @happened, @expected, @steps, @location, @anomalyContext,
+      @playMode, @happened, @expected, @steps, @bugContext, @location, @anomalyContext,
       @repeatable, @sparkLink, @attachmentUrl, @attachmentName, @screenshotUrl,
       @screenshotName, @logFileName, @redactedLog
     )
@@ -667,9 +706,9 @@ export function createCrashReport(
   const database = getDb();
   const info = database.prepare(`
     INSERT INTO crash_reports (
-      user_id, username, file_name, file_size, redacted_log, likely_cause, confidence, next_steps
+      user_id, username, file_name, file_size, redacted_log, likely_cause, confidence, next_steps, activity, steps
     ) VALUES (
-      @userId, @username, @fileName, @fileSize, @redactedLog, @likelyCause, @confidence, @nextSteps
+      @userId, @username, @fileName, @fileSize, @redactedLog, @likelyCause, @confidence, @nextSteps, @activity, @steps
     )
   `).run(input);
 
@@ -886,7 +925,7 @@ export async function handleReportActionButton(interaction: ButtonInteraction): 
     const [, type, publicId] = interaction.customId.split(':') as [string, Exclude<ReportActionType, 'feedback'>, string];
     const updated = claimReport(type, publicId, interaction.user.id, interaction.user.tag);
     if (!updated) {
-      await interaction.reply({ content: `No report found for ${publicId}.`, flags: 'Ephemeral' });
+      await interaction.reply({ content: `I could not find a report for **${publicId}**. Please check the ID and try again.`, flags: 'Ephemeral' });
       return true;
     }
 
@@ -894,8 +933,17 @@ export async function handleReportActionButton(interaction: ButtonInteraction): 
     if (messageUpdate) {
       await interaction.update(messageUpdate);
     } else {
-      await interaction.reply({ content: `Claimed ${publicId}.`, flags: 'Ephemeral' });
+      await interaction.reply({ content: `All set. Claimed **${publicId}**.`, flags: 'Ephemeral' });
     }
+    await postStaffLog(interaction.client, {
+      title: 'Report Claimed',
+      description: `${normalizeReportId(publicId)} was claimed/reassigned.`,
+      fields: [
+        { name: 'Report', value: normalizeReportId(publicId), inline: true },
+        { name: 'Type', value: type, inline: true },
+        { name: 'Claimed by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true }
+      ]
+    });
     return true;
   }
 
@@ -903,13 +951,13 @@ export async function handleReportActionButton(interaction: ButtonInteraction): 
     const [, type, publicId] = interaction.customId.split(':') as [string, ReportActionType, string];
     const owner = getReportOwner(type, publicId);
     if (!owner) {
-      await interaction.reply({ content: `No report found for ${publicId}.`, flags: 'Ephemeral' });
+      await interaction.reply({ content: `I could not find a report for **${publicId}**. Please check the ID and try again.`, flags: 'Ephemeral' });
       return true;
     }
 
     if (owner.userId !== interaction.user.id && !isStaff(interaction)) {
       await interaction.reply({
-        content: 'Only the report submitter or staff can add more information to this report.',
+        content: 'This report can only be updated by the original submitter or staff.',
         flags: 'Ephemeral'
       });
       return true;
@@ -934,13 +982,13 @@ export async function handleReportUpdateModal(interaction: ModalSubmitInteractio
   const [, type, publicId] = interaction.customId.split(':') as [string, ReportActionType, string];
   const owner = getReportOwner(type, publicId);
   if (!owner) {
-    await interaction.reply({ content: `No report found for ${publicId}.`, flags: 'Ephemeral' });
+    await interaction.reply({ content: `I could not find a report for **${publicId}**. Please check the ID and try again.`, flags: 'Ephemeral' });
     return true;
   }
 
   if (owner.userId !== interaction.user.id && !isStaff(interaction)) {
     await interaction.reply({
-      content: 'Only the report submitter or staff can add more information to this report.',
+      content: 'This report can only be updated by the original submitter or staff.',
       flags: 'Ephemeral'
     });
     return true;
@@ -961,8 +1009,19 @@ export async function handleReportUpdateModal(interaction: ModalSubmitInteractio
     ]
   });
 
+  await postStaffLog(interaction.client, {
+    title: 'Report Info Added',
+    description: `More information was added to ${normalizeReportId(publicId)}.`,
+    fields: [
+      { name: 'Report', value: normalizeReportId(publicId), inline: true },
+      { name: 'Type', value: type, inline: true },
+      { name: 'Added by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+      { name: 'Details', value: details.slice(0, 1024) }
+    ]
+  });
+
   await interaction.reply({
-    content: `Added more information to **${normalizeReportId(publicId)}**.`,
+    content: `Thanks, I added that extra information to **${normalizeReportId(publicId)}**.`,
     flags: 'Ephemeral'
   });
   return true;
@@ -1218,7 +1277,7 @@ export async function handleBugStatusButton(interaction: ButtonInteraction): Pro
   const status = parts[2] as ReportStatus | undefined;
   if (!publicId || !status) {
     await interaction.reply({
-      content: 'That bug status button is malformed.',
+      content: 'This bug status button is missing some information. Please refresh the message or use `/staff bug status`.',
       flags: 'Ephemeral'
     });
     return true;
@@ -1229,7 +1288,7 @@ export async function handleBugStatusButton(interaction: ButtonInteraction): Pro
 
   if (!updated || !report) {
     await interaction.reply({
-      content: `No bug report found for ${publicId}.`,
+      content: `I could not find bug report **${publicId}**. Please check the ID and try again.`,
       flags: 'Ephemeral'
     });
     return true;
@@ -1241,6 +1300,16 @@ export async function handleBugStatusButton(interaction: ButtonInteraction): Pro
   await interaction.update({
     embeds: [bugReportEmbed(report)],
     components: [...bugStatusButtons(report.publicId), reportClaimButtons('bug', report.publicId)]
+  });
+
+  await postStaffLog(interaction.client, {
+    title: 'Bug Status Updated',
+    description: `${report.publicId} marked **${status}**.`,
+    fields: [
+      { name: 'Report', value: report.publicId, inline: true },
+      { name: 'Status', value: status, inline: true },
+      { name: 'Updated by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true }
+    ]
   });
 
   return true;
@@ -1311,6 +1380,7 @@ function mapBug(row: BugRow): BugReportRecord {
     happened: row.happened,
     expected: row.expected,
     steps: row.steps,
+    bugContext: row.bug_context,
     location: row.location,
     anomalyContext: row.anomaly_context,
     repeatable: row.repeatable,
@@ -1342,6 +1412,8 @@ function mapCrash(row: CrashRow): CrashReportRecord {
     likelyCause: row.likely_cause,
     confidence: row.confidence,
     nextSteps: row.next_steps,
+    activity: row.activity,
+    steps: row.steps,
     claimedBy: row.claimed_by,
     claimedByUsername: row.claimed_by_username,
     claimedAt: row.claimed_at,
@@ -1398,7 +1470,8 @@ function bugReportModal(draftId: string): ModalBuilder {
       textInputRow('modpack_version', 'Modpack version', TextInputStyle.Short, true, 'Example: 0.1.0', defaultModpackVersion() ?? undefined),
       textInputRow('happened', 'What happened?', TextInputStyle.Paragraph, true, 'Describe the bug clearly.'),
       textInputRow('expected', 'What did you expect?', TextInputStyle.Paragraph, true, 'What should have happened instead?'),
-      textInputRow('steps', 'Steps to reproduce', TextInputStyle.Paragraph, true, 'List the steps staff can try.')
+      textInputRow('steps', 'Steps to reproduce', TextInputStyle.Paragraph, true, 'List the steps staff can try.'),
+      textInputRow('bug_context', 'Optional context', TextInputStyle.Paragraph, false, 'Version, loader, repeatable?, location/coords, nearby feature.')
     );
 }
 

@@ -5,6 +5,7 @@ import type { QaForwardRecord } from '../types';
 import { formatPublicId, normalizePublicId } from '../utils/ids';
 import { colors, truncate } from '../utils/embeds';
 import { sendToConfiguredChannel } from './reportService';
+import { postStaffLog } from './staffLogService';
 import {
   teamAlertAllowedMentions,
   teamAlertContent,
@@ -90,6 +91,16 @@ export async function handleQuestionMessage(message: Message): Promise<void> {
       ].join('\n'),
       allowedMentions: { repliedUser: false }
     });
+
+    await postStaffLog(message.client, {
+      title: 'Q&A Answer Sent',
+      description: `A canned answer was sent in <#${message.channelId}>.`,
+      fields: [
+        { name: 'Answer', value: knownAnswer.title, inline: true },
+        { name: 'Asked by', value: `<@${message.author.id}> (${message.author.tag})`, inline: true },
+        { name: 'Question', value: question }
+      ]
+    });
     return;
   }
 
@@ -108,10 +119,22 @@ export async function handleQuestionMessage(message: Message): Promise<void> {
     allowedMentions: teamAlertAllowedMentions(['qa'])
   });
 
+  await postStaffLog(message.client, {
+    title: 'Q&A Handoff Created',
+    description: `${forward.publicId} was forwarded to the Q&A team.`,
+    fields: [
+      { name: 'Handoff', value: forward.publicId, inline: true },
+      { name: 'Asked by', value: `<@${message.author.id}> (${message.author.tag})`, inline: true },
+      { name: 'Source', value: `<#${message.channelId}>`, inline: true },
+      { name: 'Alert posted', value: posted ? 'Yes' : 'No', inline: true },
+      { name: 'Question', value: question }
+    ]
+  });
+
   await message.reply({
     content: posted
-      ? `I do not have a confident answer for that yet, so I forwarded it to the Q&A team as **${forward.publicId}**.`
-      : `I do not have a confident answer for that yet. The Q&A team channel is not configured, but I saved this as **${forward.publicId}**.`,
+      ? `Thanks for asking. I do not have a confident answer yet, so I forwarded this to the Q&A team as **${forward.publicId}**.`
+      : `Thanks for asking. I do not have a confident answer yet. The Q&A team channel is not configured, but I saved this as **${forward.publicId}**.`,
     allowedMentions: { repliedUser: false }
   });
 }
@@ -137,6 +160,19 @@ async function handleQaForumPost(message: Message): Promise<void> {
     content: teamAlertContent(`New ${classification.label} forum post: ${forward.publicId}`, classification.alertTeams),
     embeds: [qaForumAlertEmbed(message, forward, classification, knownAnswer)],
     allowedMentions: teamAlertAllowedMentions(classification.alertTeams)
+  });
+
+  await postStaffLog(message.client, {
+    title: 'Forum Post Routed',
+    description: `${forward.publicId} was routed as ${classification.label}.`,
+    fields: [
+      { name: 'Handoff', value: forward.publicId, inline: true },
+      { name: 'Route', value: classification.route, inline: true },
+      { name: 'Asked by', value: `<@${message.author.id}> (${message.author.tag})`, inline: true },
+      { name: 'Alert posted', value: posted ? 'Yes' : 'No', inline: true },
+      { name: 'Bot answer', value: knownAnswer ? knownAnswer.title : 'No canned answer matched.', inline: true },
+      { name: 'Question', value: question }
+    ]
   });
 
   if (knownAnswer) {
@@ -326,14 +362,14 @@ function answerKnownQuestion(question: string): KnownAnswer | null {
   if (matchesAny(normalized, ['crash', 'crashed', 'crashing', 'latest.log', 'crash report'])) {
     return {
       title: 'Crash Reports',
-      body: 'Use the Support Hub button **Crash** for a private upload channel, or use `/crash file:<crash-report-or-latest.log>` if you prefer slash commands.'
+      body: 'Use the Support Hub button **Crash** for private guided intake. `/crash file:<crash-report-or-latest.log>` can preload the log into the same review flow.'
     };
   }
 
   if (matchesAny(normalized, ['bug', 'glitch', 'broken', 'not working', 'does not work'])) {
     return {
       title: 'Bug Reports',
-      body: 'Use `/bugreport` for reproducible gameplay or content issues. Include what happened, what you expected, and steps staff can try.'
+      body: 'Use **Bug** in the Support Hub or `/bugreport` for reproducible gameplay or content issues. The bot will ask each field privately, then show a review before posting.'
     };
   }
 

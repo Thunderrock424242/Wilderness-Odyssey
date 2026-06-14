@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from 'discord.js';
 import type { SlashCommand } from '../types';
-import { beginBugReport } from '../services/reportService';
+import { beginBugReportIntakeFromCommand } from '../services/reportIntakeService';
 
 export const bugReportCommand: SlashCommand = {
   data: new SlashCommandBuilder()
@@ -10,7 +10,7 @@ export const bugReportCommand: SlashCommand = {
       option
         .setName('play_mode')
         .setDescription('Singleplayer or multiplayer?')
-        .setRequired(true)
+        .setRequired(false)
         .addChoices(
           { name: 'Singleplayer', value: 'Singleplayer' },
           { name: 'Multiplayer server', value: 'Multiplayer server' },
@@ -94,6 +94,6 @@ export const bugReportCommand: SlashCommand = {
         .setRequired(false)
     ),
   async execute(interaction) {
-    await beginBugReport(interaction);
+    await beginBugReportIntakeFromCommand(interaction);
   }
 };

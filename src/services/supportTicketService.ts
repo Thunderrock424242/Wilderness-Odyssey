@@ -3,6 +3,7 @@ import {
   ButtonBuilder,
   ButtonInteraction,
   ButtonStyle,
+  ChatInputCommandInteraction,
   ChannelType,
   ModalBuilder,
   ModalSubmitInteraction,
@@ -16,8 +17,9 @@ import { config } from '../config';
 import { baseEmbed } from '../utils/embeds';
 import { isStaff } from '../utils/permissions';
 import { supportTeamAllowedMentions, supportTeamPing } from '../utils/supportTeam';
+import { buildTicketTranscript, postStaffLog, postTicketTranscript, sendTicketTranscriptToUser } from './staffLogService';
 
-type SupportTicketStartInteraction = ButtonInteraction | StringSelectMenuInteraction;
+type SupportTicketStartInteraction = ChatInputCommandInteraction | ButtonInteraction | StringSelectMenuInteraction;
 type TicketParentInteraction = ModalSubmitInteraction | SupportTicketStartInteraction;
 
 interface TicketParentResult {
@@ -58,7 +60,7 @@ export async function handleSupportTicketButton(interaction: ButtonInteraction):
 
   if (!isSupportTeamMember(interaction)) {
     await interaction.reply({
-      content: 'Only staff/support can use ticket controls.',
+      content: 'This ticket control is for staff/support only.',
       flags: 'Ephemeral'
     });
     return true;
@@ -67,8 +69,16 @@ export async function handleSupportTicketButton(interaction: ButtonInteraction):
   const action = interaction.customId.slice(ticketButtonPrefix.length);
 
   if (action === 'claim') {
+    await postStaffLog(interaction.client, {
+      title: 'Ticket Claimed',
+      description: 'Private ticket claimed by staff.',
+      fields: [
+        { name: 'Channel', value: `<#${interaction.channelId}> (${interaction.channelId})`, inline: true },
+        { name: 'Claimed by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true }
+      ]
+    });
     await interaction.reply({
-      content: `Ticket claimed by <@${interaction.user.id}>.`,
+      content: `All set. Ticket claimed by <@${interaction.user.id}>.`,
       allowedMentions: { users: [interaction.user.id] }
     });
     return true;
@@ -81,6 +91,14 @@ export async function handleSupportTicketButton(interaction: ButtonInteraction):
 
   if (action.startsWith('route:')) {
     const target = action.slice('route:'.length);
+    await postStaffLog(interaction.client, {
+      title: 'Ticket Route Suggested',
+      description: `Private ticket routed toward **${target}**.`,
+      fields: [
+        { name: 'Channel', value: `<#${interaction.channelId}> (${interaction.channelId})`, inline: true },
+        { name: 'Staff', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true }
+      ]
+    });
     await interaction.reply({
       content: routeInstructions(target),
       flags: 'Ephemeral'
@@ -100,7 +118,7 @@ async function createOtherHelpTicket(input: {
 
   if (!interaction.guild) {
     await interaction.reply({
-      content: 'Other Help tickets can only be created inside the Discord server.',
+      content: 'I can only create Other Help tickets inside the Discord server.',
       flags: 'Ephemeral'
     });
     return;
@@ -109,7 +127,7 @@ async function createOtherHelpTicket(input: {
   const botMember = interaction.guild.members.me;
   if (!botMember?.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
     await interaction.reply({
-      content: 'I need the Manage Channels permission before I can create private support tickets.',
+      content: 'I need the Manage Channels permission before I can create private support tickets. Staff can fix that permission and try again.',
       flags: 'Ephemeral'
     });
     return;
@@ -118,7 +136,7 @@ async function createOtherHelpTicket(input: {
   const parent = await resolveSupportTicketParentId(interaction);
   if (parent.error) {
     await interaction.reply({
-      content: `${parent.error} Fix \`SUPPORT_TICKET_CATEGORY_ID\` or run this from a channel inside the private support category.`,
+      content: `${parent.error} Please fix \`SUPPORT_TICKET_CATEGORY_ID\` or run this from a channel inside the private support category.`,
       flags: 'Ephemeral'
     });
     return;
@@ -147,8 +165,18 @@ async function createOtherHelpTicket(input: {
     components: ticketControlRows()
   });
 
+  await postStaffLog(interaction.client, {
+    title: 'Ticket Created',
+    description: 'Private Other Help ticket opened.',
+    fields: [
+      { name: 'Channel', value: `<#${channel.id}> (${channel.id})`, inline: true },
+      { name: 'Player', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+      { name: 'Summary', value: summary }
+    ]
+  });
+
   await interaction.reply({
-    content: `Created your private support ticket: <#${channel.id}>.`,
+    content: `I created your private support ticket: <#${channel.id}>. Staff can help you there.`,
     flags: 'Ephemeral'
   });
 }
@@ -309,25 +337,54 @@ function isSupportTeamMember(interaction: ButtonInteraction): boolean {
 async function closeTicket(interaction: ButtonInteraction): Promise<void> {
   const channel = interaction.channel;
   if (!channel || channel.type !== ChannelType.GuildText) {
-    await interaction.reply({ content: 'This ticket control can only be used in a server text channel.', flags: 'Ephemeral' });
+    await interaction.reply({ content: 'This ticket control only works in a server text channel.', flags: 'Ephemeral' });
     return;
   }
 
-  const userId = channel.topic?.match(/\((\d+)\)/)?.[1];
-  if (userId) {
-    await channel.permissionOverwrites.edit(userId, {
-      SendMessages: false
-    }).catch(() => undefined);
+  await interaction.deferReply({ flags: 'Ephemeral' });
+
+  const userId = ticketOwnerId(channel.topic);
+  if (!userId) {
+    await interaction.editReply('I could not find the ticket owner in the channel topic, so I kept this ticket open.');
+    return;
   }
 
-  if (!channel.name.startsWith('closed-')) {
-    await channel.setName(`closed-${channel.name}`.slice(0, 100)).catch(() => undefined);
+  const transcript = await buildTicketTranscript(channel).catch(() => null);
+  if (!transcript) {
+    await interaction.editReply('I could not build the ticket transcript, so I kept this ticket open.');
+    return;
   }
 
-  await interaction.reply({
-    content: `Ticket closed by <@${interaction.user.id}>. The channel is locked for the player.`,
-    allowedMentions: { users: [interaction.user.id] }
-  });
+  const transcriptPosted = await postTicketTranscript(channel, {
+    closedById: interaction.user.id,
+    closedByTag: interaction.user.tag,
+    transcript
+  }).catch(() => false);
+
+  if (!transcriptPosted) {
+    await interaction.editReply('I could not post the transcript to `STAFF_LOG_CHANNEL_ID`, so I kept this ticket open.');
+    return;
+  }
+
+  const transcriptSentToUser = await sendTicketTranscriptToUser(interaction.client, userId, channel, transcript);
+  if (!transcriptSentToUser) {
+    await interaction.editReply('Transcript posted to the staff log, but I could not DM it to the ticket owner, so I kept this ticket open.');
+    return;
+  }
+
+  await interaction.editReply('Transcript posted to the staff log and sent to the ticket owner. Closing this ticket channel now.');
+
+  await channel.delete(`Ticket closed by ${interaction.user.tag}; transcript posted to staff log and sent to ticket owner.`)
+    .catch(async () => {
+      await interaction.followUp({
+        content: 'The transcript was posted, but I could not delete the ticket channel. Please check my Manage Channels permission.',
+        flags: 'Ephemeral'
+      });
+    });
+}
+
+function ticketOwnerId(topic: string | null): string | null {
+  return topic?.match(/\((\d+)\)/)?.[1] ?? null;
 }
 
 function routeInstructions(target: string): string {

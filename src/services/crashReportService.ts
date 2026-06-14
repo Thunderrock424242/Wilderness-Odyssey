@@ -19,6 +19,8 @@ export async function archiveCrashAttachment(input: {
   user: User;
   attachment: Attachment;
   playtestSessionId?: string | null;
+  activity?: string | null;
+  steps?: string | null;
 }) {
   return enqueueCrashTask(() => archiveCrashAttachmentNow(input));
 }
@@ -28,6 +30,8 @@ async function archiveCrashAttachmentNow(input: {
   user: User;
   attachment: Attachment;
   playtestSessionId?: string | null;
+  activity?: string | null;
+  steps?: string | null;
 }) {
   const logText = await readTextAttachment(input.attachment);
   const analysis = analyzeCrashLog(logText);
@@ -41,7 +45,9 @@ async function archiveCrashAttachmentNow(input: {
     redactedLog: analysis.redactedLog,
     likelyCause: analysis.likelyCause,
     confidence: `${analysis.confidence} (${Math.round(analysis.confidenceScore * 100)}%)`,
-    nextSteps
+    nextSteps,
+    activity: input.activity ?? null,
+    steps: input.steps ?? null
   });
 
   if (input.playtestSessionId) {
@@ -71,7 +77,7 @@ async function archiveCrashAttachmentNow(input: {
     analysis,
     nextSteps,
     posted,
-    embed: baseEmbed(`Crash Analysis ${report.publicId}`, 'Report received. Analysis complete.')
+    embed: baseEmbed(`Crash Analysis ${report.publicId}`, 'Crash report received and ready for review.')
       .addFields(
         { name: 'Likely cause', value: analysis.likelyCause, inline: true },
         { name: 'Confidence', value: `${analysis.confidence} (${Math.round(analysis.confidenceScore * 100)}%)`, inline: true },

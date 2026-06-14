@@ -71,7 +71,7 @@ Use `.env.example` as the source of truth. It is grouped in setup order and has 
 Fast path:
 
 1. Fill `DISCORD_TOKEN`, `CLIENT_ID`, and `GUILD_ID`.
-2. Fill the support hub values: `SUPPORT_CHANNEL_ID`, `SUPPORT_TEAM_ROLE_ID`, and `SUPPORT_TICKET_CATEGORY_ID`.
+2. Fill the support hub values: `SUPPORT_CHANNEL_ID`, `SUPPORT_TEAM_ROLE_ID`, `SUPPORT_TICKET_CATEGORY_ID`, and `STAFF_LOG_CHANNEL_ID`.
 3. Fill the forum IDs: `ISSUES_FORUM_CHANNEL_ID` and `IDEAS_FORUM_CHANNEL_ID`.
 4. Make sure your Discord forum tags match `BUG_FORUM_TAG`, `BUG_CONFIRMED_FORUM_TAG`, `BUG_SOLVED_FORUM_TAG`, `CRASH_FORUM_TAG`, `PERFORMANCE_FORUM_TAG`, `FEEDBACK_FORUM_TAG`, and `SUGGESTION_FORUM_TAG`.
 5. Fill report/playtest channels: `SPARK_REPORTS_CHANNEL_ID`, `PLAYTEST_SESSIONS_CHANNEL_ID`, and `PLAYTEST_CATEGORY_ID`. `PERFORMANCE_REPORTS_CHANNEL_ID` is only needed if you are not using `ISSUES_FORUM_CHANNEL_ID`.
@@ -120,12 +120,12 @@ Tables:
 
 - `/help` - interactive support menu.
 - `/privacy` - explains what the bot collects and what it avoids.
-- `/bugreport` - opens a modal and saves a structured bug report as `WO-BUG-0001`; supports Minecraft/loader version, repeatability, special-content context, screenshots, optional redacted log attachment, optional Spark link, and optional playtest session link.
+- `/bugreport` - opens a private guided intake channel and saves a structured bug report as `WO-BUG-0001`; supports Minecraft/loader version, repeatability, special-content context, screenshots, optional redacted log attachment, optional Spark link, and optional playtest session link.
 - `/suggest` - opens a suggestion modal, saves as `WO-SUG-0001`, posts to the suggestions channel, and adds Upvote, Downvote, and Needs discussion buttons.
 - `/feedback` - opens a feedback modal with playtesting categories and optional playtest session link.
-- `/crash` - accepts `.txt` or `.log`, redacts it, detects common crash signatures, saves as `WO-CRASH-0001`, and can link to a playtest session.
+- `/crash` - opens a private guided crash intake; optional `.txt` or `.log` attachment is redacted, checked for common crash signatures, saved as `WO-CRASH-0001`, and can link to a playtest session.
 - `/performance` - shows performance reporting guidance.
-- `/perfreport` - optional structured performance report saved as `WO-PERF-0001`.
+- `/perfreport` - opens a private guided performance intake saved as `WO-PERF-0001`.
 - `/sparkreport` - validates and archives a Spark viewer/report URL as `WO-SPARK-0001`, linked to a playtest session.
 - `/minecraft link` - creates a one-time Minecraft verification code for in-game `/wo link`.
 - `/minecraft status` - shows the linked Minecraft account.
@@ -145,7 +145,7 @@ Recommended server layout:
 
 - Put the public support hub in an Information, Start Here, or Welcome category.
 - Put bug/crash/performance and feedback/suggestion forums in a Support or Triage category.
-- Put private Other Help and crash upload channels in a staff/private support category through `SUPPORT_TICKET_CATEGORY_ID`.
+- Put private Other Help and report intake channels in a staff/private support category through `SUPPORT_TICKET_CATEGORY_ID`.
 
 For Discord forum channels, set `ISSUES_FORUM_CHANNEL_ID` for shared bug/crash/performance posts and `IDEAS_FORUM_CHANNEL_ID` for shared feedback/suggestion posts. The bot applies the configured forum tags, defaulting to `Bug`, `Crash`, `Performance Issues`, `Feedback`, and `Suggestion`. Bug threads can also use status tags, defaulting to `Confirmed` and `Solved`, when staff marks the bug as confirmed or solved from inside the forum thread.
 
@@ -162,9 +162,9 @@ Panel types:
 
 Support Hub dropdown options:
 
-- Bug report - shows a quick known-issues check, then opens a bug report modal.
-- Crash / logs - shows a quick known-issues check, then opens a private crash upload channel.
-- Performance issue - opens a performance report modal and posts to the issues forum with the performance tag.
+- Bug report - shows a quick known-issues check, then opens a private guided bug intake.
+- Crash / logs - shows a quick known-issues check, then opens a private guided crash intake.
+- Performance issue - opens a private guided performance intake and posts to the issues forum with the performance tag after confirmation.
 - Feedback - opens a feedback modal.
 - Suggestion - opens a suggestion modal with voting on the created forum post.
 - Help me pick - shows a short routing menu for users who are not sure.
@@ -172,13 +172,13 @@ Support Hub dropdown options:
 - Playtest help - explains playtest ZIP acceptance, `/playtest start`, and report linking.
 - Q&A question - points players to the community Q&A forum when configured.
 
-Panel-submitted bug reports do not collect screenshots or logs because Discord buttons/menus cannot request attachments. Players who need attachments can use `/bugreport`, or use **Crash** for private crash/latest.log upload.
+Bug, crash, and performance intakes ask one question at a time in a private channel. Players can reply `n/a` for optional fields, review the answers, edit a selected field, and then confirm before the forum post is created.
 
 Playtest panel sessions create normal `WO-TEST-0001` records, so later bug reports, feedback, crashes, performance reports, and Spark reports can still be linked to the tester session.
 
 Report receipts include an `Add more info` button so the submitter can append details later. Staff report posts include a `Claim / Reassign` button for bug, crash, performance, and Spark reports.
 
-Other Help tickets include staff buttons for Claim, Close, Move to Bug, Move to Suggestion, and Move to Feedback. Move buttons give staff routing instructions so incomplete private tickets do not become low-quality public reports.
+Other Help and private report intake tickets include staff buttons for Claim and Close. Closing a private ticket posts a transcript to `STAFF_LOG_CHANNEL_ID`, sends the transcript to the ticket owner, then deletes the channel. Move buttons on Other Help tickets give staff routing instructions so incomplete private tickets do not become low-quality public reports.
 
 ## Community Q&A Forum
 

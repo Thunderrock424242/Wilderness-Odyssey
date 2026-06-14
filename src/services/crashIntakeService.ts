@@ -15,6 +15,7 @@ import {
   ticketPermissionOverwrites,
   resolveSupportTicketParentId
 } from './supportTicketService';
+import { postStaffLog } from './staffLogService';
 
 type CrashIntakeInteraction = ButtonInteraction | StringSelectMenuInteraction;
 
@@ -32,7 +33,7 @@ const pendingCrashIntakes = new LRUCache<string, PendingCrashIntake>({
 export async function beginCrashUploadIntake(interaction: CrashIntakeInteraction): Promise<void> {
   if (!interaction.guild) {
     await interaction.reply({
-      content: 'Crash upload intake can only be created inside the Discord server.',
+      content: 'I can only create a crash upload channel inside the Discord server.',
       flags: 'Ephemeral'
     });
     return;
@@ -41,7 +42,7 @@ export async function beginCrashUploadIntake(interaction: CrashIntakeInteraction
   const botMember = interaction.guild.members.me;
   if (!botMember?.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
     await interaction.reply({
-      content: 'I need the Manage Channels permission before I can create a private crash upload channel. Use `/crash file:` for now.',
+      content: 'I need the Manage Channels permission before I can create a private crash upload channel. For now, you can still use `/crash file:`.',
       flags: 'Ephemeral'
     });
     return;
@@ -50,7 +51,7 @@ export async function beginCrashUploadIntake(interaction: CrashIntakeInteraction
   const parent = await resolveSupportTicketParentId(interaction);
   if (parent.error) {
     await interaction.reply({
-      content: `${parent.error} Fix \`SUPPORT_TICKET_CATEGORY_ID\` or use \`/crash file:\` for now.`,
+      content: `${parent.error} Please fix \`SUPPORT_TICKET_CATEGORY_ID\` or use \`/crash file:\` for now.`,
       flags: 'Ephemeral'
     });
     return;
@@ -85,8 +86,17 @@ export async function beginCrashUploadIntake(interaction: CrashIntakeInteraction
     components: ticketControlRows()
   });
 
+  await postStaffLog(interaction.client, {
+    title: 'Ticket Created',
+    description: 'Private crash upload ticket opened.',
+    fields: [
+      { name: 'Channel', value: `<#${channel.id}> (${channel.id})`, inline: true },
+      { name: 'Player', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true }
+    ]
+  });
+
   await interaction.reply({
-    content: `Created a private crash upload channel: <#${channel.id}>. Upload your log there.`,
+    content: `I created a private crash upload channel for you: <#${channel.id}>. Upload your log there when you are ready.`,
     flags: 'Ephemeral'
   });
 }
@@ -104,7 +114,7 @@ export async function handleCrashIntakeMessage(message: Message): Promise<boolea
   if (Date.now() > pending.expiresAt) {
     pendingCrashIntakes.delete(message.channelId);
     await message.reply({
-      content: 'This crash upload session expired. Click **Crash** in the Support Hub again.',
+      content: 'This crash upload session expired. Please click **Crash** in the Support Hub again when you are ready.',
       allowedMentions: { repliedUser: false }
     });
     return true;
@@ -117,7 +127,7 @@ export async function handleCrashIntakeMessage(message: Message): Promise<boolea
   const attachment = message.attachments.first();
   if (!attachment) {
     await message.reply({
-      content: 'Attach your `latest.log`, crash report, `.log`, or `.txt` file in this channel.',
+      content: 'Please attach your `latest.log`, crash report, `.log`, or `.txt` file in this channel.',
       allowedMentions: { repliedUser: false }
     });
     return true;
@@ -133,8 +143,8 @@ export async function handleCrashIntakeMessage(message: Message): Promise<boolea
     pendingCrashIntakes.delete(message.channelId);
     const resultMessage = {
       content: result.posted
-        ? `Crash report created as **${result.report.publicId}** and sent to staff.`
-        : `Crash report saved as **${result.report.publicId}**. Staff channel posting is not configured yet.`,
+        ? `Thanks, your crash report was created as **${result.report.publicId}** and sent to staff.`
+        : `Thanks, your crash report was saved as **${result.report.publicId}**. Staff channel posting is not configured yet, but I kept the report locally.`,
       embeds: [result.embed],
       components: [reportReceiptButtons('crash', result.report.publicId)],
       allowedMentions: { parse: [] }
@@ -145,8 +155,17 @@ export async function handleCrashIntakeMessage(message: Message): Promise<boolea
       await message.channel.send({
         ...resultMessage,
         content: rawUploadDeleted
-          ? `${resultMessage.content} Your raw upload was deleted from this channel.`
+          ? `${resultMessage.content} I also deleted the raw upload from this channel.`
           : resultMessage.content
+      });
+      await postStaffLog(message.client, {
+        title: 'Crash Report Submitted',
+        description: `Legacy crash upload submitted as **${result.report.publicId}**.`,
+        fields: [
+          { name: 'Report', value: result.report.publicId, inline: true },
+          { name: 'Player', value: `<@${message.author.id}> (${message.author.tag})`, inline: true },
+          { name: 'Forum posted', value: result.posted ? 'Yes' : 'No', inline: true }
+        ]
       });
     } else {
       await message.reply({
@@ -157,8 +176,8 @@ export async function handleCrashIntakeMessage(message: Message): Promise<boolea
   } catch (error) {
     await message.reply({
       content: error instanceof Error
-        ? `I could not process that crash report: ${error.message}`
-        : 'I could not process that crash report because of an unknown error.',
+        ? `Sorry, I could not process that crash report yet: ${error.message}`
+        : 'Sorry, I could not process that crash report because of an unknown error.',
       allowedMentions: { repliedUser: false }
     });
   }

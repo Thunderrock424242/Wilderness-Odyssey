@@ -65,12 +65,12 @@ export function createSparkReport(input: {
   redactedLog: string | null;
 }): SparkReportRecord {
   if (!isSparkReportUrl(input.sparkUrl)) {
-    throw new Error('That does not look like a Spark viewer/report URL.');
+    throw new Error('This does not look like a Spark viewer/report URL. Please use a public Spark viewer link.');
   }
 
   const session = getPlaytestSession(input.sessionPublicId);
   if (!session) {
-    throw new Error(`No playtest session found for ${input.sessionPublicId}.`);
+    throw new Error(`I could not find playtest session ${input.sessionPublicId}. Please check the session ID and try again.`);
   }
 
   const database = getDb();

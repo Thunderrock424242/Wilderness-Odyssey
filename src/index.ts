@@ -7,6 +7,7 @@ import { handleInteraction } from './events/interactionCreate';
 import { handleReady } from './events/ready';
 import { captureException, initErrorTracking } from './services/errorTracking';
 import { handleCrashIntakeMessage } from './services/crashIntakeService';
+import { handleReportIntakeMessage } from './services/reportIntakeService';
 import { handleMinecraftVerificationRelayMessage } from './services/minecraftVerificationRelayService';
 import { handleQuestionMessage } from './services/qaService';
 import { startMinecraftVerificationApi } from './services/minecraftVerificationApi';
@@ -39,6 +40,10 @@ client.on(Events.InteractionCreate, (interaction) => {
 client.on(Events.MessageCreate, (message) => {
   void (async () => {
     if (await handleMinecraftVerificationRelayMessage(message)) {
+      return;
+    }
+
+    if (await handleReportIntakeMessage(message)) {
       return;
     }
 

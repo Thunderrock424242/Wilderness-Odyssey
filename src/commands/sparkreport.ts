@@ -10,6 +10,7 @@ import {
 import { createSparkReport, isSparkReportUrl } from '../services/sparkReportService';
 import { getPlaytestSession } from '../services/playtestSessionService';
 import { redactLog } from '../services/logParser';
+import { postStaffLog } from '../services/staffLogService';
 import { sparkReportEmbed } from '../utils/embeds';
 
 export const sparkReportCommand: SlashCommand = {
@@ -120,7 +121,7 @@ export const sparkReportCommand: SlashCommand = {
     try {
       const sparkUrl = interaction.options.getString('spark_url', true);
       if (!isSparkReportUrl(sparkUrl)) {
-        await interaction.editReply('That does not look like a Spark viewer/report URL. Please submit a public Spark viewer link.');
+        await interaction.editReply('This does not look like a Spark viewer/report URL. Please submit a public Spark viewer link and try again.');
         return;
       }
 
@@ -156,11 +157,23 @@ export const sparkReportCommand: SlashCommand = {
       });
 
       await interaction.editReply({
-        content: `Spark report archived. Performance anomaly logged. Report ID: **${report.publicId}**.${posted ? '' : ' Spark report channel posting is not configured yet, but the report was saved locally.'}`,
+        content: `Thanks, your Spark report was archived as **${report.publicId}**.${posted ? ' Staff can review it now.' : ' Spark report channel posting is not configured yet, but I saved the report locally.'}`,
         components: [reportReceiptButtons('spark', report.publicId)]
       });
+
+      await postStaffLog(interaction.client, {
+        title: 'Spark Report Submitted',
+        description: `${report.publicId} was submitted for playtest session ${report.sessionPublicId}.`,
+        fields: [
+          { name: 'Report', value: report.publicId, inline: true },
+          { name: 'Session', value: report.sessionPublicId, inline: true },
+          { name: 'Submitted by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+          { name: 'Posted to archive', value: posted ? 'Yes' : 'No', inline: true },
+          { name: 'Spark URL', value: report.sparkUrl }
+        ]
+      });
     } catch (error) {
-      await interaction.editReply(error instanceof Error ? error.message : 'Could not archive that Spark report.');
+      await interaction.editReply(error instanceof Error ? `Sorry, I could not archive that Spark report yet: ${error.message}` : 'Sorry, I could not archive that Spark report yet.');
     }
   }
 };

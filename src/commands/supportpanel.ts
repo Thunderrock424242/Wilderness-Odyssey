@@ -14,11 +14,13 @@ import type { SlashCommand } from '../types';
 import { config } from '../config';
 import { beginPlaytestSessionFromPanel } from './playtest';
 import {
-  beginBugReportFromPanel,
-  beginFeedbackReportFromPanel,
-  beginPerformanceReportFromPanel
+  beginFeedbackReportFromPanel
 } from '../services/reportService';
-import { beginCrashUploadIntake } from '../services/crashIntakeService';
+import {
+  beginBugReportIntakeFromPanel,
+  beginCrashReportIntakeFromPanel,
+  beginPerformanceReportIntakeFromPanel
+} from '../services/reportIntakeService';
 import {
   listChangelogEntries,
   listKnownIssues
@@ -26,6 +28,7 @@ import {
 import { setupDoctorEmbed } from '../services/setupDoctorService';
 import { beginSuggestionFromPanel } from '../services/suggestionService';
 import { beginOtherHelpTicket } from '../services/supportTicketService';
+import { postStaffLog } from '../services/staffLogService';
 import { requireStaff } from '../utils/permissions';
 import {
   baseEmbed,
@@ -66,22 +69,22 @@ const supportActionPresets: SupportActionPreset[] = [
     value: 'bug',
     label: 'Bug report',
     fieldTitle: 'Bug report',
-    fieldDescription: 'Broken gameplay, bad behavior, missing content, or reproducible issues. For screenshots or logs, use `/bugreport` so Discord shows attachment fields.',
-    optionDescription: 'Known-issues check, then a bug report form.'
+    fieldDescription: 'Broken gameplay, bad behavior, missing content, or reproducible issues. Opens a private guided intake channel.',
+    optionDescription: 'Known-issues check, then private bug intake.'
   },
   {
     value: 'crash',
     label: 'Crash / logs',
     fieldTitle: 'Crash / logs',
-    fieldDescription: 'Crash reports, latest.log, Java/loader errors, or launch failures. Use `/crash file:<log>` to create a redacted Crash forum post.',
-    optionDescription: 'Known-issues check, then log upload guidance.'
+    fieldDescription: 'Crash reports, latest.log, Java/loader errors, or launch failures. Opens a private guided intake channel.',
+    optionDescription: 'Known-issues check, then private crash intake.'
   },
   {
     value: 'performance',
     label: 'Performance issue',
     fieldTitle: 'Performance issue',
     fieldDescription: 'Lag, FPS drops, stutter, freezes, RAM pressure, shaders, or worldgen performance.',
-    optionDescription: 'Open a performance report form.'
+    optionDescription: 'Open a private performance intake.'
   },
   {
     value: 'feedback',
@@ -174,7 +177,7 @@ export const supportPanelCommand: SlashCommand = {
 
     if (!interaction.channel?.isSendable()) {
       await interaction.reply({
-        content: 'I can only post a support panel in a channel where I can send messages.',
+        content: 'I can only post a support panel in a channel where I can send messages. Please try again in a sendable channel.',
         flags: 'Ephemeral'
       });
       return;
@@ -211,8 +214,18 @@ export const supportPanelCommand: SlashCommand = {
     }
 
     await interaction.reply({
-      content: panelType === 'all' ? 'Player panels posted.' : 'Panel posted.',
+      content: panelType === 'all' ? 'All set. Player panels posted.' : 'All set. Panel posted.',
       flags: 'Ephemeral'
+    });
+
+    await postStaffLog(interaction.client, {
+      title: 'Support Panel Posted',
+      description: panelType === 'all' ? 'All player panels were posted.' : `A ${panelType} panel was posted.`,
+      fields: [
+        { name: 'Panel', value: panelType, inline: true },
+        { name: 'Channel', value: `<#${interaction.channelId}>`, inline: true },
+        { name: 'Posted by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true }
+      ]
     });
   }
 };
@@ -272,7 +285,7 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
       return true;
     }
 
-    await beginBugReportFromPanel(interaction);
+    await beginBugReportIntakeFromPanel(interaction);
     return true;
   }
 
@@ -282,7 +295,7 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
   }
 
   if (category === 'performance') {
-    await beginPerformanceReportFromPanel(interaction);
+    await beginPerformanceReportIntakeFromPanel(interaction);
     return true;
   }
 
@@ -297,7 +310,7 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
       return true;
     }
 
-    await beginCrashUploadIntake(interaction);
+    await beginCrashReportIntakeFromPanel(interaction);
     return true;
   }
 
@@ -333,9 +346,9 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
   if (category === 'notsure') {
     await interaction.reply({
       embeds: [
-        baseEmbed('Help Me Pick', 'Choose the closest match and I will route you to the right flow.')
+        baseEmbed('Help Me Pick', 'No problem. Choose the closest match and I will route you to the right flow.')
           .addFields(
-            { name: 'Game closed or will not launch', value: 'Use crash upload.' },
+            { name: 'Game closed or will not launch', value: 'Use crash report.' },
             { name: 'Something is broken in-game', value: 'Use bug report.' },
             { name: 'Lag, stutter, FPS, or freezes', value: 'Use performance report.' },
             { name: 'Idea or request', value: 'Use suggestion.' },
@@ -374,7 +387,7 @@ async function handleSupportTriageSelection(interaction: StringSelectMenuInterac
   }
 
   if (category === 'performance') {
-    await beginPerformanceReportFromPanel(interaction);
+    await beginPerformanceReportIntakeFromPanel(interaction);
     return;
   }
 
@@ -382,10 +395,10 @@ async function handleSupportTriageSelection(interaction: StringSelectMenuInterac
 }
 
 async function showKnownIssuesGate(interaction: ButtonInteraction | StringSelectMenuInteraction, category: 'bug' | 'crash'): Promise<void> {
-  const label = category === 'bug' ? 'bug report' : 'crash upload';
+  const label = category === 'bug' ? 'bug report' : 'crash report';
   const uploadGuidance = category === 'crash'
-    ? 'Discord modals cannot upload files. Use `/crash file:<latest.log>` to create a redacted Crash forum post. Continue Crash Upload opens a private fallback channel if slash command upload is awkward.'
-    : 'Discord modals cannot upload files. If you need to attach screenshots or logs to a bug report, use `/bugreport` instead.';
+    ? 'Continue to open a private crash intake channel. I will ask for the log upload there, redact it, and create the Crash forum post after you confirm.'
+    : 'Continue to open a private bug intake channel. I will ask one question at a time, including optional screenshots/logs, then post the final report after you confirm.';
   await interaction.reply({
     embeds: [
       baseEmbed('Quick Duplicate Check', `Before starting the ${label}, you can check known issues or continue now.`)
@@ -395,7 +408,7 @@ async function showKnownIssuesGate(interaction: ButtonInteraction | StringSelect
             value: 'If staff already knows about it, you can skip filing another report. If you are not sure, continue anyway.'
           },
           {
-            name: 'File uploads',
+            name: 'Guided intake',
             value: uploadGuidance
           }
         )
@@ -497,16 +510,16 @@ async function handlePlaytestPanelSelection(interaction: StringSelectMenuInterac
   }
 
   if (category === 'performance') {
-    await beginPerformanceReportFromPanel(interaction);
+    await beginPerformanceReportIntakeFromPanel(interaction);
     return;
   }
 
   if (category === 'bug') {
-    await beginBugReportFromPanel(interaction);
+    await beginBugReportIntakeFromPanel(interaction);
     return;
   }
 
-  await beginCrashUploadIntake(interaction);
+  await beginCrashReportIntakeFromPanel(interaction);
 }
 
 async function handleStaffPanelSelection(interaction: StringSelectMenuInteraction, category: string): Promise<void> {
@@ -612,8 +625,8 @@ function supportPanelPermissionMessage(missingPermissions: string[] = []): strin
     : '';
 
   return [
-    'I cannot post the support panel in this channel because Discord denied the send request.',
-    `Give me View Channel, Send Messages, and Embed Links here, then run \`/supportpanel\` again.${missingText}`
+    'I cannot post the support panel in this channel yet because Discord denied the send request.',
+    `Please give me View Channel, Send Messages, and Embed Links here, then run \`/supportpanel\` again.${missingText}`
   ].join(' ');
 }
 
@@ -660,7 +673,7 @@ function knownIssuesGateButtons(category: 'bug' | 'crash'): ActionRowBuilder<But
     supportButton('knownissues', 'View Known Issues', ButtonStyle.Secondary),
     new ButtonBuilder()
       .setCustomId(`${supportContinueCustomId}:${category}`)
-      .setLabel(category === 'bug' ? 'Continue Bug Report' : 'Continue Crash Upload')
+      .setLabel(category === 'bug' ? 'Continue Bug Report' : 'Continue Crash Report')
       .setStyle(ButtonStyle.Primary)
   );
 }
@@ -702,7 +715,7 @@ function qaQuestionHelpText(): string {
     ].join('\n');
   }
 
-  return 'The community Q&A forum is not configured yet. Use the other support options here for now.';
+  return 'The community Q&A forum is not configured yet. Please use the other support options here for now.';
 }
 
 function supportActionMenu(
@@ -777,10 +790,10 @@ function playtestPanelPayload() {
       { label: 'Playtest checklist', value: 'checklist', description: 'Show the stability route.' },
       { label: 'Playtest ZIP help', value: 'zip', description: 'CurseForge import and acceptance guidance.' },
       { label: 'Spark profiling help', value: 'spark', description: 'How to profile and submit Spark links.' },
-      { label: 'Report gameplay bug', value: 'bug', description: 'Open a bug report modal.' },
+      { label: 'Report gameplay bug', value: 'bug', description: 'Open private bug intake.' },
       { label: 'Send feedback', value: 'feedback', description: 'Open a playtest feedback modal.' },
-      { label: 'Report performance', value: 'performance', description: 'Open a performance report modal.' },
-      { label: 'Game crashed or will not launch', value: 'crash', description: 'Open a private crash upload channel.' }
+      { label: 'Report performance', value: 'performance', description: 'Open private performance intake.' },
+      { label: 'Game crashed or will not launch', value: 'crash', description: 'Open private crash intake.' }
     );
 
   return {

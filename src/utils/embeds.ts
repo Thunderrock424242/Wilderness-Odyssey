@@ -38,6 +38,14 @@ function claimedByText(userId: string | null | undefined): string {
   return userId ? `<@${userId}>` : 'Unclaimed';
 }
 
+function hasProvidedValue(value: string | null | undefined): value is string {
+  return Boolean(value?.trim());
+}
+
+function hasDisplayableBugMode(value: string | null | undefined): value is string {
+  return hasProvidedValue(value) && value.trim() !== 'Not specified from support panel';
+}
+
 export function baseEmbed(title: string, description?: string): EmbedBuilder {
   const embed = new EmbedBuilder()
     .setTitle(title)
@@ -60,11 +68,11 @@ export function privacyEmbed(): EmbedBuilder {
     .addFields(
       {
         name: 'What the bot collects',
-        value: 'Report text you submit, attached crash/latest logs you choose to upload, the report category, Discord user ID/name for follow-up, and timestamps.'
+        value: 'Report text you submit, private support/report ticket transcripts, attached crash/latest logs you choose to upload, the report category, Discord user ID/name for follow-up, and timestamps.'
       },
       {
         name: 'What the bot does not collect',
-        value: 'No IP addresses, chat logs, Discord tokens, personal files, passwords, private messages, or background telemetry.'
+        value: 'No general server chat logs, IP addresses, Discord tokens, personal files, passwords, private messages, or background telemetry.'
       },
       {
         name: 'Crash/performance reports',
@@ -152,7 +160,7 @@ export function playtestPrivacyPolicyEmbeds(): EmbedBuilder[] {
         },
         {
           name: 'What the bot may collect',
-          value: 'Discord user ID/name, timestamps, report text, channel/message/report IDs, uploaded crash/latest.log files, redacted log excerpts, attachment links, suggestion votes, playtest sessions, acceptance records, Minecraft UUID/name, and staff actions.'
+          value: 'Discord user ID/name, timestamps, report text, private support/report ticket transcripts, channel/message/report IDs, uploaded crash/latest.log files, redacted log excerpts, attachment links, suggestion votes, playtest sessions, acceptance records, Minecraft UUID/name, and staff actions.'
         },
         {
           name: 'What the bot does not intentionally collect',
@@ -167,7 +175,7 @@ export function playtestPrivacyPolicyEmbeds(): EmbedBuilder[] {
         },
         {
           name: 'Who can see it',
-          value: 'Public report forum posts may be visible to server members. Private tickets are visible to the user, bot, and support staff. Staff-only logs and database records are visible to authorized staff.'
+          value: 'Public report forum posts may be visible to server members. Private tickets are visible to the user, bot, and support staff. Ticket transcripts are sent to the ticket owner and staff log. Staff-only logs and database records are visible to authorized staff.'
         },
         {
           name: 'Third-party services',
@@ -191,21 +199,60 @@ export function bugReportEmbed(report: BugReportRecord): EmbedBuilder {
     .addFields(
       { name: 'Status', value: report.status, inline: true },
       { name: 'Claimed by', value: claimedByText(report.claimedBy), inline: true },
-      { name: 'Modpack version', value: truncate(report.modpackVersion, 128), inline: true },
-      { name: 'Minecraft', value: truncate(report.minecraftVersion, 128), inline: true },
-      { name: 'NeoForge/Forge', value: truncate(report.loaderVersion, 128), inline: true },
-      { name: 'Mode', value: truncate(report.playMode, 128), inline: true },
-      { name: 'Repeatable', value: truncate(report.repeatable, 128), inline: true },
+      { name: 'Modpack version', value: truncate(report.modpackVersion, 128), inline: true }
+    );
+
+  if (hasProvidedValue(report.minecraftVersion)) {
+    embed.addFields({ name: 'Minecraft', value: truncate(report.minecraftVersion, 128), inline: true });
+  }
+
+  if (hasProvidedValue(report.loaderVersion)) {
+    embed.addFields({ name: 'NeoForge/Forge', value: truncate(report.loaderVersion, 128), inline: true });
+  }
+
+  if (hasDisplayableBugMode(report.playMode)) {
+    embed.addFields({ name: 'Mode', value: truncate(report.playMode, 128), inline: true });
+  }
+
+  if (hasProvidedValue(report.repeatable)) {
+    embed.addFields({ name: 'Repeatable', value: truncate(report.repeatable, 128), inline: true });
+  }
+
+  embed.addFields(
       { name: 'What happened', value: truncate(report.happened) },
       { name: 'Expected', value: truncate(report.expected) },
-      { name: 'Steps to reproduce', value: truncate(report.steps) },
-      { name: 'Dimension/location', value: truncate(report.location, 256), inline: true },
-      { name: 'Nearby feature', value: truncate(report.anomalyContext, 256), inline: true },
-      { name: 'Spark link', value: report.sparkLink ? `[Spark report](${report.sparkLink})` : 'None', inline: true },
-      { name: 'Screenshot', value: report.screenshotUrl ? `[${report.screenshotName ?? 'Screenshot'}](${report.screenshotUrl})` : 'None', inline: true },
-      { name: 'Log attachment', value: report.logFileName ?? 'None', inline: true },
-      { name: 'Submitted by', value: `<@${report.userId}>`, inline: true }
+      { name: 'Steps to reproduce', value: truncate(report.steps) }
     );
+
+  if (hasProvidedValue(report.bugContext)) {
+    embed.addFields({ name: 'Extra context', value: truncate(report.bugContext) });
+  }
+
+  if (hasProvidedValue(report.location)) {
+    embed.addFields({ name: 'Dimension/location', value: truncate(report.location, 256), inline: true });
+  }
+
+  if (hasProvidedValue(report.anomalyContext)) {
+    embed.addFields({ name: 'Nearby feature', value: truncate(report.anomalyContext, 256), inline: true });
+  }
+
+  if (report.sparkLink) {
+    embed.addFields({ name: 'Spark link', value: `[Spark report](${report.sparkLink})`, inline: true });
+  }
+
+  if (report.screenshotUrl) {
+    embed.addFields({
+      name: 'Screenshot',
+      value: `[${report.screenshotName ?? 'Screenshot'}](${report.screenshotUrl})`,
+      inline: true
+    });
+  }
+
+  if (hasProvidedValue(report.logFileName)) {
+    embed.addFields({ name: 'Log attachment', value: report.logFileName, inline: true });
+  }
+
+  embed.addFields({ name: 'Submitted by', value: `<@${report.userId}>`, inline: true });
 
   if (report.redactedLog) {
     embed.addFields({
@@ -218,7 +265,7 @@ export function bugReportEmbed(report: BugReportRecord): EmbedBuilder {
 }
 
 export function crashReportEmbed(report: CrashReportRecord): EmbedBuilder {
-  return baseEmbed(`Crash Report ${report.publicId}`, 'Crash signature detected.')
+  const embed = baseEmbed(`Crash Report ${report.publicId}`, 'Crash signature detected.')
     .setColor(colors.danger)
     .addFields(
       { name: 'Status', value: report.status, inline: true },
@@ -226,34 +273,67 @@ export function crashReportEmbed(report: CrashReportRecord): EmbedBuilder {
       { name: 'Likely cause', value: truncate(report.likelyCause, 512), inline: true },
       { name: 'Confidence', value: report.confidence, inline: true },
       { name: 'Next steps', value: truncate(report.nextSteps) },
-      { name: 'File', value: `${report.fileName} (${report.fileSize} bytes)`, inline: true },
-      { name: 'Submitted by', value: `<@${report.userId}>`, inline: true },
-      { name: 'Redacted excerpt', value: `\`\`\`text\n${truncate(report.redactedLog, 900)}\n\`\`\`` }
+      { name: 'File', value: `${report.fileName} (${report.fileSize} bytes)`, inline: true }
     );
+
+  if (hasProvidedValue(report.activity)) {
+    embed.addFields({ name: 'What the player was doing', value: truncate(report.activity) });
+  }
+
+  if (hasProvidedValue(report.steps)) {
+    embed.addFields({ name: 'Steps to reproduce', value: truncate(report.steps) });
+  }
+
+  embed.addFields(
+    { name: 'Submitted by', value: `<@${report.userId}>`, inline: true },
+    { name: 'Redacted excerpt', value: `\`\`\`text\n${truncate(report.redactedLog, 900)}\n\`\`\`` }
+  );
+
+  return embed;
 }
 
 export function performanceReportEmbed(report: PerformanceReportRecord): EmbedBuilder {
-  return baseEmbed(`Performance Report ${report.publicId}`, 'Performance sample received. Aether-style analysis complete.')
+  const embed = baseEmbed(`Performance Report ${report.publicId}`, 'Performance report received and ready for review.')
     .setColor(colors.calm)
     .addFields(
       { name: 'Status', value: report.status, inline: true },
       { name: 'Claimed by', value: claimedByText(report.claimedBy), inline: true },
       { name: 'Modpack version', value: truncate(report.modpackVersion, 128), inline: true },
       { name: 'FPS average', value: truncate(report.fpsAverage, 128), inline: true },
-      { name: 'RAM allocated', value: truncate(report.ramAllocated, 128), inline: true },
-      { name: 'CPU/GPU', value: truncate(report.cpuGpu, 256), inline: true },
-      { name: 'Java', value: truncate(report.javaVersion, 128), inline: true },
-      { name: 'Launcher', value: truncate(report.launcher, 128), inline: true },
-      { name: 'Shaders', value: truncate(report.shaders, 128), inline: true },
-      { name: 'Render distance', value: report.renderDistance?.toString() ?? 'Not provided', inline: true },
+      { name: 'RAM allocated', value: truncate(report.ramAllocated, 128), inline: true }
+    );
+
+  if (hasProvidedValue(report.cpuGpu)) {
+    embed.addFields({ name: 'CPU/GPU', value: truncate(report.cpuGpu, 256), inline: true });
+  }
+
+  if (hasProvidedValue(report.javaVersion)) {
+    embed.addFields({ name: 'Java', value: truncate(report.javaVersion, 128), inline: true });
+  }
+
+  if (hasProvidedValue(report.launcher)) {
+    embed.addFields({ name: 'Launcher', value: truncate(report.launcher, 128), inline: true });
+  }
+
+  if (hasProvidedValue(report.shaders)) {
+    embed.addFields({ name: 'Shaders', value: truncate(report.shaders, 128), inline: true });
+  }
+
+  if (report.renderDistance !== null) {
+    embed.addFields({ name: 'Render distance', value: report.renderDistance.toString(), inline: true });
+  }
+
+  embed.addFields(
       { name: 'Where lag happens', value: truncate(report.lagLocation) },
       { name: 'What the player was doing', value: truncate(report.activity) },
       { name: 'Submitted by', value: `<@${report.userId}>`, inline: true }
     );
+
+  return embed;
 }
 
 export function feedbackReportEmbed(report: FeedbackReportRecord): EmbedBuilder {
-  return baseEmbed(`Feedback ${report.publicId}`, 'Field notes received.')
+  return baseEmbed(`Feedback ${report.publicId}`, 'Feedback received. Thanks for the notes.')
     .addFields(
       { name: 'Category', value: report.category, inline: true },
       { name: 'Modpack version', value: truncate(report.modpackVersion, 128), inline: true },
@@ -264,7 +344,7 @@ export function feedbackReportEmbed(report: FeedbackReportRecord): EmbedBuilder 
 }
 
 export function suggestionEmbed(report: SuggestionRecord, votes: SuggestionVoteCounts): EmbedBuilder {
-  return baseEmbed(`Suggestion ${report.publicId}`, 'Suggestion received. The archive has been updated.')
+  return baseEmbed(`Suggestion ${report.publicId}`, 'Suggestion received and ready for review.')
     .setColor(colors.calm)
     .addFields(
       { name: 'Status', value: report.status, inline: true },
@@ -365,7 +445,7 @@ export function playtestReleaseEmbed(release: PlaytestReleaseRecord): EmbedBuild
 }
 
 export function sparkReportEmbed(report: SparkReportRecord, session?: PlaytestSessionRecord | null): EmbedBuilder {
-  return baseEmbed(`Spark Report ${report.publicId}`, 'Spark report archived. Performance anomaly logged.')
+  return baseEmbed(`Spark Report ${report.publicId}`, 'Spark report archived and ready for review.')
     .setColor(colors.warning)
     .addFields(
       { name: 'Status', value: report.status, inline: true },
@@ -393,7 +473,7 @@ export function knownIssuesEmbed(issues: KnownIssueRecord[]): EmbedBuilder {
   const embed = baseEmbed('Known Issues & Upcoming Fixes', 'Current instability notes and solved bugs queued by the Wilderness Oddesy staff console.');
 
   if (issues.length === 0) {
-    return embed.setDescription('No known issues are listed right now. That is either good news or the forest is being quiet.');
+    return embed.setDescription('No known issues are listed right now. That is good news, and you can still report anything that feels off.');
   }
 
   for (const issue of issues.slice(0, 10)) {
@@ -436,7 +516,7 @@ export function searchResultsEmbed(keyword: string, results: ReportSearchResult[
   const embed = baseEmbed('Report Search', `Search results for \`${truncate(keyword, 80)}\``).setColor(colors.staff);
 
   if (results.length === 0) {
-    return embed.addFields({ name: 'No matches', value: 'No reports matched that keyword.' });
+    return embed.addFields({ name: 'No matches', value: 'I could not find any reports matching that keyword.' });
   }
 
   for (const result of results) {

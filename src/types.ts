@@ -37,6 +37,7 @@ export interface BugReportRecord {
   happened: string;
   expected: string;
   steps: string;
+  bugContext: string | null;
   location: string | null;
   anomalyContext: string | null;
   repeatable: string | null;
@@ -66,6 +67,8 @@ export interface CrashReportRecord {
   likelyCause: string;
   confidence: string;
   nextSteps: string;
+  activity: string | null;
+  steps: string | null;
   claimedBy: string | null;
   claimedByUsername: string | null;
   claimedAt: string | null;

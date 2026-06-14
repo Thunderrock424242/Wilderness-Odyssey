@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from 'discord.js';
 import type { SlashCommand } from '../types';
-import { beginPerformanceReport } from '../services/reportService';
+import { beginPerformanceReportIntakeFromCommand } from '../services/reportIntakeService';
 
 export const perfReportCommand: SlashCommand = {
   data: new SlashCommandBuilder()
@@ -47,6 +47,6 @@ export const perfReportCommand: SlashCommand = {
         .setRequired(false)
     ),
   async execute(interaction) {
-    await beginPerformanceReport(interaction);
+    await beginPerformanceReportIntakeFromCommand(interaction);
   }
 };

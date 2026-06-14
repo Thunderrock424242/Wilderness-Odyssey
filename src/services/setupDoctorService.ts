@@ -45,6 +45,7 @@ function requiredConfigChecks(): CheckLine[] {
     checkValue('Guild ID', config.guildId, 'Recommended for fast guild command deployment.'),
     checkValue('Support team role', config.support.teamRoleId, 'Recommended for report pings and Other Help ticket access.'),
     checkValue('Dev team role', config.dev.teamRoleId, 'Recommended so crash and bug reports can alert devs directly.'),
+    checkValue('Staff log channel', config.channelIds.staffLog, 'Required for ticket transcripts, ticket deletion, shutdown requests, and staff action audit logs.'),
     checkValue('Q&A alert channel', config.qa.alertChannelId, 'Required if Q&A forum or channel forwarding is enabled.'),
     checkValue('Q&A forum ID', config.qa.forumChannelId, 'Recommended for organized player questions.'),
     {

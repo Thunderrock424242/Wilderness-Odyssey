@@ -46,6 +46,7 @@ import {
   getPlaytestSession,
   listLinkedReports
 } from '../services/playtestSessionService';
+import { postStaffLog } from '../services/staffLogService';
 import {
   bugReportEmbed,
   baseEmbed,
@@ -323,9 +324,22 @@ export const staffCommand: SlashCommand = {
       }
 
       await interaction.reply({
-        content: updated ? `Bug report ${id.toUpperCase()} marked **${status}**.` : `No bug report found for ${id}.`,
+        content: updated
+          ? `All set. Bug report ${id.toUpperCase()} is now **${status}**.`
+          : `I could not find bug report **${id}**. Please check the ID and try again.`,
         flags: 'Ephemeral'
       });
+      if (updated) {
+        await postStaffLog(interaction.client, {
+          title: 'Bug Status Updated',
+          description: `${id.toUpperCase()} marked **${status}** from /staff bug status.`,
+          fields: [
+            { name: 'Report', value: id.toUpperCase(), inline: true },
+            { name: 'Status', value: status, inline: true },
+            { name: 'Updated by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true }
+          ]
+        });
+      }
       return;
     }
 
@@ -334,9 +348,22 @@ export const staffCommand: SlashCommand = {
       const status = interaction.options.getString('status', true) as ReportStatus;
       const updated = updateReportStatus('crash', id, status);
       await interaction.reply({
-        content: updated ? `Crash report ${id.toUpperCase()} marked **${status}**.` : `No crash report found for ${id}.`,
+        content: updated
+          ? `All set. Crash report ${id.toUpperCase()} is now **${status}**.`
+          : `I could not find crash report **${id}**. Please check the ID and try again.`,
         flags: 'Ephemeral'
       });
+      if (updated) {
+        await postStaffLog(interaction.client, {
+          title: 'Crash Status Updated',
+          description: `${id.toUpperCase()} marked **${status}**.`,
+          fields: [
+            { name: 'Report', value: id.toUpperCase(), inline: true },
+            { name: 'Status', value: status, inline: true },
+            { name: 'Updated by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true }
+          ]
+        });
+      }
       return;
     }
 
@@ -349,9 +376,19 @@ export const staffCommand: SlashCommand = {
       const id = interaction.options.getInteger('id', true);
       const removed = removeKnownIssue(id);
       await interaction.reply({
-        content: removed ? `Known issue #${id} removed.` : `No known issue found for #${id}.`,
+        content: removed ? `All set. Known issue #${id} was removed.` : `I could not find known issue #${id}.`,
         flags: 'Ephemeral'
       });
+      if (removed) {
+        await postStaffLog(interaction.client, {
+          title: 'Known Issue Removed',
+          description: `Known issue #${id} was removed.`,
+          fields: [
+            { name: 'Issue', value: `#${id}`, inline: true },
+            { name: 'Removed by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true }
+          ]
+        });
+      }
       return;
     }
 
@@ -359,7 +396,7 @@ export const staffCommand: SlashCommand = {
       const id = interaction.options.getInteger('id', true);
       const issue = getKnownIssue(id);
       if (!issue) {
-        await interaction.reply({ content: `No known issue found for #${id}.`, flags: 'Ephemeral' });
+        await interaction.reply({ content: `I could not find known issue #${id}.`, flags: 'Ephemeral' });
         return;
       }
 
@@ -377,10 +414,24 @@ export const staffCommand: SlashCommand = {
       const status = interaction.options.getString('status', true) as SuggestionStatus;
       const suggestion = updateSuggestionStatus(id, status);
       await interaction.reply({
-        content: suggestion ? `Suggestion ${suggestion.publicId} marked **${status}**.` : `No suggestion found for ${id}.`,
+        content: suggestion
+          ? `All set. Suggestion ${suggestion.publicId} is now **${status}**.`
+          : `I could not find suggestion **${id}**. Please check the ID and try again.`,
         embeds: suggestion ? [suggestionEmbed(suggestion, getSuggestionVoteCounts(suggestion.publicId))] : [],
         flags: 'Ephemeral'
       });
+      if (suggestion) {
+        await postStaffLog(interaction.client, {
+          title: 'Suggestion Status Updated',
+          description: `${suggestion.publicId} marked **${status}**.`,
+          fields: [
+            { name: 'Suggestion', value: suggestion.publicId, inline: true },
+            { name: 'Status', value: status, inline: true },
+            { name: 'Updated by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+            { name: 'Title', value: suggestion.title }
+          ]
+        });
+      }
       return;
     }
 
@@ -389,10 +440,24 @@ export const staffCommand: SlashCommand = {
       const status = interaction.options.getString('status', true) as SparkReportStatus;
       const report = updateSparkReportStatus(id, status);
       await interaction.reply({
-        content: report ? `Spark report ${report.publicId} marked **${status}**.` : `No Spark report found for ${id}.`,
+        content: report
+          ? `All set. Spark report ${report.publicId} is now **${status}**.`
+          : `I could not find Spark report **${id}**. Please check the ID and try again.`,
         embeds: report ? [sparkReportEmbed(report, getPlaytestSession(report.sessionPublicId))] : [],
         flags: 'Ephemeral'
       });
+      if (report) {
+        await postStaffLog(interaction.client, {
+          title: 'Spark Status Updated',
+          description: `${report.publicId} marked **${status}**.`,
+          fields: [
+            { name: 'Report', value: report.publicId, inline: true },
+            { name: 'Session', value: report.sessionPublicId, inline: true },
+            { name: 'Status', value: status, inline: true },
+            { name: 'Updated by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true }
+          ]
+        });
+      }
       return;
     }
 
@@ -417,7 +482,7 @@ export const staffCommand: SlashCommand = {
               : suggestionReportEmbed(id);
 
       if (!embed) {
-        await interaction.reply({ content: `No report found for ${id}.`, flags: 'Ephemeral' });
+        await interaction.reply({ content: `I could not find anything for **${id}**. Please check the ID and try again.`, flags: 'Ephemeral' });
         return;
       }
 
@@ -451,9 +516,19 @@ export const staffCommand: SlashCommand = {
       const id = interaction.options.getInteger('id', true);
       const removed = removeQaAnswer(id);
       await interaction.reply({
-        content: removed ? `Q&A answer #${id} disabled.` : `No Q&A answer found for #${id}.`,
+        content: removed ? `All set. Q&A answer #${id} was disabled.` : `I could not find Q&A answer #${id}.`,
         flags: 'Ephemeral'
       });
+      if (removed) {
+        await postStaffLog(interaction.client, {
+          title: 'Q&A Answer Disabled',
+          description: `Q&A answer #${id} was disabled.`,
+          fields: [
+            { name: 'Answer', value: `#${id}`, inline: true },
+            { name: 'Disabled by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true }
+          ]
+        });
+      }
     }
   }
 };
@@ -477,9 +552,19 @@ export async function handleStaffModal(interaction: ModalSubmitInteraction): Pro
     });
 
     await interaction.reply({
-      content: `Known issue #${issue.id} added.`,
+      content: `All set. Known issue #${issue.id} was added.`,
       embeds: [knownIssuesEmbed([issue])],
       flags: 'Ephemeral'
+    });
+    await postStaffLog(interaction.client, {
+      title: 'Known Issue Added',
+      description: `Known issue #${issue.id} was added.`,
+      fields: [
+        { name: 'Issue', value: `#${issue.id}`, inline: true },
+        { name: 'Severity', value: issue.severity, inline: true },
+        { name: 'Added by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+        { name: 'Title', value: issue.title }
+      ]
     });
     return true;
   }
@@ -494,10 +579,22 @@ export async function handleStaffModal(interaction: ModalSubmitInteraction): Pro
     });
 
     await interaction.reply({
-      content: issue ? `Known issue #${id} updated.` : `No known issue found for #${id}.`,
+      content: issue ? `All set. Known issue #${id} was updated.` : `I could not find known issue #${id}.`,
       embeds: issue ? [knownIssuesEmbed([issue])] : [],
       flags: 'Ephemeral'
     });
+    if (issue) {
+      await postStaffLog(interaction.client, {
+        title: 'Known Issue Updated',
+        description: `Known issue #${id} was updated.`,
+        fields: [
+          { name: 'Issue', value: `#${id}`, inline: true },
+          { name: 'Severity', value: issue.severity, inline: true },
+          { name: 'Updated by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+          { name: 'Title', value: issue.title }
+        ]
+      });
+    }
     return true;
   }
 
@@ -510,9 +607,18 @@ export async function handleStaffModal(interaction: ModalSubmitInteraction): Pro
     });
 
     await interaction.reply({
-      content: `Changelog entry for ${entry.version} added.`,
+      content: `All set. Changelog entry for ${entry.version} was added.`,
       embeds: [changelogEmbed([entry])],
       flags: 'Ephemeral'
+    });
+    await postStaffLog(interaction.client, {
+      title: 'Changelog Entry Added',
+      description: `A changelog entry for ${entry.version} was added.`,
+      fields: [
+        { name: 'Version', value: entry.version, inline: true },
+        { name: 'Added by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+        { name: 'Title', value: entry.title }
+      ]
     });
     return true;
   }
@@ -526,9 +632,19 @@ export async function handleStaffModal(interaction: ModalSubmitInteraction): Pro
     });
 
     await interaction.reply({
-      content: `Q&A answer #${answer.id} added.`,
+      content: `All set. Q&A answer #${answer.id} was added.`,
       embeds: [qaAnswerListEmbed()],
       flags: 'Ephemeral'
+    });
+    await postStaffLog(interaction.client, {
+      title: 'Q&A Answer Added',
+      description: `Q&A answer #${answer.id} was added.`,
+      fields: [
+        { name: 'Answer', value: `#${answer.id}`, inline: true },
+        { name: 'Added by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+        { name: 'Title', value: answer.title },
+        { name: 'Triggers', value: answer.triggerTerms }
+      ]
     });
     return true;
   }
@@ -538,10 +654,24 @@ export async function handleStaffModal(interaction: ModalSubmitInteraction): Pro
     const report = updateSparkReportNotes(publicId, interaction.fields.getTextInputValue('staff_notes'));
 
     await interaction.reply({
-      content: report ? `Staff notes updated for ${report.publicId}.` : `No Spark report found for ${publicId}.`,
+      content: report
+        ? `All set. Staff notes were updated for ${report.publicId}.`
+        : `I could not find Spark report **${publicId}**. Please check the ID and try again.`,
       embeds: report ? [sparkReportEmbed(report, getPlaytestSession(report.sessionPublicId))] : [],
       flags: 'Ephemeral'
     });
+    if (report) {
+      await postStaffLog(interaction.client, {
+        title: 'Spark Notes Updated',
+        description: `Staff notes were updated for ${report.publicId}.`,
+        fields: [
+          { name: 'Report', value: report.publicId, inline: true },
+          { name: 'Session', value: report.sessionPublicId, inline: true },
+          { name: 'Updated by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+          { name: 'Notes', value: report.staffNotes ?? 'No notes set.' }
+        ]
+      });
+    }
     return true;
   }
 
