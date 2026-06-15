@@ -183,7 +183,24 @@ Other Help and private report intake tickets include staff buttons for Claim and
 
 ## Community Q&A Forum
 
-Create a Discord forum for player questions and set `QA_FORUM_CHANNEL_ID` to that forum. Each new forum post becomes one organized Q&A thread. The bot answers known support topics such as Java, RAM, crashes, bugs, performance, Spark, CurseForge ZIP import, and known issues.
+Create a Discord forum for player questions and set `QA_FORUM_CHANNEL_ID` to that forum. Each new forum post becomes one organized Q&A thread. The bot answers known support topics such as Java, RAM, crashes, bugs, performance, Spark, CurseForge ZIP import, and known issues with embed replies.
+
+Built-in keyword answers live as `.txt` files in `qa-responses`. The file name without `.txt` is the topic and embed title. Put files in `qa-responses/crash`, `qa-responses/bug`, `qa-responses/performance`, or `qa-responses/general` to choose the embed color/category.
+
+Each topic file has a `phrases:` section for common words or questions to match, and a `response:` section for the embed body:
+
+```text
+phrases:
+- crash
+- crashed
+- latest.log
+- where is my crash report
+
+response:
+Use the Support Hub button **Crash / logs** for private guided intake.
+```
+
+The Q&A matcher is used in configured question channels and, for help-looking messages, inside guided support intake channels. Text file edits are read at runtime, so the bot does not need a code change for response wording or trigger phrases.
 
 Set `QA_ALERT_CHANNEL_ID` to a private support alert channel. New Q&A forum posts are saved as `WO-QA-0001` records and posted there. By default the alert pings `QA_ALERT_ROLE_ID`; if that is blank, it falls back to `QA_TEAM_ROLE_ID`, then `SUPPORT_TEAM_ROLE_ID`.
 
@@ -191,7 +208,7 @@ If a Q&A forum post looks like a crash or bug report from its title, body, or fo
 
 `QA_CHANNEL_IDS` is still supported as a legacy text-channel fallback. In those channels, the bot answers known questions and forwards unknown questions to `QA_ALERT_CHANNEL_ID`.
 
-Staff can add reusable canned answers with `/staff qa add`. Each answer has comma-separated trigger terms, a title, and answer text. Use `/staff qa list` to review recent entries and `/staff qa remove <id>` to disable one.
+Staff can add reusable canned answers with `/staff qa add`. Each answer has comma-separated trigger terms, a title, and answer text. Staff-added answers are checked before the `.txt` defaults. Use `/staff qa edit <id>` to tune an existing answer, `/staff qa list` to review recent entries, and `/staff qa remove <id>` to disable one.
 
 ## Minecraft Verification
 
@@ -299,6 +316,7 @@ Staff commands require administrator, manage server, or moderator permissions. `
 - `/staff issue update <id>`
 - `/staff changelog add`
 - `/staff qa add`
+- `/staff qa edit <id>`
 - `/staff qa list`
 - `/staff qa remove <id>`
 - `/staff ops digest`

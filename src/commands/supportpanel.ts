@@ -565,7 +565,7 @@ async function handleStaffPanelSelection(interaction: StringSelectMenuInteractio
     embed.addFields(
       { name: 'Q&A setup', value: '`QA_CHANNEL_IDS`, `QA_TEAM_CHANNEL_ID`, and optional `QA_TEAM_ROLE_ID` in `.env`.' },
       { name: 'Behavior', value: 'Known questions get canned answers. Unknown questions become `WO-QA-0001` handoffs.' },
-      { name: 'Knowledge base', value: '`/staff qa add`, `/staff qa list`, and `/staff qa remove` manage extra canned answers.' }
+      { name: 'Knowledge base', value: '`qa-responses/**/*.txt` files manage default topic embeds with `phrases:` and `response:` sections. `/staff qa add`, `/staff qa edit`, `/staff qa list`, and `/staff qa remove` manage extra overrides.' }
     );
   }
 

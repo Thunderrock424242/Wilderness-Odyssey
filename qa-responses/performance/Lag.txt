@@ -1,0 +1,16 @@
+phrases:
+- lag
+- lagging
+- laggy
+- worldgen lag
+- server lag
+- client lag
+- rubber banding
+- rubberbanding
+
+response:
+Use `/perfreport` for lag, stutter, freezes, low FPS, or heavy worldgen performance issues.
+
+Include where the lag happens, your render distance, shaders, allocated RAM, average FPS, and what you were doing when it started.
+
+For deeper testing, run Spark during the lag and submit the public viewer link with `/sparkreport`.

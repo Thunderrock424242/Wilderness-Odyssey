@@ -1,0 +1,13 @@
+phrases:
+- clean profile
+- fresh profile
+- reset profile
+- mixed files
+- duplicate mods
+- manual edits
+- reinstall profile
+
+response:
+Create a fresh profile from the exact published pack file when files may be mixed, duplicated, or manually edited.
+
+Avoid copying old mods or configs into the new profile until the clean one launches.

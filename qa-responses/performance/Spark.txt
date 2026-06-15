@@ -1,0 +1,13 @@
+phrases:
+- spark
+- profiler
+- profile link
+- spark link
+- sparkreport
+- tps
+- tick lag
+
+response:
+Use `/playtest start`, run Spark during the lag period, then submit the public viewer URL with `/sparkreport`.
+
+Timing matters: start the profile while the lag is happening. A quiet profile usually cannot show the bottleneck.

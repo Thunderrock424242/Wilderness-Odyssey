@@ -1,0 +1,20 @@
+phrases:
+- bug
+- glitch
+- broken
+- not working
+- does not work
+- cannot craft
+- cant craft
+- wrong recipe
+- missing texture
+- quest broken
+- item broken
+- worldgen broken
+
+response:
+Use **Bug report** in the Support Hub or `/bugreport` for reproducible gameplay, quest, item, worldgen, or content issues.
+
+Good bug reports include the pack version, what happened, what you expected, and clear steps staff can repeat.
+
+Screenshots, coordinates, dimension, and `latest.log` help a lot when the issue is visual or location-specific.

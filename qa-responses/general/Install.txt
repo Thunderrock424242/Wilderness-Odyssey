@@ -1,0 +1,14 @@
+phrases:
+- install
+- installation
+- reinstall
+- fresh install
+- setup
+- profile import
+- duplicate mods
+- mixed files
+
+response:
+Use the exact Wilderness Odyssey pack file staff published.
+
+If the profile has mixed files, duplicate mods, or manual edits, create a fresh profile and test before copying anything from the old one.

@@ -47,6 +47,7 @@ import {
   teamAlertContent
 } from '../utils/supportTeam';
 import { postStaffLog } from './staffLogService';
+import { maybeReplyWithKnownAnswer } from './qaService';
 import {
   addDuplicateHintsField,
   duplicateHintsText,
@@ -178,6 +179,13 @@ export async function handleReportIntakeMessage(message: Message): Promise<boole
 
   if (message.author.id !== session.userId) {
     return false;
+  }
+
+  if (await maybeReplyWithKnownAnswer(message, {
+    requireQuestion: true,
+    supportStatus: 'You are inside a guided support form. Reply with the requested detail when you are ready, and I will keep the form in the same place.'
+  })) {
+    return true;
   }
 
   if (session.mode === 'submitted') {

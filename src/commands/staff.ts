@@ -37,10 +37,12 @@ import {
 } from '../services/sparkReportService';
 import {
   addQaAnswer,
+  getQaAnswer,
   getQaForward,
   listQaAnswers,
   qaForwardEmbed,
-  removeQaAnswer
+  removeQaAnswer,
+  updateQaAnswer
 } from '../services/qaService';
 import {
   getPlaytestSession,
@@ -299,6 +301,18 @@ export const staffCommand: SlashCommand = {
           subcommand
             .setName('list')
             .setDescription('List recent Q&A answers.')
+        )
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('edit')
+            .setDescription('Edit a Q&A answer.')
+            .addIntegerOption((option) =>
+              option
+                .setName('id')
+                .setDescription('Q&A answer numeric ID.')
+                .setMinValue(1)
+                .setRequired(true)
+            )
         )
         .addSubcommand((subcommand) =>
           subcommand
@@ -592,6 +606,21 @@ export const staffCommand: SlashCommand = {
       return;
     }
 
+    if (group === 'qa' && subcommand === 'edit') {
+      const id = interaction.options.getInteger('id', true);
+      const answer = getQaAnswer(id);
+      if (!answer) {
+        await interaction.reply({
+          content: `I could not find Q&A answer #${id}.`,
+          flags: 'Ephemeral'
+        });
+        return;
+      }
+
+      await interaction.showModal(qaAnswerModal(`staff:qa-edit:${id}`, answer));
+      return;
+    }
+
     if (group === 'qa' && subcommand === 'remove') {
       const id = interaction.options.getInteger('id', true);
       const removed = removeQaAnswer(id);
@@ -821,6 +850,34 @@ export async function handleStaffModal(interaction: ModalSubmitInteraction): Pro
     return true;
   }
 
+  if (interaction.customId.startsWith('staff:qa-edit:')) {
+    const id = Number(interaction.customId.split(':')[2]);
+    const answer = updateQaAnswer(id, {
+      triggerTerms: interaction.fields.getTextInputValue('trigger_terms'),
+      title: interaction.fields.getTextInputValue('title'),
+      answer: interaction.fields.getTextInputValue('answer')
+    });
+
+    await interaction.reply({
+      content: answer ? `All set. Q&A answer #${id} was updated.` : `I could not find Q&A answer #${id}.`,
+      embeds: answer ? [qaAnswerListEmbed()] : [],
+      flags: 'Ephemeral'
+    });
+    if (answer) {
+      await postStaffLog(interaction.client, {
+        title: 'Q&A Answer Updated',
+        description: `Q&A answer #${id} was updated.`,
+        fields: [
+          { name: 'Answer', value: `#${id}`, inline: true },
+          { name: 'Updated by', value: `<@${interaction.user.id}> (${interaction.user.tag})`, inline: true },
+          { name: 'Title', value: answer.title },
+          { name: 'Triggers', value: answer.triggerTerms }
+        ]
+      });
+    }
+    return true;
+  }
+
   if (interaction.customId.startsWith('staff:spark-notes:')) {
     const publicId = interaction.customId.split(':')[2];
     const report = updateSparkReportNotes(publicId, interaction.fields.getTextInputValue('staff_notes'));
@@ -880,14 +937,18 @@ function changelogModal(): ModalBuilder {
     );
 }
 
-function qaAnswerModal(): ModalBuilder {
+function qaAnswerModal(customId = 'staff:qa-add', existing?: {
+  triggerTerms: string;
+  title: string;
+  answer: string;
+}): ModalBuilder {
   return new ModalBuilder()
-    .setCustomId('staff:qa-add')
-    .setTitle('Add Q&A Answer')
+    .setCustomId(customId)
+    .setTitle(existing ? 'Edit Q&A Answer' : 'Add Q&A Answer')
     .addComponents(
-      staffTextInputRow('trigger_terms', 'Trigger terms', TextInputStyle.Short, true, 'comma separated, like java, jdk, class file'),
-      staffTextInputRow('title', 'Answer title', TextInputStyle.Short, true, 'Example: Java Version'),
-      staffTextInputRow('answer', 'Answer text', TextInputStyle.Paragraph, true, 'The response players should receive.')
+      staffTextInputRow('trigger_terms', 'Trigger terms', TextInputStyle.Paragraph, true, 'comma separated, like java, jdk, class file', existing?.triggerTerms),
+      staffTextInputRow('title', 'Answer title', TextInputStyle.Short, true, 'Example: Java Version', existing?.title),
+      staffTextInputRow('answer', 'Answer text', TextInputStyle.Paragraph, true, 'The response players should receive.', existing?.answer)
     );
 }
 

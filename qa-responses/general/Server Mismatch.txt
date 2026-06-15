@@ -1,0 +1,14 @@
+phrases:
+- server mismatch
+- client mismatch
+- different version
+- incompatible server
+- cant join server
+- cannot join server
+- multiplayer failed
+- server says incompatible
+
+response:
+Make sure your installed pack version exactly matches the server or playtest version.
+
+If singleplayer works but multiplayer does not, include the disconnect message in your support post.

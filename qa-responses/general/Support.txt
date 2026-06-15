@@ -1,0 +1,14 @@
+phrases:
+- support
+- need help
+- help me
+- where do i report
+- how do i report
+- what should i use
+- which form
+- support form
+
+response:
+Use the Support Hub if you are not sure.
+
+Pick **Help me pick** for routing, **Crash / logs** for launch or game crashes, **Bug report** for broken gameplay, and **Performance issue** for lag or FPS trouble.

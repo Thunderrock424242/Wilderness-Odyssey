@@ -9,6 +9,7 @@ import { LRUCache } from 'lru-cache';
 import { baseEmbed } from '../utils/embeds';
 import { reportReceiptButtons } from './reportService';
 import { archiveCrashAttachment } from './crashReportService';
+import { maybeReplyWithKnownAnswer } from './qaService';
 import {
   ticketChannelName,
   ticketControlRows,
@@ -122,6 +123,13 @@ export async function handleCrashIntakeMessage(message: Message): Promise<boolea
 
   if (message.author.id !== pending.userId) {
     return false;
+  }
+
+  if (await maybeReplyWithKnownAnswer(message, {
+    requireQuestion: true,
+    supportStatus: 'You are inside a crash upload channel. Upload your `.log` or `.txt` file when you are ready, and I will keep this upload session open.'
+  })) {
+    return true;
   }
 
   const attachment = message.attachments.first();

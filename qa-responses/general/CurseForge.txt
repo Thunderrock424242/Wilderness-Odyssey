@@ -1,0 +1,13 @@
+phrases:
+- curseforge
+- curseforge import
+- import profile
+- import zip
+- zip import
+- playtest download
+- download zip
+
+response:
+For a published playtest, accept the terms/privacy button in the playtest channel.
+
+Download the ZIP, do not unzip it, then import it in CurseForge as an existing ZIP/profile.

@@ -1,0 +1,13 @@
+phrases:
+- ram
+- memory
+- outofmemoryerror
+- heap space
+- allocated memory
+- allocate ram
+- not enough memory
+
+response:
+Check the recommended RAM in `/status`.
+
+Avoid allocating all system memory; leave room for Windows, Discord, and the launcher. Too little RAM can cause freezes or crashes, but too much RAM can also make Java garbage collection feel worse.

@@ -3,7 +3,8 @@ import { config } from '../config';
 import { getDb } from '../db';
 import type { QaForwardRecord } from '../types';
 import { formatPublicId, normalizePublicId } from '../utils/ids';
-import { colors, truncate } from '../utils/embeds';
+import { baseEmbed, colors, truncate } from '../utils/embeds';
+import { loadDefaultQaAnswers, type QaAnswerCategory } from './qaAnswerCatalog';
 import { sendToConfiguredChannel } from './reportService';
 import { postStaffLog } from './staffLogService';
 import {
@@ -29,6 +30,13 @@ interface QaForwardRow {
 interface KnownAnswer {
   title: string;
   body: string;
+  category: QaAnswerCategory;
+  source: 'staff' | 'default';
+  triggerTerms: string[];
+  fields?: Array<{
+    name: string;
+    value: string;
+  }>;
 }
 
 type QaRoute = 'question' | 'bug' | 'crash' | 'performance';
@@ -76,19 +84,14 @@ export async function handleQuestionMessage(message: Message): Promise<void> {
   }
 
   const question = message.content.trim();
-  if (!shouldHandleQuestion(question)) {
+  const knownAnswer = answerKnownQuestion(question);
+  if (!knownAnswer && !shouldHandleQuestion(question)) {
     return;
   }
 
-  const knownAnswer = answerKnownQuestion(question);
   if (knownAnswer) {
     await message.reply({
-      content: [
-        `**${knownAnswer.title}**`,
-        knownAnswer.body,
-        '',
-        'If that does not solve it, reply with what you tried and staff can step in.'
-      ].join('\n'),
+      embeds: [qaAnswerEmbed(knownAnswer)],
       allowedMentions: { repliedUser: false }
     });
 
@@ -97,6 +100,8 @@ export async function handleQuestionMessage(message: Message): Promise<void> {
       description: `A canned answer was sent in <#${message.channelId}>.`,
       fields: [
         { name: 'Answer', value: knownAnswer.title, inline: true },
+        { name: 'Source', value: knownAnswer.source, inline: true },
+        { name: 'Category', value: knownAnswer.category, inline: true },
         { name: 'Asked by', value: `<@${message.author.id}> (${message.author.tag})`, inline: true },
         { name: 'Question', value: question }
       ]
@@ -139,6 +144,30 @@ export async function handleQuestionMessage(message: Message): Promise<void> {
   });
 }
 
+export async function maybeReplyWithKnownAnswer(
+  message: Message,
+  options: {
+    requireQuestion?: boolean;
+    supportStatus?: string;
+  } = {}
+): Promise<boolean> {
+  const content = message.content.trim();
+  if (options.requireQuestion && !looksLikeSupportQuestion(content)) {
+    return false;
+  }
+
+  const knownAnswer = answerKnownQuestion(content);
+  if (!knownAnswer) {
+    return false;
+  }
+
+  await message.reply({
+    embeds: [qaAnswerEmbed(knownAnswer, { supportStatus: options.supportStatus })],
+    allowedMentions: { repliedUser: false }
+  });
+  return true;
+}
+
 async function handleQaForumPost(message: Message): Promise<void> {
   const question = forumQuestionText(message);
   const knownAnswer = answerKnownQuestion(question);
@@ -177,15 +206,11 @@ async function handleQaForumPost(message: Message): Promise<void> {
 
   if (knownAnswer) {
     await message.reply({
-      content: [
-        `**${knownAnswer.title}**`,
-        knownAnswer.body,
-        '',
-        posted
+      embeds: [qaAnswerEmbed(knownAnswer, {
+        supportStatus: posted
           ? 'I also alerted support so they can keep an eye on this post.'
-          : 'I saved this for support review, but the Q&A alert channel is not configured yet.',
-        'If that does not solve it, reply with what you tried and staff can step in.'
-      ].join('\n'),
+          : 'I saved this for support review, but the Q&A alert channel is not configured yet.'
+      })],
       allowedMentions: { repliedUser: false }
     });
     return;
@@ -345,63 +370,16 @@ function answerKnownQuestion(question: string): KnownAnswer | null {
     return configuredAnswer;
   }
 
-  if (matchesAny(normalized, ['java', 'unsupportedclassversionerror', 'class file version'])) {
-    return {
-      title: 'Java Version',
-      body: `Use the recommended Java version from \`/status\`. After changing Java in your launcher, relaunch the pack before testing again.`
-    };
-  }
-
-  if (matchesAny(normalized, ['ram', 'memory', 'outofmemoryerror', 'heap space'])) {
-    return {
-      title: 'RAM Allocation',
-      body: `Check the recommended RAM in \`/status\`. Avoid allocating all system memory; leave room for Windows and the launcher.`
-    };
-  }
-
-  if (matchesAny(normalized, ['crash', 'crashed', 'crashing', 'latest.log', 'crash report'])) {
-    return {
-      title: 'Crash Reports',
-      body: 'Use the Support Hub button **Crash** for private guided intake. `/crash file:<crash-report-or-latest.log>` can preload the log into the same review flow.'
-    };
-  }
-
-  if (matchesAny(normalized, ['bug', 'glitch', 'broken', 'not working', 'does not work'])) {
-    return {
-      title: 'Bug Reports',
-      body: 'Use **Bug** in the Support Hub or `/bugreport` for reproducible gameplay or content issues. The bot will ask each field privately, then show a review before posting.'
-    };
-  }
-
-  if (matchesAny(normalized, ['lag', 'fps', 'stutter', 'performance', 'freezing'])) {
-    return {
-      title: 'Performance Help',
-      body: 'Use `/performance` for reporting guidance or `/perfreport` to archive FPS, RAM, shader, render distance, and lag-location details.'
-    };
-  }
-
-  if (matchesAny(normalized, ['spark', 'profiler', 'profile link'])) {
-    return {
-      title: 'Spark Reports',
-      body: 'Use `/playtest start`, run Spark during the lag period, then submit the public viewer URL with `/sparkreport`.'
-    };
-  }
-
-  if (matchesAny(normalized, ['curseforge', 'zip', 'import profile', 'playtest download'])) {
-    return {
-      title: 'Playtest ZIP Import',
-      body: 'For a published playtest, accept the terms/privacy button in the playtest channel. Then download the ZIP, do not unzip it, and import it in CurseForge as an existing ZIP/profile.'
-    };
-  }
-
-  if (matchesAny(normalized, ['known issue', 'knownissues', 'known bug'])) {
-    return {
-      title: 'Known Issues',
-      body: 'Use `/knownissues` to see the current staff-maintained instability list.'
-    };
-  }
-
-  return null;
+  const answer = loadDefaultQaAnswers().find((item) => matchesAny(normalized, item.triggerTerms));
+  return answer
+    ? {
+      title: answer.title,
+      body: answer.body,
+      category: answer.category,
+      source: 'default',
+      triggerTerms: answer.triggerTerms
+    }
+    : null;
 }
 
 export function addQaAnswer(input: {
@@ -424,6 +402,31 @@ export function addQaAnswer(input: {
   }
 
   return mapQaAnswer(row);
+}
+
+export function getQaAnswer(id: number): QaAnswerRecord | null {
+  const row = getDb().prepare('SELECT * FROM qa_answers WHERE id = ?').get(id) as QaAnswerRow | undefined;
+  return row ? mapQaAnswer(row) : null;
+}
+
+export function updateQaAnswer(
+  id: number,
+  input: {
+    triggerTerms: string;
+    title: string;
+    answer: string;
+  }
+): QaAnswerRecord | null {
+  const result = getDb().prepare(`
+    UPDATE qa_answers
+    SET trigger_terms = @triggerTerms,
+        title = @title,
+        answer = @answer,
+        updated_at = datetime('now')
+    WHERE id = @id
+  `).run({ id, ...input });
+
+  return result.changes > 0 ? getQaAnswer(id) : null;
 }
 
 export function listQaAnswers(limit = 10): QaAnswerRecord[] {
@@ -460,10 +463,13 @@ function findConfiguredAnswer(question: string): KnownAnswer | null {
       .map((term) => term.trim().toLowerCase())
       .filter(Boolean);
 
-    if (terms.some((term) => question.includes(term))) {
+    if (matchesAny(question, terms)) {
       return {
         title: row.title,
-        body: row.answer
+        body: row.answer,
+        category: 'general',
+        source: 'staff',
+        triggerTerms: terms
       };
     }
   }
@@ -477,8 +483,7 @@ function shouldHandleQuestion(content: string): boolean {
   }
 
   const normalized = content.toLowerCase();
-  return normalized.includes('?')
-    || /^(how|what|why|where|when|can|could|do|does|is|are|should|help)\b/.test(normalized)
+  return looksLikeSupportQuestion(content)
     || matchesAny(normalized, [
       'crash',
       'bug',
@@ -493,8 +498,77 @@ function shouldHandleQuestion(content: string): boolean {
     ]);
 }
 
+function looksLikeSupportQuestion(content: string): boolean {
+  const normalized = content.trim().toLowerCase();
+  return normalized.includes('?')
+    || /^(how|what|why|where|when|which|can|could|do|does|is|are|should|help)\b/.test(normalized)
+    || normalized.startsWith('i need help')
+    || normalized.startsWith('need help');
+}
+
 function matchesAny(value: string, needles: string[]): boolean {
-  return needles.some((needle) => value.includes(needle));
+  const normalizedValue = value.toLowerCase();
+  return needles.some((needle) => matchesTerm(normalizedValue, needle.toLowerCase()));
+}
+
+function matchesTerm(value: string, needle: string): boolean {
+  const term = needle.trim();
+  if (!term) {
+    return false;
+  }
+
+  if (/[^a-z0-9]/.test(term)) {
+    return value.includes(term);
+  }
+
+  const suffix = term.length >= 5 ? '[a-z0-9]*' : '';
+  return new RegExp(`(^|[^a-z0-9])${escapeRegExp(term)}${suffix}([^a-z0-9]|$)`).test(value);
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function qaAnswerEmbed(answer: KnownAnswer, options: { supportStatus?: string } = {}): EmbedBuilder {
+  const embed = baseEmbed(answer.title, truncate(answer.body, 3900))
+    .setColor(qaAnswerColor(answer.category));
+
+  if (answer.fields?.length) {
+    embed.addFields(...answer.fields.map((field) => ({
+      name: truncate(field.name, 256),
+      value: truncate(field.value)
+    })));
+  }
+
+  if (options.supportStatus) {
+    embed.addFields({
+      name: 'Support visibility',
+      value: options.supportStatus
+    });
+  }
+
+  embed.addFields({
+    name: 'Next step',
+    value: 'If that does not solve it, reply with what you tried and staff can step in.'
+  });
+
+  return embed;
+}
+
+function qaAnswerColor(category: QaAnswerCategory): number {
+  if (category === 'crash') {
+    return colors.danger;
+  }
+
+  if (category === 'bug') {
+    return colors.warning;
+  }
+
+  if (category === 'performance') {
+    return colors.calm;
+  }
+
+  return colors.primary;
 }
 
 export function qaForwardEmbed(forward: QaForwardRecord): EmbedBuilder {

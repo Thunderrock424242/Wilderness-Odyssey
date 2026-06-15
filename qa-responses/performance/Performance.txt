@@ -1,0 +1,14 @@
+phrases:
+- performance
+- slow
+- stutter
+- stuttering
+- freezing
+- freeze
+- rubberband
+- mspt
+
+response:
+Use `/performance` for reporting guidance or `/perfreport` to archive FPS, RAM, shader, render distance, and lag-location details.
+
+Most useful details: average FPS, allocated RAM, CPU/GPU, shaders, render distance, where the lag happens, and what you were doing.
