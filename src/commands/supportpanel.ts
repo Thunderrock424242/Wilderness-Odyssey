@@ -704,14 +704,14 @@ function qaQuestionHelpText(): string {
   if (config.qa.forumChannelId) {
     return [
       `Open a post in <#${config.qa.forumChannelId}> for community Q&A.`,
-      'I will answer if I recognize the question, alert support for visibility, and pull in devs if it looks like a crash or bug.'
+      'I will answer first if I recognize the topic. If I cannot answer confidently, or you say you still need help, I will hand it to support and include devs for crash or bug-looking issues.'
     ].join('\n');
   }
 
   if (config.qa.channelIds.length > 0) {
     return [
       `Ask your question in ${config.qa.channelIds.map((channelId) => `<#${channelId}>`).join(', ')}.`,
-      'If I recognize the issue, I will answer with the matching support steps. If I do not, I will alert support.'
+      'If I recognize the issue, I will answer with the matching support steps. If I do not, or you say you still need help, I will alert support.'
     ].join('\n');
   }
 

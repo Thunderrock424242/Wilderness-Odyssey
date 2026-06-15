@@ -39,7 +39,7 @@ interface KnownAnswer {
   }>;
 }
 
-type QaRoute = 'question' | 'bug' | 'crash' | 'performance';
+export type QaRoute = 'question' | 'bug' | 'crash' | 'performance';
 
 interface QaClassification {
   route: QaRoute;
@@ -79,11 +79,21 @@ export async function handleQuestionMessage(message: Message): Promise<void> {
     return;
   }
 
+  if (isQaForumThreadMessage(message)) {
+    await handleQaForumReply(message);
+    return;
+  }
+
   if (!config.qa.channelIds.includes(message.channelId)) {
     return;
   }
 
   const question = message.content.trim();
+  if (needsHumanSupport(question)) {
+    await escalateQuestionToTeam(message, question, classifyQaText(question), 'human_help');
+    return;
+  }
+
   const knownAnswer = answerKnownQuestion(question);
   if (!knownAnswer && !shouldHandleQuestion(question)) {
     return;
@@ -109,51 +119,30 @@ export async function handleQuestionMessage(message: Message): Promise<void> {
     return;
   }
 
-  const forward = createQaForward({
-    userId: message.author.id,
-    username: message.author.tag,
-    channelId: message.channelId,
-    messageId: message.id,
-    messageUrl: message.url,
-    question
-  });
-
-  const posted = await sendToConfiguredChannel(message.client, config.qa.alertChannelId, {
-    content: teamAlertContent(`New Q&A handoff: ${forward.publicId}`, ['qa']),
-    embeds: [qaForwardEmbed(forward)],
-    allowedMentions: teamAlertAllowedMentions(['qa'])
-  });
-
-  await postStaffLog(message.client, {
-    title: 'Q&A Handoff Created',
-    description: `${forward.publicId} was forwarded to the Q&A team.`,
-    fields: [
-      { name: 'Handoff', value: forward.publicId, inline: true },
-      { name: 'Asked by', value: `<@${message.author.id}> (${message.author.tag})`, inline: true },
-      { name: 'Source', value: `<#${message.channelId}>`, inline: true },
-      { name: 'Alert posted', value: posted ? 'Yes' : 'No', inline: true },
-      { name: 'Question', value: question }
-    ]
-  });
-
-  await message.reply({
-    content: posted
-      ? `Thanks for asking. I do not have a confident answer yet, so I forwarded this to the Q&A team as **${forward.publicId}**.`
-      : `Thanks for asking. I do not have a confident answer yet. The Q&A team channel is not configured, but I saved this as **${forward.publicId}**.`,
-    allowedMentions: { repliedUser: false }
-  });
+  await escalateQuestionToTeam(message, question, classifyQaText(question), 'unknown_question');
 }
 
 export async function maybeReplyWithKnownAnswer(
   message: Message,
   options: {
     requireQuestion?: boolean;
+    route?: QaRoute;
     supportStatus?: string;
   } = {}
 ): Promise<boolean> {
   const content = message.content.trim();
   if (options.requireQuestion && !looksLikeSupportQuestion(content)) {
     return false;
+  }
+
+  if (needsHumanSupport(content)) {
+    await escalateQuestionToTeam(
+      message,
+      content,
+      options.route ? classificationForRoute(options.route) : classifyQaText(content),
+      'human_help'
+    );
+    return true;
   }
 
   const knownAnswer = answerKnownQuestion(content);
@@ -172,6 +161,7 @@ async function handleQaForumPost(message: Message): Promise<void> {
   const question = forumQuestionText(message);
   const knownAnswer = answerKnownQuestion(question);
   const classification = classifyQaForumPost(message, question);
+  const wantsHumanHelp = needsHumanSupport(question);
   const forward = createQaForward({
     userId: message.author.id,
     username: message.author.tag,
@@ -185,11 +175,14 @@ async function handleQaForumPost(message: Message): Promise<void> {
     markQaForwardAnswered(forward.publicId);
   }
 
-  const posted = await sendToConfiguredChannel(message.client, config.qa.alertChannelId, {
-    content: teamAlertContent(`New ${classification.label} forum post: ${forward.publicId}`, classification.alertTeams),
-    embeds: [qaForumAlertEmbed(message, forward, classification, knownAnswer)],
-    allowedMentions: teamAlertAllowedMentions(classification.alertTeams)
-  });
+  const shouldAlertTeam = !knownAnswer || wantsHumanHelp;
+  const posted = shouldAlertTeam
+    ? await sendToConfiguredChannel(message.client, config.qa.alertChannelId, {
+      content: teamAlertContent(`New ${classification.label} forum post: ${forward.publicId}`, classification.alertTeams),
+      embeds: [qaForumAlertEmbed(message, forward, classification, knownAnswer)],
+      allowedMentions: teamAlertAllowedMentions(classification.alertTeams)
+    })
+    : false;
 
   await postStaffLog(message.client, {
     title: 'Forum Post Routed',
@@ -207,9 +200,9 @@ async function handleQaForumPost(message: Message): Promise<void> {
   if (knownAnswer) {
     await message.reply({
       embeds: [qaAnswerEmbed(knownAnswer, {
-        supportStatus: posted
-          ? 'I also alerted support so they can keep an eye on this post.'
-          : 'I saved this for support review, but the Q&A alert channel is not configured yet.'
+        supportStatus: wantsHumanHelp
+          ? escalationStatusText(posted, forward.publicId, classification)
+          : 'I will try this answer first. If you still need help, reply here with what happened and I can hand this to support.'
       })],
       allowedMentions: { repliedUser: false }
     });
@@ -222,6 +215,90 @@ async function handleQaForumPost(message: Message): Promise<void> {
       : `Thanks, I saved this forum post as **${forward.publicId}**. The Q&A alert channel is not configured yet, so staff alerts are not being sent.`,
     allowedMentions: { repliedUser: false }
   });
+}
+
+async function handleQaForumReply(message: Message): Promise<void> {
+  const question = message.content.trim();
+  if (!shouldHandleQuestion(question) && !needsHumanSupport(question)) {
+    return;
+  }
+
+  const classification = classifyQaText(question);
+  if (needsHumanSupport(question)) {
+    await escalateQuestionToTeam(message, question, classification, 'human_help');
+    return;
+  }
+
+  const knownAnswer = answerKnownQuestion(question);
+  if (knownAnswer) {
+    await message.reply({
+      embeds: [qaAnswerEmbed(knownAnswer)],
+      allowedMentions: { repliedUser: false }
+    });
+    return;
+  }
+
+  await escalateQuestionToTeam(message, question, classification, 'unknown_question');
+}
+
+async function escalateQuestionToTeam(
+  message: Message,
+  question: string,
+  classification: QaClassification,
+  reason: 'human_help' | 'unknown_question'
+): Promise<void> {
+  const forward = createQaForward({
+    userId: message.author.id,
+    username: message.author.tag,
+    channelId: message.channelId,
+    messageId: message.id,
+    messageUrl: message.url,
+    question
+  });
+
+  const posted = await sendToConfiguredChannel(message.client, config.qa.alertChannelId, {
+    content: teamAlertContent(`${escalationTitle(reason, classification)}: ${forward.publicId}`, classification.alertTeams),
+    embeds: [qaForwardEmbed(forward).addFields(
+      { name: 'Route', value: classification.label, inline: true },
+      { name: 'Reason', value: reason === 'human_help' ? 'User asked for more help.' : 'No confident self-service answer matched.', inline: true }
+    )],
+    allowedMentions: teamAlertAllowedMentions(classification.alertTeams)
+  });
+
+  await postStaffLog(message.client, {
+    title: 'Q&A Handoff Created',
+    description: `${forward.publicId} was forwarded to ${teamLabel(classification)}.`,
+    fields: [
+      { name: 'Handoff', value: forward.publicId, inline: true },
+      { name: 'Route', value: classification.route, inline: true },
+      { name: 'Reason', value: reason, inline: true },
+      { name: 'Asked by', value: `<@${message.author.id}> (${message.author.tag})`, inline: true },
+      { name: 'Source', value: `<#${message.channelId}>`, inline: true },
+      { name: 'Alert posted', value: posted ? 'Yes' : 'No', inline: true },
+      { name: 'Question', value: question }
+    ]
+  });
+
+  await message.reply({
+    content: escalationStatusText(posted, forward.publicId, classification),
+    allowedMentions: { repliedUser: false }
+  });
+}
+
+function escalationTitle(reason: 'human_help' | 'unknown_question', classification: QaClassification): string {
+  return reason === 'human_help'
+    ? `${teamLabel(classification)} requested`
+    : `New ${classification.label} handoff`;
+}
+
+function escalationStatusText(posted: boolean, publicId: string, classification: QaClassification): string {
+  return posted
+    ? `I called in ${teamLabel(classification)} as **${publicId}**. They can follow up from here.`
+    : `I saved this as **${publicId}**, but the Q&A alert channel is not configured yet.`;
+}
+
+function teamLabel(classification: QaClassification): string {
+  return classification.alertTeams.includes('dev') ? 'support and devs' : 'support';
 }
 
 function createQaForward(input: {
@@ -278,6 +355,14 @@ function isQaForumStarterMessage(message: Message): boolean {
   return message.channel.parentId === config.qa.forumChannelId && message.id === message.channel.id;
 }
 
+function isQaForumThreadMessage(message: Message): boolean {
+  if (!config.qa.forumChannelId || !message.channel.isThread()) {
+    return false;
+  }
+
+  return message.channel.parentId === config.qa.forumChannelId && message.id !== message.channel.id;
+}
+
 function forumQuestionText(message: Message): string {
   const title = message.channel.isThread() ? message.channel.name.trim() : '';
   const body = message.content.trim();
@@ -290,8 +375,30 @@ function forumQuestionText(message: Message): string {
 }
 
 function classifyQaForumPost(message: Message, question: string): QaClassification {
-  const normalized = `${question} ${forumTagNames(message).join(' ')}`.toLowerCase();
+  return classifyQaNormalized(`${question} ${forumTagNames(message).join(' ')}`.toLowerCase());
+}
 
+function classifyQaText(question: string): QaClassification {
+  return classifyQaNormalized(question.toLowerCase());
+}
+
+function classificationForRoute(route: QaRoute): QaClassification {
+  if (route === 'crash') {
+    return { route, label: 'crash Q&A', alertTeams: ['qa', 'dev'] };
+  }
+
+  if (route === 'bug') {
+    return { route, label: 'bug Q&A', alertTeams: ['qa', 'dev'] };
+  }
+
+  if (route === 'performance') {
+    return { route, label: 'performance Q&A', alertTeams: ['qa'] };
+  }
+
+  return { route, label: 'community Q&A', alertTeams: ['qa'] };
+}
+
+function classifyQaNormalized(normalized: string): QaClassification {
   if (matchesAny(normalized, [
     ...config.forumTags.crash.map((tag) => tag.toLowerCase()),
     'crash',
@@ -506,6 +613,31 @@ function looksLikeSupportQuestion(content: string): boolean {
     || normalized.startsWith('need help');
 }
 
+function needsHumanSupport(content: string): boolean {
+  const normalized = content.trim().toLowerCase();
+  return matchesAny(normalized, [
+    'need staff',
+    'staff help',
+    'support team',
+    'need support',
+    'need a human',
+    'human help',
+    'can someone help',
+    'need more help',
+    'still need help',
+    'still need support',
+    'still not working',
+    'that did not work',
+    "that didn't work",
+    'did not fix',
+    'not solved',
+    'dev help',
+    'developer help',
+    'need dev',
+    'need developer'
+  ]);
+}
+
 function matchesAny(value: string, needles: string[]): boolean {
   const normalizedValue = value.toLowerCase();
   return needles.some((needle) => matchesTerm(normalizedValue, needle.toLowerCase()));
@@ -547,12 +679,57 @@ function qaAnswerEmbed(answer: KnownAnswer, options: { supportStatus?: string } 
     });
   }
 
+  const destination = dedicatedSupportDestination(answer.category);
+  if (destination) {
+    embed.addFields({
+      name: 'Dedicated place',
+      value: destination
+    });
+  }
+
   embed.addFields({
-    name: 'Next step',
-    value: 'If that does not solve it, reply with what you tried and staff can step in.'
+    name: 'Need more help',
+    value: 'Reply with what you tried and say you still need support. I can hand the thread to support, and devs will be included for crash or bug-looking issues.'
   });
 
   return embed;
+}
+
+function dedicatedSupportDestination(category: QaAnswerCategory): string | null {
+  const destinations: string[] = [];
+  if (category === 'crash') {
+    if (config.channelIds.crashReports) {
+      destinations.push(`Crash/log reports belong in <#${config.channelIds.crashReports}>.`);
+    } else if (config.forumChannels.issues) {
+      destinations.push(`Crash/log reports belong in <#${config.forumChannels.issues}> with the Crash tag.`);
+    }
+  } else if (category === 'bug') {
+    if (config.channelIds.bugReports) {
+      destinations.push(`Bug reports belong in <#${config.channelIds.bugReports}>.`);
+    } else if (config.forumChannels.issues) {
+      destinations.push(`Bug reports belong in <#${config.forumChannels.issues}> with the Bug tag.`);
+    }
+  } else if (category === 'performance') {
+    if (config.channelIds.performanceReports) {
+      destinations.push(`Performance reports belong in <#${config.channelIds.performanceReports}>.`);
+    } else if (config.forumChannels.issues) {
+      destinations.push(`Performance reports belong in <#${config.forumChannels.issues}> with the Performance tag.`);
+    }
+  } else {
+    if (config.qa.forumChannelId) {
+      destinations.push(`General questions belong in <#${config.qa.forumChannelId}>.`);
+    } else if (config.qa.channelIds.length > 0) {
+      destinations.push(`General questions belong in ${config.qa.channelIds.map((channelId) => `<#${channelId}>`).join(', ')}.`);
+    }
+  }
+
+  if (config.channelIds.support) {
+    destinations.push(`Start from <#${config.channelIds.support}> if you are unsure which area fits.`);
+  } else if (config.status.supportChannels.length > 0) {
+    destinations.push(`Start from ${config.status.supportChannels.join(', ')} if you are unsure which area fits.`);
+  }
+
+  return destinations.length > 0 ? [...new Set(destinations)].join('\n') : null;
 }
 
 function qaAnswerColor(category: QaAnswerCategory): number {

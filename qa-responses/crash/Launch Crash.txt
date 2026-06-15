@@ -12,6 +12,6 @@ phrases:
 response:
 Launch crashes are usually Java, memory, missing files, or version mismatch issues.
 
-First check `/status` for the recommended Java and RAM settings. Then confirm the installed pack version matches the current server or playtest version.
+First check the server info or status channel for the recommended Java and RAM settings. Then confirm the installed pack version matches the current server or playtest version.
 
-If it still fails, use **Crash / logs** in the Support Hub or `/crash file:<latest.log>` so staff can review the log.
+If it still fails, use the dedicated crash/log report area so the bot can collect the log and staff can review the details.

@@ -9,6 +9,6 @@ phrases:
 - support form
 
 response:
-Use the Support Hub if you are not sure.
+Use the server support hub or question channel if you are not sure.
 
-Pick **Help me pick** for routing, **Crash / logs** for launch or game crashes, **Bug report** for broken gameplay, and **Performance issue** for lag or FPS trouble.
+Choose the crash/log area for launch or game crashes, the bug report area for broken gameplay, and the performance area for lag or FPS trouble.

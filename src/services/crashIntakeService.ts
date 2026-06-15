@@ -127,6 +127,7 @@ export async function handleCrashIntakeMessage(message: Message): Promise<boolea
 
   if (await maybeReplyWithKnownAnswer(message, {
     requireQuestion: true,
+    route: 'crash',
     supportStatus: 'You are inside a crash upload channel. Upload your `.log` or `.txt` file when you are ready, and I will keep this upload session open.'
   })) {
     return true;

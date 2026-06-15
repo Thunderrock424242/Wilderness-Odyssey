@@ -8,6 +8,6 @@ phrases:
 - low frames
 
 response:
-Use `/perfreport` for FPS drops, stutter, freezes, or rendering performance issues.
+Use the dedicated performance report area for FPS drops, stutter, freezes, or rendering performance issues.
 
 Include average FPS, render distance, shaders, allocated RAM, CPU/GPU, and whether the issue happens everywhere or only in certain areas.

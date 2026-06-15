@@ -183,6 +183,7 @@ export async function handleReportIntakeMessage(message: Message): Promise<boole
 
   if (await maybeReplyWithKnownAnswer(message, {
     requireQuestion: true,
+    route: session.type,
     supportStatus: 'You are inside a guided support form. Reply with the requested detail when you are ready, and I will keep the form in the same place.'
   })) {
     return true;

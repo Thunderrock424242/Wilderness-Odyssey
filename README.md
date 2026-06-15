@@ -24,7 +24,7 @@ The personality is light in-universe support AI: helpful, calm, and a little eer
 - The bot does not ask for private/personal information.
 - Log parsing redacts tokens, emails, IP addresses, and common local file paths before storage.
 - Reports should not include chat logs, passwords, tokens, IP addresses, or personal files.
-- In the configured community Q&A forum, the bot reads new forum posts so it can answer known support topics, alert support, and pull in devs for crash or bug-looking posts.
+- In the configured community Q&A forum, the bot reads new forum posts so it can answer known support topics first, then alert support or devs only when the user needs more help or the bot has no confident answer.
 - The bot stores submitted Spark viewer links, but does not scrape private Spark data or run Minecraft commands.
 - A Minecraft server-side mod can complete account verification through a private Discord webhook relay. Never put the Discord bot token inside a Minecraft mod.
 
@@ -150,7 +150,7 @@ Recommended server layout:
 
 For Discord forum channels, set `ISSUES_FORUM_CHANNEL_ID` for shared bug/crash/performance posts and `IDEAS_FORUM_CHANNEL_ID` for shared feedback/suggestion posts. The bot applies the configured forum tags, defaulting to `Bug`, `Crash`, `Performance Issues`, `Feedback`, and `Suggestion`. Bug threads can also use status tags, defaulting to `Confirmed` and `Solved`, when staff marks the bug as confirmed or solved from inside the forum thread.
 
-Set `SUPPORT_TEAM_ROLE_ID` to the staff/support role that should be pinged on new support items, including Q&A forum posts, performance reports, feedback, suggestions, and private tickets. Set `DEV_TEAM_ROLE_ID` so crash and bug reports also alert the dev team.
+Set `SUPPORT_TEAM_ROLE_ID` to the staff/support role that should be pinged on new support items, including Q&A handoffs, performance reports, feedback, suggestions, and private tickets. Set `DEV_TEAM_ROLE_ID` so crash and bug reports also alert the dev team.
 
 Panel types:
 
@@ -197,16 +197,16 @@ phrases:
 - where is my crash report
 
 response:
-Use the Support Hub button **Crash / logs** for private guided intake.
+Share crash reports and logs in the dedicated crash/log report area.
 ```
 
 The Q&A matcher is used in configured question channels and, for help-looking messages, inside guided support intake channels. Text file edits are read at runtime, so the bot does not need a code change for response wording or trigger phrases.
 
-Set `QA_ALERT_CHANNEL_ID` to a private support alert channel. New Q&A forum posts are saved as `WO-QA-0001` records and posted there. By default the alert pings `QA_ALERT_ROLE_ID`; if that is blank, it falls back to `QA_TEAM_ROLE_ID`, then `SUPPORT_TEAM_ROLE_ID`.
+Set `QA_ALERT_CHANNEL_ID` to a private support alert channel. Unknown or escalated Q&A items are saved as `WO-QA-0001` records and posted there. By default the alert pings `QA_ALERT_ROLE_ID`; if that is blank, it falls back to `QA_TEAM_ROLE_ID`, then `SUPPORT_TEAM_ROLE_ID`.
 
-If a Q&A forum post looks like a crash or bug report from its title, body, or forum tags, the alert also pings `DEV_TEAM_ROLE_ID`. Performance-looking Q&A posts alert support for triage.
+Known topic matches get an embed answer first and do not ping staff by default. If the bot cannot confidently answer, or the user asks for staff/dev help with wording like `still need help`, `support team`, or `dev help`, it creates a `WO-QA-0001` handoff. Crash- or bug-looking handoffs also ping `DEV_TEAM_ROLE_ID`; performance and general handoffs alert support/Q&A.
 
-`QA_CHANNEL_IDS` is still supported as a legacy text-channel fallback. In those channels, the bot answers known questions and forwards unknown questions to `QA_ALERT_CHANNEL_ID`.
+`QA_CHANNEL_IDS` is still supported as a legacy text-channel fallback. In those channels, the bot answers known questions and forwards unknown or escalated questions to `QA_ALERT_CHANNEL_ID`.
 
 Staff can add reusable canned answers with `/staff qa add`. Each answer has comma-separated trigger terms, a title, and answer text. Staff-added answers are checked before the `.txt` defaults. Use `/staff qa edit <id>` to tune an existing answer, `/staff qa list` to review recent entries, and `/staff qa remove <id>` to disable one.
 

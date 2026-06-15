@@ -8,6 +8,6 @@ phrases:
 - wrong java
 
 response:
-Use the recommended Java version from `/status`.
+Use the Java version listed in the server info or status channel.
 
 After changing Java in your launcher, fully relaunch the pack before testing again. If the game still fails, send a crash/log report so staff can see the exact Java or loader error.

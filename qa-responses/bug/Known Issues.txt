@@ -8,6 +8,6 @@ phrases:
 - upcoming fix
 
 response:
-Use `/knownissues` to see the current staff-maintained instability list and solved bugs queued for an upcoming fix.
+Check the known-issues area or info panel to see the current staff-maintained instability list and solved bugs queued for an upcoming fix.
 
 If your problem is not listed, please report it through the Support Hub so staff can triage it.

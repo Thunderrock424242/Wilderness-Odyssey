@@ -8,6 +8,6 @@ phrases:
 - tick lag
 
 response:
-Use `/playtest start`, run Spark during the lag period, then submit the public viewer URL with `/sparkreport`.
+During playtests, capture a Spark profile while the lag is happening and share the public viewer URL in the performance or Spark report area.
 
 Timing matters: start the profile while the lag is happening. A quiet profile usually cannot show the bottleneck.

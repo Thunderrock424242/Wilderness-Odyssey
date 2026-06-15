@@ -8,6 +8,6 @@ phrases:
 - not enough memory
 
 response:
-Check the recommended RAM in `/status`.
+Check the server info or status channel for the recommended RAM.
 
 Avoid allocating all system memory; leave room for Windows, Discord, and the launcher. Too little RAM can cause freezes or crashes, but too much RAM can also make Java garbage collection feel worse.

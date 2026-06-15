@@ -10,7 +10,7 @@ phrases:
 - exit code
 
 response:
-Use the Support Hub button **Crash / logs** for private guided intake. `/crash file:<crash-report-or-latest.log>` can preload the log into the same review flow.
+Share crash reports and logs in the dedicated crash/log report area. The bot will keep the intake private while it collects details, redacts sensitive log text, and prepares the staff-facing report.
 
 Best file to send: attach the matching file from `crash-reports` if it exists. If not, attach `latest.log` from the logs folder.
 
