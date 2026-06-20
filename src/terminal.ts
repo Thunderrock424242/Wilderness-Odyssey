@@ -30,12 +30,12 @@ const commandList: TerminalCommand[] = [
     name: 'status',
     description: 'current world status report',
     run: () => [
-      line('tg', 'WORLD STATUS - DAY 18,262'),
+      line('tg', 'WORLD STATUS - POST-EXODUS RECORD'),
       line('tl', '  Atmosphere ................. BREATHABLE'),
       line('tl', '  Average temp ............... +2.4C baseline'),
       line('tw', '  Anomalous energy ........... ACTIVE (rising)'),
-      line('tl', '  Flora coverage ............. 847% pre-impact'),
-      line('tw', '  Known survivors ............ 1 (you)'),
+      line('tl', '  Flora coverage ............. 847% historical baseline'),
+      line('tw', '  Known survivors ............ 1 (local scan)'),
       line('tb2', '  Anomaly saturation ......... CRITICAL'),
       line('tr', '  Threat level ............... EXTREME'),
     ],
@@ -57,26 +57,24 @@ const commandList: TerminalCommand[] = [
     name: 'creatures',
     description: 'known creature database',
     run: () => [
-      line('tg', 'CREATURE DATABASE - 1,432 entries (sample):'),
-      line('tl', '  [001] Thornwing ............ PASSIVE | Sky'),
-      line('tw', '  [047] Mirefiend ............ HOSTILE | Wetlands'),
-      line('tl', '  [088] Lumoss ............... PASSIVE | Forests'),
-      line('tr', '  [203] Crater Stalker ....... HOSTILE | Impact Zone'),
-      line('tb2', '  [419] [REDACTED] .......... UNKNOWN | Everywhere'),
-      line('tw', 'WARNING: 891 entries remain unclassified.'),
+      line('tg', 'CREATURE DATABASE - PARTIAL RECOVERY:'),
+      line('tl', '  [BIO-001] Surviving fauna .. VARIABLE | Overworld'),
+      line('tw', '  [BRH-047] Prehistoric ...... DISPLACED | Multiple eras'),
+      line('tr', '  [ANM-088] Anomaly-exposed .. UNSTABLE | Rift zones'),
+      line('tb2', '  [ECH-203] Rift entity ...... UNKNOWN | Echo Earth'),
+      line('tw', 'NOTICE: Prehistoric animals are not universally hostile.'),
     ],
   },
   {
     name: 'dimensions',
     description: 'known dimensional anomalies',
     run: () => [
-      line('tg', 'DIMENSIONAL ANOMALIES - 3 confirmed:'),
-      line('tb2', '  [DIM-1] The Verdant Beyond . STABLE'),
-      line('tw', '  [DIM-2] The Ash Realm ...... UNSTABLE'),
-      line('tr', '  [DIM-3] [CLASSIFIED] ....... DO NOT ENTER'),
-      line('tl', '  Entry requires meteor-shard key.'),
-      line('tw', 'NOTE: DIM-3 entry has been attempted twice.'),
-      line('tr', 'NOTE: Neither explorer returned.'),
+      line('tg', 'DIMENSIONAL ANOMALY - ECHO EARTH:'),
+      line('tb2', '  Classification ............ damaged Earth reflection'),
+      line('tw', '  Connection ................. active but unstable'),
+      line('tr', '  Terrain confidence ......... familiar / incorrect'),
+      line('tl', '  Entry requires Rift Key and stabilisation technology.'),
+      line('tw', 'WARNING: Safe return coordinates are not guaranteed.'),
     ],
   },
   {
@@ -85,7 +83,7 @@ const commandList: TerminalCommand[] = [
     run: () => [
       line('tg', 'SURFACE MAP - LOCAL GRID 04A:'),
       line('tl', '  North ridge ............... OVERGROWN / passable'),
-      line('tw', '  East crater rim ........... ACTIVE ENERGY SHEAR'),
+      line('tw', '  East excavation zone ...... ACTIVE ENERGY SHEAR'),
       line('tl', '  South river basin ......... clean water pockets detected'),
       line('tr', '  West transit tunnel ....... collapsed / movement inside'),
       line('tb2', '  Bunker beacon ............. still broadcasting from below'),
@@ -97,7 +95,7 @@ const commandList: TerminalCommand[] = [
     description: 'anomaly weather forecast',
     run: () => [
       line('tg', 'WEATHER ARRAY - NEXT 6 HOURS:'),
-      line('tl', '  Surface wind .............. 22 km/h from crater basin'),
+      line('tl', '  Surface wind .............. 22 km/h from rift basin'),
       line('tw', '  Spore density ............. elevated after dusk'),
       line('tb2', '  Riftfall chance ........... 64% and climbing'),
       line('tl', '  Visibility ................ poor under canopy'),
@@ -125,7 +123,7 @@ const commandList: TerminalCommand[] = [
       line('tl', '  Field tools ............... 1 survival kit issued'),
       line('tw', '  Seed archive .............. partial, temperature damaged'),
       line('tb2', '  Meteor sample lockbox ..... sealed / biometric mismatch'),
-      line('tr', '  Sublevel C ................ access revoked by A.E.T.H.E.R.'),
+      line('tr', '  Sublevel C ................ access revoked by Aether'),
     ],
   },
   {
@@ -144,7 +142,7 @@ const commandList: TerminalCommand[] = [
     name: 'aether',
     description: 'query bunker caretaker system',
     run: () => [
-      line('tg', 'A.E.T.H.E.R. CARETAKER LINK:'),
+      line('tg', 'AETHER CARETAKER LINK:'),
       line('tl', '  Core status ............... fragmented but awake'),
       line('tl', '  Primary directive ......... preserve survivor continuity'),
       line('tw', '  Secondary directive ....... contain anomaly exposure'),
@@ -156,12 +154,12 @@ const commandList: TerminalCommand[] = [
     name: 'lore',
     description: 'fragment of recovered history',
     run: () => [
-      line('tg', 'RECOVERED FRAGMENT - ARCHIVE 7, PAGE 12:'),
-      line('tl', '"The meteor was tracked for 6 years before impact. The energy it carried was detected 3 years out.'),
-      line('tl', ' Governments knew. Select individuals were warned.'),
-      line('tw', ' The bunkers were not built for survival."'),
-      line('tl', '"They were built to contain what the energy would do to people."'),
-      line('tr', '[REMAINDER OF DOCUMENT CORRUPTED]'),
+      line('tg', 'PROJECT THRESHOLD - BLACKOUT ARCHIVE FRAGMENT:'),
+      line('tl', '"The accelerator did not create the doorway. It activated the material beneath the site.'),
+      line('tw', ' The doorway led to Earth - the same world, remembered incorrectly. Echo Earth.'),
+      line('tl', ' After The Siren Night, they called the collapse natural. Beal and Nathan knew better."'),
+      line('tb2', '[FRAGMENT MARKED WITH LIZARD AND OLIVER SYMBOLS]'),
+      line('tr', '[REMAINDER ENCRYPTED]'),
     ],
   },
   {
@@ -236,10 +234,13 @@ const commandList: TerminalCommand[] = [
   },
   {
     name: 'download',
-    description: 'open CurseForge download link',
+    description: 'check first alpha availability',
     run: () => {
-      window.open(WO_CONFIG.modpack.curseforge, '_blank', 'noopener,noreferrer');
-      return [line('tg', 'Opening CurseForge... Good luck, Survivor.')];
+      window.location.href = 'roadmap.html';
+      return [
+        line('tw', 'No public build is available yet. Version 0.1.0 will be the first alpha.'),
+        line('tg', 'Opening the first-alpha roadmap...'),
+      ];
     },
   },
   {

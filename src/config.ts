@@ -18,17 +18,17 @@ export type WildernessConfig = {
 
 export const WO_CONFIG: WildernessConfig = {
   modpack: {
-    version: '0.4.2-alpha',
-    released: '2025-11-14',
+    version: '0.1.0',
+    released: 'Unreleased',
     mcVersion: '1.21.1',
     loader: 'NeoForge',
-    status: 'ALPHA - active development',
+    status: 'UNRELEASED - first alpha in development',
     curseforge: 'https://www.curseforge.com/minecraft',
   },
 
   website: {
-    version: '0.5.0',
-    updated: '2026-05-09',
+    version: '0.6.0',
+    updated: '2026-06-20',
     author: 'Thunderrock424242',
   },
 
