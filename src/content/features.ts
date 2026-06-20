@@ -18,22 +18,22 @@ export const FEATURES: FeatureCard[] = [
   },
   {
     icon: '\u{1F98E}',
-    title: 'New Creatures',
-    body: 'The anomaly energy transformed wildlife over fifty years. Hundreds of evolved creatures - fascinating, deadly, and never seen before.',
+    title: 'Displaced Creatures',
+    body: 'Prehistoric animals from broken layers of Earth history now share the wilderness with surviving wildlife, mutations, and things that came from Echo Earth.',
   },
   {
     icon: '\u{1F300}',
-    title: 'New Dimensions',
-    body: 'Portal travel to dazzling alternate dimensions that defy natural law. Each one stranger, more beautiful, and more dangerous than the last.',
+    title: 'Echo Earth',
+    body: 'Enter a damaged reflection of Earth where familiar terrain repeats incorrectly, ruins stand where they should not, and reality cannot be trusted.',
   },
   {
     icon: '\u26A1',
     title: 'Anomaly Energy',
-    body: 'An unknown energy radiates from the impact zone - invisible, unpredictable, and deadly. It warps terrain, twists creatures, and leaves no survivor unchanged.',
+    body: 'Meteor material activated by Project Threshold still weakens reality, feeds rift storms, contaminates old sites, and changes anything exposed for too long.',
   },
   {
     icon: '\u{1F3DB}\uFE0F',
-    title: 'Lost Civilisation',
-    body: "Piece together humanity's story through ancient ruins, forgotten caches, and journals left behind by those who didn't survive.",
+    title: 'The Buried Truth',
+    body: 'Follow Blackout Archive symbols through bunkers, safehouses, terminals, and containment ruins to uncover what really forced humanity into space.',
   },
 ];

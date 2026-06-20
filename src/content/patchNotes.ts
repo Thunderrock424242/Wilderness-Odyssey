@@ -12,9 +12,31 @@ export type PatchNote = {
 
 export const PATCH_NOTES: PatchNote[] = [
   {
-    version: 'Alpha 0.5',
-    date: '2026-05-29',
+    version: 'Site 0.6',
+    date: '2026-06-20',
     status: 'Current',
+    title: 'Lore Update and Version 0.1.0 Roadmap',
+    summary:
+      'The public story now follows the current lore canon, and the roadmap reflects the real version 0.1.0 build: worldgen changes, bunker placement, performance work, and SPH water VRAM investigation.',
+    highlights: [
+      'Replaced the old meteor-impact origin with Project Threshold, Echo Earth, The Siren Night, Exodus Protocol, Aether, and the Blackout Archive.',
+      'Rebuilt the roadmap around version 0.1.0, the upcoming first alpha, and its active engineering gates.',
+      'Added the June development update to the Field Notes and Latest News feeds.',
+    ],
+    fixes: [
+      'Removed false public-alpha and exact fifty-year claims from current site copy.',
+      'Updated the terminal, feature cards, gallery records, and survivor logs to match the current lore canon.',
+      'Replaced roadmap percentage labels with honest development-stage labels.',
+    ],
+    knownIssues: [
+      'First-alpha dates remain intentionally open while worldgen, bunker placement, and water performance are still changing.',
+      'Gallery records still need real screenshots from stable pre-alpha builds.',
+    ],
+  },
+  {
+    version: 'Site 0.5',
+    date: '2026-05-29',
+    status: 'Archived',
     title: 'Public Site and Update Hub',
     summary:
       'The project site now has focused archive pages for roadmap, gallery, news, blog posts, and release notes so future updates are easier to read and maintain.',
@@ -34,7 +56,7 @@ export const PATCH_NOTES: PatchNote[] = [
     ],
   },
   {
-    version: 'Alpha 0.4',
+    version: 'Site 0.4',
     date: '2026-05-25',
     status: 'Archived',
     title: 'Field Notes and Modular Content',
@@ -56,7 +78,7 @@ export const PATCH_NOTES: PatchNote[] = [
     ],
   },
   {
-    version: 'Alpha 0.3',
+    version: 'Site 0.3',
     date: '2026-05-09',
     status: 'Archived',
     title: 'Bunker OS Terminal Build',

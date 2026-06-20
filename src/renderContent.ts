@@ -245,7 +245,7 @@ function renderRoadmap() {
     const progress = div('ri-progress');
     const progressLabel = div('ri-progress-label');
     progressLabel.appendChild(span('', item.track));
-    progressLabel.appendChild(span('', `${item.progress}%`));
+    progressLabel.appendChild(span('', item.progressLabel));
     const progressTrack = div('ri-progress-track');
     progressTrack.setAttribute('role', 'progressbar');
     progressTrack.setAttribute('aria-label', `${item.title} progress`);
@@ -291,7 +291,7 @@ function createRoadmapSummaryRow(item: (typeof ROADMAP_ITEMS)[number], index: nu
 
   const titleRow = div('ri-summary-title-row');
   titleRow.appendChild(heading('h4', '', item.title));
-  titleRow.appendChild(span('ri-summary-percent', `${item.progress}%`));
+  titleRow.appendChild(span('ri-summary-percent', item.progressLabel));
 
   const progress = div('ri-progress');
   const progressTrack = div('ri-progress-track');
