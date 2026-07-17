@@ -12,9 +12,11 @@ import { handleMinecraftVerificationRelayMessage } from './services/minecraftVer
 import { handleQuestionMessage } from './services/qaService';
 import { startMinecraftVerificationApi } from './services/minecraftVerificationApi';
 import { registerRuntime, shutdown } from './services/runtimeService';
+import { initializeAether } from './aether';
 
 initErrorTracking();
 getDb();
+initializeAether();
 const verificationApiServer = startMinecraftVerificationApi();
 
 const client = new Client({

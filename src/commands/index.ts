@@ -17,24 +17,32 @@ import { suggestCommand } from './suggest';
 import { sparkReportCommand } from './sparkreport';
 import { supportPanelCommand } from './supportpanel';
 import { shutdownCommand } from './shutdown';
+import { aetherCommand } from '../aether/discord/aetherCommand';
+import { config } from '../config';
 
-export const commands: SlashCommand[] = [
-  helpCommand,
-  bugReportCommand,
-  crashCommand,
-  performanceCommand,
-  perfReportCommand,
-  minecraftCommand,
-  knownIssuesCommand,
-  changelogCommand,
-  playtestCommand,
-  feedbackCommand,
-  installHelpCommand,
-  statusCommand,
-  suggestCommand,
-  sparkReportCommand,
-  supportPanelCommand,
-  shutdownCommand,
-  staffCommand,
-  privacyCommand
-];
+export function createCommandList(aetherCommandEnabled = config.aether.commandEnabled): SlashCommand[] {
+  const existingCommands: SlashCommand[] = [
+    helpCommand,
+    bugReportCommand,
+    crashCommand,
+    performanceCommand,
+    perfReportCommand,
+    minecraftCommand,
+    knownIssuesCommand,
+    changelogCommand,
+    playtestCommand,
+    feedbackCommand,
+    installHelpCommand,
+    statusCommand,
+    suggestCommand,
+    sparkReportCommand,
+    supportPanelCommand,
+    shutdownCommand,
+    staffCommand,
+    privacyCommand
+  ];
+
+  return aetherCommandEnabled ? [...existingCommands, aetherCommand] : existingCommands;
+}
+
+export const commands: SlashCommand[] = createCommandList();

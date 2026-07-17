@@ -44,6 +44,13 @@ function startupWarnings(): string[] {
   if (!config.channelIds.supportTicketCategory) warnings.push('- `SUPPORT_TICKET_CATEGORY_ID` is recommended so Other Help tickets do not appear in the hub category.');
   if (!config.channelIds.staffLog) warnings.push('- `STAFF_LOG_CHANNEL_ID` is required for ticket transcripts, ticket deletion, shutdown audit logs, and staff action audit logs.');
 
+  if (config.aether.commandEnabled && !config.aether.enabled) {
+    warnings.push('- Aether commands are enabled, but Aether Core is disabled. `/aether status` will remain available for safe status checks.');
+  }
+  if (config.aether.issues.length > 0) {
+    warnings.push(`- Aether has ${config.aether.issues.length} safe configuration warning(s); review the bot logs.`);
+  }
+
   const qaEnabled = config.qa.channelIds.length > 0 || Boolean(config.qa.forumChannelId);
   if (qaEnabled && !config.qa.alertChannelId) {
     warnings.push('- Q&A is configured, but `QA_ALERT_CHANNEL_ID` is missing.');

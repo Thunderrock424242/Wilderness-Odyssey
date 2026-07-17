@@ -3,6 +3,7 @@ import type { Client } from 'discord.js';
 import { closeDb } from '../db';
 import { logger } from '../utils/logger';
 import { postStaffLog } from './staffLogService';
+import { shutdownAether } from '../aether';
 
 let discordClient: Client | null = null;
 let supportApiServer: Server | null = null;
@@ -49,6 +50,7 @@ export function shutdown(exitCode = 0): void {
   shutdownStarted = true;
   logger.info({ exitCode }, 'Shutting down Wilderness Oddesy systems.');
   supportApiServer?.close();
+  shutdownAether();
   closeDb();
   discordClient?.destroy();
   process.exit(exitCode);

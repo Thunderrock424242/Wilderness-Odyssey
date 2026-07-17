@@ -14,6 +14,7 @@ The personality is light in-universe support AI: helpful, calm, and a little eer
 - Optional Q&A channel message responder
 - SQLite with Node's built-in `node:sqlite`
 - `dotenv` for secrets and server configuration
+- Optional modular Aether Core with platform-neutral internal agents
 
 ## Privacy and Security
 
@@ -27,6 +28,7 @@ The personality is light in-universe support AI: helpful, calm, and a little eer
 - In the configured community Q&A forum, the bot reads new forum posts so it can answer known support topics first, then alert support or devs only when the user needs more help or the bot has no confident answer.
 - The bot stores submitted Spark viewer links, but does not scrape private Spark data or run Minecraft commands.
 - A Minecraft server-side mod can complete account verification through a private Discord webhook relay. Never put the Discord bot token inside a Minecraft mod.
+- Aether conversation memory is disabled by default and stores only short summaries after explicit opt-in. Diagnostic uploads are treated as text and are never executed.
 
 ## Setup
 
@@ -113,6 +115,10 @@ Tables:
 - `suggestion_votes`
 - `report_links`
 - `report_updates`
+- `aether_user_preferences`
+- `aether_conversation_summaries`
+- `aether_lore_discoveries`
+- `aether_diagnostic_history`
 
 `report_links` lets a playtest session link to bug reports, crash reports, Spark reports, and feedback reports.
 
@@ -137,6 +143,15 @@ Tables:
 - `/knownissues` - shows staff-configured known issues; accepts an optional version filter.
 - `/changelog` - shows recent changelog entries.
 - `/status` - shows modpack version, Java/RAM recommendations, support channels, unstable features, and server status placeholder.
+- `/aether help|ask|status|lore|diagnose|link|unlink|profile|settings` - optional Aether Core routing, diagnostics, UUID linking, profile, and preference commands. See [`docs/aether-core.md`](docs/aether-core.md).
+
+## Aether Core
+
+Aether Core is an optional add-on inside this same bot process and bot account. It reuses the current slash-command registry, SQLite database, diagnostics rules, Minecraft verification records, logger, shared HTTP server, and shutdown path. It does not replace or rename existing commands.
+
+The initial implementation includes deterministic General, Lore, Support, Diagnostics, Quest, and Reports agents; a provider-neutral model interface with scripted fallback; opt-in summary memory; safe attachment handling; and a disabled-by-default authenticated Minecraft bridge. Set `AETHER_ENABLED=true` and `AETHER_COMMAND_ENABLED=true`, then run `npm run deploy` to register the command group.
+
+Configuration, architecture, provider extension, linking, bridge payload rules, security boundaries, and current limitations are documented in [`docs/aether-core.md`](docs/aether-core.md).
 
 ## Panels
 

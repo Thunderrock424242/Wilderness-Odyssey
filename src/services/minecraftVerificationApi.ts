@@ -4,6 +4,8 @@ import { config } from '../config';
 import { metricsEnabled, metricsRegistry } from './metricsService';
 import { completeMinecraftLink } from './minecraftVerificationService';
 import { logger } from '../utils/logger';
+import { handleAetherBridgeHttpRequest } from '../aether/bridge/httpBridge';
+import { isAetherBridgeAvailable } from '../aether';
 
 const minecraftVerifyRequestSchema = z.object({
   code: z.string().trim().min(1),
@@ -12,7 +14,7 @@ const minecraftVerifyRequestSchema = z.object({
 });
 
 export function startMinecraftVerificationApi(): http.Server | null {
-  if (!config.minecraftVerification.apiEnabled && !metricsEnabled()) {
+  if (!config.minecraftVerification.apiEnabled && !metricsEnabled() && !isAetherBridgeAvailable()) {
     return null;
   }
 
@@ -25,7 +27,8 @@ export function startMinecraftVerificationApi(): http.Server | null {
       host: config.minecraftVerification.apiHost,
       port: config.minecraftVerification.apiPort,
       minecraftVerifyEnabled: config.minecraftVerification.apiEnabled,
-      metricsEnabled: metricsEnabled()
+      metricsEnabled: metricsEnabled(),
+      aetherBridgeEnabled: isAetherBridgeAvailable()
     }, 'Support HTTP API listening.');
   });
 
@@ -53,6 +56,10 @@ async function handleRequest(request: IncomingMessage, response: ServerResponse)
       'Cache-Control': 'no-store'
     });
     response.end(await metricsRegistry.metrics());
+    return;
+  }
+
+  if (await handleAetherBridgeHttpRequest(request, response)) {
     return;
   }
 

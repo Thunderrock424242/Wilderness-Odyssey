@@ -1,6 +1,7 @@
 import path from 'node:path';
 import dotenv from 'dotenv';
 import { z } from 'zod';
+import { loadAetherConfig } from './aether/config';
 
 dotenv.config();
 
@@ -166,5 +167,6 @@ export const config = {
     token: optional('GITHUB_TOKEN'),
     apiBaseUrl: optional('GITHUB_API_BASE_URL') ?? 'https://api.github.com',
     knownIssueLabels: listFromEnv('GITHUB_KNOWN_ISSUE_LABELS', ['known issue', 'known-issue', 'bug'])
-  }
+  },
+  aether: loadAetherConfig(process.env)
 };

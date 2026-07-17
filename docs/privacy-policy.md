@@ -38,6 +38,8 @@ The bot may collect and store:
 - Playtest session details, checklist answers, final notes, and linked report IDs.
 - Playtest release acceptance records showing that you accepted the terms/privacy gate.
 - Minecraft verification link codes, Minecraft UUID, and Minecraft account name when you choose to link your account.
+- Aether preferences, optional lore-discovery keys, and diagnostic-history references when Aether Core is enabled.
+- Short Aether conversation summaries only after you explicitly enable conversation memory. Full private conversations are not stored by default.
 - Staff actions such as report status changes, claims, known issue entries, and changelog entries.
 - Staff audit log entries such as ticket creation, ticket closure, report claims, status changes, and shutdown requests.
 
@@ -52,6 +54,7 @@ The bot does not intentionally collect:
 - General server chat outside configured support/report/Q&A workflows.
 - Whole-computer files or folders.
 - Background gameplay telemetry.
+- Full Aether conversations by default.
 - IP addresses, except where a third-party service used by the project may process them separately.
 
 Uploaded logs may sometimes contain private information from your computer, launcher, mod list, or file paths. The bot redacts common sensitive values on a best-effort basis, but no automated redaction is perfect.
@@ -101,6 +104,8 @@ We keep report and playtest records as long as they are useful for support, debu
 
 Temporary Minecraft link codes expire after the configured time limit. A completed Minecraft account link stays stored until it is replaced, removed, or staff deletes it.
 
+Aether conversation memory is disabled by default. Turning it off removes the stored conversation summary. Aether diagnostic history stores a request reference and short cause summary, not the uploaded log body.
+
 You can remove your linked Minecraft account with:
 
 ```text
@@ -120,6 +125,8 @@ The Minecraft playtest client must never contain the Discord bot token. Minecraf
 You can choose not to submit optional reports, logs, screenshots, Spark links, suggestions, or feedback.
 
 You can choose not to link your Minecraft account, but some playtests may require Minecraft verification before access.
+
+You can keep Aether conversation memory and Minecraft notifications disabled, and you can change those preferences with `/aether settings` when Aether is enabled.
 
 You can ask staff questions before accepting a playtest gate.
 

@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { config } from './config';
+import { migrateAetherMemory } from './aether/memory';
 
 let db: DatabaseSync | null = null;
 
@@ -346,6 +347,7 @@ function migrate(database: DatabaseSync): void {
   ensureReportClaimColumns(database, 'crash_reports');
   ensureReportClaimColumns(database, 'performance_reports');
   ensureReportClaimColumns(database, 'spark_reports');
+  migrateAetherMemory(database);
 }
 
 function ensureColumn(database: DatabaseSync, table: string, column: string, definition: string): void {
