@@ -1,0 +1,14 @@
+---
+import { getCollection } from 'astro:content';
+import PageHero from '../../components/PageHero.astro';
+import TransmissionArchive from '../../components/TransmissionArchive.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedTransmissions, NEWS_TYPES } from '../../lib/transmissions';
+
+const entries = getPublishedTransmissions(await getCollection('transmissions')).filter((entry) => NEWS_TYPES.has(entry.data.type));
+---
+
+<BaseLayout title="Latest News" description="Read the newest Wilderness Odyssey announcements, engineering updates, and patch records from the unified transmission archive." canonicalPath="/news/">
+  <PageHero eyebrow="Latest news" title="Newest transmissions" description="This feed is assembled automatically from suitable published transmissions, so one verified record can update the homepage, news, and its own stable article." primaryLabel="Open blog" primaryHref="/blog/" secondaryLabel="Patch notes" secondaryHref="/patches/" />
+  <section class="section"><div class="shell"><TransmissionArchive entries={entries} showTypeFilter /></div></section>
+</BaseLayout>

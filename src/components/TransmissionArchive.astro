@@ -1,0 +1,72 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { TRANSMISSION_LABELS } from '../data/site';
+import { transmissionSearchText, uniqueTags } from '../lib/transmissions';
+import EmptyState from './EmptyState.astro';
+import TransmissionCard from './TransmissionCard.astro';
+
+type Props = {
+  entries: CollectionEntry<'transmissions'>[];
+  showTypeFilter?: boolean;
+  showVersionFilter?: boolean;
+  searchLabel?: string;
+};
+const { entries, showTypeFilter = true, showVersionFilter = false, searchLabel = 'Search transmissions' } = Astro.props;
+const types = [...new Set(entries.map((entry) => entry.data.type))];
+const tags = uniqueTags(entries);
+const versions = [...new Set(entries.map((entry) => entry.data.version).filter((value): value is string => Boolean(value)))];
+---
+
+<section class="archive" data-archive-filter>
+  <form class="filter-bar" data-filter-form>
+    <label class="filter-search">
+      <span>{searchLabel}</span>
+      <input type="search" name="query" placeholder="Title, tag, author, version…" autocomplete="off" data-filter-query />
+    </label>
+    {showTypeFilter && types.length > 1 && (
+      <label>
+        <span>Record type</span>
+        <select name="type" data-filter-type>
+          <option value="all">All types</option>
+          {types.map((type) => <option value={type}>{TRANSMISSION_LABELS[type]}</option>)}
+        </select>
+      </label>
+    )}
+    {tags.length > 1 && (
+      <label>
+        <span>Tag</span>
+        <select name="tag" data-filter-tag>
+          <option value="all">All tags</option>
+          {tags.map((tag) => <option value={tag.toLowerCase()}>{tag}</option>)}
+        </select>
+      </label>
+    )}
+    {showVersionFilter && versions.length > 0 && (
+      <label>
+        <span>Version</span>
+        <select name="version" data-filter-version>
+          <option value="all">All versions</option>
+          {versions.map((version) => <option value={version.toLowerCase()}>{version}</option>)}
+        </select>
+      </label>
+    )}
+    <button class="button button--compact button--ghost" type="reset" data-filter-reset>Clear</button>
+  </form>
+  <p class="filter-summary" aria-live="polite"><strong data-filter-count>{entries.length}</strong> records available</p>
+  <div class="transmission-grid" data-filter-results>
+    {entries.map((entry) => (
+      <div
+        data-filter-item
+        data-search={transmissionSearchText(entry)}
+        data-type={entry.data.type}
+        data-tags={entry.data.tags.map((tag) => tag.toLowerCase()).join('|')}
+        data-version={(entry.data.version ?? '').toLowerCase()}
+      >
+        <TransmissionCard entry={entry} />
+      </div>
+    ))}
+  </div>
+  <EmptyState hidden />
+</section>
+
+<script src="../scripts/archiveFilters.ts"></script>

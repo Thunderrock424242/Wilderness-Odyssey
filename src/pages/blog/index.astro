@@ -1,0 +1,14 @@
+---
+import { getCollection } from 'astro:content';
+import PageHero from '../../components/PageHero.astro';
+import TransmissionArchive from '../../components/TransmissionArchive.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { filterByType, getPublishedTransmissions } from '../../lib/transmissions';
+
+const entries = filterByType(getPublishedTransmissions(await getCollection('transmissions')), 'blog');
+---
+
+<BaseLayout title="Blog" description="Read Wilderness Odyssey field notes, reflective development writing, and longer project stories distinct from active engineering reports." canonicalPath="/blog/">
+  <PageHero eyebrow="Field notes" title="Development blog" description="The full archive of development notes, maintenance posts, and longer entries from the road to release." primaryLabel="Latest news" primaryHref="/news/" secondaryLabel="Patch notes" secondaryHref="/patches/" />
+  <section class="section"><div class="shell"><TransmissionArchive entries={entries} showTypeFilter={false} /></div></section>
+</BaseLayout>

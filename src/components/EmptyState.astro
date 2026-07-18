@@ -1,0 +1,10 @@
+---
+type Props = { title?: string; message?: string; hidden?: boolean };
+const { title = 'No signal found', message = 'Try clearing one or more filters.', hidden = false } = Astro.props;
+---
+
+<div class="empty-state" hidden={hidden} data-empty-state>
+  <span aria-hidden="true">∅</span>
+  <h3>{title}</h3>
+  <p>{message}</p>
+</div>

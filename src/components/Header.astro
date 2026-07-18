@@ -1,0 +1,27 @@
+---
+import { NAV_ITEMS, SITE } from '../data/site';
+import { withBase } from '../lib/urls';
+
+type Props = { currentPath: string };
+const { currentPath } = Astro.props;
+const isActive = (href: string) => {
+  const target = withBase(href);
+  if (href === '/') return currentPath === target;
+  return currentPath.startsWith(target);
+};
+---
+
+<header class="site-header">
+  <nav id="nav" aria-label="Primary navigation">
+    <a class="n-logo" href={withBase('/')} aria-label={`${SITE.name} home`}>{SITE.name}</a>
+    <ul class="n-links" id="primary-nav-links">
+      {NAV_ITEMS.map((item) => (
+        <li><a href={withBase(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a></li>
+      ))}
+      <li><a class="n-cta" href={SITE.links.discord} target="_blank" rel="noreferrer">Discord</a></li>
+    </ul>
+    <button class="n-toggle" type="button" aria-expanded="false" aria-controls="primary-nav-links" aria-label="Open navigation">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+  </nav>
+</header>

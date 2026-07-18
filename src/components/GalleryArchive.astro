@@ -1,0 +1,69 @@
+---
+import { GALLERY_ITEMS } from '../data/gallery';
+import { withBase } from '../lib/urls';
+import EmptyState from './EmptyState.astro';
+
+const categories = [...new Set(GALLERY_ITEMS.map((item) => item.category))];
+const payload = GALLERY_ITEMS.map((item) => ({ ...item, image: item.image ? withBase(item.image) : undefined }));
+---
+
+<section class="gallery-archive" data-gallery>
+  <form class="filter-bar gallery-filter" data-gallery-filter>
+    <label>
+      <span>Visual category</span>
+      <select name="category" data-gallery-category>
+        <option value="all">All categories</option>
+        {categories.map((category) => <option value={category.toLowerCase()}>{category}</option>)}
+      </select>
+    </label>
+    <button class="button button--compact button--ghost" type="reset">Clear</button>
+  </form>
+  <p class="filter-summary" aria-live="polite"><strong data-gallery-count>{GALLERY_ITEMS.length}</strong> visual records visible</p>
+  <div class="gallery-grid">
+    {GALLERY_ITEMS.map((item, index) => (
+      <article class="gallery-card" data-gallery-card data-category={item.category.toLowerCase()}>
+        <button type="button" data-gallery-open={item.id} aria-label={`Open ${item.title} visual record`}>
+          <span class="gallery-card__media">
+            {item.image ? (
+              <img src={withBase(item.image)} alt={item.alt ?? item.title} loading={index < 2 ? 'eager' : 'lazy'} decoding="async" />
+            ) : (
+              <span class="gallery-placeholder" aria-hidden="true">
+                <strong>{item.placeholderSymbol}</strong>
+                <i></i>
+                <small>VISUAL RECORD PENDING</small>
+              </span>
+            )}
+          </span>
+          <span class="gallery-card__caption">
+            <span>{item.category} // {item.version}</span>
+            <strong>{item.title}</strong>
+            <small>{item.caption}</small>
+          </span>
+        </button>
+      </article>
+    ))}
+  </div>
+  <EmptyState hidden title="No visual record found" message="Choose another gallery category." />
+  <dialog class="gallery-dialog" data-gallery-dialog aria-labelledby="gallery-dialog-title">
+    <div class="gallery-dialog__frame">
+      <header>
+        <span data-gallery-counter>1 / {GALLERY_ITEMS.length}</span>
+        <button type="button" data-gallery-close aria-label="Close visual record">×</button>
+      </header>
+      <div class="gallery-dialog__media" data-gallery-media></div>
+      <div class="gallery-dialog__caption">
+        <p class="eyebrow" data-gallery-meta></p>
+        <h2 id="gallery-dialog-title" data-gallery-title></h2>
+        <p data-gallery-caption></p>
+        <p class="gallery-dialog__lore" data-gallery-lore hidden></p>
+      </div>
+      <footer>
+        <button type="button" class="button button--ghost" data-gallery-prev>← Previous</button>
+        <button type="button" class="button button--ghost" data-gallery-next>Next →</button>
+      </footer>
+    </div>
+  </dialog>
+  <script is:inline type="application/json" data-gallery-data set:html={JSON.stringify(payload).replace(/</g, '\\u003c')} />
+</section>
+
+<script src="../scripts/gallery.ts"></script>

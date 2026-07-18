@@ -1,10 +1,10 @@
-# Node / Vite
+# Node / Astro
 node_modules/
 dist/
+.astro/
+.npm-cache/
 
 # Local generated files
-public/blog/
-public/logo.png
 logs/debug.log
 logs/latest.log
 formatted_APIchangelog.txt

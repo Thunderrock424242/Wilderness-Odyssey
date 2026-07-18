@@ -1,0 +1,35 @@
+---
+import { SITE } from '../data/site';
+import { withBase } from '../lib/urls';
+
+type Props = { target: string; label: string };
+const { target, label } = Astro.props;
+const destination = withBase(target);
+const canonical = new URL(destination, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{label} moved // {SITE.name}</title>
+    <meta name="robots" content="noindex,follow" />
+    <meta http-equiv="refresh" content={`0;url=${destination}`} />
+    <link rel="canonical" href={canonical} />
+    <style>
+      :root { color-scheme: dark; font-family: ui-monospace, monospace; background: #05060c; color: #ece8df; }
+      body { min-height: 100vh; display: grid; place-items: center; margin: 0; padding: 2rem; }
+      main { max-width: 42rem; border: 1px solid #6f5b2f; padding: 2rem; background: #0b0d15; }
+      p:first-child { color: #b69cff; letter-spacing: .18em; font-size: .75rem; }
+      a { color: #d9b85f; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p>BUNKER_OS // ROUTE MIGRATED</p>
+      <h1>{label} has moved.</h1>
+      <p>If the archive does not open automatically, <a href={destination}>continue to {label}</a>.</p>
+    </main>
+  </body>
+</html>

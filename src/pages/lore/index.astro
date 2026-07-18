@@ -1,0 +1,14 @@
+---
+import { getCollection } from 'astro:content';
+import PageHero from '../../components/PageHero.astro';
+import TransmissionArchive from '../../components/TransmissionArchive.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { filterByType, getPublishedTransmissions } from '../../lib/transmissions';
+
+const entries = filterByType(getPublishedTransmissions(await getCollection('transmissions')), 'lore');
+---
+
+<BaseLayout title="Recovered Records" description="Read established Wilderness Odyssey lore about Project Threshold, Echo Earth, Aether, The Siren Night, Exodus Protocol, and the Blackout Archive." canonicalPath="/lore/">
+  <PageHero eyebrow="Blackout Archive" title="Recovered records" description="Canon-reviewed fragments only. Records stay incomplete where the source is incomplete; the archive does not fill gaps with invented certainty." primaryLabel="Survivor logs" primaryHref="/logs/" secondaryLabel="Lore roadmap" secondaryHref="/roadmap/#lore-discovery-layer" />
+  <section class="section"><div class="shell"><TransmissionArchive entries={entries} showTypeFilter={false} /></div></section>
+</BaseLayout>

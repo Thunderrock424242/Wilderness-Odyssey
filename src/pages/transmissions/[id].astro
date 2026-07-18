@@ -1,0 +1,67 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import StatusBadge from '../../components/StatusBadge.astro';
+import TransmissionCard from '../../components/TransmissionCard.astro';
+import { TRANSMISSION_LABELS } from '../../data/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate, getPublishedTransmissions, relatedTransmissions } from '../../lib/transmissions';
+import { tagUrl, transmissionUrl, withBase } from '../../lib/urls';
+
+export async function getStaticPaths() {
+  const entries = getPublishedTransmissions(await getCollection('transmissions'));
+  return entries.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+
+type Props = { entry: CollectionEntry<'transmissions'> };
+const { entry } = Astro.props;
+const published = getPublishedTransmissions(await getCollection('transmissions'));
+const currentIndex = published.findIndex((candidate) => candidate.id === entry.id);
+const newer = currentIndex > 0 ? published[currentIndex - 1] : undefined;
+const older = currentIndex >= 0 && currentIndex < published.length - 1 ? published[currentIndex + 1] : undefined;
+const related = relatedTransmissions(entry, published);
+const { Content } = await render(entry);
+const tone = entry.data.type === 'patch' ? 'warn' : entry.data.type === 'lore' ? 'violet' : entry.data.type === 'announcement' ? 'danger' : 'signal';
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  canonicalPath={`/transmissions/${entry.id}/`}
+  image={entry.data.coverImage}
+  article
+  publishedAt={entry.data.publishedAt}
+  updatedAt={entry.data.updatedAt}
+>
+  <article>
+    <header class="article-header">
+      <div class="article-shell">
+        <div class="article-header__meta">
+          <StatusBadge label={TRANSMISSION_LABELS[entry.data.type]} tone={tone} />
+          <time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt)}</time>
+          <span>By {entry.data.author}</span>
+          {entry.data.version && <span>Version {entry.data.version}</span>}
+        </div>
+        <h1>{entry.data.title}</h1>
+        <p class="article-header__description">{entry.data.description}</p>
+        <ul class="tag-list" aria-label="Transmission tags">
+          {entry.data.tags.map((tag) => <li><a href={tagUrl(tag)}>{tag}</a></li>)}
+        </ul>
+        {entry.data.coverImage && <img class="article-cover" src={withBase(entry.data.coverImage)} alt="" />}
+      </div>
+    </header>
+    <div class="article-shell prose"><Content /></div>
+    <nav class="article-shell article-nav" aria-label="Adjacent transmissions">
+      {older ? <a href={transmissionUrl(older.id)}><span>Older transmission</span><strong>{older.data.title}</strong></a> : <span></span>}
+      {newer && <a href={transmissionUrl(newer.id)}><span>Newer transmission</span><strong>{newer.data.title}</strong></a>}
+    </nav>
+  </article>
+  {related.length > 0 && (
+    <section class="section section--panel">
+      <div class="shell">
+        <p class="eyebrow">Related records</p>
+        <h2 style="margin:.7rem 0 2rem;font-size:clamp(3rem,6vw,5rem)">Continue the signal</h2>
+        <div class="transmission-grid">{related.map((candidate) => <TransmissionCard entry={candidate} />)}</div>
+      </div>
+    </section>
+  )}
+</BaseLayout>

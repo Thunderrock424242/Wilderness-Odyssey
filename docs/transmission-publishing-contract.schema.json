@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thunderrock424242.github.io/Wilderness-Odyssey/contracts/transmission-publishing-contract.schema.json",
+  "title": "Wilderness Odyssey transmission publishing request",
+  "description": "Payload a trusted Discord publishing worker can convert into one Astro transmission Markdown file.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["slug", "title", "description", "publishedAt", "type", "author", "tags", "featured", "draft", "body"],
+  "properties": {
+    "contractVersion": { "const": "1.0.0" },
+    "targetBranch": { "const": "website" },
+    "contentDirectory": { "const": "src/content/transmissions" },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 100
+    },
+    "title": { "type": "string", "minLength": 3, "maxLength": 160 },
+    "description": { "type": "string", "minLength": 10, "maxLength": 320 },
+    "publishedAt": { "type": "string", "format": "date" },
+    "updatedAt": { "type": "string", "format": "date" },
+    "type": {
+      "enum": ["news", "blog", "devlog", "patch", "lore", "announcement"]
+    },
+    "author": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "tags": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1, "maxLength": 50 }
+    },
+    "coverImage": {
+      "type": "string",
+      "pattern": "^/images/[A-Za-z0-9._/-]+$"
+    },
+    "featured": { "type": "boolean", "default": false },
+    "draft": { "type": "boolean", "default": true },
+    "version": { "type": "string", "minLength": 1, "maxLength": 40 },
+    "relatedRoadmapItem": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "galleryImages": {
+      "type": "array",
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["src", "alt"],
+        "properties": {
+          "src": { "type": "string", "pattern": "^/images/[A-Za-z0-9._/-]+$" },
+          "alt": { "type": "string", "minLength": 3, "maxLength": 240 },
+          "caption": { "type": "string", "maxLength": 320 }
+        }
+      }
+    },
+    "body": { "type": "string", "minLength": 1 },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "discordGuildId": { "type": "string", "pattern": "^[0-9]+$" },
+        "discordChannelId": { "type": "string", "pattern": "^[0-9]+$" },
+        "discordMessageId": { "type": "string", "pattern": "^[0-9]+$" }
+      }
+    }
+  },
+  "x-wilderness-odyssey": {
+    "validationCommand": "npm run check",
+    "recommendedWorkflow": "Create a branch from website, write one Markdown file and safe images, validate, then open a pull request targeting website.",
+    "overwriteExistingSlug": false,
+    "credentialsAllowedInPayload": false
+  }
+}

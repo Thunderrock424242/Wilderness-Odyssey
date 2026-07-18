@@ -1,0 +1,18 @@
+---
+type Props = {
+  eyebrow: string;
+  title: string;
+  description?: string;
+  align?: 'left' | 'center';
+  level?: 'h1' | 'h2';
+};
+const { eyebrow, title, description, align = 'left', level = 'h2' } = Astro.props;
+const Heading = level;
+---
+
+<header class:list={['section-header', align === 'center' && 'section-header--center']}>
+  <p class="ch-label">{eyebrow}</p>
+  <Heading class="ch-title">{title}</Heading>
+  <div class="divline"></div>
+  {description && <p class="ch-body section-header__copy">{description}</p>}
+</header>

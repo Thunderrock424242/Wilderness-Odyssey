@@ -1,0 +1,14 @@
+---
+import { getCollection } from 'astro:content';
+import PageHero from '../../components/PageHero.astro';
+import TransmissionArchive from '../../components/TransmissionArchive.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { filterByType, getPublishedTransmissions } from '../../lib/transmissions';
+
+const entries = filterByType(getPublishedTransmissions(await getCollection('transmissions')), 'devlog');
+---
+
+<BaseLayout title="Development Logs" description="Follow active Wilderness Odyssey engineering work on world generation, bunker placement, SPH water, performance, and first-alpha release gates." canonicalPath="/devlogs/">
+  <PageHero eyebrow="Engineering reports" title="Development logs" description="These are active technical records: the problem, current evidence, work in progress, and the gate that decides when a system is ready to move." primaryLabel="Interactive roadmap" primaryHref="/roadmap/" secondaryLabel="Patch records" secondaryHref="/patches/" />
+  <section class="section"><div class="shell"><TransmissionArchive entries={entries} showTypeFilter={false} /></div></section>
+</BaseLayout>

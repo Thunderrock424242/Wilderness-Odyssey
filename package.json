@@ -1,15 +1,27 @@
 {
   "name": "wilderness-odyssey-site",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node scripts/generate-blog-share-pages.mjs && vite --configLoader native --host 127.0.0.1",
-    "build": "tsc && node scripts/generate-blog-share-pages.mjs && vite build --configLoader native && node scripts/copy-social-assets.mjs",
-    "preview": "vite preview --configLoader native --host 127.0.0.1"
+    "dev": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro dev --host 127.0.0.1",
+    "check": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check && node scripts/validate-content.mjs",
+    "build": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro preview --host 127.0.0.1",
+    "new:post": "node scripts/new-post.mjs",
+    "test": "vitest run --config vitest.config.ts --configLoader runner",
+    "verify": "npm run check && npm run test && npm run build && node scripts/check-built-site.mjs"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.1.1"
   },
   "devDependencies": {
-    "typescript": "^5.8.3",
-    "vite": "^6.3.5"
+    "@astrojs/check": "^0.9.9",
+    "@types/node": "^26.1.1",
+    "cross-env": "^10.1.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10"
   }
 }

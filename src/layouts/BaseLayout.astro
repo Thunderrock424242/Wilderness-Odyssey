@@ -1,0 +1,94 @@
+---
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE } from '../data/site';
+import { withBase } from '../lib/urls';
+import '../styles/global.css';
+import '../styles/original-parity.css';
+
+type Props = {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  image?: string;
+  article?: boolean;
+  publishedAt?: Date;
+  updatedAt?: Date;
+  noIndex?: boolean;
+};
+
+const {
+  title,
+  description = SITE.description,
+  canonicalPath = '/',
+  image = SITE.social.image,
+  article = false,
+  publishedAt,
+  updatedAt,
+  noIndex = false,
+} = Astro.props;
+const pageTitle = title ? `${title} // ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
+const canonical = new URL(withBase(canonicalPath), Astro.site);
+const socialImage = new URL(withBase(image), Astro.site);
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': article ? 'Article' : 'WebSite',
+  name: pageTitle,
+  headline: title,
+  description,
+  url: canonical.href,
+  image: socialImage.href,
+  ...(article ? { datePublished: publishedAt?.toISOString(), dateModified: updatedAt?.toISOString() ?? publishedAt?.toISOString() } : {}),
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#e8a020" />
+    <meta name="color-scheme" content="dark" />
+    {noIndex && <meta name="robots" content="noindex,follow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" href={withBase('/images/logo.png')} />
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.name} transmissions`} href={withBase('/rss.xml')} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap"
+    />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:site_name" content={`BUNKER_OS // ${SITE.name}`} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:alt" content={`${SITE.name} social preview`} />
+    {publishedAt && <meta property="article:published_time" content={publishedAt.toISOString()} />}
+    {updatedAt && <meta property="article:modified_time" content={updatedAt.toISOString()} />}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div id="cur" aria-hidden="true"></div>
+    <div id="curt" aria-hidden="true"></div>
+    <div id="prog" aria-hidden="true"></div>
+    <div class="site-noise" aria-hidden="true"></div>
+    <Header currentPath={Astro.url.pathname} />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+    <script src="../scripts/pageEffects.ts"></script>
+  </body>
+</html>

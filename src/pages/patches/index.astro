@@ -1,0 +1,14 @@
+---
+import { getCollection } from 'astro:content';
+import PageHero from '../../components/PageHero.astro';
+import TransmissionArchive from '../../components/TransmissionArchive.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { filterByType, getPublishedTransmissions } from '../../lib/transmissions';
+
+const entries = filterByType(getPublishedTransmissions(await getCollection('transmissions')), 'patch');
+---
+
+<BaseLayout title="Patch Notes" description="Filter Wilderness Odyssey versioned patch records with release highlights, fixes, known issues, and site history." canonicalPath="/patches/">
+  <PageHero eyebrow="Release records" title="Patch notes" description="Site changes, development milestones, fixes, and known issues on the path to version 0.1.0, the first alpha." primaryLabel="View roadmap" primaryHref="/roadmap/" secondaryLabel="Latest news" secondaryHref="/news/" />
+  <section class="section"><div class="shell"><TransmissionArchive entries={entries} showTypeFilter={false} showVersionFilter /></div></section>
+</BaseLayout>

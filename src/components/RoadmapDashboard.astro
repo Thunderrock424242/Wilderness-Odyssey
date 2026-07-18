@@ -1,0 +1,51 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { FEATURE_CATEGORIES } from '../data/features';
+import { ROADMAP_ITEMS, ROADMAP_STATUSES } from '../data/roadmap';
+import EmptyState from './EmptyState.astro';
+import RoadmapCard from './RoadmapCard.astro';
+
+type Props = { transmissions: CollectionEntry<'transmissions'>[] };
+const { transmissions } = Astro.props;
+const usedCategories = FEATURE_CATEGORIES.filter((category) => ROADMAP_ITEMS.some((item) => item.category === category));
+---
+
+<section class="roadmap-dashboard" data-roadmap-dashboard>
+  <form class="filter-bar filter-bar--roadmap" data-roadmap-filters>
+    <label class="filter-search">
+      <span>Search roadmap</span>
+      <input type="search" name="query" placeholder="Water, Aether, bunker…" autocomplete="off" data-roadmap-query />
+    </label>
+    <label>
+      <span>Category</span>
+      <select name="category" data-roadmap-category>
+        <option value="all">All categories</option>
+        {usedCategories.map((category) => <option value={category.toLowerCase()}>{category}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>Status</span>
+      <select name="status" data-roadmap-status>
+        <option value="all">All statuses</option>
+        {ROADMAP_STATUSES.map((status) => <option value={status.toLowerCase()}>{status}</option>)}
+      </select>
+    </label>
+    <button class="button button--compact button--ghost" type="reset">Clear</button>
+  </form>
+  <p class="filter-summary" aria-live="polite"><strong data-roadmap-count>{ROADMAP_ITEMS.length}</strong> roadmap tracks visible</p>
+  <div class="roadmap-list">
+    {ROADMAP_ITEMS.map((item) => (
+      <div
+        data-roadmap-item
+        data-category={item.category.toLowerCase()}
+        data-status={item.status.toLowerCase()}
+        data-search={[item.title, item.description, item.category, item.phase, item.milestone, ...item.dependencies].join(' ').toLowerCase()}
+      >
+        <RoadmapCard item={item} transmissions={transmissions} />
+      </div>
+    ))}
+  </div>
+  <EmptyState hidden title="No roadmap track found" message="Clear the search or choose a different category and status." />
+</section>
+
+<script src="../scripts/roadmapFilters.ts"></script>

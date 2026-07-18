@@ -1,0 +1,17 @@
+---
+import { SITE } from '../data/site';
+import { withBase } from '../lib/urls';
+---
+
+<footer class="site-footer">
+  <div class="foot">
+    <a class="f-brand" href={withBase('/')}>{SITE.name}</a>
+    <ul class="fl">
+      <li><a href={SITE.links.curseForge} target="_blank" rel="noreferrer">CurseForge</a></li>
+      <li><a href={SITE.links.discord} target="_blank" rel="noreferrer">Discord</a></li>
+      <li><a href={SITE.links.github} target="_blank" rel="noreferrer">GitHub</a></li>
+      <li><a href={withBase('/rss.xml')}>RSS</a></li>
+    </ul>
+    <p class="fc">© {new Date().getUTCFullYear()} Thunderrock424242</p>
+  </div>
+</footer>

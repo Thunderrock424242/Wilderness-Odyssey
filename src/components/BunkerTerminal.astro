@@ -1,0 +1,83 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { ROADMAP_ITEMS } from '../data/roadmap';
+import { SITE } from '../data/site';
+import { SURVIVOR_LOGS } from '../data/survivorLogs';
+import { formatDate } from '../lib/transmissions';
+import { transmissionUrl, withBase } from '../lib/urls';
+
+type Props = { transmissions: CollectionEntry<'transmissions'>[] };
+const { transmissions } = Astro.props;
+const commandHints = ['help', 'status', 'latest', 'roadmap water', 'roadmap aether', 'logs', 'patches', 'lore', 'gallery', 'version', 'download'];
+const payload = {
+  site: {
+    name: SITE.name,
+    status: SITE.status,
+    version: SITE.version,
+    minecraftVersion: SITE.minecraftVersion,
+    neoForgeVersion: SITE.neoForgeVersion,
+    downloadStatus: SITE.downloadStatus,
+    discord: SITE.links.discord,
+  },
+  routes: {
+    roadmap: withBase('/roadmap/'),
+    logs: withBase('/logs/'),
+    patches: withBase('/patches/'),
+    lore: withBase('/lore/'),
+    gallery: withBase('/gallery/'),
+  },
+  latest: transmissions.slice(0, 3).map((entry) => ({
+    title: entry.data.title,
+    type: entry.data.type,
+    date: formatDate(entry.data.publishedAt),
+    url: transmissionUrl(entry.id),
+  })),
+  roadmap: ROADMAP_ITEMS.map((item) => ({
+    id: item.id,
+    title: item.title,
+    description: item.description,
+    category: item.category,
+    status: item.status,
+    progressLabel: item.progressLabel,
+    url: withBase(`/roadmap/#${item.id}`),
+  })),
+  logCount: SURVIVOR_LOGS.length,
+};
+---
+
+<section class="bunker-terminal terminal-section-grid" data-terminal>
+  <div class="bunker-terminal__intro">
+    <p class="ch-label">Interactive</p>
+    <h2 class="ch-title">Access the<br /><em>Bunker OS</em></h2>
+    <div class="divline"></div>
+    <p class="ch-body">The bunker's operating system is still running. Query project status, published transmissions, active engineering tracks, and recovered lore.</p>
+    <div class="terminal-hints terminal-command-hints" aria-label="Suggested terminal commands">
+      {commandHints.map((command) => <button class="cmd-hint" type="button" data-terminal-command={command}>{command}</button>)}
+    </div>
+  </div>
+  <div class="terminal-window iterm">
+    <div class="terminal-window__bar tb">
+      <span class="td" aria-hidden="true"></span><span class="td" aria-hidden="true"></span><span class="td" aria-hidden="true"></span>
+      <strong class="tn">BUNKER_OS v2.1 — INTERACTIVE MODE</strong>
+      <small>ONLINE</small>
+    </div>
+    <div class="terminal-warning os-warning">
+      <strong>LIMITED ACCESS</strong>
+      <span>Archive responses come from published site data and established recovered records.</span>
+    </div>
+    <div class="terminal-output" role="log" aria-live="polite" aria-relevant="additions" data-terminal-output tabindex="0">
+      <p data-tone="safe">SYSTEM READY. Type <strong>help</strong> or choose a suggested command.</p>
+      <p data-tone="muted">Command history: ↑ ↓ &nbsp; Autocomplete: Tab</p>
+    </div>
+    <form class="terminal-input" data-terminal-form>
+      <span aria-hidden="true">&gt;</span>
+      <label class="sr-only" for="bunker-command">BUNKER_OS command</label>
+      <input id="bunker-command" name="command" type="text" autocomplete="off" spellcheck="false" placeholder="enter command…" data-terminal-input />
+      <button type="submit">Run</button>
+    </form>
+    <noscript><p class="terminal-noscript">JavaScript is disabled. Use the standard navigation to browse the same records.</p></noscript>
+  </div>
+  <script is:inline type="application/json" data-terminal-data set:html={JSON.stringify(payload).replace(/</g, '\\u003c')} />
+</section>
+
+<script src="../scripts/terminal.ts"></script>

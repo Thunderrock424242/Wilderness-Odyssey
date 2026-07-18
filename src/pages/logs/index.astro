@@ -1,0 +1,22 @@
+---
+import PageHero from '../../components/PageHero.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import { SURVIVOR_LOGS } from '../../data/survivorLogs';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Survivor Logs" description="Read recovered Wilderness Odyssey survivor logs from bunkers, camps, ruins, excavation zones, and unstable Echo Earth records." canonicalPath="/logs/">
+  <PageHero eyebrow="Recovered human records" title="Found in the ruins" description="These logs were recovered from scattered bunkers, abandoned camps, and dead explorers. Read them carefully — they may save your life." primaryLabel="Recovered lore" primaryHref="/lore/" secondaryLabel="Open gallery" secondaryHref="/gallery/" />
+  <section class="section">
+    <div class="shell survivor-grid">
+      {SURVIVOR_LOGS.map((log) => (
+        <article class:list={['survivor-log', log.locked && 'survivor-log--locked']}>
+          <div class="survivor-log__head"><span>{log.id}</span><time>{log.date}</time></div>
+          <h2>Survivor: {log.survivor}</h2>
+          <p class="survivor-log__body">{log.body}</p>
+          <StatusBadge label={log.status} tone={log.tone === 'safe' ? 'safe' : log.tone === 'warn' ? 'warn' : 'danger'} />
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

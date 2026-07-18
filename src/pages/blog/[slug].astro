@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+import LegacyRedirect from '../../layouts/LegacyRedirect.astro';
+import { getPublishedTransmissions } from '../../lib/transmissions';
+
+export async function getStaticPaths() {
+  const legacyIds = new Set([
+    'version-0-1-0-takes-shape',
+    'the-site-moved-into-the-main-repo',
+    'modular-content-pass',
+    'first-public-terminal-build',
+  ]);
+  const entries = getPublishedTransmissions(await getCollection('transmissions')).filter((entry) => legacyIds.has(entry.id));
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+---
+
+<LegacyRedirect target={`/transmissions/${entry.id}/`} label={entry.data.title} />

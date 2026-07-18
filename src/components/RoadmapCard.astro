@@ -1,0 +1,76 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { RoadmapItem } from '../data/roadmap';
+import { transmissionUrl } from '../lib/urls';
+import StatusBadge from './StatusBadge.astro';
+
+type Props = {
+  item: RoadmapItem;
+  transmissions: CollectionEntry<'transmissions'>[];
+};
+const { item, transmissions } = Astro.props;
+const related = item.relatedTransmissions
+  .map((id) => transmissions.find((entry) => entry.id === id))
+  .filter((entry): entry is CollectionEntry<'transmissions'> => Boolean(entry));
+const tone = item.status === 'Complete' ? 'safe' : item.status === 'Blocked' ? 'danger' : item.status === 'Testing' ? 'warn' : item.status === 'In Development' ? 'signal' : item.status === 'Research' ? 'violet' : 'muted';
+---
+
+<article class="roadmap-card" id={item.id}>
+  <div class="roadmap-card__rail" aria-hidden="true">
+    <span>{item.phase}</span>
+    <i></i>
+  </div>
+  <div class="roadmap-card__content">
+    <header>
+      <div class="roadmap-card__meta">
+        <StatusBadge label={item.status} tone={tone} />
+        <span>{item.category}</span>
+        <span>{item.priority} priority</span>
+      </div>
+      <h2>{item.title}</h2>
+      <p>{item.description}</p>
+    </header>
+    <div class="progress-readout">
+      <div>
+        <span>{item.milestone}</span>
+        <strong>{item.progressLabel}</strong>
+      </div>
+      <div class="progress-track" role="progressbar" aria-label={`${item.title} progress`} aria-valuenow={item.progress} aria-valuemin="0" aria-valuemax="100">
+        <span style={`--progress:${item.progress}%`}></span>
+      </div>
+      <small>{item.progress}% tracked progress</small>
+    </div>
+    <details class="roadmap-card__details">
+      <summary>Open tasks, exit conditions, and dependencies</summary>
+      <div class="roadmap-card__detail-grid">
+        <section>
+          <h3>Tasks</h3>
+          <ul class="task-list">
+            {item.tasks.map((task) => (
+              <li data-complete={task.complete}>
+                <span aria-hidden="true">{task.complete ? '✓' : '○'}</span>
+                {task.label}
+                <span class="sr-only">{task.complete ? 'Complete' : 'Incomplete'}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+        <section>
+          <h3>Exit conditions</h3>
+          <ul>{item.exitConditions.map((condition) => <li>{condition}</li>)}</ul>
+        </section>
+        <section>
+          <h3>Dependencies</h3>
+          <ul>{item.dependencies.map((dependency) => <li>{dependency}</li>)}</ul>
+        </section>
+      </div>
+      <p class="community-signal"><strong>Testing signal:</strong> {item.communitySignal}</p>
+      {related.length > 0 && (
+        <div class="related-links">
+          <strong>Related engineering records</strong>
+          {related.map((entry) => <a href={transmissionUrl(entry.id)}>{entry.data.title}</a>)}
+        </div>
+      )}
+    </details>
+  </div>
+</article>

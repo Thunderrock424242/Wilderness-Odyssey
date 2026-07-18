@@ -1,0 +1,14 @@
+---
+import { getCollection } from 'astro:content';
+import PageHero from '../../components/PageHero.astro';
+import TransmissionArchive from '../../components/TransmissionArchive.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedTransmissions } from '../../lib/transmissions';
+
+const entries = getPublishedTransmissions(await getCollection('transmissions'));
+---
+
+<BaseLayout title="Transmission Search" description="Search every published Wilderness Odyssey news post, blog, development log, patch record, announcement, and recovered lore transmission." canonicalPath="/transmissions/">
+  <PageHero eyebrow="Unified signal index" title="Search transmissions" description="Search title, description, tags, type, version, and author without an external service. Every result is statically published and available without JavaScript." primaryLabel="Latest news" primaryHref="/news/" secondaryLabel="RSS feed" secondaryHref="/rss.xml" />
+  <section class="section"><div class="shell"><TransmissionArchive entries={entries} showTypeFilter /></div></section>
+</BaseLayout>

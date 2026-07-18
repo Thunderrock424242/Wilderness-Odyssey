@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+import PageHero from '../../components/PageHero.astro';
+import RoadmapDashboard from '../../components/RoadmapDashboard.astro';
+import { ROADMAP_STATS } from '../../data/roadmap';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedTransmissions } from '../../lib/transmissions';
+
+const transmissions = getPublishedTransmissions(await getCollection('transmissions'));
+---
+
+<BaseLayout title="Roadmap" description="Filter the Wilderness Odyssey version 0.1.0 roadmap by category and status, inspect tasks, dependencies, progress, exit conditions, and related dev logs." canonicalPath="/roadmap/">
+  <PageHero eyebrow="Build path" title="Roadmap archive" description="A focused view of what is shipped, what is being built now, and what each phase needs before it moves forward." primaryLabel="Patch notes" primaryHref="/patches/" secondaryLabel="Field notes" secondaryHref="/blog/" />
+  <section class="section">
+    <div class="shell">
+      <div class="roadmap-stats">
+        {ROADMAP_STATS.map((stat) => <article class="roadmap-stat"><strong>{stat.value}</strong><span>{stat.label}</span><p>{stat.detail}</p></article>)}
+      </div>
+      <RoadmapDashboard transmissions={transmissions} />
+    </div>
+  </section>
+</BaseLayout>

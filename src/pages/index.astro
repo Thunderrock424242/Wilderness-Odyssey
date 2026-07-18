@@ -1,0 +1,130 @@
+---
+import { getCollection } from 'astro:content';
+import BunkerTerminal from '../components/BunkerTerminal.astro';
+import StatusBadge from '../components/StatusBadge.astro';
+import TransmissionCard from '../components/TransmissionCard.astro';
+import { FEATURES } from '../data/features';
+import { ROADMAP_ITEMS } from '../data/roadmap';
+import { SITE } from '../data/site';
+import { SURVIVOR_LOGS } from '../data/survivorLogs';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPublishedTransmissions } from '../lib/transmissions';
+import { withBase } from '../lib/urls';
+
+const transmissions = getPublishedTransmissions(await getCollection('transmissions'));
+const newest = transmissions.slice(0, 3);
+const fieldNotes = transmissions.filter((entry) => entry.data.type === 'blog').slice(0, 2);
+const featureIcons = ['🌿', '⛈️', '💧', '🏛️', '🦎', '⚡'];
+const homeFeatures = FEATURES.slice(0, 6);
+const roadmapPreview = ROADMAP_ITEMS.slice(0, 4);
+---
+
+<BaseLayout>
+  <section id="hero">
+    <div class="lb-top" aria-hidden="true"></div><div class="lb-bot" aria-hidden="true"></div>
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    <div class="scan" aria-hidden="true"></div><div class="vign" aria-hidden="true"></div>
+    <div class="mt mt-one" aria-hidden="true"></div><div class="mt mt-two" aria-hidden="true"></div><div class="mt mt-three" aria-hidden="true"></div>
+    <div class="h-content">
+      <div class="logo-wrap"><img src={withBase('/images/logo.png')} width="256" height="256" alt="Wilderness Odyssey" /></div>
+      <div class="glitch-wrap"><h1 class="g-title" data-text="THE WORLD REBORN">THE WORLD REBORN</h1></div>
+      <p class="h-sub">Earth Surface <span>·</span> Post-Exodus <span>·</span> Version {SITE.version} In Development</p>
+      <div class="h-btns">
+        <a class="btn-main" href={withBase('/roadmap/')}>Follow Version {SITE.version}</a>
+        <a class="btn-ghost" href={SITE.links.discord} target="_blank" rel="noreferrer">Join Discord</a>
+      </div>
+    </div>
+    <a class="scroll-cue" href="#origin"><span>Scroll</span><i class="s-arrow" aria-hidden="true"></i></a>
+  </section>
+
+  <section id="origin" class="chapter">
+    <div class="ch-num on" aria-hidden="true">01</div>
+    <div class="origin-inner">
+      <div>
+        <p class="ch-label rx rx-left">Origin Story</p>
+        <h2 class="ch-title rx rx-left d1">The Night Reality<br /><em>Tore Open</em></h2>
+        <div class="divline rx rx-left d2"></div>
+        <p class="ch-body rx rx-left d3">Project Threshold was supposed to stabilize a classified wormhole. Instead, its particle accelerator activated meteor material buried beneath the facility and opened a wound into Echo Earth — a warped reflection of our own world. On The Siren Night, prehistoric life, anomaly storms, and broken pieces of reality came through.</p>
+        <blockquote class="pullquote rx rx-up d4">Years after humanity fled to space, you awaken in a forgotten cryo facility on an Earth everyone else declared dead.</blockquote>
+        <p class="ch-body rx rx-left d5">Guided by the damaged AI Aether, you follow the Blackout Archive through bunkers and military ruins. The goal is not to restore the old Earth. It is to prove humanity can survive the one that remains.</p>
+        <a class="section-link rx rx-left d6" href={withBase('/lore/')}>Open recovered records</a>
+      </div>
+      <aside class="terminal rx rx-right d2" aria-label="BUNKER_OS surface scan">
+        <div class="tb"><span class="td"></span><span class="td"></span><span class="td"></span><strong class="tn">BUNKER_OS v2.1 — SURVIVOR LOG</strong></div>
+        <div class="os-warning"><strong>LIMITED ACCESS</strong><p>Archive is incomplete. BUNKER_OS only shows recovered records.</p></div>
+        <div class="tl tg">&gt; BOOT SEQUENCE COMPLETE</div><div class="tl">&nbsp;</div>
+        <div class="tl">&nbsp;&nbsp;[OK] Life support ......... NOMINAL</div>
+        <div class="tl">&nbsp;&nbsp;[OK] Cryo-chamber ......... OFFLINE</div>
+        <div class="tl tw">&nbsp;&nbsp;[!!] External comms ....... NO SIGNAL</div><div class="tl">&nbsp;</div>
+        <div class="tl tg">&gt; SURFACE SCAN COMPLETE</div>
+        <div class="tl">&nbsp;&nbsp;Atmosphere ................ BREATHABLE</div>
+        <div class="tl">&nbsp;&nbsp;Flora density ............. +847%</div>
+        <div class="tl tr">&nbsp;&nbsp;Anomalous energy .......... ACTIVE</div>
+        <div class="tl tb2">&nbsp;&nbsp;Anomaly index ............. CRITICAL</div><div class="tl">&nbsp;</div>
+        <div class="tl tg">&gt; BUNKER DOORS: UNLOCKED</div>
+        <div class="tl tg">&gt; Good luck, Survivor. <span class="tcur"></span></div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="world" class="chapter">
+    <div class="ch-num wn" aria-hidden="true">02</div>
+    <div class="world-inner">
+      <header class="world-head">
+        <p class="ch-label rx rx-up">The World</p><h2 class="ch-title rx rx-up d1">What Awaits <em>Outside</em></h2><div class="divline rx rx-up d2"></div>
+        <p class="ch-body rx rx-up d3">Three forces now shape the new Earth. Learn to survive — and thrive — in all of them.</p>
+      </header>
+      <div class="biome-grid">
+        <article class="bcard lush rx rx-left d2"><div class="bcard-bg"></div><div class="bcard-overlay"></div><div class="bcard-gfx">🌿</div><span class="bcard-tag">Biome</span><div class="bcard-content"><h3>The Living World</h3><p>New ecosystems spread through old ruins while surviving wildlife and displaced prehistoric species learn the same dangerous world.</p></div></article>
+        <article class="bcard crater rx rx-up d3"><div class="bcard-bg"></div><div class="bcard-overlay"></div><div class="bcard-gfx">☄️</div><span class="bcard-tag">Anomaly Zone</span><div class="bcard-content"><h3>The Threshold Scars</h3><p>Near meteor excavations and Project Threshold ruins, terrain repeats, gravity slips, and storms carry traces of somewhere impossible.</p></div></article>
+        <article class="bcard deep rx rx-right d4"><div class="bcard-bg"></div><div class="bcard-overlay"></div><div class="bcard-gfx">🌀</div><span class="bcard-tag">Dimension</span><div class="bcard-content"><h3>Echo Earth</h3><p>Its forests, rivers, and ruins look familiar from a distance — and deeply wrong once you step closer.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="content-hub" class="chapter">
+    <div class="hub-inner">
+      <header class="hub-head"><p class="ch-label rx rx-left">Mission Directory</p><h2 class="ch-title rx rx-left d1">Choose Your <em>Signal</em></h2><div class="divline rx rx-left d2"></div><p class="ch-body rx rx-left d3">The world introduction stays here. Deeper records live in focused, searchable archives.</p></header>
+      <div class="hub-grid">
+        <a class="hub-card rx rx-up d1" href={withBase('/roadmap/')} data-code="MAP"><span class="hub-card-kicker">Build path</span><span class="hub-card-title">Roadmap</span><span class="hub-card-copy">Active engineering tracks, dependencies, release gates, and progress.</span><span class="hub-card-link">Open roadmap</span></a>
+        <a class="hub-card rx rx-up d2" href={withBase('/gallery/')} data-code="VIS"><span class="hub-card-kicker">Visual archive</span><span class="hub-card-title">Gallery</span><span class="hub-card-copy">Verified development captures with category filters and an accessible lightbox.</span><span class="hub-card-link">Open gallery</span></a>
+        <a class="hub-card rx rx-up d3" href={withBase('/news/')} data-code="NEW"><span class="hub-card-kicker">Newest signal</span><span class="hub-card-title">Latest News</span><span class="hub-card-copy">Announcements and engineering signals from the unified archive.</span><span class="hub-card-link">Open news</span></a>
+        <a class="hub-card rx rx-up d4" href={withBase('/patches/')} data-code="PCH"><span class="hub-card-kicker">Release record</span><span class="hub-card-title">Patch Notes</span><span class="hub-card-copy">Versioned changes, fixes, known issues, and maintenance notes.</span><span class="hub-card-link">Open patches</span></a>
+        <a class="hub-card rx rx-up d5" href={withBase('/blog/')} data-code="LOG"><span class="hub-card-kicker">Field notes</span><span class="hub-card-title">Blog</span><span class="hub-card-copy">Longer development writing from the road toward public release.</span><span class="hub-card-link">Open blog</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="chapter">
+    <div class="ch-num fn" aria-hidden="true">03</div>
+    <div class="feat-inner">
+      <header class="feat-head"><p class="ch-label rx rx-left">What's Inside</p><h2 class="ch-title rx rx-left d1">Built for <em>Exploration</em></h2><div class="divline rx rx-left d2"></div></header>
+      <div class="feat-grid">
+        {homeFeatures.map((feature, index) => <article class="fitem rx rx-up" data-index={String(index + 1).padStart(2, '0')}><span class="fi-num">{String(index + 1).padStart(2, '0')}</span><span class="fi-ico" aria-hidden="true">{featureIcons[index]}</span><h3 class="fi-title">{feature.title}</h3><p class="fi-body">{feature.description}</p></article>)}
+      </div>
+      <a class="section-link" href={withBase('/features/')}>Explore all systems</a>
+    </div>
+  </section>
+
+  <section id="roadmap" class="chapter" data-roadmap-mode="summary">
+    <div class="ch-num rn" aria-hidden="true">04</div>
+    <div class="road-inner">
+      <div><div class="alpha-badge rx rx-left"><span class="abdot"></span>Version {SITE.version} In Development</div><h2 class="ch-title rx rx-left d1">The <em>Journey</em><br />Continues</h2><div class="divline rx rx-left d2"></div><p class="ch-body rx rx-left d3">The first alpha is gated by stable fresh worlds, reliable bunker placement, and water-heavy sessions that stop accumulating cost.</p><p class="road-note">Targets are quality-based, not promises on a calendar.</p><a class="section-link" href={withBase('/roadmap/')}>Open interactive roadmap</a></div>
+      <ol class="rmap">
+        {roadmapPreview.map((item) => <li class="ri rx rx-up"><div class="ri-dot-wrap"><span class:list={['ri-dot', item.status === 'Complete' ? 'done' : item.status === 'In Development' ? 'in-progress' : 'planned']}></span></div><article class="ri-body"><div class="ri-meta"><span class="ri-phase">{item.phase}</span><span class="ri-status">{item.status}</span></div><h3>{item.title}</h3><p class="ri-summary">{item.description}</p><div class="ri-progress"><div class="ri-progress-label"><span>{item.category}</span><strong>{item.progressLabel}</strong></div><div class="ri-progress-track"><span class="ri-progress-fill" style={`width:${item.progress}%`}></span></div></div></article></li>)}
+      </ol>
+    </div>
+  </section>
+
+  <section id="terminal-section" class="chapter"><div class="ch-num" aria-hidden="true">05</div><div class="terminal-section-inner"><BunkerTerminal transmissions={transmissions} /></div></section>
+
+  <section id="survivor-logs" class="chapter">
+    <div class="ch-num" aria-hidden="true">06</div><div class="survivor-inner"><header class="survivor-head"><p class="ch-label rx rx-left">Survivor Logs</p><h2 class="ch-title rx rx-left d1">Found in the<br /><em>Ruins</em></h2><div class="divline rx rx-left d2"></div><p class="ch-body rx rx-left d3">Recovered from scattered bunkers, abandoned camps, and dead explorers.</p></header><div class="survivor-logs-grid">{SURVIVOR_LOGS.slice(0,3).map((log) => <article class="slog"><div class="slog-head"><span class="slog-id">{log.id}</span><time class="slog-date">{log.date}</time></div><h3 class="slog-author">SURVIVOR: {log.survivor}</h3><p class="slog-body">{log.body}</p><div class="slog-footer"><StatusBadge label={log.status} tone={log.tone === 'safe' ? 'safe' : log.tone === 'warn' ? 'warn' : 'danger'} /></div></article>)}</div><a class="section-link" href={withBase('/logs/')}>Open all survivor logs</a></div>
+  </section>
+
+  <section id="latest-news" class="chapter"><div class="news-inner"><header class="news-head"><div class="news-head-text"><p class="ch-label rx rx-left">Latest News</p><h2 class="ch-title rx rx-left d1">Newest<br /><em>Transmissions</em></h2><div class="divline rx rx-left d2"></div><p class="ch-body rx rx-left d3">Published signals surface here automatically from the unified content archive.</p></div><a class="section-link" href={withBase('/news/')}>Open all news</a></header><div class="transmission-grid">{newest.map((entry) => <TransmissionCard entry={entry} />)}</div></div></section>
+
+  {fieldNotes.length > 0 && <section id="blog" class="chapter"><div class="ch-num" aria-hidden="true">08</div><div class="blog-inner"><header class="blog-head"><p class="ch-label rx rx-left">Field Notes</p><h2 class="ch-title rx rx-left d1">Development<br /><em>Blog</em></h2><div class="divline rx rx-left d2"></div><p class="ch-body rx rx-left d3">Longer project writing from the road to release.</p></header><div class="transmission-grid">{fieldNotes.map((entry) => <TransmissionCard entry={entry} />)}</div><a class="section-link" href={withBase('/blog/')}>Open the blog</a></div></section>}
+
+  <section id="community"><div class="comm-glow" aria-hidden="true"></div><div class="comm-ring ring-one" aria-hidden="true"></div><div class="comm-ring ring-two" aria-hidden="true"></div><div class="comm-inner"><p class="ch-label rx rx-up">Community</p><h2 class="ch-title rx rx-up d1">Shape the <em>World</em></h2><div class="divline rx rx-up d2"></div><p class="ch-body rx rx-up d3">Your ideas, bug reports, seed coordinates, hardware profiles, and exact reproduction steps help turn version {SITE.version} into a testable first alpha.</p><a class="dc-card rx rx-up d4" href={SITE.links.discord} target="_blank" rel="noreferrer"><span class="dc-icon">💬</span><strong class="dc-name">Join Our Discord</strong><span class="dc-desc">Connect with fellow survivors and the development team</span><span class="dc-badge">discord.gg/XHSFDb7EM5</span></a></div></section>
+</BaseLayout>

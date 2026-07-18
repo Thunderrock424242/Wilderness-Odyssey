@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import PageHero from '../../components/PageHero.astro';
+import TransmissionArchive from '../../components/TransmissionArchive.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedTransmissions, uniqueTags } from '../../lib/transmissions';
+import { slugify } from '../../lib/urls';
+
+export async function getStaticPaths() {
+  const entries = getPublishedTransmissions(await getCollection('transmissions'));
+  return uniqueTags(entries).map((tag) => ({
+    params: { tag: slugify(tag) },
+    props: { tag, entries: entries.filter((entry) => entry.data.tags.includes(tag)) },
+  }));
+}
+
+const { tag, entries } = Astro.props;
+---
+
+<BaseLayout title={`Tag: ${tag}`} description={`Browse Wilderness Odyssey transmissions tagged ${tag}.`} canonicalPath={`/tags/${slugify(tag)}/`}>
+  <PageHero eyebrow="Tag archive" title={tag} description={`${entries.length} published transmission${entries.length === 1 ? '' : 's'} currently carry this tag.`} primaryLabel="All transmissions" primaryHref="/transmissions/" secondaryLabel="Latest news" secondaryHref="/news/" />
+  <section class="section"><div class="shell"><TransmissionArchive entries={entries} showTypeFilter /></div></section>
+</BaseLayout>

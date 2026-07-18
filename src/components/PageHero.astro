@@ -1,0 +1,35 @@
+---
+import { withBase } from '../lib/urls';
+
+type Props = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+};
+const { eyebrow, title, description, primaryLabel, primaryHref, secondaryLabel, secondaryHref } = Astro.props;
+const titleWords = title.trim().split(/\s+/);
+const accentWord = titleWords.pop() ?? title;
+const titleLead = titleWords.join(' ');
+---
+
+<section class="page-hero">
+  <div class="page-hero__glow" aria-hidden="true"></div>
+  <div class="page-hero-inner">
+    <div class="page-hero__copy">
+      <p class="ch-label">{eyebrow}</p>
+      <h1 class="page-title">{titleLead} <em>{accentWord}</em></h1>
+      <div class="divline"></div>
+      <p class="page-copy">{description}</p>
+      {(primaryLabel || secondaryLabel) && (
+        <div class="h-btns page-hero__actions">
+          {primaryLabel && primaryHref && <a class="btn-main" href={withBase(primaryHref)}>{primaryLabel}</a>}
+          {secondaryLabel && secondaryHref && <a class="btn-ghost" href={withBase(secondaryHref)}>{secondaryLabel}</a>}
+        </div>
+      )}
+    </div>
+  </div>
+</section>

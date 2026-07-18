@@ -1,0 +1,12 @@
+---
+import GalleryArchive from '../../components/GalleryArchive.astro';
+import PageHero from '../../components/PageHero.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Gallery" description="Browse the Wilderness Odyssey visual archive for world generation, anomaly zones, dimensions, creatures, lore, and verified development captures." canonicalPath="/gallery/">
+  <PageHero eyebrow="Visual archive" title="Witness the world" description="Screenshots and pending visual records live in their own filtered archive, ready for new builds, discoveries, and preview drops." primaryLabel="Patch notes" primaryHref="/patches/" secondaryLabel="Back home" secondaryHref="/" />
+  <section class="section">
+    <div class="shell"><GalleryArchive /></div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,26 @@
+---
+import PageHero from '../../components/PageHero.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import { FEATURES } from '../../data/features';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Features" description="Explore the world generation, weather, water, structures, creatures, survival, performance, Aether, dimensions, and lore systems shaping Wilderness Odyssey." canonicalPath="/features/">
+  <PageHero eyebrow="Systems archive" title="Built for exploration" description="Every system should reinforce the same recovered-world identity: survival first, discovery in layers, and ambition held to measurable performance gates." primaryLabel="View roadmap" primaryHref="/roadmap/" secondaryLabel="Open dev logs" secondaryHref="/devlogs/" />
+  <section class="section">
+    <div class="shell">
+      <div class="feature-grid">
+        {FEATURES.map((feature, index) => (
+          <article class="feature-card" data-index={String(index + 1).padStart(2, '0')}>
+            <div class="feature-card__meta">
+              <span>{feature.category}</span>
+              <StatusBadge label={feature.status} tone={feature.status === 'In development' ? 'signal' : feature.status === 'Active' ? 'safe' : feature.status === 'Planned' ? 'violet' : 'muted'} />
+            </div>
+            <h2>{feature.title}</h2>
+            <p>{feature.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,7 +1,7 @@
 name: Deploy Wilderness Odyssey Website
 
 on:
-  workflow_dispatch:   # manual trigger only
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -12,46 +12,40 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+env:
+  ASTRO_TELEMETRY_DISABLED: '1'
+
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Website branch
-        uses: actions/checkout@v6
+      - name: Checkout website branch
+        uses: actions/checkout@v7
         with:
-          ref: website                # explicitly targets your Website branch
-
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v6
+          ref: website
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
 
-      - name: Install website dependencies
+      - name: Install dependencies
         run: npm ci
 
-      - name: Build website
-        run: npm run build
+      - name: Validate content and types
+        run: npm run check
 
-      - name: Check website artifact
-        shell: bash
-        run: |
-          set -euo pipefail
+      - name: Run focused tests
+        run: npm run test
 
-          test -f dist/index.html
-          test -d dist/assets
+      - name: Build, verify, and upload Astro site
+        uses: withastro/action@v6
+        with:
+          node-version: 24
+          build-cmd: npm run build && node scripts/check-built-site.mjs
 
-          find dist/assets -type f -name '*.js' -print -quit | grep -q .
-          find dist/assets -type f -name '*.css' -print -quit | grep -q .
-          grep -q '/Wilderness-Odyssey/assets/' dist/index.html
-
-      - name: Check website links
+      - name: Check generated internal links
         shell: bash
         run: |
           set -euo pipefail
@@ -71,8 +65,7 @@ jobs:
           npx --yes linkinator@7.6.1 http://127.0.0.1:4173/Wilderness-Odyssey/ \
             --recurse \
             --skip 'data:.*' \
-            --skip 'https://fonts\.googleapis\.com/.*' \
-            --skip 'https://thunderrock424242\.github\.io/Wilderness-Odyssey/.*'
+            --skip 'https://.*'
 
       - name: Run Lighthouse report
         uses: treosh/lighthouse-ci-action@v12
@@ -82,11 +75,13 @@ jobs:
           temporaryPublicStorage: true
           configPath: ./.lighthouserc.json
 
-      - name: Upload website artifact
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: dist
-
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
