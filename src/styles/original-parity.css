@@ -8,8 +8,13 @@
   --line-strong: rgba(232, 160, 32, .2);
   --paper: #f0ece0;
   --white: #f0ece0;
-  --muted: #6b6455;
-  --dim: #6b6455;
+  --muted: #aaa18f;
+  --dim: #8f8777;
+  --text-soft: rgba(240, 236, 224, .74);
+  --text-muted: rgba(240, 236, 224, .66);
+  --meta-readable: rgba(202, 194, 174, .78);
+  --gold-readable: rgba(232, 160, 32, .9);
+  --blue-readable: rgba(58, 184, 255, .84);
   --gold: #e8a020;
   --gold-dim: #7a4e08;
   --signal: #e8a020;
@@ -256,4 +261,119 @@ a, button, input, select, summary { cursor: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
   #hero-canvas, .mt { display: none; }.rx { opacity: 1; transform: none; }
+}
+
+/* Readability floor: retain the archival type system without sub-10px, low-contrast copy. */
+p { color: var(--text-soft); }
+
+.n-logo { font-size: .76rem; }
+.n-links a { color: var(--meta-readable); font-size: .64rem; letter-spacing: .18em; }
+.n-links .n-cta { color: var(--gold-readable); }
+
+.h-sub { color: var(--gold-readable); font-size: .72rem; letter-spacing: .32em; }
+.h-sub span { color: var(--meta-readable); }
+.btn-main, .btn-ghost, .button { font-size: .7rem; }
+.btn-ghost, .button--ghost { border-color: rgba(240,236,224,.25); color: var(--text-soft); }
+.scroll-cue { color: var(--meta-readable); }
+.scroll-cue span { font-size: .6rem; letter-spacing: .3em; }
+
+.ch-label, .eyebrow { color: var(--gold-readable); font-size: .68rem; letter-spacing: .34em; }
+.ch-body, .page-copy { color: var(--text-soft); }
+.pullquote { color: rgba(240,236,224,.86); }
+.section-link, .text-link { color: var(--gold-readable); font-size: .68rem; }
+
+.tn { color: var(--meta-readable); font-size: .64rem; }
+.os-warning strong, .os-warning p, .os-warning span { font-size: .64rem; }
+.os-warning p, .os-warning span { color: var(--text-muted); }
+.tl { color: var(--meta-readable); font-size: .74rem; }
+
+.bcard p,
+.hub-card-copy,
+.fi-body,
+.feature-card p,
+.ri-summary,
+.slog-body,
+.survivor-log__body,
+.transmission-card p,
+.roadmap-card__detail-grid li,
+.prose p,
+.prose li { color: var(--text-soft); font-size: 1rem; }
+
+.bcard-tag,
+.hub-card-kicker,
+.hub-card-link,
+.feature-card__meta,
+.ri-phase,
+.ri-status,
+.ri-progress-label,
+.cmd-hint,
+.terminal-hints button,
+.slog-id,
+.survivor-log__head span,
+.slog-date,
+.survivor-log__head time,
+.slog-author,
+.survivor-log h2,
+.transmission-card__meta time,
+.transmission-card__details,
+.tag-list a,
+.filter-bar label,
+.filter-summary,
+.status-badge,
+.roadmap-card__rail,
+.roadmap-card__meta,
+.progress-readout > div:first-child,
+.progress-readout small,
+.roadmap-card__details summary,
+.roadmap-card__detail-grid h3,
+.gallery-placeholder small,
+.gallery-card__caption > span,
+.article-header__meta,
+.article-nav span,
+.roadmap-stat span,
+.terminal-window__bar small,
+.dc-badge,
+.fl a,
+.fc { font-size: .64rem; }
+
+.hub-card-kicker,
+.tag-list a { color: var(--blue-readable); }
+.feature-card__meta,
+.ri-phase,
+.ri-status,
+.roadmap-card__meta,
+.roadmap-card__details summary,
+.roadmap-card__detail-grid h3,
+.gallery-card__caption > span { color: var(--gold-readable); }
+.ri-progress-label,
+.slog-date,
+.survivor-log__head time,
+.slog-author,
+.survivor-log h2,
+.transmission-card__meta time,
+.transmission-card__details,
+.filter-summary,
+.roadmap-card__rail,
+.progress-readout > div:first-child,
+.progress-readout small,
+.article-header__meta,
+.article-nav span,
+.roadmap-stat span,
+.fl a { color: var(--meta-readable); }
+.fc { color: rgba(202,194,174,.62); }
+
+.roadmap-stat p { font-size: .95rem; }
+.dc-desc { color: var(--text-muted); font-size: .95rem; }
+.dc-badge { color: #9aaffe; }
+.road-note { color: var(--blue-readable); font-size: .72rem; }
+.cmd-hint, .terminal-hints button { color: var(--gold-readable); font-size: .68rem; }
+.terminal-output p { color: var(--meta-readable); font-size: .74rem; }
+.terminal-input input { font-size: .74rem; }
+.terminal-input button { font-size: .64rem; }
+.community-signal, .related-links { color: var(--blue-readable); font-size: .68rem; }
+
+@media (max-width: 900px) {
+  .n-logo { font-size: .72rem; }
+  .n-links a { font-size: .7rem; }
+  .h-sub { font-size: .66rem; letter-spacing: .22em; }
 }
