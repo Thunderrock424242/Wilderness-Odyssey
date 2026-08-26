@@ -6,7 +6,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 const base = '/Wilderness-Odyssey/';
 const required = [
-  'index.html', 'roadmap/index.html', 'features/index.html', 'gallery/index.html', 'news/index.html',
+  'index.html', 'admin/index.html', 'roadmap/index.html', 'features/index.html', 'gallery/index.html', 'news/index.html',
   'devlogs/index.html', 'patches/index.html', 'lore/index.html', 'blog/index.html', 'logs/index.html',
   'transmissions/index.html', 'roadmap.html', 'gallery.html', 'news.html', 'patch-notes.html', 'patches.html',
   'logs.html', 'blog.html', 'rss.xml', 'sitemap-index.xml', 'images/logo.png',

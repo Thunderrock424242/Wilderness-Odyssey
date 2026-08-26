@@ -1,6 +1,9 @@
 name: Deploy Wilderness Odyssey Website
 
 on:
+  push:
+    branches:
+      - website
   workflow_dispatch:
 
 permissions:
@@ -14,6 +17,7 @@ concurrency:
 
 env:
   ASTRO_TELEMETRY_DISABLED: '1'
+  PUBLIC_ADMIN_API_BASE: ${{ vars.ADMIN_API_BASE }}
 
 jobs:
   build:

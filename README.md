@@ -180,13 +180,21 @@ Edit `src/data/site.ts` for the name, tagline, current status, versions, downloa
 
 Feature summaries live in `src/data/features.ts`, survivor records in `src/data/survivorLogs.ts`, and navigation is centralized beside the site settings.
 
-## 15. Future Discord bot publishing contract
+## 15. Admin CMS workspace
+
+The static site includes an admin workspace at `/admin/` with a TipTap visual editor, Markdown source mode, sanitized live preview, metadata and roadmap controls, cover/body/gallery uploads, draft and publish controls, archive filters, and publishing status feedback.
+
+Production editing is deliberately disabled unless a separate authenticated Admin API is configured. GitHub credentials and application secrets never belong in the Pages bundle. For local UI development, copy `.env.example` to an untracked `.env`, set `PUBLIC_ADMIN_MOCK=true`, run `npm run dev`, and open `/Wilderness-Odyssey/admin/`; the mock is visibly labeled and saves only to that browser.
+
+The complete backend, authentication, media, deployment-state, security, and Phase 2 contract is in `docs/admin-cms.md`.
+
+## 16. Future Discord bot publishing contract
 
 The future integration contract is documented in `docs/discord-publishing-contract.md` and machine-readable at `docs/transmission-publishing-contract.schema.json`.
 
 The recommended bot flow is: validate a proposed payload, create a Markdown file and optional images on a short-lived branch, run `npm run check`, then open a pull request targeting `website`. The website does not expose a webhook or credentials and does not require the bot to build.
 
-## 16. Troubleshooting base-path issues
+## 17. Troubleshooting base-path issues
 
 - A local link that starts with `/roadmap/` bypasses the project base. Use `withBase('/roadmap/')` from `src/lib/urls.ts` in components and scripts.
 - Content image fields intentionally begin with `/images/`; rendering components pass them through the same helper.
@@ -208,4 +216,3 @@ The recommended bot flow is: validate a proposed payload, create a Markdown file
 | `npm run preview` | Serve the generated site locally |
 | `npm run new:post` | Create a validated transmission interactively |
 | `npm run verify` | Run the full local quality gate |
-

@@ -8,7 +8,7 @@ export default defineConfig({
   trailingSlash: 'always',
   integrations: [
     sitemap({
-      filter: (page) => !page.endsWith('.html'),
+      filter: (page) => !page.endsWith('.html') && !page.includes('/admin/'),
     }),
   ],
 });

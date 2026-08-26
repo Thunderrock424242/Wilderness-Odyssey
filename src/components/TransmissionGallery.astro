@@ -1,0 +1,48 @@
+---
+import { withBase } from '../lib/urls';
+
+type GalleryImage = { src: string; alt: string; caption?: string };
+type Props = { images: GalleryImage[]; title: string };
+
+const { images, title } = Astro.props;
+const payload = images.map((image) => ({ ...image, src: withBase(image.src) }));
+---
+
+<section class="article-shell transmission-gallery" data-transmission-gallery aria-labelledby="transmission-gallery-title">
+  <div class="transmission-gallery__heading">
+    <p class="eyebrow">Recovered visuals</p>
+    <h2 id="transmission-gallery-title">Transmission gallery</h2>
+    <p>{images.length} visual {images.length === 1 ? 'record' : 'records'} attached to {title}.</p>
+  </div>
+  <div class="transmission-gallery__grid">
+    {images.map((image, index) => (
+      <figure>
+        <button type="button" data-transmission-gallery-open={String(index)} aria-label={`Open visual record ${index + 1}: ${image.alt}`}>
+          <img src={withBase(image.src)} alt={image.alt} loading="lazy" decoding="async" />
+          <span aria-hidden="true">OPEN RECORD {String(index + 1).padStart(2, '0')}</span>
+        </button>
+        {image.caption && <figcaption>{image.caption}</figcaption>}
+      </figure>
+    ))}
+  </div>
+  <dialog class="gallery-dialog transmission-gallery__dialog" data-transmission-gallery-dialog aria-labelledby="transmission-gallery-dialog-title">
+    <div class="gallery-dialog__frame">
+      <header>
+        <span data-transmission-gallery-counter></span>
+        <button type="button" data-transmission-gallery-close aria-label="Close visual record">×</button>
+      </header>
+      <div class="gallery-dialog__media" data-transmission-gallery-media></div>
+      <div class="gallery-dialog__caption">
+        <h2 id="transmission-gallery-dialog-title" data-transmission-gallery-title></h2>
+        <p data-transmission-gallery-caption></p>
+      </div>
+      <footer>
+        <button type="button" class="button button--ghost" data-transmission-gallery-prev>← Previous</button>
+        <button type="button" class="button button--ghost" data-transmission-gallery-next>Next →</button>
+      </footer>
+    </div>
+  </dialog>
+  <script is:inline type="application/json" data-transmission-gallery-data set:html={JSON.stringify(payload).replace(/</g, '\\u003c')} />
+</section>
+
+<script src="../scripts/transmissionGallery.ts"></script>

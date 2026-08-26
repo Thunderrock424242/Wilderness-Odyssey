@@ -15,6 +15,7 @@ type Props = {
   publishedAt?: Date;
   updatedAt?: Date;
   noIndex?: boolean;
+  minimal?: boolean;
 };
 
 const {
@@ -26,6 +27,7 @@ const {
   publishedAt,
   updatedAt,
   noIndex = false,
+  minimal = false,
 } = Astro.props;
 const pageTitle = title ? `${title} // ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
 const canonical = new URL(withBase(canonicalPath), Astro.site);
@@ -78,17 +80,17 @@ const structuredData = {
     <meta name="twitter:image" content={socialImage} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
-  <body>
+  <body class:list={{ 'admin-body': minimal }}>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <div id="cur" aria-hidden="true"></div>
-    <div id="curt" aria-hidden="true"></div>
-    <div id="prog" aria-hidden="true"></div>
+    {!minimal && <div id="cur" aria-hidden="true"></div>}
+    {!minimal && <div id="curt" aria-hidden="true"></div>}
+    {!minimal && <div id="prog" aria-hidden="true"></div>}
     <div class="site-noise" aria-hidden="true"></div>
-    <Header currentPath={Astro.url.pathname} />
+    {!minimal && <Header currentPath={Astro.url.pathname} />}
     <main id="main-content">
       <slot />
     </main>
-    <Footer />
-    <script src="../scripts/pageEffects.ts"></script>
+    {!minimal && <Footer />}
+    {!minimal && <script src="../scripts/pageEffects.ts"></script>}
   </body>
 </html>

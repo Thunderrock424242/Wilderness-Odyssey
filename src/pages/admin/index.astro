@@ -1,0 +1,198 @@
+---
+import { getCollection } from 'astro:content';
+import { ROADMAP_ITEMS } from '../../data/roadmap';
+import { SITE } from '../../data/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedTransmissions } from '../../lib/transmissions';
+import type { AdminTransmissionSummary } from '../../lib/admin/types';
+import '../../styles/admin.css';
+
+const published = getPublishedTransmissions(await getCollection('transmissions'));
+const seeds: AdminTransmissionSummary[] = published.map((entry) => ({
+  id: entry.id,
+  slug: entry.id,
+  title: entry.data.title,
+  description: entry.data.description,
+  publishedAt: entry.data.publishedAt.toISOString().slice(0, 10),
+  ...(entry.data.updatedAt ? { updatedAt: entry.data.updatedAt.toISOString().slice(0, 10) } : {}),
+  type: entry.data.type,
+  author: entry.data.author,
+  tags: entry.data.tags,
+  ...(entry.data.coverImage ? { coverImage: entry.data.coverImage } : {}),
+  featured: entry.data.featured,
+  draft: entry.data.draft,
+  ...(entry.data.version ? { version: entry.data.version } : {}),
+  ...(entry.data.relatedRoadmapItem ? { relatedRoadmapItem: entry.data.relatedRoadmapItem } : {}),
+  galleryImageCount: entry.data.galleryImages?.length ?? 0,
+}));
+
+const apiBase = (import.meta.env.PUBLIC_ADMIN_API_BASE ?? '').replace(/\/+$/, '');
+const mockEnabled = import.meta.env.DEV && import.meta.env.PUBLIC_ADMIN_MOCK === 'true';
+const bootstrap = {
+  config: {
+    apiBase,
+    basePath: import.meta.env.BASE_URL.replace(/\/$/, ''),
+    mode: apiBase ? 'api' : mockEnabled ? 'mock' : 'unavailable',
+  },
+  roadmap: ROADMAP_ITEMS.map(({ id, phase, title }) => ({ id, phase, title })),
+  seeds,
+};
+---
+
+<BaseLayout title="BUNKER_OS Command Access" description="Private Wilderness Odyssey publishing workspace." canonicalPath="/admin/" noIndex minimal>
+  <div class="admin-shell" data-admin-root>
+    <header class="admin-masthead">
+      <a class="admin-brand" href="../" aria-label="Return to Wilderness Odyssey">
+        <span>BUNKER_OS</span>
+        <strong>TRANSMISSION COMMAND</strong>
+      </a>
+      <div class="admin-masthead__status">
+        <span class="admin-signal" aria-hidden="true"></span>
+        <span>SECURE CONSOLE</span>
+        <span>BUILD {SITE.version}</span>
+      </div>
+    </header>
+
+    <section class="admin-gate" data-admin-unavailable hidden>
+      <p class="admin-kicker">UPLINK NOT CONFIGURED</p>
+      <h1>Admin publishing is offline.</h1>
+      <p>This static GitHub Pages build contains no credentials and cannot edit the repository by itself. Connect the documented Admin API to enable authenticated publishing.</p>
+      <a class="admin-button admin-button--secondary" href="../">Return to the public site</a>
+    </section>
+
+    <section class="admin-gate" data-admin-login hidden>
+      <p class="admin-kicker">IDENTITY CHALLENGE</p>
+      <h1>Operator authentication required.</h1>
+      <p data-admin-login-note>Credentials are sent only to the configured Wilderness Odyssey Admin API.</p>
+      <div class="admin-alert admin-alert--warning" data-admin-mock-warning hidden>
+        Development mock mode is active. Any credentials open this local-only demo; changes remain in this browser and are never published.
+      </div>
+      <form class="admin-login" data-admin-login-form>
+        <label>Operator ID<input name="username" autocomplete="username" required /></label>
+        <label>Passphrase<input name="password" type="password" autocomplete="current-password" required /></label>
+        <button class="admin-button" type="submit">Open command console</button>
+        <p class="admin-form-error" data-admin-login-error aria-live="polite"></p>
+      </form>
+    </section>
+
+    <div class="admin-workspace" data-admin-workspace hidden>
+      <aside class="admin-rail">
+        <p class="admin-kicker">OPERATIONS</p>
+        <nav aria-label="Admin sections">
+          <button type="button" class="is-active" data-admin-route="dashboard">Transmission archive</button>
+          <button type="button" data-admin-create>New transmission</button>
+        </nav>
+        <div class="admin-operator">
+          <small>AUTHORIZED OPERATOR</small>
+          <strong data-admin-user>Unknown</strong>
+          <span data-admin-clearance></span>
+          <button type="button" data-admin-logout>Disconnect</button>
+        </div>
+      </aside>
+
+      <div class="admin-main" id="admin-content">
+        <section data-admin-dashboard>
+          <div class="admin-heading">
+            <div><p class="admin-kicker">TRANSMISSION ARCHIVE</p><h1>Publishing dashboard</h1></div>
+            <button class="admin-button" type="button" data-admin-create>+ New transmission</button>
+          </div>
+          <div class="admin-alert admin-alert--warning" data-admin-workspace-warning hidden>LOCAL MOCK // Browser storage only. No commit or deployment will be created.</div>
+          <div class="admin-filters">
+            <label class="admin-search"><span>Search archive</span><input type="search" data-admin-search placeholder="Title, slug, or tag" /></label>
+            <label><span>Status</span><select data-admin-status-filter><option value="all">All states</option><option value="published">Published</option><option value="draft">Draft</option></select></label>
+            <label><span>Type</span><select data-admin-type-filter><option value="all">All types</option><option value="news">News</option><option value="blog">Blog</option><option value="devlog">Dev log</option><option value="patch">Patch</option><option value="lore">Lore</option><option value="announcement">Announcement</option></select></label>
+          </div>
+          <p class="admin-result-count" data-admin-result-count aria-live="polite"></p>
+          <div class="admin-records" data-admin-records></div>
+        </section>
+
+        <section class="admin-editor" data-admin-editor hidden>
+          <div class="admin-heading">
+            <div><p class="admin-kicker" data-admin-editor-kicker>NEW RECORD</p><h1 data-admin-editor-title>Compose transmission</h1></div>
+            <div class="admin-heading__actions">
+              <button class="admin-button admin-button--secondary" type="button" data-admin-back>Back</button>
+              <button class="admin-button admin-button--secondary" type="button" data-admin-copy>Copy Markdown</button>
+              <button class="admin-button" type="button" data-admin-save>Save record</button>
+            </div>
+          </div>
+          <div class="admin-alert" data-admin-publishing hidden aria-live="polite"></div>
+          <div class="admin-validation" data-admin-validation hidden tabindex="-1"></div>
+
+          <form data-admin-form novalidate>
+            <div class="admin-editor-grid">
+              <div class="admin-compose">
+                <div class="admin-fields admin-fields--lead">
+                  <label><span>Title</span><input name="title" maxlength="180" required /></label>
+                  <label><span>Slug</span><input name="slug" maxlength="96" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required /></label>
+                  <label class="admin-field--wide"><span>Summary <small data-admin-description-count>0 / 320</small></span><textarea name="description" maxlength="320" rows="3" required></textarea></label>
+                </div>
+
+                <div class="admin-write-tabs" role="tablist" aria-label="Content editing mode">
+                  <button type="button" role="tab" aria-selected="true" data-admin-mode="visual">Visual</button>
+                  <button type="button" role="tab" aria-selected="false" data-admin-mode="markdown">Markdown</button>
+                  <button type="button" role="tab" aria-selected="false" data-admin-mode="preview">Live preview</button>
+                </div>
+                <div class="admin-toolbar" data-admin-toolbar aria-label="Editor formatting">
+                  <button type="button" data-command="bold" aria-label="Bold"><strong>B</strong></button>
+                  <button type="button" data-command="italic" aria-label="Italic"><em>I</em></button>
+                  <button type="button" data-command="strike" aria-label="Strikethrough"><s>S</s></button>
+                  <button type="button" data-command="heading" aria-label="Heading level 2">H2</button>
+                  <button type="button" data-command="bulletList" aria-label="Bullet list">• List</button>
+                  <button type="button" data-command="orderedList" aria-label="Numbered list">1. List</button>
+                  <button type="button" data-command="blockquote" aria-label="Block quote">Quote</button>
+                  <button type="button" data-command="codeBlock" aria-label="Code block">Code</button>
+                  <button type="button" data-command="link" aria-label="Add link">Link</button>
+                  <button type="button" data-command="image" aria-label="Insert image">Image</button>
+                  <button type="button" data-command="undo" aria-label="Undo">Undo</button>
+                  <button type="button" data-command="redo" aria-label="Redo">Redo</button>
+                </div>
+                <div class="admin-visual-editor prose" data-admin-visual></div>
+                <textarea class="admin-markdown-editor" data-admin-markdown aria-label="Transmission Markdown" spellcheck="true" hidden></textarea>
+                <article class="admin-preview prose" data-admin-preview hidden></article>
+                <p class="admin-upload-hint">Drop or paste an image into the visual editor, or use the Image control. Images are validated before upload.</p>
+
+                <section class="admin-gallery-editor">
+                  <div class="admin-section-title"><div><p class="admin-kicker">VISUAL RECORDS</p><h2>Transmission gallery</h2></div><button class="admin-button admin-button--secondary" type="button" data-admin-add-gallery>Add images</button></div>
+                  <div data-admin-gallery-list></div>
+                </section>
+              </div>
+
+              <aside class="admin-metadata">
+                <section><p class="admin-kicker">RECORD STATE</p>
+                  <label><span>Type</span><select name="type"><option value="news">News</option><option value="blog">Blog</option><option value="devlog">Dev log</option><option value="patch">Patch</option><option value="lore">Lore</option><option value="announcement">Announcement</option></select></label>
+                  <button class="admin-text-button" type="button" data-admin-template>Insert type template</button>
+                  <label class="admin-check"><input name="draft" type="checkbox" checked /> <span>Keep as draft</span></label>
+                  <label class="admin-check"><input name="featured" type="checkbox" /> <span>Feature on public site</span></label>
+                </section>
+                <section><p class="admin-kicker">CLASSIFICATION</p>
+                  <label><span>Author</span><input name="author" required /></label>
+                  <label><span>Tags <small>comma separated</small></span><input name="tags" required /></label>
+                  <label><span>Version</span><input name="version" placeholder="0.1.0" /></label>
+                  <label><span>Roadmap link</span><select name="relatedRoadmapItem"><option value="">No linked item</option>{bootstrap.roadmap.map((item) => <option value={item.id}>{item.phase} // {item.title}</option>)}</select></label>
+                </section>
+                <section><p class="admin-kicker">TIMELINE</p>
+                  <label><span>Publish date</span><input name="publishedAt" type="date" required /></label>
+                  <label><span>Updated date</span><input name="updatedAt" type="date" /></label>
+                </section>
+                <section><p class="admin-kicker">COVER IMAGE</p>
+                  <div class="admin-cover" data-admin-cover-preview><span>No cover selected</span></div>
+                  <button class="admin-button admin-button--secondary" type="button" data-admin-cover-upload>Choose cover</button>
+                  <button class="admin-text-button" type="button" data-admin-cover-clear>Remove cover</button>
+                </section>
+                <section class="admin-danger" data-admin-danger hidden><p class="admin-kicker">DANGER ZONE</p><button class="admin-button admin-button--danger" type="button" data-admin-delete>Delete transmission</button></section>
+              </aside>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <input type="file" accept="image/webp,image/avif,image/png,image/jpeg,image/gif" data-admin-body-file hidden />
+    <input type="file" accept="image/webp,image/avif,image/png,image/jpeg,image/gif" data-admin-cover-file hidden />
+    <input type="file" accept="image/webp,image/avif,image/png,image/jpeg,image/gif" data-admin-gallery-file multiple hidden />
+    <div class="admin-toast" data-admin-toast role="status" aria-live="polite" hidden></div>
+    <script is:inline type="application/json" data-admin-bootstrap set:html={JSON.stringify(bootstrap).replace(/</g, '\\u003c')} />
+  </div>
+</BaseLayout>
+
+<script src="../../scripts/admin.ts"></script>

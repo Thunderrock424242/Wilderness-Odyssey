@@ -2,6 +2,7 @@
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import StatusBadge from '../../components/StatusBadge.astro';
 import TransmissionCard from '../../components/TransmissionCard.astro';
+import TransmissionGallery from '../../components/TransmissionGallery.astro';
 import { TRANSMISSION_LABELS } from '../../data/site';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { formatDate, getPublishedTransmissions, relatedTransmissions } from '../../lib/transmissions';
@@ -50,6 +51,7 @@ const tone = entry.data.type === 'patch' ? 'warn' : entry.data.type === 'lore' ?
       </div>
     </header>
     <div class="article-shell prose"><Content /></div>
+    {entry.data.galleryImages?.length && <TransmissionGallery images={entry.data.galleryImages} title={entry.data.title} />}
     <nav class="article-shell article-nav" aria-label="Adjacent transmissions">
       {older ? <a href={transmissionUrl(older.id)}><span>Older transmission</span><strong>{older.data.title}</strong></a> : <span></span>}
       {newer && <a href={transmissionUrl(newer.id)}><span>Newer transmission</span><strong>{newer.data.title}</strong></a>}
