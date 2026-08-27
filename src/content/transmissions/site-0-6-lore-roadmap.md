@@ -2,14 +2,14 @@
 title: "Site 0.6 — Lore Update and Version 0.1.0 Roadmap"
 description: "The public story now follows the current lore canon, and the roadmap reflects the real version 0.1.0 build."
 publishedAt: 2026-06-20
-type: "patch"
+type: patch
 author: "Thunder"
 tags:
-  - "Website"
-  - "Lore"
-  - "Roadmap"
+  - "website"
+  - "lore"
+  - "roadmap"
 featured: false
-draft: false
+draft: true
 version: "Site 0.6"
 relatedRoadmapItem: "first-alpha-foundation"
 ---
