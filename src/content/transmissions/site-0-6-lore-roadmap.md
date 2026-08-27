@@ -9,7 +9,7 @@ tags:
   - "lore"
   - "roadmap"
 featured: false
-draft: true
+draft: false
 version: "Site 0.6"
 relatedRoadmapItem: "first-alpha-foundation"
 ---
