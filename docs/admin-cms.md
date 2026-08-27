@@ -1,12 +1,33 @@
 # Wilderness Odyssey Admin CMS contract
 
-## What Phase 1 provides
+## What the editor provides
 
 The Astro site now builds a private-looking publishing workspace at `/admin/`. It can list, search, filter, compose, preview, validate, save, publish, unpublish, and delete transmissions through an injected Admin API. The editor writes the same Markdown frontmatter schema used by `src/content/transmissions/`, including cover art, tags, version, roadmap relationships, draft state, and `galleryImages`.
 
-The browser does not receive a GitHub token and cannot write to the repository directly. GitHub Pages remains a static deployment target. Production editing therefore requires a separately deployed, server-side Admin API.
+The browser does not receive a GitHub token and cannot write to the repository directly. GitHub Pages remains a static deployment target. Real editing is handled by the repository-owned loopback service started with `npm run admin`.
 
 When no API URL is supplied, the production page shows an honest “uplink not configured” state. It does not expose a bypass or a fake login.
+
+## Real local repository editor
+
+From the repository's `website` branch, run:
+
+```bash
+npm run admin
+```
+
+The command starts the Astro site at `127.0.0.1:4321` and the repository service at `127.0.0.1:4322`. The admin workspace auto-authenticates as the local repository operator; it is not exposed to the network and does not need an admin password.
+
+Draft saves write deterministic Markdown under `src/content/transmissions/` and uploaded image bytes under `public/images/transmissions/<slug>/`. Publishing or unpublishing:
+
+1. requires the `website` branch and an exact match with `origin/website`;
+2. refuses to continue if unrelated files are already staged;
+3. runs `npm run verify` before creating a commit;
+4. stages only the active transmission, a previous slug being removed, and images referenced by that transmission;
+5. pushes to `origin/website` using the computer's existing Git credentials;
+6. polls the public GitHub Actions result and reports `published` only after the Pages workflow succeeds.
+
+Unrelated unstaged changes and other local drafts are left alone. Press `Ctrl+C` to stop both local services.
 
 ## Local development mock
 
@@ -20,7 +41,7 @@ Then run `npm run dev` and open `/Wilderness-Odyssey/admin/`. Any non-empty user
 
 `PUBLIC_ADMIN_MOCK` is guarded by `import.meta.env.DEV`, so setting it during a production build cannot activate mock authentication. Clear the browser key `wo-admin-mock-v1` to reset mock records.
 
-## Production configuration
+## Optional remote API configuration
 
 Set the GitHub Actions repository variable `ADMIN_API_BASE` to the HTTPS origin of the deployed Admin API. The Pages workflow exposes it to Astro as `PUBLIC_ADMIN_API_BASE` while building. This value is public configuration, not a secret.
 
@@ -119,7 +140,7 @@ Video/document attachments are intentionally postponed until their storage, tran
 }
 ```
 
-Supported states are `idle`, `saving`, `commit-created`, `build-running`, `deploying`, `published`, `mock-saved`, and `failed`. The Admin API should derive these states from real repository/workflow evidence. Never report `published` before the deployment succeeds.
+Supported states are `idle`, `saving`, `local-saved`, `commit-created`, `build-running`, `deploying`, `published`, `mock-saved`, and `failed`. The service must derive published states from real repository/workflow evidence. Never report `published` before the deployment succeeds.
 
 ## Recommended repository workflow
 
@@ -153,11 +174,11 @@ Run:
 npm run verify
 ```
 
-This checks Astro and content types, admin helper tests, all existing tests, the production build, required routes (including `/admin/`), base-aware links, assets, and draft exclusion. Also test the mock workspace manually at desktop and mobile widths before changing editor behavior.
+This checks Astro and content types, admin helper tests, all existing tests, the production build, required routes (including `/admin/`), base-aware links, assets, and draft exclusion. Also test the real local workspace at desktop and mobile widths before changing editor behavior. The browser mock remains useful for isolated UI work.
 
 ## Phase 2 candidates
 
-- deploy the Admin API and choose its identity provider;
+- optionally deploy a remote Admin API and choose its identity provider;
 - connect a GitHub App and protected-branch policy;
 - add revision history, diff review, scheduled publication, autosave, and collaborative locking;
 - implement responsive image processing and optional video/document assets;

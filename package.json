@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "admin": "tsx scripts/local-admin.ts",
     "dev": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro dev --host 127.0.0.1",
     "check": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check && node scripts/validate-content.mjs",
     "build": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro build",
@@ -22,13 +23,15 @@
     "astro": "^7.1.1",
     "dompurify": "^3.4.14",
     "marked": "^16.4.2",
-    "turndown": "^7.2.4"
+    "turndown": "^7.2.4",
+    "yaml": "^2.9.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@types/node": "^26.1.1",
     "@types/turndown": "^5.0.6",
     "cross-env": "^10.1.0",
+    "tsx": "^4.23.12",
     "typescript": "^6.0.3",
     "vitest": "^4.1.10"
   }

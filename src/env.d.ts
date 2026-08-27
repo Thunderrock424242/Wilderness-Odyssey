@@ -3,6 +3,7 @@
 
 interface ImportMetaEnv {
   readonly PUBLIC_ADMIN_API_BASE?: string;
+  readonly PUBLIC_ADMIN_LOCAL?: string;
   readonly PUBLIC_ADMIN_MOCK?: string;
 }
 

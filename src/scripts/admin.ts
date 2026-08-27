@@ -27,7 +27,7 @@ import type {
 import type { TransmissionType } from '../data/site';
 
 type AdminBootstrap = {
-  config: { apiBase: string; basePath: string; mode: 'api' | 'mock' | 'unavailable' };
+  config: { apiBase: string; basePath: string; localMode: boolean; mode: 'api' | 'mock' | 'unavailable' };
   roadmap: { id: string; phase: string; title: string }[];
   seeds: AdminTransmissionSummary[];
 };
@@ -138,7 +138,10 @@ async function initialize() {
     return;
   }
   mockLoginWarning.hidden = service.mode !== 'mock';
-  workspaceWarning.hidden = service.mode !== 'mock';
+  workspaceWarning.hidden = service.mode !== 'mock' && !bootstrap.config.localMode;
+  if (bootstrap.config.localMode) {
+    workspaceWarning.textContent = 'LOCAL REPOSITORY MODE // Draft saves write Markdown and images to this checkout. Publishing verifies, commits, and pushes only this transmission.';
+  }
   if (service.mode === 'mock') loginNote.textContent = 'Development-only local access. No credentials leave this browser.';
   try {
     session = await service.getSession();
@@ -452,7 +455,13 @@ async function saveTransmission() {
     setPublishing(result.publishing);
     await refreshSummaries();
     if (result.publishing.operationId) void trackPublishing(result.publishing.operationId);
-    showToast(service.mode === 'mock' ? 'Saved to this browser’s mock archive.' : 'Transmission accepted by the publishing service.');
+    showToast(
+      service.mode === 'mock'
+        ? 'Saved to this browser’s mock archive.'
+        : result.publishing.state === 'local-saved'
+          ? 'Saved to the real local repository files.'
+          : result.publishing.message,
+    );
   } catch (error) {
     setPublishing({ state: 'failed', message: errorMessage(error) });
   } finally {
@@ -469,6 +478,7 @@ async function setPublishedState(id: string, shouldPublish: boolean, button: HTM
     if (shouldPublish && !input.publishedAt) input.publishedAt = new Date().toISOString().slice(0, 10);
     const result = await service.updateTransmission(id, input);
     showToast(result.publishing.message);
+    if (result.publishing.operationId) void trackPublishing(result.publishing.operationId, true);
     await refreshSummaries();
   } catch (error) {
     showToast(errorMessage(error));
@@ -777,7 +787,7 @@ function showValidation(errors: string[]) {
 function setPublishing(status: PublishingStatus) {
   publishing.hidden = false;
   publishing.classList.toggle('admin-alert--error', status.state === 'failed');
-  publishing.classList.toggle('admin-alert--warning', status.state === 'mock-saved');
+  publishing.classList.toggle('admin-alert--warning', ['local-saved', 'mock-saved'].includes(status.state));
   publishing.textContent = `${status.state.replace(/-/g, ' ').toUpperCase()} // ${status.message}`;
   if (status.commitUrl || status.deploymentUrl) {
     publishing.append(' ');
@@ -790,13 +800,16 @@ function setPublishing(status: PublishingStatus) {
   }
 }
 
-async function trackPublishing(operationId: string) {
-  for (let attempt = 0; attempt < 20; attempt += 1) {
-    await new Promise((resolve) => window.setTimeout(resolve, 3000));
+async function trackPublishing(operationId: string, toastUpdates = false) {
+  for (let attempt = 0; attempt < 35; attempt += 1) {
+    await new Promise((resolve) => window.setTimeout(resolve, 8000));
     try {
       const status = await service.getPublishingStatus(operationId);
       setPublishing(status);
-      if (['published', 'failed', 'mock-saved'].includes(status.state)) return;
+      if (['published', 'failed', 'local-saved', 'mock-saved'].includes(status.state)) {
+        if (toastUpdates) showToast(status.message);
+        return;
+      }
     } catch (error) {
       setPublishing({ state: 'failed', message: errorMessage(error) });
       return;

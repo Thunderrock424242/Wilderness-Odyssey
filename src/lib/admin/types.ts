@@ -67,6 +67,7 @@ export type PublishingState =
   | 'build-running'
   | 'deploying'
   | 'published'
+  | 'local-saved'
   | 'mock-saved'
   | 'failed';
 

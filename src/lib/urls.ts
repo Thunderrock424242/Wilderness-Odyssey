@@ -1,4 +1,4 @@
-const runtimeBase = import.meta.env.BASE_URL || '/';
+const runtimeBase = import.meta.env?.BASE_URL || '/';
 
 const isExternalOrFragment = (value: string) => /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(value);
 

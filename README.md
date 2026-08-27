@@ -35,6 +35,22 @@ npm run dev
 
 Open the URL Astro prints. The project has `base: "/Wilderness-Odyssey"`, so the local page is normally under `/Wilderness-Odyssey/`, not the server root.
 
+### Local visual editor
+
+Run this from the `website` branch:
+
+```bash
+npm run admin
+```
+
+Open the admin URL printed by the command (normally `http://127.0.0.1:4321/Wilderness-Odyssey/admin/`). There is no separate admin password: the editor is available only through the loopback service running on your computer.
+
+- **Save draft** writes the real Markdown and uploaded images into this checkout without publishing them.
+- Clearing **Draft** and saving runs the full site verification, commits only that transmission and its referenced images, pushes `website`, and follows the real GitHub Pages workflow until it succeeds or fails.
+- The publisher refuses to run on another branch, with staged files, or when the local branch is out of sync with `origin/website`. Other uncommitted work is not included.
+
+Press `Ctrl+C` in the terminal when you are finished. Your normal GitHub login or credential manager must already allow `git push origin website`.
+
 ## 4. Production build
 
 Run the complete local quality gate:
@@ -184,7 +200,9 @@ Feature summaries live in `src/data/features.ts`, survivor records in `src/data/
 
 The static site includes an admin workspace at `/admin/` with a TipTap visual editor, Markdown source mode, sanitized live preview, metadata and roadmap controls, cover/body/gallery uploads, draft and publish controls, archive filters, and publishing status feedback.
 
-Production editing is deliberately disabled unless a separate authenticated Admin API is configured. GitHub credentials and application secrets never belong in the Pages bundle. For local UI development, copy `.env.example` to an untracked `.env`, set `PUBLIC_ADMIN_MOCK=true`, run `npm run dev`, and open `/Wilderness-Odyssey/admin/`; the mock is visibly labeled and saves only to that browser.
+Use `npm run admin` for real repository editing. The command starts both Astro and a loopback-only repository service, so no GitHub token, password, or secret is placed in the browser or Pages bundle. The admin page on the public GitHub Pages site remains unavailable because a static public page cannot safely hold publishing credentials.
+
+The older browser-only mock remains available for UI development by setting `PUBLIC_ADMIN_MOCK=true` in an untracked `.env` and running `npm run dev`. Mock saves never touch files or publish.
 
 The complete backend, authentication, media, deployment-state, security, and Phase 2 contract is in `docs/admin-cms.md`.
 
@@ -209,6 +227,7 @@ The recommended bot flow is: validate a proposed payload, create a Markdown file
 | Command | Purpose |
 | --- | --- |
 | `npm install` | Install or refresh local dependencies |
+| `npm run admin` | Start the real local repository editor |
 | `npm run dev` | Start the Astro development server |
 | `npm run check` | Validate types, schemas, references, and examples |
 | `npm run test` | Run focused behavior tests |

@@ -27,12 +27,14 @@ const seeds: AdminTransmissionSummary[] = published.map((entry) => ({
 }));
 
 const apiBase = (import.meta.env.PUBLIC_ADMIN_API_BASE ?? '').replace(/\/+$/, '');
+const localMode = import.meta.env.DEV && import.meta.env.PUBLIC_ADMIN_LOCAL === 'true';
 const mockEnabled = import.meta.env.DEV && import.meta.env.PUBLIC_ADMIN_MOCK === 'true';
 const bootstrap = {
   config: {
     apiBase,
     basePath: import.meta.env.BASE_URL.replace(/\/$/, ''),
     mode: apiBase ? 'api' : mockEnabled ? 'mock' : 'unavailable',
+    localMode,
   },
   roadmap: ROADMAP_ITEMS.map(({ id, phase, title }) => ({ id, phase, title })),
   seeds,
