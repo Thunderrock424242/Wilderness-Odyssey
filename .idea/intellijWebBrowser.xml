@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="WebBrowserProjectSettings">
+    <option name="addressBarHistory">
+      <list>
+        <option value="http://127.0.0.1:4321/Wilderness-Odyssey/" />
+      </list>
+    </option>
     <option name="openOnRun" value="true" />
+    <option name="persistedTabUrls">
+      <list>
+        <option value="http://127.0.0.1:4321/Wilderness-Odyssey/" />
+      </list>
+    </option>
   </component>
 </project>
