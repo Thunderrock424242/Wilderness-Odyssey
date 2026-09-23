@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import '../../../styles/operations.css';
+---
+<BaseLayout title="Troubleshooting" description="Practical checks for Minecraft connections, pack versions, performance, and Aether." canonicalPath="/support/troubleshooting/">
+  <PageHero eyebrow="Support" title="Troubleshooting" description="Start with the symptom below. Keep a backup of your world before changing a modpack or its configuration." primaryLabel="Service status" primaryHref="/status/" secondaryLabel="Contact support" secondaryHref="/support/" />
+  <div class="ops-content support-topics">
+    <section class="ops-card"><h2>I cannot connect</h2><ol><li>Check the status dashboard for Minecraft availability and maintenance.</li><li>Confirm the approved server address and installed pack version through the community. This site does not invent a connection address.</li><li>Record the exact disconnect message. A status API outage alone does not prove the game server is offline.</li></ol></section>
+    <section class="ops-card"><h2>The game will not start</h2><ol><li>Confirm Minecraft 1.21.1 and the NeoForge version required by your pack release.</li><li>Try a clean instance of the same release without additional mods or shaders.</li><li>Keep your existing saves and share a redacted crash report with the version and reproduction steps.</li></ol></section>
+    <section class="ops-card"><h2>The game feels slow</h2><p>Low client frame rate and slow server ticks are different symptoms. Include your hardware, render distance, shaders, and whether the problem affects other players. Compare TPS/MSPT on the status page when measurements are available.</p></section>
+    <section class="ops-card"><h2>Aether is unavailable or slow</h2><p>Check Ollama availability, inference readiness, and whether new requests are paused. Avoid repeatedly resending a request. If only your account is restricted, use the moderation appeal process in Discord.</p></section>
+    <section class="ops-card"><h2>I need to report an AI response</h2><p>Follow the report instructions in Discord. Submit only the relevant excerpt and context. The staff dashboard reviews submitted reports; it does not provide a complete archive of private conversations.</p></section>
+  </div>
+</BaseLayout>

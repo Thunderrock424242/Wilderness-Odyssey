@@ -6,7 +6,7 @@ import { startLocalAdminServer } from './local-admin-server';
 const execFileAsync = promisify(execFile);
 const root = process.cwd();
 const astroEntry = resolve(root, 'node_modules', 'astro', 'bin', 'astro.mjs');
-const adminUrl = 'http://127.0.0.1:4321/Wilderness-Odyssey/admin/';
+const adminUrl = 'http://127.0.0.1:4321/admin/content/';
 
 const branch = (await execFileAsync('git', ['branch', '--show-current'], { cwd: root, encoding: 'utf8' })).stdout.trim();
 if (branch !== 'website') {

@@ -3,14 +3,14 @@ import { getCollection } from 'astro:content';
 import PageHero from '../../components/PageHero.astro';
 import TransmissionArchive from '../../components/TransmissionArchive.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getPublishedTransmissions, uniqueTags } from '../../lib/transmissions';
+import { getPublishedTransmissions, tagArchives } from '../../lib/transmissions';
 import { slugify } from '../../lib/urls';
 
 export async function getStaticPaths() {
   const entries = getPublishedTransmissions(await getCollection('transmissions'));
-  return uniqueTags(entries).map((tag) => ({
-    params: { tag: slugify(tag) },
-    props: { tag, entries: entries.filter((entry) => entry.data.tags.includes(tag)) },
+  return tagArchives(entries).map(({ tag, slug, entries: matchingEntries }) => ({
+    params: { tag: slug },
+    props: { tag, entries: matchingEntries },
   }));
 }
 

@@ -4,9 +4,9 @@ import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
-const base = '/Wilderness-Odyssey/';
+const base = '/';
 const required = [
-  'index.html', 'admin/index.html', 'roadmap/index.html', 'features/index.html', 'gallery/index.html', 'news/index.html',
+  'index.html', 'admin/index.html', 'admin/content/index.html', 'admin/players/index.html', 'admin/reports/index.html', 'admin/models/index.html', 'status/index.html', 'support/index.html', 'support/troubleshooting/index.html', '_worker.js', '_routes.json', 'revision.json', 'roadmap/index.html', 'features/index.html', 'gallery/index.html', 'news/index.html',
   'devlogs/index.html', 'patches/index.html', 'lore/index.html', 'blog/index.html', 'logs/index.html',
   'transmissions/index.html', 'roadmap.html', 'gallery.html', 'news.html', 'patch-notes.html', 'patches.html',
   'logs.html', 'blog.html', 'rss.xml', 'sitemap-index.xml', 'images/logo.png',
@@ -41,12 +41,12 @@ if (errors.length) {
   console.error([...new Set(errors)].map((error) => `- ${error}`).join('\n'));
   process.exitCode = 1;
 } else {
-  console.log(`Verified ${htmlFiles.length} HTML files, required routes, GitHub Pages base paths, local links, assets, and draft exclusion.`);
+  console.log(`Verified ${htmlFiles.length} HTML files, required routes, root-relative paths, local links, assets, and draft exclusion.`);
 }
 
 function toDistTarget(value, sourceFile) {
   const clean = value.split(/[?#]/)[0];
-  if (!clean) return undefined;
+  if (!clean || clean === '/cdn-cgi/access/logout') return undefined;
   let path;
   if (clean.startsWith(base)) path = clean.slice(base.length);
   else if (clean.startsWith('/')) return undefined;

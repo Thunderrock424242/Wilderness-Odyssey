@@ -1,0 +1,12 @@
+---
+import StaffLayout from '../../layouts/StaffLayout.astro';
+import StaffDashboard from '../../components/StaffDashboard.astro';
+export function getStaticPaths() { return [
+  { params: { section: 'players' }, props: { title: 'Player Moderation' } },
+  { params: { section: 'reports' }, props: { title: 'AI Conversation Moderation' } },
+  { params: { section: 'models' }, props: { title: 'AI Model Management' } },
+]; }
+const { title } = Astro.props;
+const { section } = Astro.params;
+---
+<StaffLayout title={title} section={section!}><StaffDashboard section={section!} /></StaffLayout>

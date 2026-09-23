@@ -1,4 +1,5 @@
 import type { CollectionEntry } from 'astro:content';
+import { slugify } from './urls';
 
 export type Transmission = CollectionEntry<'transmissions'>;
 
@@ -61,4 +62,17 @@ export function transmissionSearchText(entry: Transmission): string {
   ]
     .join(' ')
     .toLowerCase();
+}
+
+export function tagArchives(entries: Transmission[]) {
+  const archives = new Map<string, { slug: string; tag: string; entries: Transmission[] }>();
+  for (const entry of entries) {
+    for (const tag of entry.data.tags) {
+      const slug = slugify(tag);
+      const archive = archives.get(slug) ?? { slug, tag, entries: [] };
+      if (!archive.entries.includes(entry)) archive.entries.push(entry);
+      archives.set(slug, archive);
+    }
+  }
+  return [...archives.values()].sort((a, b) => a.slug.localeCompare(b.slug));
 }

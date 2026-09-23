@@ -1,4 +1,5 @@
 ---
+import MaintenanceNotice from '../components/MaintenanceNotice.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE } from '../data/site';
@@ -87,6 +88,7 @@ const structuredData = {
     {!minimal && <div id="prog" aria-hidden="true"></div>}
     <div class="site-noise" aria-hidden="true"></div>
     {!minimal && <Header currentPath={Astro.url.pathname} />}
+    {!minimal && <MaintenanceNotice />}
     <main id="main-content">
       <slot />
     </main>

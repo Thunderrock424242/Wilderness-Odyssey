@@ -806,7 +806,7 @@ async function trackPublishing(operationId: string, toastUpdates = false) {
     try {
       const status = await service.getPublishingStatus(operationId);
       setPublishing(status);
-      if (['published', 'failed', 'local-saved', 'mock-saved'].includes(status.state)) {
+      if (['published', 'failed', 'checks-passed', 'local-saved', 'mock-saved'].includes(status.state)) {
         if (toastUpdates) showToast(status.message);
         return;
       }
@@ -815,7 +815,7 @@ async function trackPublishing(operationId: string, toastUpdates = false) {
       return;
     }
   }
-  setPublishing({ state: 'failed', message: 'Publishing status timed out. Check the repository workflow before retrying.' });
+  setPublishing({ state: 'awaiting-approval', message: 'Deployment is not yet confirmed. Check GitHub Actions for approval or verification progress before retrying.' });
 }
 
 function showDashboard() {

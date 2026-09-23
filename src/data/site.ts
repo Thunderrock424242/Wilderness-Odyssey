@@ -26,6 +26,8 @@ export const SITE = {
 
 export const NAV_ITEMS = [
   { label: 'Home', href: '/' },
+  { label: 'Status', href: '/status/' },
+  { label: 'Support', href: '/support/' },
   { label: 'Roadmap', href: '/roadmap/' },
   { label: 'Features', href: '/features/' },
   { label: 'Gallery', href: '/gallery/' },

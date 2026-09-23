@@ -66,6 +66,8 @@ export type PublishingState =
   | 'commit-created'
   | 'build-running'
   | 'deploying'
+  | 'awaiting-approval'
+  | 'checks-passed'
   | 'published'
   | 'local-saved'
   | 'mock-saved'

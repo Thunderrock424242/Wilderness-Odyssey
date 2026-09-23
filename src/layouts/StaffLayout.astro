@@ -1,0 +1,12 @@
+---
+import '../styles/operations.css';
+type Props = { title: string; section: string };
+const { title, section } = Astro.props;
+const sections = [{ id: 'server', title: 'Server Management', href: '/admin/' }, { id: 'players', title: 'Player Moderation', href: '/admin/players/' }, { id: 'reports', title: 'AI Conversation Moderation', href: '/admin/reports/' }, { id: 'models', title: 'AI Model Management', href: '/admin/models/' }];
+---
+<!doctype html><html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="robots" content="noindex,nofollow" /><meta name="color-scheme" content="dark" /><title>{title} | Wilderness Odyssey Staff</title><link rel="icon" href="/images/logo.png" /></head>
+<body class="staff"><a class="skip-link" href="#staff-main">Skip to dashboard</a>
+<header class="staff-header"><a class="staff-brand" href="/">Wilderness Odyssey<small>Staff administration</small></a><div class="staff-actions"><span data-staff-identity>Verifying staff access…</span><a href="/cdn-cgi/access/logout">Sign out</a></div></header>
+<div class="staff-shell"><nav class="staff-nav" aria-label="Staff sections"><ul>{sections.map(item => <li><a href={item.href} aria-current={item.id === section ? 'page' : undefined}>{item.title}</a></li>)}</ul><hr /><a href="/status/">Public status</a><a href="/admin/content/">Local content editor</a></nav>
+<main id="staff-main" class="staff-main" data-staff-section={section}><p class="ops-kicker">Administration</p><h1>{title}</h1><p class="staff-message" data-staff-message role="status">Checking access. No staff records have been loaded.</p><div class="staff-actions"><button class="secondary" type="button" data-staff-refresh>Refresh dashboard</button><a href="/admin/" data-staff-signin hidden>Sign in again</a></div><div data-staff-workspace hidden><slot /></div><noscript><p>JavaScript and an authorized staff session are required to use this dashboard.</p></noscript></main></div>
+<script src="../scripts/staff.ts"></script></body></html>

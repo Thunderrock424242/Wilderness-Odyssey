@@ -1,237 +1,105 @@
 # Wilderness Odyssey website
 
-This branch contains the static Astro website for **Wilderness Odyssey: The World Reborn**. It is deliberately isolated from the modpack branches and publishes to:
+The `website` branch contains the Astro public site and staff dashboard for **Wilderness Odyssey: The World Reborn**. Minecraft 1.21.1 NeoForge and Ollama remain on the main server; the Discord bot and administration API remain on Kinetic Hosting.
 
-`https://thunderrock424242.github.io/Wilderness-Odyssey/`
+The website is prepared for Cloudflare Pages deployment through the existing GitHub Actions workflow. **Deployment is disabled by default.** Nothing in local development deploys the site or changes DNS.
 
-The site uses one validated Astro content collection, `transmissions`, for news, blog posts, development logs, patch notes, lore records, and announcements. A post is written once and can then appear on its type archive, tag pages, the homepage, RSS, search results, roadmap links, and its permanent transmission page.
+## Start locally
 
-## 1. Requirements
+Use Node.js 24 and the locked dependencies:
 
-- Node.js 24 (Astro 7 requires Node 22.12 or newer)
-- npm, included with Node
-- Git when publishing from a local checkout
-
-No database, CMS, API key, Discord token, or hosted search service is required.
-
-## 2. Local setup
-
-Clone the repository, switch to the website branch, and install the locked dependencies:
-
-```bash
-git clone https://github.com/Thunderrock424242/Wilderness-Odyssey.git
-cd Wilderness-Odyssey
-git switch website
-npm install
-```
-
-Use `npm ci` instead of `npm install` in CI or whenever you want an exact clean install from `package-lock.json`.
-
-## 3. Development server
-
-```bash
+```sh
+npm ci
 npm run dev
 ```
 
-Open the URL Astro prints. The project has `base: "/Wilderness-Odyssey"`, so the local page is normally under `/Wilderness-Odyssey/`, not the server root.
+Open the loopback URL printed by Astro. Routes now start at `/`, rather than the former GitHub Pages subdirectory.
 
-### Local visual editor
+```sh
+npm run verify
+npx playwright install chromium
+npm run test:e2e
+npm run preview:pages -- --port 8788
+```
 
-Run this from the `website` branch:
+`verify` checks Astro and gateway types, content, tests, the static build, compiled Pages Functions, internal references, and draft exclusion. Browser tests use controlled UI fixtures and the compiled local Pages runtime; they do not contact production.
 
-```bash
+The Pages preview runs the actual gateway. Missing configuration yields honest unavailable public status and denied staff access. `npm run preview` is only a static UI preview and does not execute authentication Functions; keep it on loopback.
+
+## Public site
+
+- The homepage retains the existing hero, lore, terminal, roadmap summary, content feeds, and community links.
+- `/status/` shows Minecraft/Aether availability, player counts, TPS/MSPT, versions, maintenance, incidents, and measured inference latency.
+- `/support/` and `/support/troubleshooting/` explain practical troubleshooting and reporting.
+- `/news/`, `/patches/`, `/devlogs/`, `/blog/`, `/lore/`, gallery, RSS, tags, and permanent transmission URLs continue to use existing content.
+
+Status comes only from the sanitized bot API through the same-origin gateway. Missing data is unavailable, expired data is labelled last-known, and fictional terminal text is separate from operational status. No examples are used as live data.
+
+## Staff dashboard
+
+Cloudflare Access protects the hosted staff interface. Pages Functions independently validate the assertion; Kinetic independently authenticates the gateway and authorizes each actor/action/resource.
+
+- `/admin/`: Server Management.
+- `/admin/players/`: verified player moderation and appeals.
+- `/admin/reports/`: submitted AI reports and relevant excerpts.
+- `/admin/models/`: approved installed models and permitted settings.
+
+Viewer, Moderator, and Administrator are backend-assigned roles. Hidden buttons are not authorization. The gateway exposes no shell, RCON, arbitrary Ollama commands, or private upstream credentials. Staff responses are not cached. The dashboard does not retain all private conversations.
+
+See [API contracts and integration](docs/api-integration.md) and [deployment, Access setup, and rollback](docs/cloudflare-deployment.md).
+
+## Existing local content editor
+
+```sh
 npm run admin
 ```
 
-Open the admin URL printed by the command (normally `http://127.0.0.1:4321/Wilderness-Odyssey/admin/`). There is no separate admin password: the editor is available only through the loopback service running on your computer.
+Open `http://127.0.0.1:4321/admin/content/`. This starts the existing loopback-only repository service at port 4322.
 
-- **Save draft** writes the real Markdown and uploaded images into this checkout without publishing them.
-- Clearing **Draft** and saving runs the full site verification, commits only that transmission and its referenced images, pushes `website`, and follows the real GitHub Pages workflow until it succeeds or fails.
-- The publisher refuses to run on another branch, with staged files, or when the local branch is out of sync with `origin/website`. Other uncommitted work is not included.
+- Save draft writes Markdown and approved images into this checkout.
+- Publish/unpublish validates the site, commits only that transmission and referenced images, and pushes `website` using your existing Git credentials.
+- Publication requires the `website` branch, exact sync with `origin/website`, and no unrelated staged files.
+- Passing checks is not publication. The editor distinguishes checks passed, awaiting approval, deploying, and verified publication.
+- Deployment still requires the configured approval gate.
 
-Press `Ctrl+C` in the terminal when you are finished. Your normal GitHub login or credential manager must already allow `git push origin website`.
+Hosted `/admin/content/` does not connect to a remote publishing service. Real editing remains local. The development-only mock can be enabled with `PUBLIC_ADMIN_MOCK=true`; mock content never becomes a real save or deployment.
 
-## 4. Production build
+## Creating content
 
-Run the complete local quality gate:
+Run `npm run new:post` or copy `templates/transmission.md`. Supported types: news, blog, devlog, patch, lore, announcement. Leave `draft: true` until the content is reviewed.
 
-```bash
-npm run verify
+The authoritative content schema is `src/content.config.ts`. Required fields are title, description, publishedAt, type, author, and tags. Optional fields include updatedAt, coverImage, featured, draft, version, relatedRoadmapItem, and galleryImages.
+
+Use a lowercase hyphenated slug. Patch notes should include the relevant version, changes, and known limitations. Image references use site-root paths such as `/images/transmissions/slug/image.webp`. Keep accurate alt text. Draft examples under `_examples/` remain excluded from public routes, feeds, and search.
+
+Write a post once: the collection places it into type/tag archives, permanent transmission pages, RSS, search, and eligible homepage feeds.
+
+## Roadmap and gallery
+
+Edit `src/data/roadmap.ts` for roadmap items. Preserve stable IDs, dependencies, milestones, tasks, exit conditions, and related transmission references. Progress is not a release-date promise. Validate with `npm run check`.
+
+Add verified images under `public/images/gallery/` and update `src/data/gallery.ts`. Use truthful captions and alt text. Do not label concept art or placeholders as gameplay captures. Check filters and keyboard gallery navigation.
+
+The public design reference is [visual-parity.md](docs/visual-parity.md). The cloud migration preserves that identity.
+
+## Configuration and secrets
+
+`.env.example` contains only non-secret local/build options. `SITE_URL` controls canonical URLs and defaults to loopback until an approved hostname is configured.
+
+Runtime configuration and secrets belong in Cloudflare's separate production/preview environments. Never place secrets or private backend addresses in `PUBLIC_*` variables. The browser calls only relative gateway endpoints.
+
+`wrangler.jsonc` has empty connection settings by design. Follow the deployment guide to configure Access audiences, allowed hosts, Kinetic endpoints, machine credentials, and CSRF signing. There is no production authentication bypass.
+
+## Shared API contracts
+
+```sh
+npm run contracts:export
 ```
 
-Or run its parts separately:
+This exports `contracts/v1/schemas.json` from the same schemas used by the gateway. Both backend projects must implement and validate these contracts before live integration. The existing [Discord content publishing contract](docs/discord-publishing-contract.md) remains applicable to reviewed repository content.
 
-```bash
-npm run check
-npm run test
-npm run build
-node scripts/check-built-site.mjs
-```
+## Deploying
 
-`npm run check` validates Astro types, every transmission schema, roadmap references, draft examples, and required content. The production files are written to `dist/`.
+Only `.github/workflows/deploy-site.yml` owns website deployments. PRs run checks. Reviewed `preview/**` branches can target protected previews; `website` targets production. Both require configured GitHub environment approvals and the explicit enable variable.
 
-## 5. Previewing the build
-
-```bash
-npm run preview
-```
-
-Preview the generated site at the printed `/Wilderness-Odyssey/` URL. Re-run `npm run build` after source changes because preview serves the existing `dist/` directory.
-
-## 6. Creating a blog post
-
-The easiest path is the interactive generator:
-
-```bash
-npm run new:post
-```
-
-Choose `blog`, answer each prompt, and leave `Draft` as `y` while writing. The command creates one Markdown file in `src/content/transmissions/`. Replace its placeholder paragraph with the post, run `npm run check`, preview it, then change `draft: true` to `draft: false` when it is ready.
-
-Blog posts automatically appear at `/blog/`, `/transmissions/<slug>/`, matching tag pages, search results, RSS, and eligible homepage feeds.
-
-## 7. Creating a development log
-
-Run `npm run new:post` and choose `devlog`. Use a concise engineering title, describe verified work rather than planned claims, add the relevant modpack `version`, and set `relatedRoadmapItem` manually if it belongs to a roadmap track.
-
-Example:
-
-```yaml
-relatedRoadmapItem: "water-system"
-```
-
-The ID must exist in `src/data/roadmap.ts`. Development logs appear in the dedicated engineering archive and can be linked from roadmap cards.
-
-## 8. Creating patch notes
-
-Run `npm run new:post`, choose `patch`, and always fill in the version prompt. Write the body with clear headings such as `Added`, `Changed`, `Fixed`, and `Known limitations`. Patch records are grouped by the version filter on `/patches/`.
-
-## Post template and fields
-
-Copy `templates/transmission.md` when you do not want to use the generator. The authoritative schema lives in `src/content.config.ts`.
-
-Required fields are `title`, `description`, `publishedAt`, `type`, `author`, and at least one tag. Supported types are `news`, `blog`, `devlog`, `patch`, `lore`, and `announcement`. Optional fields include `updatedAt`, `coverImage`, `featured`, `draft`, `version`, `relatedRoadmapItem`, and `galleryImages`.
-
-Images referenced by frontmatter use a site-root path such as `/images/transmissions/water-system.webp`; the shared URL helper adds the GitHub Pages base at render time.
-
-## 9. Adding roadmap items
-
-Edit `src/data/roadmap.ts`. Each item has an ID, category, status, progress, priority, dependencies, milestone, tasks, exit conditions, and related transmission IDs. Supported statuses are:
-
-- Planned
-- Research
-- In Development
-- Testing
-- Blocked
-- Complete
-
-Do not add a speculative calendar date as a guaranteed release date. Run `npm run check` after changing IDs or related transmissions.
-
-## 10. Adding gallery images
-
-1. Put an optimized `.webp`, `.avif`, `.jpg`, or `.png` file under `public/images/gallery/`.
-2. Add or update the item in `src/data/gallery.ts`.
-3. Set `image` to a site-root path such as `/images/gallery/anomaly-storm.webp`.
-4. Add accurate `alt` text, caption, category, version, and optional lore or related transmission.
-5. Run the production build and test the filter, dialog, arrow keys, and Escape key.
-
-Items without an image intentionally render as clearly marked archive placeholders. Do not label concept art as an in-game screenshot.
-
-## 11. Using drafts
-
-Set `draft: true` while working. Drafts are excluded from production routes, archives, search data, RSS, related posts, and the homepage. The six files under `src/content/transmissions/_examples/` demonstrate every transmission type and stay excluded because they are drafts.
-
-Before publishing, set `draft: false`, use a real publication date, and run `npm run verify`.
-
-## 12. Publishing through GitHub
-
-The website lives on the `website` branch; the repository default branch contains modpack work. Always target `website` when opening a website pull request.
-
-Local Git workflow:
-
-```bash
-git switch website
-git pull --ff-only origin website
-git switch -c site/my-transmission
-# add or edit content
-npm run verify
-git add src/content/transmissions public/images
-git commit -m "Add water system development log"
-git push -u origin site/my-transmission
-```
-
-Open a pull request with base branch `website`. Merging it triggers the Pages workflow.
-
-### GitHub browser editor
-
-1. Open the repository on GitHub and select the `website` branch.
-2. Open `src/content/transmissions/`.
-3. Choose **Add file → Create new file**.
-4. Name it with a lowercase hyphenated slug ending in `.md`.
-5. Copy `templates/transmission.md`, fill in every required field, and write the body.
-6. If needed, upload images under `public/images/transmissions/` and reference them with `/images/transmissions/<file>`.
-7. Choose **Create a new branch for this commit and start a pull request**.
-8. Confirm the pull request base is `website`, let the checks pass, review the preview locally if needed, then merge.
-
-Do not paste tokens or credentials into Markdown, frontmatter, client scripts, GitHub comments, or repository files.
-
-## 13. GitHub Pages deployment
-
-`.github/workflows/deploy-site.yml` follows Astro's official Pages action pattern. On a push to `website`, or a manual workflow dispatch, it:
-
-1. checks out `website`;
-2. installs the locked npm dependencies;
-3. validates content and TypeScript;
-4. runs focused tests;
-5. builds and verifies the `/Wilderness-Odyssey/` artifact;
-6. checks generated internal links and records a Lighthouse report;
-7. uploads with `withastro/action`;
-8. deploys with `actions/deploy-pages`.
-
-In repository **Settings → Pages**, set **Source** to **GitHub Actions**. No deployment is performed merely by running the site locally.
-
-## 14. Updating site settings
-
-Edit `src/data/site.ts` for the name, tagline, current status, versions, download status, featured transmission, external links, social metadata, and footer. Do not invent an exact NeoForge build or public download URL; use an honest status until one is published.
-
-Feature summaries live in `src/data/features.ts`, survivor records in `src/data/survivorLogs.ts`, and navigation is centralized beside the site settings.
-
-## 15. Admin CMS workspace
-
-The static site includes an admin workspace at `/admin/` with a TipTap visual editor, Markdown source mode, sanitized live preview, metadata and roadmap controls, cover/body/gallery uploads, draft and publish controls, archive filters, and publishing status feedback.
-
-Use `npm run admin` for real repository editing. The command starts both Astro and a loopback-only repository service, so no GitHub token, password, or secret is placed in the browser or Pages bundle. The admin page on the public GitHub Pages site remains unavailable because a static public page cannot safely hold publishing credentials.
-
-The older browser-only mock remains available for UI development by setting `PUBLIC_ADMIN_MOCK=true` in an untracked `.env` and running `npm run dev`. Mock saves never touch files or publish.
-
-The complete backend, authentication, media, deployment-state, security, and Phase 2 contract is in `docs/admin-cms.md`.
-
-## 16. Future Discord bot publishing contract
-
-The future integration contract is documented in `docs/discord-publishing-contract.md` and machine-readable at `docs/transmission-publishing-contract.schema.json`.
-
-The recommended bot flow is: validate a proposed payload, create a Markdown file and optional images on a short-lived branch, run `npm run check`, then open a pull request targeting `website`. The website does not expose a webhook or credentials and does not require the bot to build.
-
-## 17. Troubleshooting base-path issues
-
-- A local link that starts with `/roadmap/` bypasses the project base. Use `withBase('/roadmap/')` from `src/lib/urls.ts` in components and scripts.
-- Content image fields intentionally begin with `/images/`; rendering components pass them through the same helper.
-- Open `/Wilderness-Odyssey/` during local preview. A 404 at `/` does not mean the project route failed.
-- Run `node scripts/check-built-site.mjs`; it rejects non-base-aware generated links and missing local assets.
-- If GitHub Pages shows unstyled HTML, confirm `site` and `base` in `astro.config.mjs`, that the workflow ran from `website`, and that Pages Source is **GitHub Actions**.
-- If a transmission fails validation, read the exact `npm run check` field error and compare it with `templates/transmission.md`.
-- If Astro tries to write telemetry settings in a restricted Windows environment, run the command with `ASTRO_TELEMETRY_DISABLED=1` set for that shell.
-
-## Useful commands
-
-| Command | Purpose |
-| --- | --- |
-| `npm install` | Install or refresh local dependencies |
-| `npm run admin` | Start the real local repository editor |
-| `npm run dev` | Start the Astro development server |
-| `npm run check` | Validate types, schemas, references, and examples |
-| `npm run test` | Run focused behavior tests |
-| `npm run build` | Generate the static production site |
-| `npm run preview` | Serve the generated site locally |
-| `npm run new:post` | Create a validated transmission interactively |
-| `npm run verify` | Run the full local quality gate |
+Do not enable Cloudflare Git auto-builds alongside this workflow. Do not deploy, change DNS, or modify production services without the owner's approval. Old github.io redirects and domain cutover are separate approved steps. See the deployment guide for precise configuration and verification.

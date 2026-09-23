@@ -22,3 +22,11 @@ Modpack_Checklist.txt
 /.idea/vcs.xml
 /.idea/Wilderness-Odyssey.iml
 /.idea/workspace.xml
+
+# Cloudflare and browser test artifacts
+.wrangler/
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+playwright-report/
+test-results/

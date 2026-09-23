@@ -1,0 +1,5 @@
+# Copy to .dev.vars for local Functions; configure real values privately.
+# Never use production credentials for local development or preview.
+KINETIC_ACCESS_CLIENT_ID=""
+KINETIC_ACCESS_CLIENT_SECRET=""
+CSRF_SECRET=""

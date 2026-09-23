@@ -1,91 +1,129 @@
 name: Deploy Wilderness Odyssey Website
 
 on:
+  pull_request:
+    branches: [website]
   push:
-    branches:
-      - website
+    branches: [website, 'preview/**']
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
 
 env:
   ASTRO_TELEMETRY_DISABLED: '1'
-  PUBLIC_ADMIN_API_BASE: ${{ vars.ADMIN_API_BASE }}
+  WRANGLER_SEND_METRICS: 'false'
+  SITE_URL: ${{ vars.SITE_URL || 'http://localhost:4321' }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout website branch
-        uses: actions/checkout@v7
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          ref: website
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 24
           cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Validate content and types
-        run: npm run check
-
-      - name: Run focused tests
-        run: npm run test
-
-      - name: Build, verify, and upload Astro site
-        uses: withastro/action@v6
-        with:
-          node-version: 24
-          build-cmd: npm run build && node scripts/check-built-site.mjs
-
+      - run: npm ci
+      - run: npm run contracts:export
+      - name: Check generated contract consistency
+        run: git diff --exit-code -- contracts/v1/schemas.json
+      - run: npm run verify
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
       - name: Check generated internal links
         shell: bash
         run: |
           set -euo pipefail
-
-          npm run preview -- --port 4173 > /tmp/wilderness-odyssey-preview.log 2>&1 &
+          npm run preview -- --port 4173 > "$RUNNER_TEMP/site-preview.log" 2>&1 &
           preview_pid=$!
           trap 'kill "$preview_pid" 2>/dev/null || true' EXIT
-
           for attempt in {1..30}; do
-            if curl --silent --fail http://127.0.0.1:4173/Wilderness-Odyssey/ > /dev/null; then
-              break
-            fi
+            if curl --silent --fail http://127.0.0.1:4173/ > /dev/null; then break; fi
             sleep 1
           done
-
-          curl --silent --fail http://127.0.0.1:4173/Wilderness-Odyssey/ > /dev/null
-          npx --yes linkinator@7.6.1 http://127.0.0.1:4173/Wilderness-Odyssey/ \
-            --recurse \
-            --skip 'data:.*' \
-            --skip 'https://.*'
-
-      - name: Run Lighthouse report
-        uses: treosh/lighthouse-ci-action@v12
-        continue-on-error: true
+          curl --silent --fail http://127.0.0.1:4173/ > /dev/null
+          npx --yes linkinator@7.6.1 http://127.0.0.1:4173/ --recurse --skip 'https?://(?!127\.0\.0\.1).*' --skip '.*/cdn-cgi/.*' --skip 'data:.*'
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
+      - name: Save tested Pages artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          uploadArtifacts: true
-          temporaryPublicStorage: true
-          configPath: ./.lighthouserc.json
+          name: pages-${{ github.sha }}
+          path: dist/
+          retention-days: 14
+      - name: Save private browser failure reports
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: browser-results-${{ github.run_id }}
+          path: test-results/
+          retention-days: 3
 
   deploy:
     needs: build
+    # Disabled until the owner configures both protected environments and approves rollout.
+    # Pull requests, including forks, never deploy or receive deployment credentials.
+    if: >-
+      vars.ENABLE_PAGES_DEPLOYMENTS == 'true' &&
+      github.event_name != 'pull_request' &&
+      (github.ref == 'refs/heads/website' || startsWith(github.ref, 'refs/heads/preview/'))
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
     environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      name: ${{ github.ref == 'refs/heads/website' && 'cloudflare-production' || 'cloudflare-preview' }}
+      url: ${{ steps.verify.outputs.deployment_url }}
+    concurrency:
+      group: cloudflare-${{ github.ref == 'refs/heads/website' && 'production' || github.ref }}
+      cancel-in-progress: false
+    env:
+      DEPLOY_BRANCH: ${{ github.ref_name }}
+      DEPLOY_ENVIRONMENT: ${{ github.ref == 'refs/heads/website' && 'production' || 'preview' }}
+      CLOUDFLARE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT }}
+      SITE_URL: ${{ vars.SITE_URL }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: pages-${{ github.sha }}
+          path: dist/
+      - name: Verify approved revision is still current
+        shell: bash
+        run: |
+          set -euo pipefail
+          head_sha="$(git ls-remote origin "refs/heads/$DEPLOY_BRANCH" | cut -f1)"
+          test "$head_sha" = "$GITHUB_SHA"
+      - name: Install isolated deployment tool without application scripts
+        run: npm install --prefix "$RUNNER_TEMP/wo-deployer" --no-save --ignore-scripts wrangler@4.136.3
+      - name: Prepare environment configuration
+        run: node scripts/configure-pages.mjs
+        env:
+          ALLOWED_HOSTS: ${{ vars.ALLOWED_HOSTS }}
+          ACCESS_TEAM_DOMAIN: ${{ vars.ACCESS_TEAM_DOMAIN }}
+          ACCESS_AUDIENCE: ${{ vars.ACCESS_AUDIENCE }}
+          PUBLIC_STATUS_URL: ${{ vars.PUBLIC_STATUS_URL }}
+          KINETIC_ADMIN_ORIGIN: ${{ vars.KINETIC_ADMIN_ORIGIN }}
+          PREVIEW_VERIFY_SERVICE_ID: ${{ vars.PREVIEW_VERIFY_SERVICE_ID }}
+      - name: Publish tested artifact with Wrangler
+        run: node "$RUNNER_TEMP/wo-deployer/node_modules/wrangler/bin/wrangler.js" pages deploy dist --project-name "$CLOUDFLARE_PAGES_PROJECT" --branch "$DEPLOY_BRANCH" --commit-hash "$GITHUB_SHA"
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      - name: Verify deployed artifact and staff protection
+        id: verify
+        run: node scripts/verify-deployment.mjs
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          PREVIEW_ACCESS_CLIENT_ID: ${{ secrets.PREVIEW_ACCESS_CLIENT_ID }}
+          PREVIEW_ACCESS_CLIENT_SECRET: ${{ secrets.PREVIEW_ACCESS_CLIENT_SECRET }}

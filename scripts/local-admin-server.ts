@@ -1,3 +1,4 @@
+import { publicationState } from './publication-status';
 import { execFile } from 'node:child_process';
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import { mkdir, readFile, readdir, stat, unlink, writeFile } from 'node:fs/promises';
@@ -30,12 +31,12 @@ import type {
 
 const execFileAsync = promisify(execFile);
 const DEFAULT_SITE_ORIGIN = 'http://127.0.0.1:4321';
-const SITE_BASE = '/Wilderness-Odyssey';
+const SITE_BASE = '';
 const DEFAULT_API_PORT = 4322;
 const MAX_JSON_BYTES = 2 * 1024 * 1024;
 const MEDIA_REQUEST_OVERHEAD = 1024 * 1024;
 const WORKFLOW_NAME = 'Deploy Wilderness Odyssey Website';
-const DEPLOYMENT_URL = 'https://thunderrock424242.github.io/Wilderness-Odyssey/';
+
 const ROADMAP_IDS = ROADMAP_ITEMS.map((item) => item.id);
 
 type LocalAdminServerOptions = {
@@ -224,7 +225,7 @@ export class LocalGitPublisher {
     const commitUrl = `https://github.com/${this.preparedRepository}/commit/${sha}`;
     const status: PublishingStatus = {
       state: 'commit-created',
-      message: 'Changes were pushed. GitHub Pages is starting its deployment checks.',
+      message: 'Changes were pushed. Website checks are starting; production deployment requires approval.',
       operationId,
       commitUrl,
     };
@@ -249,29 +250,23 @@ export class LocalGitPublisher {
       const payload = (await response.json()) as { workflow_runs?: GitHubWorkflowRun[] };
       const run = payload.workflow_runs?.find((candidate) => candidate.name === WORKFLOW_NAME && candidate.head_branch === 'website');
       if (!run) return operation.status;
-      if (run.status === 'completed' && run.conclusion === 'success') {
-        operation.status = {
-          state: 'published',
-          message: 'GitHub Pages deployed the transmission successfully.',
-          operationId,
-          commitUrl: operation.status.commitUrl,
-          deploymentUrl: DEPLOYMENT_URL,
-        };
-      } else if (run.status === 'completed') {
-        operation.status = {
-          state: 'failed',
-          message: `The GitHub Pages workflow finished with ${run.conclusion ?? 'an unknown result'}.`,
-          operationId,
-          commitUrl: operation.status.commitUrl,
-        };
-      } else {
-        operation.status = {
-          state: run.status === 'queued' ? 'commit-created' : 'build-running',
-          message: run.status === 'queued' ? 'GitHub Pages is waiting to start.' : 'GitHub Pages is validating and deploying the site.',
-          operationId,
-          commitUrl: operation.status.commitUrl,
-        };
+      const deploymentResponse = await fetch(`https://api.github.com/repos/${operation.repository}/deployments?sha=${operation.sha}&environment=cloudflare-production`, {
+        headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'Wilderness-Odyssey-Local-Admin' },
+        signal: AbortSignal.timeout(8000),
+      });
+      if (!deploymentResponse.ok) return operation.status;
+      const deployments = await deploymentResponse.json() as { id: number; sha: string; environment: string }[];
+      const deployment = deployments.find(value => value.sha === operation.sha && value.environment === 'cloudflare-production' && Number.isSafeInteger(value.id));
+      let deploymentStatus: { state: string; environment_url?: string } | undefined;
+      if (deployment) {
+        const statuses = await fetch(`https://api.github.com/repos/${operation.repository}/deployments/${deployment.id}/statuses`, {
+          headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'Wilderness-Odyssey-Local-Admin' },
+          signal: AbortSignal.timeout(8000),
+        });
+        if (!statuses.ok) return operation.status;
+        deploymentStatus = (await statuses.json() as { state: string; environment_url?: string }[])[0];
       }
+      operation.status = { ...publicationState(run, deploymentStatus), operationId, commitUrl: operation.status.commitUrl };
     } catch {
       // Keep the last confirmed state when GitHub status cannot be reached.
     }

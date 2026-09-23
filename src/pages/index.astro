@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import LiveStatus from '../components/LiveStatus.astro';
 import BunkerTerminal from '../components/BunkerTerminal.astro';
 import StatusBadge from '../components/StatusBadge.astro';
 import TransmissionCard from '../components/TransmissionCard.astro';
@@ -36,6 +37,8 @@ const roadmapPreview = ROADMAP_ITEMS.slice(0, 4);
     </div>
     <a class="scroll-cue" href="#origin"><span>Scroll</span><i class="s-arrow" aria-hidden="true"></i></a>
   </section>
+
+  <LiveStatus compact />
 
   <section id="origin" class="chapter">
     <div class="ch-num on" aria-hidden="true">01</div>

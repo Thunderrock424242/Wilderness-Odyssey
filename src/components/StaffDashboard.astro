@@ -1,0 +1,34 @@
+---
+type Props = { section: string };
+const { section } = Astro.props;
+---
+{section === 'server' && <>
+  <section class="ops-card"><h2>Service overview</h2><p data-overview></p><div class="staff-table-wrap"><table><caption>Recent Minecraft performance</caption><thead><tr><th scope="col">Observed</th><th scope="col">TPS</th><th scope="col">MSPT</th><th scope="col">Players</th></tr></thead><tbody data-performance></tbody></table></div></section>
+  <div class="status-grid"><section class="ops-card"><h2>Incidents</h2><div class="staff-list" data-incidents></div></section><section class="ops-card"><h2>Operation requests</h2><p class="ops-muted">An accepted request has not necessarily completed. Refresh to check progress.</p><div class="staff-list" data-operations></div></section></div>
+  <div class="status-grid">
+    <form class="ops-card" data-form="maintenance" data-write="server:write" hidden><fieldset><legend>Maintenance mode</legend><label><input name="active" type="checkbox" /> Maintenance active</label><label>Public message<textarea name="message" maxlength="500"></textarea></label><label><input name="minecraft" type="checkbox" /> Minecraft affected</label><label><input name="aether" type="checkbox" /> Aether affected</label><label>Start time<input name="startsAt" type="datetime-local" /></label><label>End time<input name="endsAt" type="datetime-local" /></label><label>Reason<textarea name="reason" minlength="10" maxlength="1000" required></textarea></label><button type="submit">Update maintenance</button></fieldset></form>
+    <form class="ops-card" data-form="ai-requests" data-write="server:write" hidden><fieldset><legend>Aether request admission</legend><p class="ops-muted">Pausing stops new requests. Existing requests finish according to the service's policy.</p><label><input name="paused" type="checkbox" /> Pause new AI requests</label><label>Reason<textarea name="reason" minlength="10" maxlength="1000" required></textarea></label><button type="submit">Update request admission</button></fieldset></form>
+    <form class="ops-card" data-form="service-operation" data-write="server:write" hidden><fieldset><legend>Request a service operation</legend><p class="ops-muted">Only approved operations are offered. Requests may require additional approval.</p><label>Approved operation<select name="operationId" required><option value="">No operations loaded</option></select></label><label>Reason<textarea name="reason" minlength="10" maxlength="1000" required></textarea></label><button type="submit">Request operation</button></fieldset></form>
+  </div>
+</>}
+{section === 'players' && <>
+  <form class="ops-card" data-player-search><label>Verified Minecraft player<input name="q" minlength="2" maxlength="64" required placeholder="Username or UUID" /></label><button type="submit">Search players</button></form>
+  <div class="staff-list" data-player-results></div><button type="button" class="secondary" data-player-next hidden>Next page</button>
+  <div data-player-detail hidden><section class="ops-card"><h2 data-player-name></h2><p class="ops-muted" data-player-verification></p><h3>Recent moderation history</h3><div class="staff-list" data-player-history></div></section>
+    <div class="status-grid"><section class="ops-card"><h2>Aether restrictions</h2><div class="staff-list" data-player-restrictions></div></section><section class="ops-card"><h2>Appeals</h2><div class="staff-list" data-player-appeals></div></section></div>
+    <div class="status-grid"><form class="ops-card" data-form="warning" data-write="players:write" hidden><fieldset><legend>Issue a warning</legend><label>Reason<textarea name="reason" minlength="10" maxlength="1000" required></textarea></label><button type="submit">Issue warning</button></fieldset></form>
+    <form class="ops-card" data-form="restriction" data-write="players:write" hidden><fieldset><legend>Restrict Aether access</legend><label>Expires at<input name="expiresAt" type="datetime-local" required /></label><label>Reason<textarea name="reason" minlength="10" maxlength="1000" required></textarea></label><button type="submit">Apply restriction</button></fieldset></form></div>
+  </div>
+</>}
+{section === 'reports' && <>
+  <section class="ops-card"><h2>Player-submitted reports</h2><p>Only excerpts attached to a report are available. There is no general private-conversation archive.</p><div class="staff-list" data-report-list></div><button type="button" class="secondary" data-report-next hidden>Next page</button></section>
+  <section class="ops-card" data-report-detail hidden><h2 data-report-title></h2><p class="ops-muted" data-report-provenance></p><div data-report-excerpts></div><h3>Moderator actions</h3><div class="staff-list" data-report-actions></div>
+    <form data-form="report" data-write="reports:write" hidden><label>Decision<select name="decision" required><option value="resolved">Resolve case</option><option value="escalated">Escalate case</option></select></label><label>Reason<textarea name="reason" minlength="10" maxlength="1000" required></textarea></label><button type="submit">Record decision</button></form>
+  </section>
+</>}
+{section === 'models' && <>
+  <section class="ops-card"><h2>Active model and readiness</h2><p data-active-model>Unavailable</p><div class="staff-list" data-model-list></div></section>
+  <div class="status-grid"><form class="ops-card" data-form="model" data-write="models:write" hidden><fieldset><legend>Request an approved model</legend><label>Model<select name="modelId" required><option value="">No models loaded</option></select></label><label>Reason<textarea name="reason" minlength="10" maxlength="1000" required></textarea></label><button type="submit">Request model change</button></fieldset></form>
+    <form class="ops-card" data-form="settings" data-write="models:write" hidden><fieldset><legend>Permitted inference settings</legend><p class="ops-muted">Model-specific limits apply. Every change is recorded.</p><label>Temperature<input name="temperature" type="number" min="0" max="2" step="0.01" required /></label><label>Maximum generated tokens<input name="numPredict" type="number" min="1" max="8192" step="1" required /></label><label>Context tokens<input name="numCtx" type="number" min="512" max="131072" step="1" required /></label><label>Reason<textarea name="reason" minlength="10" maxlength="1000" required></textarea></label><button type="submit">Request settings change</button></fieldset></form></div>
+</>}
+<section class="staff-message" data-operation-result role="status" hidden></section>

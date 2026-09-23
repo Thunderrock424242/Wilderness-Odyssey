@@ -1,0 +1,42 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "wilderness-odyssey",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-09-22",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "vars": {
+    "ENVIRONMENT": "unconfigured",
+    "ALLOWED_HOSTS": "",
+    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_AUDIENCE": "",
+    "PUBLIC_STATUS_URL": "",
+    "KINETIC_ADMIN_ORIGIN": "",
+    "PREVIEW_VERIFY_SERVICE_ID": ""
+  },
+  "env": {
+    "preview": {
+      "vars": {
+        "ENVIRONMENT": "preview",
+        "ALLOWED_HOSTS": "",
+        "ACCESS_TEAM_DOMAIN": "",
+        "ACCESS_AUDIENCE": "",
+        "PUBLIC_STATUS_URL": "",
+        "KINETIC_ADMIN_ORIGIN": "",
+        "PREVIEW_VERIFY_SERVICE_ID": ""
+      }
+    },
+    "production": {
+      "vars": {
+        "ENVIRONMENT": "production",
+        "ALLOWED_HOSTS": "",
+        "ACCESS_TEAM_DOMAIN": "",
+        "ACCESS_AUDIENCE": "",
+        "PUBLIC_STATUS_URL": "",
+        "KINETIC_ADMIN_ORIGIN": "",
+        "PREVIEW_VERIFY_SERVICE_ID": ""
+      }
+    }
+  }
+}

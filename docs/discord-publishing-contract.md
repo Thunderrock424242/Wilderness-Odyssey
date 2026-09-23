@@ -1,6 +1,6 @@
 # Future Discord publishing contract
 
-This is a preparation boundary for the existing Wilderness Odyssey Discord bot. The site does not call the bot, expose an inbound webhook, or contain bot/GitHub credentials.
+This is a preparation boundary for the existing Wilderness Odyssey Discord bot. This content flow exposes no inbound publishing webhook and contains no bot/GitHub credentials. Operational status and staff actions use the separate versioned contracts in api-integration.md.
 
 The machine-readable payload contract is `transmission-publishing-contract.schema.json`. It intentionally mirrors `src/content.config.ts`; the Astro schema remains authoritative during the website build.
 
@@ -15,7 +15,7 @@ The machine-readable payload contract is `transmission-publishing-contract.schem
 7. Run `npm ci` and `npm run check` in the bot's trusted worker or in pull-request CI.
 8. Open a pull request whose base branch is `website`; include the source Discord message ID in the PR description, not in public frontmatter.
 9. Require review for lore, announcements, and non-draft publication.
-10. Merge through normal GitHub permissions. The Pages workflow handles deployment.
+10. Merge through normal GitHub permissions. The Cloudflare Pages workflow handles deployment only when enabled and approved.
 
 ## Security boundaries
 
@@ -35,7 +35,7 @@ Image paths are repository-root public paths beginning with `/images/`. Do not a
 ## Draft and publish behavior
 
 - `draft: true`: stored in the collection but excluded from all production output.
-- `draft: false`: public after validation, review, merge into `website`, and a successful Pages workflow.
+- `draft: false`: public after validation, review, merge into `website`, and a verified successful production deployment. A checks-only workflow is not publication.
 - Changing a draft to published should update `publishedAt` to the real publication date.
 - Editing a public post may set `updatedAt`; it must not silently change the slug.
 

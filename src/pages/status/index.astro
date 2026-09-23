@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import LiveStatus from '../../components/LiveStatus.astro';
+---
+<BaseLayout title="Server Status" description="Minecraft and Aether availability, performance, maintenance, and public incidents." canonicalPath="/status/">
+  <PageHero eyebrow="Wilderness Odyssey" title="Server Status" description="Current availability and the most recent confirmed measurements. Updates can be delayed when a service cannot be reached." primaryLabel="Get help" primaryHref="/support/" />
+  <div class="ops-content"><LiveStatus /><section class="ops-card"><h2>Reading these measurements</h2><p>TPS measures game ticks per second; the normal target is 20. MSPT is the time spent on a server tick; sustained values above 50 ms can prevent that target. Missing measurements are shown as unavailable.</p><p>Ollama can be reachable while Aether inference is still starting or paused. Latency is based on reported inference samples, and includes the observation time. Refreshing this page does not start an AI request.</p></section></div>
+</BaseLayout>

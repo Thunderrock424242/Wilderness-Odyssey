@@ -39,3 +39,7 @@ The visual source of truth for the Astro site is commit `2625adb` on the `websit
 | 1920×1080 | same routes | same routes | maximum line lengths, card density, negative space |
 
 For every viewport, verify keyboard focus, menu escape behavior, filters, roadmap details, terminal input/history, gallery dialog controls, and reduced-motion behavior. The Astro content collection, RSS, sitemap, redirects, draft exclusion, and GitHub Pages base path are functional requirements and must not be traded away for visual parity.
+
+## Cloudflare migration
+
+The current site uses root-relative routes and keeps compatibility redirects for the former /Wilderness-Odyssey/ prefix. The original-reference column above documents the historical reference; compare the new Astro routes without that prefix. The roadmap, content, assets, public atmosphere, and responsive behavior remain preservation requirements. Operational dashboards use plain staff language and accessible controls.

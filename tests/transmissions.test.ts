@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Transmission } from '../src/lib/transmissions';
-import { getPublishedTransmissions } from '../src/lib/transmissions';
+import { getPublishedTransmissions, tagArchives } from '../src/lib/transmissions';
 
 const entry = (id: string, publishedAt: string, draft = false) => ({
   id,
@@ -20,4 +20,12 @@ describe('transmission publishing rules', () => {
     ]);
     expect(result.map((item) => item.id)).toEqual(['a-equal', 'z-equal', 'older']);
   });
+});
+
+it('combines tags that share a URL without losing published entries', () => {
+  const first = { ...entry('one', '2026-01-01'), data: { ...entry('one', '2026-01-01').data, tags: ['Lore', 'Website'] } };
+  const second = { ...entry('two', '2026-01-02'), data: { ...entry('two', '2026-01-02').data, tags: ['lore', 'Lore'] } };
+  const archives = tagArchives([first, second]);
+  expect(archives.map(archive => archive.slug)).toEqual(['lore', 'website']);
+  expect(archives[0].entries.map(item => item.id)).toEqual(['one', 'two']);
 });

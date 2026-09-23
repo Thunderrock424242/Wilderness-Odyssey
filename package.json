@@ -6,12 +6,16 @@
   "scripts": {
     "admin": "tsx scripts/local-admin.ts",
     "dev": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro dev --host 127.0.0.1",
-    "check": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check && node scripts/validate-content.mjs",
-    "build": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "check": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check && tsc -p tsconfig.gateway.json --noEmit && node scripts/validate-content.mjs",
+    "build": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro build && node scripts/build-pages.mjs",
     "preview": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro preview --host 127.0.0.1",
     "new:post": "node scripts/new-post.mjs",
     "test": "vitest run --config vitest.config.ts --configLoader runner",
-    "verify": "npm run check && npm run test && npm run build && node scripts/check-built-site.mjs"
+    "verify": "npm run check && npm run test && npm run build && node scripts/check-built-site.mjs",
+    "contracts:export": "tsx scripts/export-contracts.ts",
+    "test:e2e": "playwright test",
+    "preview:pages": "cross-env WRANGLER_SEND_METRICS=false wrangler pages dev dist --ip 127.0.0.1",
+    "types:pages": "wrangler types worker-configuration.d.ts --include-runtime false"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
@@ -22,17 +26,23 @@
     "@tiptap/starter-kit": "^3.30.5",
     "astro": "^7.1.1",
     "dompurify": "^3.4.14",
+    "jose": "^6.2.12",
     "marked": "^16.4.2",
     "turndown": "^7.2.4",
-    "yaml": "^2.9.0"
+    "yaml": "^2.9.0",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@axe-core/playwright": "^4.13.0",
+    "@cloudflare/workers-types": "^5.20260922.1",
+    "@playwright/test": "^1.63.0",
     "@types/node": "^26.1.1",
     "@types/turndown": "^5.0.6",
     "cross-env": "^10.1.0",
     "tsx": "^4.23.12",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "wrangler": "^4.136.3"
   }
 }

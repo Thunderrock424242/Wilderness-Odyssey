@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { SITE } from '../../data/site';
+import '../../styles/operations.css';
+---
+<BaseLayout title="Support" description="Help with installation, connecting, performance, Aether, and reporting problems." canonicalPath="/support/">
+  <PageHero eyebrow="Community support" title="Get Support" description="Check service status, find troubleshooting steps, or ask the Wilderness Odyssey community for help." primaryLabel="Troubleshooting" primaryHref="/support/troubleshooting/" secondaryLabel="Service status" secondaryHref="/status/" />
+  <div class="ops-content status-grid"><section class="ops-card"><h2>Before reporting a problem</h2><p>Include the modpack version, Minecraft version, what happened, what you expected, and steps to reproduce it. Note whether you were playing alone or on a server.</p><p>Wilderness Odyssey targets Minecraft 1.21.1 with NeoForge. Use the exact pack release and loader version provided with that release.</p><p>{SITE.downloadStatus}. Development announcements are not download links.</p></section><section class="ops-card"><h2>Contact the community</h2><p>Use the Discord community for troubleshooting, moderation appeals, and instructions for submitting an Aether conversation report.</p><a class="ops-link" href={SITE.links.discord} target="_blank" rel="noreferrer">Open Wilderness Odyssey Discord →</a><p>Share only the conversation excerpt needed to explain a report. Remove passwords, tokens, addresses, and other personal information from logs before sharing them.</p></section></div>
+</BaseLayout>

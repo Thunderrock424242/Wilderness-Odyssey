@@ -1,0 +1,21 @@
+---
+type Props = { compact?: boolean };
+const { compact = false } = Astro.props;
+import '../styles/operations.css';
+---
+<section class:list={['live-status', { 'live-status--compact': compact }]} data-live-status aria-label="Live service status">
+  <div class="status-heading"><div><p class="ops-kicker">Service availability</p><h2>{compact ? 'Before you join' : 'Minecraft and Aether'}</h2></div><button class="ops-button" type="button" data-status-refresh>Refresh status</button></div>
+  <p data-status-detail role="status">Connecting to the status service. No live measurements have been confirmed.</p>
+  <div class="status-grid">
+    <article class="ops-card"><h3>Minecraft</h3><p class="service-state" data-status-minecraft>Unavailable</p>
+      <dl class="metric-grid"><div><dt>Players</dt><dd data-metric="players">Unavailable</dd></div><div><dt>TPS</dt><dd data-metric="tps">Unavailable</dd></div><div><dt>MSPT</dt><dd data-metric="mspt">Unavailable</dd></div><div><dt>Minecraft version</dt><dd data-metric="minecraftVersion">Unavailable</dd></div><div><dt>Modpack version</dt><dd data-metric="modpackVersion">Unavailable</dd></div><div><dt>Loader</dt><dd data-metric="loader">Unavailable</dd></div></dl>
+    </article>
+    <article class="ops-card"><h3>Aether</h3><p class="service-state" data-status-aether>Unavailable</p>
+      <dl class="metric-grid"><div><dt>Ollama</dt><dd data-metric="ollama">Unavailable</dd></div><div><dt>New AI requests</dt><dd data-metric="requests">Unavailable</dd></div><div><dt>Response latency (p50 / p95)</dt><dd data-metric="latency">Unavailable</dd></div></dl><p class="ops-muted" data-latency-detail>No inference timing has been reported.</p>
+    </article>
+  </div>
+  {!compact && <section class="ops-card"><h3>Public incidents</h3><div data-public-incidents>Incident information is unavailable.</div></section>}
+  {compact && <a class="ops-link" href="/status/">Open the full status dashboard →</a>}
+  <noscript><p>JavaScript is required to retrieve current status. These values are unavailable, not live measurements.</p></noscript>
+</section>
+<script src="../scripts/status.ts"></script>
