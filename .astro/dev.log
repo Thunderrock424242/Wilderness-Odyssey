@@ -1,0 +1,10 @@
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"Generated 1ms","label":"types","level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"Syncing content","label":"content","level":"info"}
+{"message":"Synced content","label":"content","level":"info"}
+{"message":"Re-optimizing dependencies because vite config has changed","label":"vite","level":"info"}
+{"message":" astro  v7.1.1 ready in 2921 ms\n┃ Local    http://127.0.0.1:4321/Wilderness-Odyssey/","label":"SKIP_FORMAT","level":"info"}
+{"message":"watching for file changes...","label":null,"level":"info"}
+{"message":"[200] /admin/ 58ms","label":null,"level":"info"}
+{"message":"dependencies optimized: @tiptap/core, @tiptap/extension-image, @tiptap/starter-kit, dompurify, marked, turndown","label":"vite","level":"info"}

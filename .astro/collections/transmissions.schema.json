@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 3
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 320
+    },
+    "publishedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "news",
+        "blog",
+        "devlog",
+        "patch",
+        "lore",
+        "announcement"
+      ]
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tags": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "coverImage": {
+      "type": "string",
+      "format": "starts_with",
+      "pattern": "^\\/.*"
+    },
+    "featured": {
+      "default": false,
+      "type": "boolean"
+    },
+    "draft": {
+      "default": false,
+      "type": "boolean"
+    },
+    "version": {
+      "type": "string"
+    },
+    "relatedRoadmapItem": {
+      "type": "string"
+    },
+    "galleryImages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "src": {
+            "type": "string",
+            "format": "starts_with",
+            "pattern": "^\\/.*"
+          },
+          "alt": {
+            "type": "string",
+            "minLength": 3
+          },
+          "caption": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "src",
+          "alt"
+        ]
+      }
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "publishedAt",
+    "type",
+    "author",
+    "tags"
+  ]
+}
