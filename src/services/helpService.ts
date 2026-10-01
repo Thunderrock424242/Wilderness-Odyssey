@@ -25,6 +25,7 @@ export function helpPayload() {
       { name: 'Spark reports', value: 'Use `/playtest start` and `/sparkreport` to archive profiler links.', inline: true },
       { name: 'Known issues', value: 'Use `/knownissues` for staff-maintained instability notes.', inline: true },
       { name: 'Playtesting', value: 'Use `/playtest` for the singleplayer stability checklist.', inline: true },
+      { name: 'Connected services', value: 'Use /status and /players for observed availability, /report for private AI evidence or bug intake, and /aether token for account controls. /maintenance and /modlog require assigned staff access.' },
       { name: 'Privacy', value: 'Use `/privacy` to see exactly what reports collect and avoid.', inline: true }
     );
 

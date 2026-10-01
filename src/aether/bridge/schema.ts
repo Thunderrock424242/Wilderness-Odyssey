@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const requestId = z.string().trim().min(8).max(100);
 const serverId = z.string().trim().min(1).max(100);
-const minecraftUuid = z.string().trim().min(32).max(36);
+const minecraftUuid = z.uuid();
 const playerContextValue = z.union([
   z.string().max(500),
   z.number().finite(),
@@ -19,7 +19,7 @@ export const aetherBridgeRequestSchema = z.discriminatedUnion('action', [
     serverId,
     code: z.string().trim().min(6).max(32),
     minecraftUuid,
-    minecraftName: z.string().trim().min(1).max(64)
+    minecraftName: z.string().regex(/^[a-zA-Z0-9_]{1,16}$/)
   }).strict(),
   z.object({
     action: z.literal('player_question'),

@@ -77,7 +77,7 @@ export function privacyEmbed(): EmbedBuilder {
       },
       {
         name: 'What the bot does not collect',
-        value: 'No general server chat logs, IP addresses, Discord tokens, personal files, passwords, private messages, or background telemetry.'
+        value: 'No general chat logs, private-message scraping, passwords, or personal-file collection. Service monitoring records health, player counts, and performance; private Aether reports contain only excerpts you select.'
       },
       {
         name: 'Crash/performance reports',
@@ -92,8 +92,8 @@ export function privacyEmbed(): EmbedBuilder {
         value: 'For closed playtests, the bot can record that you accepted the playtest terms/privacy notice before it sends the test package link.'
       },
       {
-        name: 'Future Minecraft mod integration',
-        value: 'In-game reports should go to a small backend API/webhook endpoint. A Minecraft mod must never contain or use the Discord bot token.'
+        name: 'Aether accounts and private reports',
+        value: 'Verified account identifiers, token hashes, and moderation decisions support access controls. Selected report excerpts expire after 30 days; audit/report metadata after 180 days. Unlinking or clearing optional data does not erase active restrictions. Tokens are shown only once.'
       }
     );
 }

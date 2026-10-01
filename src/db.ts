@@ -8,6 +8,9 @@ let db: DatabaseSync | null = null;
 
 export function getDb(): DatabaseSync {
   if (!db) {
+    if (process.env.CONNECTED_SERVICES_ENABLED === 'true' && (!fs.existsSync(config.databasePath) || fs.statSync(config.databasePath).size === 0)) {
+      throw new Error('Connected-services database is missing. Restore the preserved database before starting. For a first installation, initialize with connected services disabled before configuring access.');
+    }
     fs.mkdirSync(path.dirname(config.databasePath), { recursive: true });
     db = new DatabaseSync(config.databasePath);
     db.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');

@@ -1,3 +1,4 @@
+import { getConnected } from '../connected/runtime';
 import { config } from '../config';
 import { getDb } from '../db';
 import { logger } from '../utils/logger';
@@ -45,7 +46,19 @@ export function initializeAether(): void {
     new AetherRateLimiter(
       config.aether.rateLimitRequests,
       config.aether.rateLimitWindowSeconds * 1000
-    )
+    ),
+    request => getConnected()?.authorizeAether(request) ?? false,
+    (discordId, uuid) => {
+      const identity = getConnected()?.identity;
+      const account = identity?.lookup('discord', discordId);
+      return Boolean(account && identity?.ownsMinecraft(account, uuid));
+    },
+    (discordId, uuid) => {
+      const identity = getConnected()?.identity;
+      if (!identity) throw new Error('Account linking is temporarily unavailable. Try again shortly.');
+      const account = identity.lookup('discord', discordId);
+      if (account) identity.unlinkMinecraft(account, uuid);
+    }
   );
 
   if (config.aether.issues.length > 0 || lore.warning) {

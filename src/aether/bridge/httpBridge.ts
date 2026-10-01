@@ -1,3 +1,4 @@
+import { getConnected } from '../../connected/runtime';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { getAetherCore, isAetherBridgeAvailable } from '../index';
 import { parseAetherBridgeRequest } from './schema';
@@ -37,7 +38,15 @@ export async function handleAetherBridgeHttpRequest(
       return true;
     }
 
+    const connected = getConnected();
+    if (!connected || parsed.request.serverId !== connected.config.serverId) {
+      sendJson(response, 403, { ok: false, error: 'server_denied' });
+      return true;
+    }
     const result = await core.handleBridgeRequest(parsed.request);
+    if (parsed.request.action === 'complete_link' && result.ok === true && typeof result.discordUserId === 'string') {
+      connected.identity.linkMinecraft(connected.identity.account('discord', result.discordUserId), parsed.request.minecraftUuid, parsed.request.minecraftName);
+    }
     sendJson(response, result.ok === false ? 400 : 200, result);
   } catch {
     sendJson(response, 400, { ok: false, error: 'invalid_request' });

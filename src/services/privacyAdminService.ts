@@ -1,3 +1,5 @@
+import { getConnected } from '../connected/runtime';
+import { removeMinecraftLink } from './minecraftVerificationService';
 import { createHash } from 'node:crypto';
 import type { EmbedBuilder } from 'discord.js';
 import { getDb } from '../db';
@@ -89,6 +91,12 @@ export function anonymizeUserData(userId: string): PrivacyActionResult {
       WHERE user_id = ?
     `).run(userId).changes);
 
+    for (const table of ['aether_user_preferences', 'aether_conversation_summaries', 'aether_lore_discoveries', 'aether_diagnostic_history']) {
+      changedRows += Number(database.prepare(`DELETE FROM ${table} WHERE user_id=?`).run(userId).changes);
+    }
+    const identity = getConnected()?.identity;
+    const account = identity?.lookup('discord', userId);
+    if (identity && account) changedRows += identity.clearOptionalData(account);
     database.exec('COMMIT');
   } catch (error) {
     database.exec('ROLLBACK');
@@ -100,7 +108,7 @@ export function anonymizeUserData(userId: string): PrivacyActionResult {
 
 export function unlinkMinecraftForUser(userId: string): number {
   const database = getDb();
-  const links = Number(database.prepare('DELETE FROM minecraft_links WHERE user_id = ?').run(userId).changes);
+  const links = removeMinecraftLink(userId) ? 1 : 0;
   const codes = Number(database.prepare('DELETE FROM minecraft_link_codes WHERE user_id = ?').run(userId).changes);
   return links + codes;
 }

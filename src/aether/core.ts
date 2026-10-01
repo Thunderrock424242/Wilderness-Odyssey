@@ -44,7 +44,10 @@ export class AetherCore {
     readonly minecraftBridge: AetherMinecraftBridge,
     private readonly router: AetherRouter,
     private readonly permissionManager: AetherPermissionManager,
-    private readonly rateLimiter: AetherRateLimiter
+    private readonly rateLimiter: AetherRateLimiter,
+    private readonly authorizeRequest: (request: AetherRequest) => boolean = () => false,
+    private readonly ownsMinecraft: (discordId: string, uuid: string) => boolean = () => false,
+    private readonly unlinkMinecraft: (discordId: string, uuid: string) => void = () => {}
   ) {}
 
   initialize(): void {
@@ -103,6 +106,12 @@ export class AetherCore {
       return disabledResponse(request);
     }
 
+    let permitted = false;
+    try { permitted = this.authorizeRequest(request); } catch { /* Fail closed on policy/storage errors. */ }
+    if (!permitted) return {
+      requestId: request.requestId, agentName: request.agentHint ?? 'general', status: 'error', confidence: 'high',
+      responseText: 'Aether requires a verified account with permission to use AI. Sign in, or contact staff if access is restricted.',
+    };
     const rateLimit = this.rateLimiter.consume(
       `${request.sourcePlatform}:${request.userIdentity.platformUserId}`
     );
@@ -158,6 +167,8 @@ export class AetherCore {
 
   unlink(discordUserId: string): boolean {
     this.assertMemoryAvailable();
+    const link = this.memory.getProfile(discordUserId).minecraftLink;
+    if (link) this.unlinkMinecraft(discordUserId, link.minecraftUuid);
     return this.memory.unlink(discordUserId);
   }
 
@@ -218,11 +229,14 @@ export class AetherCore {
     const link = this.memory.isAvailable()
       ? this.memory.getLinkByMinecraftUuid(normalizedUuid)
       : null;
+    let trustedLink = false;
+    try { trustedLink = Boolean(link && this.ownsMinecraft(link.discordUserId, normalizedUuid)); }
+    catch { /* An unavailable ownership authority cannot grant private context access. */ }
     const aetherRequest: AetherRequest = {
       requestId: request.requestId,
       sourcePlatform: 'minecraft',
       userIdentity: {
-        platformUserId: link?.discordUserId ?? `minecraft:${normalizedUuid}`,
+        platformUserId: trustedLink && link ? link.discordUserId : `minecraft:${normalizedUuid}`,
         linkedMinecraftUuid: normalizedUuid
       },
       guildOrServerId: request.serverId,

@@ -1,3 +1,5 @@
+import { AetherSqliteMemory } from '../aether/memory';
+import { getConnected } from '../connected/runtime';
 import { randomInt } from 'node:crypto';
 import { config } from '../config';
 import { getDb } from '../db';
@@ -64,63 +66,17 @@ export function createMinecraftLinkCode(input: {
   throw new Error('Failed to generate a unique Minecraft verification code.');
 }
 
-export function completeMinecraftLink(input: {
-  code: string;
-  minecraftUuid: string;
-  minecraftName: string;
-}): { ok: true; link: MinecraftLinkRecord } | { ok: false; reason: string } {
-  const normalizedCode = normalizeCode(input.code);
-  const normalizedUuid = normalizeUuid(input.minecraftUuid);
-  const minecraftName = input.minecraftName.trim();
-
-  if (!normalizedCode || !normalizedUuid || !minecraftName) {
-    return { ok: false, reason: 'Code, Minecraft UUID, and Minecraft name are required.' };
-  }
-
-  const database = getDb();
-  const codeRow = database.prepare(`
-    SELECT * FROM minecraft_link_codes
-    WHERE code = ? AND used_at IS NULL
-  `).get(normalizedCode) as MinecraftLinkCodeRow | undefined;
-
-  if (!codeRow) {
-    return { ok: false, reason: 'This code is invalid or has already been used. Please generate a fresh code in Discord and try again.' };
-  }
-
-  if (new Date(codeRow.expires_at).getTime() < Date.now()) {
-    database.prepare('UPDATE minecraft_link_codes SET used_at = datetime(\'now\') WHERE id = ?').run(codeRow.id);
-    return { ok: false, reason: 'This code expired. Please generate a new one in Discord and try again.' };
-  }
-
-  database.prepare(`
-    INSERT INTO minecraft_links (
-      user_id, username, minecraft_uuid, minecraft_name
-    ) VALUES (
-      @userId, @username, @minecraftUuid, @minecraftName
-    )
-    ON CONFLICT(user_id)
-    DO UPDATE SET
-      username = excluded.username,
-      minecraft_uuid = excluded.minecraft_uuid,
-      minecraft_name = excluded.minecraft_name,
-      updated_at = datetime('now')
-  `).run({
-    userId: codeRow.user_id,
-    username: codeRow.username,
-    minecraftUuid: normalizedUuid,
-    minecraftName
-  });
-
-  database.prepare('UPDATE minecraft_link_codes SET used_at = datetime(\'now\') WHERE id = ?').run(codeRow.id);
-
-  const link = getMinecraftLinkByUserId(codeRow.user_id);
-  if (!link) {
-    return { ok: false, reason: 'Verification was accepted, but I could not read the link back yet. Please ask staff to check the bot logs.' };
-  }
-
-  return { ok: true, link };
+/** Called only after the HTTP/relay transport has authenticated the official server. */
+export function completeMinecraftLink(input: { code: string; minecraftUuid: string; minecraftName: string }): { ok: true; link: MinecraftLinkRecord } | { ok: false; reason: string } {
+  if (!/^[a-zA-Z0-9_]{1,16}$/.test(input.minecraftName)) return { ok: false, reason: 'Invalid Minecraft identity.' };
+  const result = new AetherSqliteMemory(getDb()).completeLink(input);
+  if (!result.ok) return { ok: false, reason: 'This code is invalid, expired, already used, or belongs to an account linked elsewhere.' };
+  const identity = getConnected()?.identity;
+  if (!identity) return { ok: false, reason: 'Identity service is unavailable. Generate another code and try again later.' };
+  identity.linkMinecraft(identity.account('discord', result.link.discordUserId), result.link.minecraftUuid, result.link.minecraftName);
+  const link = getMinecraftLinkByUserId(result.link.discordUserId);
+  return link ? { ok: true, link } : { ok: false, reason: 'Link is unavailable.' };
 }
-
 export function getMinecraftLinkByUserId(userId: string): MinecraftLinkRecord | null {
   const row = getDb().prepare('SELECT * FROM minecraft_links WHERE user_id = ?')
     .get(userId) as MinecraftLinkRow | undefined;
@@ -129,6 +85,9 @@ export function getMinecraftLinkByUserId(userId: string): MinecraftLinkRecord | 
 }
 
 export function removeMinecraftLink(userId: string): boolean {
+  const old = getMinecraftLinkByUserId(userId);
+  const identity = getConnected()?.identity;
+  if (old && identity) identity.unlinkMinecraft(identity.account('discord', userId), old.minecraftUuid);
   const result = getDb().prepare('DELETE FROM minecraft_links WHERE user_id = ?').run(userId);
   return result.changes > 0;
 }
@@ -140,14 +99,6 @@ function generateCode(): string {
     code += alphabet[randomInt(0, alphabet.length)];
   }
   return code;
-}
-
-function normalizeCode(value: string): string {
-  return value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
-}
-
-function normalizeUuid(value: string): string {
-  return value.trim().toLowerCase().replace(/[^a-f0-9-]/g, '');
 }
 
 function mapCode(row: MinecraftLinkCodeRow): MinecraftLinkCodeRecord {

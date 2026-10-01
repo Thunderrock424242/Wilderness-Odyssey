@@ -1,6 +1,6 @@
 import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
 import { config } from './config';
-import { closeDb, getDb } from './db';
+import { getDb } from './db';
 import { commands } from './commands';
 import type { SlashCommand } from './types';
 import { handleInteraction } from './events/interactionCreate';
@@ -13,9 +13,10 @@ import { handleQuestionMessage } from './services/qaService';
 import { startMinecraftVerificationApi } from './services/minecraftVerificationApi';
 import { registerRuntime, shutdown } from './services/runtimeService';
 import { initializeAether } from './aether';
+import { initializeConnected } from './connected/runtime';
 
 initErrorTracking();
-getDb();
+const connected = initializeConnected(getDb());
 initializeAether();
 const verificationApiServer = startMinecraftVerificationApi();
 
@@ -26,6 +27,7 @@ const client = new Client({
     GatewayIntentBits.MessageContent
   ]
 });
+connected.attachDiscord(client);
 registerRuntime({ client, verificationApiServer });
 
 const commandMap = new Collection<string, SlashCommand>();
@@ -71,6 +73,5 @@ process.on('uncaughtException', (error) => {
 
 client.login(config.discordToken).catch((error) => {
   captureException(error, { source: 'clientLogin' });
-  closeDb();
-  process.exitCode = 1;
+  shutdown(1);
 });

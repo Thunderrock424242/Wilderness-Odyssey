@@ -1,3 +1,4 @@
+import { shutdownConnected } from '../connected/runtime';
 import type { Server } from 'node:http';
 import type { Client } from 'discord.js';
 import { closeDb } from '../db';
@@ -50,6 +51,7 @@ export function shutdown(exitCode = 0): void {
   shutdownStarted = true;
   logger.info({ exitCode }, 'Shutting down Wilderness Oddesy systems.');
   supportApiServer?.close();
+  shutdownConnected();
   shutdownAether();
   closeDb();
   discordClient?.destroy();

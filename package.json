@@ -9,7 +9,8 @@
     "dev": "tsx watch src/index.ts",
     "deploy": "tsx src/deploy-commands.ts",
     "check": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json",
-    "test": "tsx --test --test-concurrency=1 test/*.test.ts"
+    "test": "tsx --test --test-concurrency=1 test/*.test.ts",
+    "connected:operator": "tsx src/connected/operator.ts"
   },
   "keywords": [
     "discord",
@@ -24,6 +25,7 @@
     "@sentry/node": "^10.57.0",
     "discord.js": "^14.27.0",
     "dotenv": "^16.4.7",
+    "jose": "^6.2.12",
     "lru-cache": "^11.5.1",
     "p-queue": "^9.3.0",
     "pino": "^10.3.1",
@@ -39,7 +41,7 @@
     "typescript": "^5.7.3"
   },
   "engines": {
-    "node": ">=22.5.0"
+    "node": ">=22.13.1"
   },
   "allowScripts": {
     "esbuild": true

@@ -129,3 +129,44 @@ class ThrowingProvider implements AetherModelProvider {
 
   close(): void {}
 }
+
+test('Aether core denies generation when no verified identity policy is available', async () => {
+  const core = createCore(true, new DisabledAetherMemory(), new ScriptedModelProvider());
+  core.initialize();
+  const response = await core.routeRequest(request());
+  assert.equal(response.status, 'error');
+  assert.match(response.responseText, /verified account|identity/i);
+});
+import { AuthenticatedHttpMinecraftBridge } from '../src/aether/bridge/authenticatedBridge';
+
+test('legacy Minecraft links cannot select Discord context without current ownership, and unlink revokes first', async () => {
+  const db = new DatabaseSync(':memory:');
+  const memory = new AetherSqliteMemory(db);
+  const provider = new ScriptedModelProvider();
+  const router = new AetherRouter(createAetherAgents({ modelProvider: provider, loreSource: new PlaceholderLoreSource() }), new AetherContextBuilder(memory));
+  let selected = '';
+  router.route = async incoming => {
+    selected = incoming.userIdentity.platformUserId;
+    return { requestId: incoming.requestId, status: 'ok', agentName: 'general', responseText: 'Test', confidence: 'high' };
+  };
+  let owns = false;
+  let unlinked = false;
+  const uuid = '12345678-1234-4234-8234-123456789012';
+  const core = new AetherCore(config(true), memory, provider, new AuthenticatedHttpMinecraftBridge('s'.repeat(40)), router, new AetherPermissionManager(), new AetherRateLimiter(10, 60000), () => true,
+    (discord, minecraft) => discord === 'discord-owner' && minecraft === uuid && owns,
+    (discord, minecraft) => { assert.equal(discord, 'discord-owner'); assert.equal(minecraft, uuid); owns = false; unlinked = true; });
+  core.initialize();
+  const code = core.createLinkCode({ discordUserId: 'discord-owner', username: 'Owner' });
+  const linked = core.completeLink({ code: code.code, minecraftUuid: uuid, minecraftName: 'Player' });
+  assert.equal(linked.ok, true);
+  const incoming = { action: 'player_question' as const, requestId: 'bridge-request-123', serverId: 'official', minecraftUuid: uuid, message: 'Hello', playerContext: {} };
+  await core.handleBridgeRequest(incoming);
+  assert.equal(selected, 'minecraft:' + uuid);
+  owns = true;
+  await core.handleBridgeRequest(incoming);
+  assert.equal(selected, 'discord-owner');
+  assert.equal(core.unlink('discord-owner'), true);
+  assert.equal(unlinked, true);
+  assert.equal(owns, false);
+  core.close(); db.close();
+});

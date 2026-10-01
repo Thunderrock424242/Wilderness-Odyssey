@@ -26,7 +26,11 @@ test('Aether registration preserves every existing slash command', async () => {
     'supportpanel',
     'shutdown',
     'staff',
-    'privacy'
+    'privacy',
+    'players',
+    'report',
+    'maintenance',
+    'modlog'
   ]);
   assert.deepEqual(withAetherNames, [...existingNames, 'aether']);
 });
@@ -48,6 +52,7 @@ test('Aether command registers the required subcommands', async () => {
     'link',
     'unlink',
     'profile',
-    'settings'
+    'settings',
+    'token'
   ]);
 });

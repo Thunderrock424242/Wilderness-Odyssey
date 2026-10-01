@@ -1,3 +1,5 @@
+import { tokenGroup, executeToken } from '../../commands/connected/tokens';
+import { connectedStatusEmbed } from '../../commands/connected/status';
 import { randomUUID } from 'node:crypto';
 import { SlashCommandBuilder, type ChatInputCommandInteraction } from 'discord.js';
 import { config } from '../../config';
@@ -124,8 +126,9 @@ export const aetherCommand: SlashCommand = {
               { name: 'Minimal', value: 'minimal' }
             )
         )
-    ),
+    ).addSubcommandGroup(tokenGroup),
   async execute(interaction) {
+    if (interaction.options.getSubcommandGroup(false) === 'token') { await executeToken(interaction); return; }
     const subcommand = interaction.options.getSubcommand(true);
     if (subcommand === 'help') {
       await interaction.reply({ embeds: [helpEmbed()], flags: 'Ephemeral' });
@@ -133,7 +136,7 @@ export const aetherCommand: SlashCommand = {
     }
 
     if (subcommand === 'status') {
-      await interaction.reply({ embeds: [statusEmbed()], flags: 'Ephemeral' });
+      await interaction.reply({ embeds: [connectedStatusEmbed(), statusEmbed()], flags: 'Ephemeral' });
       return;
     }
 
@@ -215,7 +218,7 @@ export const aetherCommand: SlashCommand = {
             .addFields(
               { name: 'Code', value: `\`${code.code}\``, inline: true },
               { name: 'Expires', value: `<t:${Math.floor(new Date(code.expiresAt).getTime() / 1000)}:R>`, inline: true },
-              { name: 'In Minecraft', value: `Run \`/wo link ${code.code}\` on the trusted server or integrated-server bridge.` },
+              { name: 'In Minecraft', value: `Run \`/wo link ${code.code}\` on the authenticated official server.` },
               { name: 'Identity', value: 'The completed link is stored against your Minecraft UUID, not your changeable username.' }
             )
         ],
@@ -236,7 +239,7 @@ export const aetherCommand: SlashCommand = {
       const removed = core.unlink(interaction.user.id);
       await interaction.reply({
         content: removed
-          ? 'Your Minecraft account association was removed from Aether and the existing verification store.'
+          ? 'Your active Minecraft link was removed. Minimal moderation associations remain so unlinking cannot remove restrictions.'
           : 'You do not currently have a linked Minecraft account.',
         flags: 'Ephemeral'
       });
@@ -322,6 +325,7 @@ function helpEmbed() {
       { name: '/aether lore', value: 'Searches the configured lore source.' },
       { name: '/aether diagnose', value: 'Validates, redacts, and analyzes a supported text attachment without executing it.' },
       { name: '/aether link · unlink · profile', value: 'Manages your private Discord-to-Minecraft UUID association.' },
+      { name: '/aether token', value: 'Create API tokens on the protected website; list or revoke your linked tokens here.' },
       { name: '/aether settings', value: 'Manages opt-in memory, notifications, response detail, and privacy preferences.' }
     );
 }

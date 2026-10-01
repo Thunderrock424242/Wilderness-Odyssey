@@ -20,7 +20,7 @@ export async function handleMinecraftVerificationRelayMessage(message: Message):
     return false;
   }
 
-  if (!message.guild) {
+  if (!message.guild || message.guildId !== config.guildId || !config.minecraftVerification.relayWebhookId) {
     return true;
   }
 
