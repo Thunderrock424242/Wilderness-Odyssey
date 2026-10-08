@@ -1,4 +1,4 @@
-import { playersCommand, reportCommand, maintenanceCommand, modlogCommand } from './connected';
+import { playersCommand, reportCommand, maintenanceCommand, modlogCommand, dashboardCommand } from './connected';
 import type { SlashCommand } from '../types';
 import { bugReportCommand } from './bugreport';
 import { changelogCommand } from './changelog';
@@ -45,6 +45,7 @@ export function createCommandList(aetherCommandEnabled = config.aether.commandEn
     reportCommand,
     maintenanceCommand,
     modlogCommand,
+    dashboardCommand,
   ];
 
   return aetherCommandEnabled ? [...existingCommands, aetherCommand] : existingCommands;

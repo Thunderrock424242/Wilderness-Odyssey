@@ -1,0 +1,231 @@
+{
+  "staffSession": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "schemaVersion": {
+        "type": "string",
+        "const": "1.0"
+      },
+      "user": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "displayName": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "viewer",
+              "moderator",
+              "administrator"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "displayName",
+          "role"
+        ],
+        "additionalProperties": false
+      },
+      "capabilities": {
+        "maxItems": 14,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "status:read",
+            "server:write",
+            "players:read",
+            "players:write",
+            "reports:read",
+            "reports:write",
+            "models:read",
+            "models:write",
+            "content:read",
+            "content:write",
+            "content:publish",
+            "configuration:read",
+            "configuration:write",
+            "configuration:credentials"
+          ]
+        }
+      },
+      "guildId": {
+        "type": "string",
+        "pattern": "^\\d{17,22}$"
+      },
+      "expiresAt": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+      }
+    },
+    "required": [
+      "schemaVersion",
+      "user",
+      "capabilities",
+      "guildId",
+      "expiresAt"
+    ],
+    "additionalProperties": false
+  },
+  "sessionHeader": "X-WO-Admin-Session",
+  "routes": [
+    {
+      "method": "POST",
+      "backendPath": "/v1/admin/auth/discord/start",
+      "input": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "redirectUri": {
+            "type": "string",
+            "maxLength": 2048,
+            "format": "uri"
+          }
+        },
+        "required": [
+          "redirectUri"
+        ],
+        "additionalProperties": false
+      },
+      "output": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "const": "1.0"
+          },
+          "authorizationUrl": {
+            "type": "string",
+            "maxLength": 4096,
+            "format": "uri"
+          },
+          "flowToken": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}$"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "authorizationUrl",
+          "flowToken",
+          "expiresAt"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "method": "POST",
+      "backendPath": "/v1/admin/auth/discord/callback",
+      "input": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "redirectUri": {
+            "type": "string",
+            "maxLength": 2048,
+            "format": "uri"
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._-]{1,2048}$"
+          },
+          "state": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}$"
+          },
+          "flowToken": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}$"
+          }
+        },
+        "required": [
+          "redirectUri",
+          "code",
+          "state",
+          "flowToken"
+        ],
+        "additionalProperties": false
+      },
+      "output": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "const": "1.0"
+          },
+          "sessionToken": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}$"
+          },
+          "userId": {
+            "type": "string",
+            "pattern": "^\\d{17,22}$"
+          },
+          "guildId": {
+            "type": "string",
+            "pattern": "^\\d{17,22}$"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "sessionToken",
+          "userId",
+          "guildId",
+          "expiresAt"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "method": "POST",
+      "backendPath": "/v1/admin/auth/logout",
+      "input": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "output": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "const": "1.0"
+          },
+          "revoked": {
+            "type": "boolean",
+            "const": true
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "revoked"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

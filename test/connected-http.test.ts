@@ -53,7 +53,7 @@ test('staff revocation during request-body upload prevents the mutation', async 
   const admin = new AdminService(store, monitor, moderation);
   let called = false;
   admin.handle = async () => { called = true; return {}; };
-  const handler = new ConnectedHttp({ ...config, adminEnabled: true }, store, monitor, identity, moderation, admin);
+  const handler = new ConnectedHttp({ ...config, adminEnabled: true, staffAuthMode: 'access' }, store, monitor, identity, moderation, admin);
   store.assign('https://test.cloudflareaccess.com', 'staff', 'administrator', 'Test', 'test');
   let authenticated!: () => void;
   const ready = new Promise<void>(resolve => { authenticated = resolve; });

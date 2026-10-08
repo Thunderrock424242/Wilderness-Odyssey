@@ -1,0 +1,80 @@
+
+> wilderness-odyssey-site@1.0.0 build
+> cross-env ASTRO_TELEMETRY_DISABLED=1 astro build && node scripts/build-pages.mjs
+
+23:26:36 [content] Syncing content
+23:26:36 [content] Synced content
+23:26:36 [types] Generated 376ms
+23:26:36 [build] output: "static"
+23:26:36 [build] mode: "static"
+23:26:36 [build] directory: C:\Users\mason\IdeaProjects\Wilderness-Odyssey\dist\
+23:26:36 [build] Collecting build info...
+23:26:36 [build] ✓ Completed in 403ms.
+23:26:36 [build] Building static entrypoints...
+23:26:36 [vite] ✓ built in 240ms
+23:26:36 [vite] ✓ built in 121ms
+23:26:36 [build] Rearranging server assets...
+
+ generating static routes 
+23:26:36   ├─ /404.html (+11ms) 
+23:26:36   ├─ /admin/content/index.html (+5ms) 
+23:26:36   ├─ /admin/players/index.html (+2ms) 
+23:26:36   ├─ /admin/reports/index.html (+1ms) 
+23:26:36   ├─ /admin/models/index.html (+2ms) 
+23:26:36   ├─ /admin/index.html (+3ms) 
+23:26:36   ├─ /blog/version-0-1-0-takes-shape/index.html (+2ms) 
+23:26:36   ├─ /blog/the-site-moved-into-the-main-repo/index.html (+2ms) 
+23:26:36   ├─ /blog/modular-content-pass/index.html (+1ms) 
+23:26:36   ├─ /blog/first-public-terminal-build/index.html (+1ms) 
+23:26:36   ├─ /blog/index.html (+4ms) 
+23:26:36   ├─ /devlogs/index.html (+4ms) 
+23:26:36   ├─ /features/index.html (+5ms) 
+23:26:36   ├─ /gallery/index.html (+3ms) 
+23:26:36   ├─ /logs/index.html (+4ms) 
+23:26:36   ├─ /lore/index.html (+3ms) 
+23:26:36   ├─ /news/index.html (+5ms) 
+23:26:36   ├─ /patches/index.html (+3ms) 
+23:26:36   ├─ /roadmap/index.html (+4ms) 
+23:26:36   ├─ /rss.xml (+61ms) 
+23:26:36   ├─ /status/index.html (+5ms) 
+23:26:36   ├─ /support/troubleshooting/index.html (+5ms) 
+23:26:36   ├─ /support/index.html (+3ms) 
+23:26:36   ├─ /tags/archives/index.html (+3ms) 
+23:26:36   ├─ /tags/blackout-archive/index.html (+2ms) 
+23:26:36   ├─ /tags/bunker-os/index.html (+3ms) 
+23:26:36   ├─ /tags/content/index.html (+2ms) 
+23:26:36   ├─ /tags/echo-earth/index.html (+2ms) 
+23:26:36   ├─ /tags/first-alpha/index.html (+1ms) 
+23:26:36   ├─ /tags/github-pages/index.html (+2ms) 
+23:26:36   ├─ /tags/lore/index.html (+2ms) 
+23:26:36   ├─ /tags/maintenance/index.html (+2ms) 
+23:26:36   ├─ /tags/mobile/index.html (+2ms) 
+23:26:36   ├─ /tags/performance/index.html (+2ms) 
+23:26:36   ├─ /tags/project-threshold/index.html (+2ms) 
+23:26:36   ├─ /tags/roadmap/index.html (+2ms) 
+23:26:36   ├─ /tags/the-siren-night/index.html (+2ms) 
+23:26:36   ├─ /tags/website/index.html (+2ms) 
+23:26:36   ├─ /tags/workflow/index.html (+1ms) 
+23:26:36   ├─ /tags/world-generation/index.html (+1ms) 
+23:26:36   ├─ /transmissions/project-threshold-blackout-archive/index.html (+2ms) 
+23:26:36   ├─ /transmissions/site-0-6-lore-roadmap/index.html (+2ms) 
+23:26:36   ├─ /transmissions/version-0-1-0-takes-shape/index.html (+2ms) 
+23:26:36   ├─ /transmissions/site-0-5-public-update-hub/index.html (+2ms) 
+23:26:36   ├─ /transmissions/site-0-4-modular-content/index.html (+3ms) 
+23:26:36   ├─ /transmissions/the-site-moved-into-the-main-repo/index.html (+2ms) 
+23:26:36   ├─ /transmissions/modular-content-pass/index.html (+2ms) 
+23:26:36   ├─ /transmissions/first-public-terminal-build/index.html (+1ms) 
+23:26:36   ├─ /transmissions/site-0-3-bunker-os/index.html (+2ms) 
+23:26:36   ├─ /transmissions/index.html (+4ms) 
+23:26:36   ├─ /index.html (+4ms) 
+23:26:36 ✓ Completed in 239ms.
+
+23:26:36 [build] ✓ Completed in 665ms.
+23:26:36 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+23:26:36 [build] 50 page(s) built in 1.10s
+23:26:36 [build] Complete!
+
+ ⛅️ wrangler 4.136.3
+────────────────────
+✨ Compiled Worker successfully
+Compiled Pages Functions and checked browser bundles for server-only integration code.

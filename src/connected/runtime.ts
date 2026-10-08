@@ -1,7 +1,7 @@
 import type { Client } from 'discord.js';
 import type { DatabaseSync } from 'node:sqlite';
 import type { AetherRequest } from '../aether/types';
-import { ConnectedStore } from './store';
+import { ConnectedStore, ServiceError, authorize, type Actor } from './store';
 import { IdentityService } from './identity';
 import { loadConnectedConfig, type ConnectedConfig } from './config';
 import { ServiceMonitor } from './monitor';
@@ -9,6 +9,9 @@ import { ModerationService } from './moderation';
 import { AdminService } from './admin';
 import { MainServerClient } from './mainClient';
 import { ConnectedHttp } from './http';
+import { DashboardAuth, DASHBOARD_ISSUER } from './dashboardAuth';
+import { requireDiscordAdministrator } from './discordPermissions';
+import type { Capability } from '../contracts/v1/admin';
 export class ConnectedRuntime {
   readonly store: ConnectedStore;
   readonly identity: IdentityService;
@@ -17,6 +20,7 @@ export class ConnectedRuntime {
   readonly admin: AdminService;
   readonly http: ConnectedHttp;
   readonly main: MainServerClient;
+  readonly dashboard?: DashboardAuth;
   private client?: Client;
   private readonly timers = new Set<NodeJS.Timeout>();
   private stopped = false;
@@ -26,11 +30,27 @@ export class ConnectedRuntime {
     this.identity = new IdentityService(this.store, config.serverId);
     this.monitor = new ServiceMonitor(this.store, config.serverId, Date.now, config.failures, config.recoveries, config.staleSeconds);
     this.moderation = new ModerationService(this.store, this.identity);
-    this.main = new MainServerClient(config);
-    this.admin = new AdminService(this.store, this.monitor, this.moderation, config.mainOrigin ? this.main : undefined);
-    this.http = new ConnectedHttp(config, this.store, this.monitor, this.identity, this.moderation, this.admin);
+    if (config.discord) this.dashboard = new DashboardAuth(this.store, config.discord, async (guildId, userId) => {
+      if (!this.client?.isReady()) throw new ServiceError(503, 'DISCORD_UNAVAILABLE', 'Discord permissions could not be verified. Try again later.');
+      await requireDiscordAdministrator(this.client.rest, guildId, userId);
+    });
+    this.main = new MainServerClient(config, fetch, (actor, capability) => this.authorizeStaff(actor, capability));
+    this.admin = new AdminService(this.store, this.monitor, this.moderation, config.mainOrigin ? this.main : undefined, (actor, capability) => this.authorizeStaff(actor, capability));
+    this.http = new ConnectedHttp(config, this.store, this.monitor, this.identity, this.moderation, this.admin, this.dashboard);
   }
   attachDiscord(client: Client): void { this.client = client; }
+  async authorizeStaff(actor: Actor, capability: Capability): Promise<Actor> {
+    if (actor.issuer === DASHBOARD_ISSUER) {
+      if (!this.dashboard || this.config.staffAuthMode !== 'discord') throw new ServiceError(403, 'FORBIDDEN', 'This action is not permitted.');
+      return this.dashboard.authorize(actor, capability);
+    }
+    if (actor.issuer !== 'discord' && this.config.staffAuthMode === 'discord') throw new ServiceError(403, 'FORBIDDEN', 'This staff authentication method is disabled.');
+    if (actor.issuer === 'discord' && this.dashboard && actor.subject) await this.dashboard.authorizeMember(actor.subject);
+    const current = actor.issuer && actor.subject ? this.store.staff(actor.issuer, actor.subject) : null;
+    if (!current) throw new ServiceError(403, 'FORBIDDEN', 'This action is not permitted.');
+    authorize(current, capability);
+    return current;
+  }
   start(): void {
     if (this.started || this.stopped) return;
     this.started = true;

@@ -13,3 +13,5 @@ pnpm-debug.log*
 data/*.sqlite
 data/*.sqlite-*
 data/*.db
+/.npm-cache/
+/.wrangler/

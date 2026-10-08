@@ -1,0 +1,112 @@
+
+> wilderness-odyssey-site@1.0.0 verify
+> npm run check && npm run test && npm run build && node scripts/check-built-site.mjs
+
+
+> wilderness-odyssey-site@1.0.0 check
+> cross-env ASTRO_TELEMETRY_DISABLED=1 astro check && tsc -p tsconfig.gateway.json --noEmit && node scripts/validate-content.mjs
+
+00:23:53 [content] Syncing content
+00:23:53 [content] Synced content
+00:23:53 [types] Generated 414ms
+00:23:53 [check] Getting diagnostics for Astro files in C:\Users\mason\IdeaProjects\Wilderness-Odyssey...
+Result (81 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+Validated 15 transmission files, 6 roadmap references, and all six draft examples.
+
+> wilderness-odyssey-site@1.0.0 test
+> vitest run --config vitest.config.ts --configLoader runner
+
+
+ RUN  v4.1.11 C:/Users/mason/IdeaProjects/Wilderness-Odyssey
+
+
+ Test Files  10 passed (10)
+      Tests  64 passed (64)
+   Start at  00:24:03
+   Duration  479ms (transform 503ms, setup 0ms, import 1.09s, tests 229ms, environment 1ms)
+
+
+> wilderness-odyssey-site@1.0.0 build
+> cross-env ASTRO_TELEMETRY_DISABLED=1 astro build && node scripts/build-pages.mjs
+
+00:24:06 [content] Syncing content
+00:24:06 [content] Synced content
+00:24:06 [types] Generated 361ms
+00:24:06 [build] output: "static"
+00:24:06 [build] mode: "static"
+00:24:06 [build] directory: C:\Users\mason\IdeaProjects\Wilderness-Odyssey\dist\
+00:24:06 [build] Collecting build info...
+00:24:06 [build] ✓ Completed in 389ms.
+00:24:06 [build] Building static entrypoints...
+00:24:06 [vite] ✓ built in 212ms
+00:24:06 [vite] ✓ built in 112ms
+00:24:06 [build] Rearranging server assets...
+
+ generating static routes 
+00:24:07   ├─ /404.html (+10ms) 
+00:24:07   ├─ /admin/content/index.html (+5ms) 
+00:24:07   ├─ /admin/players/index.html (+3ms) 
+00:24:07   ├─ /admin/reports/index.html (+2ms) 
+00:24:07   ├─ /admin/models/index.html (+1ms) 
+00:24:07   ├─ /admin/index.html (+2ms) 
+00:24:07   ├─ /blog/version-0-1-0-takes-shape/index.html (+1ms) 
+00:24:07   ├─ /blog/the-site-moved-into-the-main-repo/index.html (+1ms) 
+00:24:07   ├─ /blog/modular-content-pass/index.html (+1ms) 
+00:24:07   ├─ /blog/first-public-terminal-build/index.html (+1ms) 
+00:24:07   ├─ /blog/index.html (+4ms) 
+00:24:07   ├─ /devlogs/index.html (+3ms) 
+00:24:07   ├─ /features/index.html (+3ms) 
+00:24:07   ├─ /gallery/index.html (+3ms) 
+00:24:07   ├─ /logs/index.html (+3ms) 
+00:24:07   ├─ /lore/index.html (+3ms) 
+00:24:07   ├─ /news/index.html (+3ms) 
+00:24:07   ├─ /patches/index.html (+3ms) 
+00:24:07   ├─ /roadmap/index.html (+3ms) 
+00:24:07   ├─ /rss.xml (+45ms) 
+00:24:07   ├─ /status/index.html (+4ms) 
+00:24:07   ├─ /support/troubleshooting/index.html (+3ms) 
+00:24:07   ├─ /support/index.html (+2ms) 
+00:24:07   ├─ /tags/archives/index.html (+2ms) 
+00:24:07   ├─ /tags/blackout-archive/index.html (+1ms) 
+00:24:07   ├─ /tags/bunker-os/index.html (+2ms) 
+00:24:07   ├─ /tags/content/index.html (+1ms) 
+00:24:07   ├─ /tags/echo-earth/index.html (+1ms) 
+00:24:07   ├─ /tags/first-alpha/index.html (+1ms) 
+00:24:07   ├─ /tags/github-pages/index.html (+2ms) 
+00:24:07   ├─ /tags/lore/index.html (+1ms) 
+00:24:07   ├─ /tags/maintenance/index.html (+1ms) 
+00:24:07   ├─ /tags/mobile/index.html (+1ms) 
+00:24:07   ├─ /tags/performance/index.html (+1ms) 
+00:24:07   ├─ /tags/project-threshold/index.html (+1ms) 
+00:24:07   ├─ /tags/roadmap/index.html (+2ms) 
+00:24:07   ├─ /tags/the-siren-night/index.html (+1ms) 
+00:24:07   ├─ /tags/website/index.html (+2ms) 
+00:24:07   ├─ /tags/workflow/index.html (+1ms) 
+00:24:07   ├─ /tags/world-generation/index.html (+1ms) 
+00:24:07   ├─ /transmissions/project-threshold-blackout-archive/index.html (+2ms) 
+00:24:07   ├─ /transmissions/site-0-6-lore-roadmap/index.html (+2ms) 
+00:24:07   ├─ /transmissions/version-0-1-0-takes-shape/index.html (+2ms) 
+00:24:07   ├─ /transmissions/site-0-5-public-update-hub/index.html (+2ms) 
+00:24:07   ├─ /transmissions/site-0-4-modular-content/index.html (+2ms) 
+00:24:07   ├─ /transmissions/the-site-moved-into-the-main-repo/index.html (+2ms) 
+00:24:07   ├─ /transmissions/modular-content-pass/index.html (+1ms) 
+00:24:07   ├─ /transmissions/first-public-terminal-build/index.html (+1ms) 
+00:24:07   ├─ /transmissions/site-0-3-bunker-os/index.html (+1ms) 
+00:24:07   ├─ /transmissions/index.html (+3ms) 
+00:24:07   ├─ /index.html (+5ms) 
+00:24:07 ✓ Completed in 192ms.
+
+00:24:07 [build] ✓ Completed in 579ms.
+00:24:07 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+00:24:07 [build] 50 page(s) built in 1.00s
+00:24:07 [build] Complete!
+
+ ⛅️ wrangler 4.136.3
+────────────────────
+✨ Compiled Worker successfully
+Compiled Pages Functions and checked browser bundles for server-only integration code.
+Verified 57 HTML files, required routes, root-relative paths, local links, assets, and draft exclusion.

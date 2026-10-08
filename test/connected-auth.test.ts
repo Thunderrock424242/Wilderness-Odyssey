@@ -33,3 +33,23 @@ test('unset or short service credentials never authenticate', () => {
   assert.equal(secretMatches('a'.repeat(32), 'a'.repeat(32)), true);
   assert.equal(secretMatches('a'.repeat(32), 'b'.repeat(32)), false);
 });
+
+test('Discord mode independently verifies the signed machine without requiring a human assertion', async () => {
+  const { generateKeyPair, SignJWT, createLocalJWKSet, exportJWK } = await loadJose();
+  const { publicKey, privateKey } = await generateKeyPair('RS256');
+  const key = { ...await exportJWK(publicKey), kid: 'machine-test', alg: 'RS256' };
+  const db = new DatabaseSync(':memory:');
+  const issuer = 'https://test.cloudflareaccess.com';
+  const auth = new AccessAuthenticator(new ConnectedStore(db), { issuer, machineAudience: 'backend', staffAudience: '', machineIdentity: 'gateway', environment: 'production' }, createLocalJWKSet({ keys: [key] }));
+  const sign = (identity = 'gateway', audience = 'backend', expires = '5m', tokenIssuer = issuer) => new SignJWT({ common_name: identity }).setProtectedHeader({ alg: 'RS256', kid: key.kid }).setIssuer(tokenIssuer).setAudience(audience).setIssuedAt().setExpirationTime(expires).sign(privateKey);
+  try {
+    const headers = { 'cf-access-jwt-assertion': await sign(), 'x-wo-environment': 'production' };
+    await auth.machine(headers);
+    for (const assertion of [await sign('other'), await sign('gateway', 'website'), await sign('gateway', 'backend', '-10s'), await sign('gateway', 'backend', '5m', 'https://other.cloudflareaccess.com'), 'unsigned']) {
+      await assert.rejects(auth.machine({ ...headers, 'cf-access-jwt-assertion': assertion }), /identity/i);
+    }
+    await assert.rejects(auth.machine({ ...headers, 'x-wo-environment': 'preview' }));
+    await assert.rejects(auth.machine({ 'x-wo-environment': 'production' }));
+    await assert.rejects(auth.authenticate(headers));
+  } finally { db.close(); }
+});

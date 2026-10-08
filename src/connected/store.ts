@@ -3,7 +3,7 @@ import type { DatabaseSync } from 'node:sqlite';
 import { roleCapabilities, type Capability, type Operation } from '../contracts/v1/admin';
 
 export type Role = 'viewer' | 'moderator' | 'administrator';
-export type Actor = { id: string; role: Role; displayName?: string; issuer?: string; subject?: string };
+export type Actor = { id: string; role: Role; displayName?: string; issuer?: string; subject?: string; guildId?: string; sessionDigest?: string };
 export class ServiceError extends Error {
   constructor(readonly status: number, readonly code: string, message: string) { super(message); }
 }

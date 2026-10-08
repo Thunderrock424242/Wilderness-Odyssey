@@ -15,7 +15,7 @@ export const maintenanceCommand: SlashCommand = {
       .addStringOption(o => o.setName('ends_at').setDescription('End time in ISO format, within seven days.').setMaxLength(40))),
   async execute(interaction) {
     await privateAction(interaction, async () => {
-      const runtime = connected(), actor = staff(runtime, interaction, 'server:write');
+      const runtime = connected(), actor = await staff(runtime, interaction, 'server:write');
       const current = runtime.monitor.maintenance();
       if (interaction.options.getSubcommand() === 'show') return 'Maintenance: ' + (current.active ? 'Active' : 'Inactive') + '\nRevision: ' + current.revision + '\n' + current.message.slice(0, 500);
       const active = interaction.options.getBoolean('active', true);

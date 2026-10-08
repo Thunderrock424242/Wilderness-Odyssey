@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { AccessTrust } from './auth';
+import { discordIdSchema } from '../contracts/v1/auth';
 
 const origin = z.string().url().refine(value => { const url = new URL(value); return url.protocol === 'https:' && !url.username && !url.password && url.pathname === '/' && !url.search && !url.hash; });
 const optional = (value: string | undefined) => value?.trim() || undefined;
@@ -19,7 +20,23 @@ export function loadConnectedConfig(env: NodeJS.ProcessEnv) {
   if (env.CONNECTED_ENVIRONMENT && !['preview', 'production'].includes(env.CONNECTED_ENVIRONMENT)) throw new Error('Unknown connected environment.');
   const trust: AccessTrust = { issuer: optional(env.ACCESS_TEAM_DOMAIN) ?? '', machineAudience: optional(env.BACKEND_ACCESS_AUDIENCE) ?? '', staffAudience: optional(env.WEBSITE_ACCESS_AUDIENCE) ?? '', machineIdentity: optional(env.GATEWAY_SERVICE_ID) ?? '', environment: env.CONNECTED_ENVIRONMENT === 'preview' ? 'preview' : 'production' };
   const adminEnabled = env.CONNECTED_ADMIN_ENABLED === 'true';
-  if (adminEnabled && (!enabled || !trust.issuer || !trust.machineAudience || !trust.staffAudience || !trust.machineIdentity)) throw new Error('Administration requires connected services and explicit Access trust settings.');
-  return { ...parsed.data, adminEnabled, trust, accountAudience: optional(env.ACCOUNT_ACCESS_AUDIENCE), staffChannel: optional(env.MONITOR_STAFF_CHANNEL_ID), publicChannel: optional(env.MONITOR_PUBLIC_CHANNEL_ID), guildId: optional(env.GUILD_ID) };
+  const mode = optional(env.STAFF_AUTH_MODE);
+  if (mode && !['access', 'discord'].includes(mode)) throw new Error('Unknown staff authentication mode.');
+  const staffAuthMode = mode === 'discord' ? 'discord' as const : mode === 'access' ? 'access' as const : undefined;
+  if (adminEnabled && (!enabled || !staffAuthMode || !/^https:\/\/[a-z0-9-]+\.cloudflareaccess\.com$/.test(trust.issuer) || !trust.machineAudience || !trust.machineIdentity)) throw new Error('Administration requires connected services, an explicit staff authentication mode and machine Access trust settings.');
+  if (adminEnabled && staffAuthMode === 'access' && (!trust.staffAudience || trust.staffAudience === trust.machineAudience)) throw new Error('Legacy staff Access requires a distinct human audience.');
+  let discord: { guildId: string; clientId: string; clientSecret: string; redirectUri: string } | undefined;
+  if (adminEnabled && staffAuthMode === 'discord') {
+    const settings = z.object({
+      guildId: discordIdSchema, clientId: discordIdSchema, clientSecret: z.string().min(1).max(4096),
+      redirectUri: z.url().max(2048).refine(value => {
+        const url = new URL(value);
+        return url.protocol === 'https:' && !url.username && !url.password && url.pathname === '/api/auth/discord/callback' && !url.search && !url.hash;
+      }),
+    }).safeParse({ guildId: optional(env.GUILD_ID), clientId: optional(env.CLIENT_ID), clientSecret: optional(env.DISCORD_CLIENT_SECRET), redirectUri: optional(env.DISCORD_REDIRECT_URI) });
+    if (!settings.success) throw new Error('Discord administration requires GUILD_ID, CLIENT_ID, DISCORD_CLIENT_SECRET and one exact HTTPS DISCORD_REDIRECT_URI.');
+    discord = settings.data;
+  }
+  return { ...parsed.data, adminEnabled, staffAuthMode, discord, trust, accountAudience: optional(env.ACCOUNT_ACCESS_AUDIENCE), staffChannel: optional(env.MONITOR_STAFF_CHANNEL_ID), publicChannel: optional(env.MONITOR_PUBLIC_CHANNEL_ID), guildId: optional(env.GUILD_ID) };
 }
 export type ConnectedConfig = ReturnType<typeof loadConnectedConfig>;

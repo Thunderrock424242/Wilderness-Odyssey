@@ -8,6 +8,7 @@ import { identityRequestSchema, IdentityService } from './identity';
 import { ServiceMonitor } from './monitor';
 import { ModerationService } from './moderation';
 import { AdminService } from './admin';
+import { DashboardAuth, tokenDigest } from './dashboardAuth';
 const idempotency = z.string().regex(/^[a-zA-Z0-9_-]{16,100}$/);
 export async function readJson(request: IncomingMessage): Promise<unknown> {
   if (!/^application\/json(?:\s*;.*)?$/i.test(request.headers['content-type'] ?? '')) throw new ServiceError(415, 'JSON_REQUIRED', 'Send a JSON request.');
@@ -31,7 +32,7 @@ export class ConnectedHttp {
   readonly staffAuth: AccessAuthenticator;
   readonly accountAuth: AccessAuthenticator;
   private readonly buckets = new Map<string, { start: number; count: number }>();
-  constructor(readonly config: ConnectedConfig, readonly store: ConnectedStore, readonly monitor: ServiceMonitor, readonly identity: IdentityService, readonly moderation: ModerationService, readonly admin: AdminService) {
+  constructor(readonly config: ConnectedConfig, readonly store: ConnectedStore, readonly monitor: ServiceMonitor, readonly identity: IdentityService, readonly moderation: ModerationService, readonly admin: AdminService, readonly dashboard?: DashboardAuth) {
     this.staffAuth = new AccessAuthenticator(store, config.trust);
     this.accountAuth = new AccessAuthenticator(store, { ...config.trust, staffAudience: config.accountAudience ?? '' });
   }
@@ -44,7 +45,7 @@ export class ConnectedHttp {
       const duplicate = new Set<string>();
       for (let i = 0; i < request.rawHeaders.length; i += 2) {
         const name = request.rawHeaders[i]!.toLowerCase();
-        if (!['authorization', 'cf-access-jwt-assertion', 'x-wo-user-assertion', 'x-wo-environment', 'idempotency-key'].includes(name)) continue;
+        if (!['authorization', 'cf-access-jwt-assertion', 'x-wo-user-assertion', 'x-wo-admin-session', 'x-wo-environment', 'x-request-id', 'idempotency-key'].includes(name)) continue;
         if (duplicate.has(name)) throw new ServiceError(400, 'INVALID_HEADERS', 'Duplicate authentication header.');
         duplicate.add(name);
       }
@@ -69,20 +70,52 @@ export class ConnectedHttp {
       }
       if (path.startsWith('/v1/admin/')) {
         if (!this.config.adminEnabled) throw new ServiceError(404, 'NOT_FOUND', 'Route not found.');
-        const { actor, subject } = await this.staffAuth.authenticate(request.headers);
+        const discordMode = this.config.staffAuthMode === 'discord';
+        if (!discordMode && this.config.staffAuthMode !== 'access') throw new ServiceError(503, 'AUTH_NOT_CONFIGURED', 'Staff authentication has not been configured.');
+        if (discordMode) {
+          await this.staffAuth.machine(request.headers);
+          if (!this.dashboard) throw new ServiceError(503, 'AUTH_NOT_CONFIGURED', 'Staff authentication has not been configured.');
+          if (path.startsWith('/v1/admin/auth/')) {
+            if (method !== 'POST' || url.search) throw new ServiceError(404, 'NOT_FOUND', 'Route not found.');
+            const address = request.socket.remoteAddress ?? 'unknown';
+            let result: unknown;
+            if (path === '/v1/admin/auth/discord/start') {
+              this.rate('oauth-start:' + address, 20);
+              result = this.dashboard.start(await readJson(request));
+            } else if (path === '/v1/admin/auth/discord/callback') {
+              this.rate('oauth-callback:' + address, 30);
+              result = await this.dashboard.callback(await readJson(request));
+            } else if (path === '/v1/admin/auth/logout') {
+              this.rate('logout:' + address, 120);
+              z.object({}).strict().parse(await readJson(request));
+              result = this.dashboard.logout(request.headers['x-wo-admin-session']);
+            } else throw new ServiceError(404, 'NOT_FOUND', 'Route not found.');
+            json(response, 200, result);
+            return true;
+          }
+          const value = request.headers['x-wo-admin-session'];
+          if (typeof value === 'string' && value.length === 43) this.rate('staff-session:' + tokenDigest(value), 120);
+        }
+        const { actor, subject } = discordMode
+          ? { actor: await this.dashboard!.authenticate(request.headers['x-wo-admin-session']), subject: '' }
+          : await this.staffAuth.authenticate(request.headers);
         this.rate('staff:' + actor.id, 120);
         const query: Record<string, string> = {};
         for (const [key, value] of url.searchParams) { if (key in query) throw new ServiceError(400, 'INVALID_QUERY', 'Duplicate query parameter.'); query[key] = value; }
         const body = ['POST', 'PUT'].includes(method) ? await readJson(request) : undefined;
         const key = typeof request.headers['idempotency-key'] === 'string' ? request.headers['idempotency-key'] : '';
         // Uploads can outlive a role assignment. Resolve current authority after the last await.
-        const currentActor = this.store.staff(this.staffAuth.trust.issuer, subject);
+        const currentActor = discordMode ? await this.dashboard!.authorize(actor, 'status:read') : this.store.staff(this.staffAuth.trust.issuer, subject);
         if (!currentActor) {
           this.store.audit(actor.id, 'admin.denied', path, 'assignment_revoked');
           throw new ServiceError(403, 'FORBIDDEN', 'No active staff permission assignment.');
         }
         let result: unknown;
-        try { result = await this.admin.handle(currentActor, method, path.slice('/v1/admin'.length), body, query, key); }
+        try {
+          result = discordMode && path === '/v1/admin/session' && method === 'GET'
+            ? (z.object({}).strict().parse(query), await this.dashboard!.session(request.headers['x-wo-admin-session']))
+            : await this.admin.handle(currentActor, method, path.slice('/v1/admin'.length), body, query, key);
+        }
         catch (error) {
           if (error instanceof ServiceError && error.status === 403) this.store.audit(actor.id, 'admin.denied', path, 'forbidden');
           throw error;

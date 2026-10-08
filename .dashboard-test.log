@@ -1,0 +1,158 @@
+
+> wilderness-oddesy-discord-bot@0.1.0 test
+> tsx --test --test-concurrency=1 test/*.test.ts
+
+(node:48992) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Aether registration preserves every existing slash command (782.7792ms)
+✔ dashboard registration has caller-only subcommands and permits self-revocation after demotion (2.742ms)
+✔ Aether command registers the required subcommands (2.5728ms)
+(node:56988) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ admin validates revision inside idempotent transaction and hides sensitive records from viewers (12.7194ms)
+✔ reports accept only bounded selected excerpts and purge them at expiry (3.0371ms)
+✔ moderation is scoped to verified players and global restrictions survive linkage (2.6825ms)
+✔ staff can moderate a verified standalone account without Minecraft membership (1.7019ms)
+✔ appeal decisions require a different staff member from the restriction author (2.7269ms)
+✔ maintenance keeps one private reason and session exposes the verified subject (2.9518ms)
+✔ remote wait rechecks active staff for mutation and protected responses (1.7866ms)
+(node:41696) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ admin authentication requires distinct signed machine and human identities and a current assignment (114.0245ms)
+✔ unset or short service credentials never authenticate (0.1741ms)
+✔ Discord mode independently verifies the signed machine without requiring a human assertion (25.6881ms)
+(node:35480) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ backup contains committed WAL data and refuses to overwrite any destination (20.6129ms)
+(node:45576) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ new staff commands require explicit assignment in the configured guild (678.752ms)
+✔ maintenance command records one revisioned operation for repeated delivery (12.0494ms)
+✔ token issue directs to protected website and token list never exposes a credential (7.9262ms)
+✔ AI report previews redacted selected evidence before persistence and rechecks ownership (6.0287ms)
+✔ public service commands never infer availability from configured labels (0.6374ms)
+(node:39404) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ HTTP separates public status, private identity broker, and authenticated player attestation (57.1064ms)
+✔ staff revocation during request-body upload prevents the mutation (9.2629ms)
+(node:45428) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ standalone tokens need no Minecraft membership and restrictions apply across linked access methods (4.6519ms)
+✔ linking merges restriction history and never erases an already restricted account (0.9863ms)
+✔ unlink and optional data cleanup revoke tokens without erasing active restrictions (1.1264ms)
+✔ trusted Minecraft attestation registers player search without requiring a website link (1.0465ms)
+(node:18588) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ main-server transport uses fixed HTTPS origin and refuses redirects and oversized responses (15.0981ms)
+✔ queued operations recheck staff role, and reconcile an ambiguous response with the original ID (3.7013ms)
+✔ permission revoked during reconciliation prevents dispatch (0.7962ms)
+(node:53916) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ confirmed incident and outbox are durable, single failures do not publish an outage (7.4727ms)
+✔ stale and rejected observations cannot become fresh or leak private fields (2.2666ms)
+✔ maintenance suppresses expected outage publication without inventing recovery (1.258ms)
+✔ unchanged component snapshots cannot confirm incidents and component freshness is independent (1.0059ms)
+✔ performance incidents require three full telemetry windows (2.1532ms)
+✔ component timestamps cannot regress or change evidence at the same timestamp (0.7648ms)
+✔ unknown samples and restarts cannot erase component replay protection (0.9138ms)
+✔ missing Minecraft measurements alert staff without announcing an unproven outage (1.6209ms)
+(node:42728) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ a stalled Discord delivery cannot prevent later service observations (7.7904ms)
+(node:56852) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ connected startup refuses a missing database instead of silently resetting restrictions (83.6119ms)
+(node:61156) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ operations survive a store restart and duplicate requests cannot apply twice (2.5639ms)
+✔ a failed mutation rolls back operation, data and idempotency reservation (0.4381ms)
+✔ viewers cannot inspect moderation operations or inherit Discord staff permissions (0.8493ms)
+(node:4968) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ disabled Aether returns a useful response without initializing memory (1.0954ms)
+✔ AI provider failures fall back to the scripted provider (0.2188ms)
+✔ core profile access cannot cross user boundaries (1.2538ms)
+✔ Aether core denies generation when no verified identity policy is available (0.165ms)
+✔ legacy Minecraft links cannot select Discord context without current ownership, and unlink revokes first (2.0672ms)
+(node:60488) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ enrollment is caller/guild bound, idempotent, and self-revocation never needs permission (20.6879ms)
+✔ OAuth uses exact fields, hash-only bindings, callback allowlist, expiry and atomic single-use (3.9137ms)
+✔ OAuth rejects unenrolled users and bots; parallel callbacks exchange once (5.116ms)
+✔ sessions keep original absolute expiry; outages preserve enrollment, confirmed loss requires enable again (4.95ms)
+✔ revocation during awaited checks cannot issue or authorize a session or resurrect enrollment (2.4937ms)
+(node:51632) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ dashboard command privately enrolls only the caller and allows disable after Administrator loss (596.1316ms)
+✔ staff mode is explicit and Discord requires fixed machine trust, guild and exact HTTPS callback (33.3105ms)
+(node:35432) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ backend auth schemas and actual producers match the website generated JSON contracts (5.2124ms)
+(node:61436) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ HTTP brokers OAuth/session/logout with machine-only Access and preserves admin revision/idempotency rules (268.4137ms)
+✔ HTTP rechecks permission after slow body uploads before mutating (48.8611ms)
+✔ OAuth attempts, callbacks and staff requests have bounded rate limits (395.7477ms)
+(node:32000) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ admin rechecks Discord after capability waits before responses and mutations (30.6458ms)
+✔ queued operations recheck session and Discord before dispatch and after reconciliation (15.5539ms)
+✔ runtime rejects stale Discord staff rows in Discord mode after Administrator loss (4.9736ms)
+✔ fresh guild/member/role reads recognize Administrator on any role and ownership (10.1387ms)
+✔ only confirmed unknown-member means membership loss; bot access failure and malformed data are unavailable (4.1305ms)
+(node:53956) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ link codes are created with creation, expiration, and pending status (5.1304ms)
+✔ expired link codes cannot be completed (2.8598ms)
+✔ a link code is one-time and profiles use Minecraft UUID identity (0.8993ms)
+✔ conversation summaries are opt-in and erased when memory is disabled (0.7167ms)
+✔ router selects specialized agents deterministically (1.8288ms)
+✔ explicit agent hints and attachments override keyword routing (0.337ms)
+✔ profile permissions enforce self-only access by default (1.4318ms)
+✔ Minecraft bridge authentication uses the configured shared secret (1.0574ms)
+✔ bridge schema rejects arbitrary actions and client-supplied permissions (2.8478ms)
+✔ diagnostic attachment policy rejects unsafe files and untrusted URLs (0.3763ms)
+ℹ tests 72
+ℹ suites 0
+ℹ pass 71
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11918.0745
+
+✖ failing tests:
+
+test at test\dashboard-contract.test.ts:2:1386
+✖ backend auth schemas and actual producers match the website generated JSON contracts (5.2124ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      '$schema': 'https://json-schema.org/draft/2020-12/schema',
+      additionalProperties: false,
+      properties: {
+        authorizationUrl: {
+  ...
+          format: 'date-time',
+  +       pattern: '^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$',
+  -       pattern: '^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$',
+          type: 'string'
+        },
+        flowToken: {
+          pattern: '^[A-Za-z0-9_-]{43}$',
+          type: 'string'
+  
+      at TestContext.<anonymous> (C:\Users\mason\IdeaProjects\Wilderness-Odyssey\test\dashboard-contract.test.ts:22:14)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1103:25)
+      at Test.start (node:internal/test_runner/test:1000:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { '$schema': 'https://json-schema.org/draft/2020-12/schema', type: 'object', properties: { schemaVersion: [Object], authorizationUrl: [Object], flowToken: [Object], expiresAt: [Object] }, required: [ 'schemaVersion', 'authorizationUrl', 'flowToken', 'expiresAt' ], additionalProperties: false },
+    expected: { '$schema': 'https://json-schema.org/draft/2020-12/schema', type: 'object', properties: { schemaVersion: [Object], authorizationUrl: [Object], flowToken: [Object], expiresAt: [Object] }, required: [ 'schemaVersion', 'authorizationUrl', 'flowToken', 'expiresAt' ], additionalProperties: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

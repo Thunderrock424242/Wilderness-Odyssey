@@ -16,21 +16,27 @@ export function bearer(headers: IncomingHttpHeaders): string | undefined {
 export class AccessAuthenticator {
   private resolver?: JWTVerifyGetKey;
   constructor(readonly store: ConnectedStore, readonly trust: AccessTrust, keySet?: JWTVerifyGetKey) { this.resolver = keySet; }
+  private async verify(token: unknown, audience: string) {
+    if (!/^https:\/\/[a-z0-9-]+\.cloudflareaccess\.com$/.test(this.trust.issuer) || !audience || typeof token !== 'string' || token.length > 16384) throw new Error();
+    const jose = await loadJose();
+    this.resolver ??= jose.createRemoteJWKSet(new URL(this.trust.issuer + '/cdn-cgi/access/certs'), { timeoutDuration: 5000, cooldownDuration: 30000 });
+    const { payload } = await jose.jwtVerify(token, this.resolver, { issuer: this.trust.issuer, audience, algorithms: ['RS256'], requiredClaims: ['exp', 'iat'], clockTolerance: 5 });
+    if (typeof payload.iat !== 'number' || payload.iat > Date.now() / 1000 + 5) throw new Error();
+    return payload;
+  }
+  async machine(headers: IncomingHttpHeaders): Promise<void> {
+    try {
+      if (!this.trust.machineIdentity || headers['x-wo-environment'] !== this.trust.environment) throw new Error();
+      const machine = await this.verify(headers['cf-access-jwt-assertion'], this.trust.machineAudience);
+      if (machine.common_name !== this.trust.machineIdentity) throw new Error();
+    } catch { throw new ServiceError(401, 'IDENTITY_INVALID', 'Service identity could not be verified.'); }
+  }
   async identity(headers: IncomingHttpHeaders) {
     let subject: string;
     try {
-      if (!/^https:\/\/[a-z0-9-]+\.cloudflareaccess\.com$/.test(this.trust.issuer) || !this.trust.machineAudience || !this.trust.staffAudience || !this.trust.machineIdentity || this.trust.machineAudience === this.trust.staffAudience) throw new Error();
-      if (headers['x-wo-environment'] !== this.trust.environment) throw new Error();
-      const machine = headers['cf-access-jwt-assertion'], human = headers['x-wo-user-assertion'];
-      if (typeof machine !== 'string' || typeof human !== 'string' || machine.length > 16384 || human.length > 16384) throw new Error();
-      const jose = await loadJose();
-      this.resolver ??= jose.createRemoteJWKSet(new URL(this.trust.issuer + '/cdn-cgi/access/certs'), { timeoutDuration: 5000, cooldownDuration: 30000 });
-      const verify = (token: string, audience: string) => jose.jwtVerify(token, this.resolver!, { issuer: this.trust.issuer, audience, algorithms: ['RS256'], requiredClaims: ['exp', 'iat'], clockTolerance: 5 });
-      const machineResult = await verify(machine, this.trust.machineAudience);
-      const humanResult = await verify(human, this.trust.staffAudience);
-      const user = humanResult.payload;
-      const now = Date.now() / 1000;
-      if (typeof machineResult.payload.iat !== 'number' || typeof user.iat !== 'number' || machineResult.payload.iat > now + 5 || user.iat > now + 5 || machineResult.payload.common_name !== this.trust.machineIdentity) throw new Error();
+      if (!this.trust.staffAudience || this.trust.machineAudience === this.trust.staffAudience) throw new Error();
+      await this.machine(headers);
+      const user = await this.verify(headers['x-wo-user-assertion'], this.trust.staffAudience);
       if (!user.sub || user.sub.length > 200 || typeof user.email !== 'string' || user.email.startsWith('non_identity@') || user.common_name) throw new Error();
       subject = user.sub;
     } catch { throw new ServiceError(401, 'IDENTITY_INVALID', 'Service or staff identity could not be verified.'); }

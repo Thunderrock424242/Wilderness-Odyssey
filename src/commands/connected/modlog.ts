@@ -11,7 +11,7 @@ export const modlogCommand: SlashCommand = {
   async execute(interaction) {
     await privateAction(interaction, async () => {
       const runtime = connected(), kind = interaction.options.getSubcommand();
-      const actor = staff(runtime, interaction, kind === 'report' ? 'reports:read' : 'players:read');
+      const actor = await staff(runtime, interaction, kind === 'report' ? 'reports:read' : 'players:read');
       const id = z.uuid().parse(interaction.options.getString(kind === 'player' ? 'uuid' : 'id', true));
       if (kind === 'player') {
         const detail = playerDetailSchema.parse(await runtime.admin.handle(actor, 'GET', '/players/' + id, undefined));

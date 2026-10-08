@@ -1,0 +1,44 @@
+
+> wilderness-odyssey-site@1.0.0 test:e2e
+> playwright test
+
+[WebServer] (node:40012) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 11 tests using 11 workers
+
+(node:49856) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:66904) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4036) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:59168) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:40016) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56932) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25716) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:62884) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:74036) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:71824) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:16468) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  2 [runtime] › tests\browser\runtime.spec.ts:16:1 › runtime preserves old URLs and does not publish its compiled worker (56ms)
+  ok  1 [runtime] › tests\browser\runtime.spec.ts:3:1 › compiled Pages middleware serves public pages and fails closed for staff (147ms)
+  ok  5 [ui] › tests\browser\operations.spec.ts:49:1 › expired sessions clear sensitive record panels (601ms)
+  ok  3 [ui] › tests\browser\operations.spec.ts:20:1 › stale metrics retain their measurement timestamp and stop claiming live status (757ms)
+  ok  8 [ui] › tests\browser\operations.spec.ts:56:1 › support and status remain usable at a narrow viewport (651ms)
+  ok  6 [ui] › tests\browser\operations.spec.ts:93:1 › reported excerpts are plain text and disappear after session revocation (683ms)
+  ok  9 [ui] › tests\browser\operations.spec.ts:64:1 › moderator warnings use verified UUIDs, CSRF and tracked operation results (894ms)
+  ok  7 [ui] › tests\browser\operations.spec.ts:27:1 › a viewer sees read-only server information without action forms (1.2s)
+  ok  4 [ui] › tests\browser\operations.spec.ts:11:1 › status distinguishes an API failure from a confirmed server outage (1.4s)
+  ok 11 [ui] › tests\browser\operations.spec.ts:127:1 › administrators can request only a ready approved model from the presented list (1.6s)
+  ok 10 [ui] › tests\browser\operations.spec.ts:116:1 › capture the public and staff layouts for visual review (2.0s)
+
+  11 passed (8.8s)

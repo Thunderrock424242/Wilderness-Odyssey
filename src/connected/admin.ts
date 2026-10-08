@@ -7,11 +7,13 @@ import { ServiceMonitor, type Maintenance } from './monitor';
 import { ModerationService } from './moderation';
 export type Capabilities = { actions: string[]; models: z.infer<typeof s.modelsSchema>; aiRequestsRevision: string };
 export interface RemoteControl { capabilities(): Promise<Capabilities> }
+export type StaffRecheck = (actor: Actor, capability: s.Capability) => Promise<Actor>;
 type Revisioned = { id: string; revision: string; revokedAt?: string | null; state?: string };
 function changed(expected: string, actual: string): void { if (expected !== actual) throw new ServiceError(409, 'REVISION_CONFLICT', 'This record changed. Refresh it before trying again.'); }
 export class AdminService {
-  constructor(readonly store: ConnectedStore, readonly monitor: ServiceMonitor, readonly moderation: ModerationService, readonly remote?: RemoteControl) {}
+  constructor(readonly store: ConnectedStore, readonly monitor: ServiceMonitor, readonly moderation: ModerationService, readonly remote?: RemoteControl, readonly recheck?: StaffRecheck) {}
   async handle(actor: Actor, method: string, path: string, body: unknown, query: unknown = {}, key = ''): Promise<unknown> {
+    if (this.recheck) actor = await this.recheck(actor, 'status:read');
     const accountLookup = /^\/players\/([0-9a-fA-F-]{36})\/account$/.exec(path);
     if (method === 'GET' && accountLookup) {
       authorize(actor, 'players:read');
@@ -41,7 +43,7 @@ export class AdminService {
     if (path === '/session') result = { schemaVersion: '1.0', user: { id: (actor.subject ?? actor.id).slice(0, 200), displayName: (actor.displayName ?? 'Staff member').slice(0, 100), role: actor.role }, capabilities: s.roleCapabilities[actor.role] };
     else if (path === '/overview') {
       const capabilities = await this.remote?.capabilities().catch(() => null);
-      actor = this.currentActor(actor, 'status:read');
+      actor = await this.currentActor(actor, 'status:read');
       result = { schemaVersion: '1.0', status: this.monitor.legacyStatus(), maintenanceRevision: this.monitor.maintenance().revision, aiRequestsRevision: capabilities?.aiRequestsRevision ?? 'unavailable', performance: this.store.get('performance') ?? [], operations: this.store.operations(actor), allowedServiceOperations: (capabilities?.actions ?? []).filter(action => ['inference.probe', 'model.unload'].includes(action)).map(id => ({ id, label: id === 'inference.probe' ? 'Check inference' : 'Unload active model', description: id === 'inference.probe' ? 'Run a bounded inference health check.' : 'Release the approved active model from memory.' })) };
     } else if (path === '/incidents') result = { schemaVersion: '1.0', incidents: this.monitor.legacyStatus().incidents.map(item => ({ ...item, internalNote: null })) };
     else if (path === '/maintenance') {
@@ -61,7 +63,7 @@ export class AdminService {
     else if (path === '/models') {
       if (!this.remote) throw new ServiceError(503, 'UNAVAILABLE', 'Main-server controls are unavailable.');
       result = (await this.remote.capabilities()).models;
-      actor = this.currentActor(actor, 'models:read');
+      actor = await this.currentActor(actor, 'models:read');
     } else if (path === '/players') {
       const q = parsedQuery as { q: string; cursor?: string };
       const escaped = q.q.toLowerCase().replace(/[\\%_]/g, value => '\\' + value);
@@ -90,7 +92,8 @@ export class AdminService {
     }
     return route.output.parse(result);
   }
-  private currentActor(actor: Actor, capability: s.Capability): Actor {
+  private async currentActor(actor: Actor, capability: s.Capability): Promise<Actor> {
+    if (this.recheck) return this.recheck(actor, capability);
     const current = actor.issuer && actor.subject ? this.store.staff(actor.issuer, actor.subject) : null;
     if (!current) throw new ServiceError(403, 'FORBIDDEN', 'This action is not permitted.');
     authorize(current, capability);
@@ -167,7 +170,7 @@ export class AdminService {
       if (!capabilities.models.models.some(model => model.id === parameters.modelId && model.approved)) throw new ServiceError(422, 'MODEL_DENIED', 'Choose a model approved by the main server.');
     } else if (path === '/inference-settings') { action = 'inference.settings'; capability = 'models:write'; parameters = s.settingsInput.parse(input); }
     else { const data = s.serviceInput.parse(input); action = data.operationId; parameters = { reason: data.reason }; if (!['inference.probe', 'model.unload'].includes(action)) throw new ServiceError(422, 'UNSUPPORTED', 'This operation is not supported.'); }
-    actor = this.currentActor(actor, capability);
+    actor = await this.currentActor(actor, capability);
     if (!capabilities.actions.includes(action)) throw new ServiceError(503, 'UNAVAILABLE', 'This operation is not available on the main server.');
     return this.mutation(this.store.mutate(actor, path, key, input, capability, () => {
       if (typeof parameters.revision === 'string') changed(parameters.revision, action === 'ai.pause' ? capabilities.aiRequestsRevision : capabilities.models.revision);

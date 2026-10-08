@@ -30,9 +30,22 @@ test('Aether registration preserves every existing slash command', async () => {
     'players',
     'report',
     'maintenance',
-    'modlog'
+    'modlog',
+    'dashboard'
   ]);
   assert.deepEqual(withAetherNames, [...existingNames, 'aether']);
+});
+
+test('dashboard registration has caller-only subcommands and permits self-revocation after demotion', async () => {
+  process.env.DISCORD_TOKEN = 'test-token'; process.env.CLIENT_ID = 'test-client';
+  const { createCommandList } = await import('../src/commands');
+  const command = createCommandList(false).find(item => item.data.name === 'dashboard');
+  assert.ok(command);
+  const data = command.data.toJSON();
+  assert.deepEqual(data.options?.map(item => item.name), ['enable', 'disable']);
+  assert.ok(data.default_member_permissions == null);
+  assert.equal(data.dm_permission, false);
+  assert.ok(data.options?.every(item => !('options' in item) || !item.options?.length));
 });
 
 test('Aether command registers the required subcommands', async () => {
