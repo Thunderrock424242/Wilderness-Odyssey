@@ -29,3 +29,13 @@ test('only confirmed unknown-member means membership loss; bot access failure an
   for (const error of [new Error('Disconnected'), new DiscordAPIError({ code: 50001, message: 'Missing Access' }, 50001, 403, 'GET', 'https://discord.com', {})]) await assert.rejects(requireDiscordAdministrator(rest(high, '8', error).client, guild, user), (e: unknown) => e instanceof ServiceError && e.status === 503);
   await assert.rejects(requireDiscordAdministrator(rest(high, 'not-permissions').client, guild, user), (e: unknown) => e instanceof ServiceError && e.status === 503);
 });
+
+test('Discord permission lookups have a five-second deadline even if the REST queue ignores cancellation', async context => {
+  context.mock.timers.enable({ apis: ['setTimeout'] });
+  try {
+    const client = { get: () => new Promise(() => {}) } as unknown as Client['rest'];
+    const denied = assert.rejects(requireDiscordAdministrator(client, guild, user), (e: unknown) => e instanceof ServiceError && e.status === 503);
+    context.mock.timers.tick(5000);
+    await denied;
+  } finally { context.mock.timers.reset(); }
+});

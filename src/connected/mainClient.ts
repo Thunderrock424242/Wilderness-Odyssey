@@ -57,12 +57,15 @@ export class MainServerClient implements RemoteControl {
         if ((row.nextAt ?? 0) > store.clock()) continue;
         try {
           const split = row.actor.id.lastIndexOf('|');
-          const actor = this.recheck ? await this.recheck(row.actor, row.capability) : split > 0 ? store.staff(row.actor.id.slice(0, split), row.actor.id.slice(split + 1)) : null;
-          const permitted = actor && roleCapabilities[actor.role].includes(row.capability);
           const expired = Date.parse(row.expiresAt) <= store.clock();
-          if (row.operation.state === 'requested' && (!permitted || expired || !this.config.writeToken)) {
-            this.finish(store, row, 'cancelled', 'The request expired or permission was withdrawn before dispatch.'); continue;
+          if (row.operation.state === 'requested') {
+            const actor = this.recheck ? await this.recheck(row.actor, row.capability) : split > 0 ? store.staff(row.actor.id.slice(0, split), row.actor.id.slice(split + 1)) : null;
+            if (!actor || !roleCapabilities[actor.role].includes(row.capability) || expired || !this.config.writeToken) {
+              this.finish(store, row, 'cancelled', 'The request expired or permission was withdrawn before dispatch.'); continue;
+            }
           }
+          // Persisted running requests may have been accepted remotely. Reconcile them using service
+          // authority even after logout; only a new dispatch needs the caller's current authority.
           let found: unknown;
           try { found = await this.request('/v1/service/operations/' + encodeURIComponent(row.operation.id)); }
           catch (error) { if (!(error instanceof RemoteError && error.status === 404)) throw error; }
@@ -86,7 +89,7 @@ export class MainServerClient implements RemoteControl {
           const { reason, revision, ...parameters } = input;
           row.operation.state = 'running'; row.operation.summary = 'Waiting for main-server confirmation.'; row.operation.updatedAt = store.now();
           store.saveOperation(row); // Persist dispatch before any network side effect.
-          const result = operationSchema.parse(await this.request('/v1/service/operations', { operation_id: row.operation.id, server_id: this.config.serverId, action: row.action, parameters, expected_revision: revision, created_at: row.operation.requestedAt, expires_at: row.expiresAt, actor: actor!.id, reason }));
+          const result = operationSchema.parse(await this.request('/v1/service/operations', { operation_id: row.operation.id, server_id: this.config.serverId, action: row.action, parameters, expected_revision: revision, created_at: row.operation.requestedAt, expires_at: row.expiresAt, actor: current.id, reason }));
           if (this.stopped) return;
           if (result.id !== row.operation.id || result.kind !== row.action) throw new Error('Unexpected operation identity.');
           this.finish(store, row, result.state, result.state === 'succeeded' ? 'Main server confirmed the change.' : result.state === 'failed' ? 'Main server could not apply the change.' : 'Waiting for main-server confirmation.');

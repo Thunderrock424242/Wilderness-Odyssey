@@ -10,6 +10,14 @@ export class ServiceError extends Error {
 export function authorize(actor: Actor, capability: Capability): void {
   if (!roleCapabilities[actor.role]?.includes(capability)) throw new ServiceError(403, 'FORBIDDEN', 'This action is not permitted.');
 }
+/** Preserve historical audit IDs while recognizing the same verified Discord human across sign-in paths. */
+export function sameStaffIdentity(actor: Actor, recordedId: string): boolean {
+  if (actor.id === recordedId) return true;
+  const discordUser = (id: string) => /^discord\|(\d{17,22})$/.exec(id)?.[1]
+    ?? /^discord-dashboard\|\d{17,22}:(\d{17,22})$/.exec(id)?.[1];
+  const userId = discordUser(actor.id);
+  return userId !== undefined && userId === discordUser(recordedId);
+}
 export interface StoredOperation {
   operation: Operation; actor: Actor; capability: Capability; action?: string; parameters?: unknown; expiresAt: string; attempts?: number; nextAt?: number;
 }

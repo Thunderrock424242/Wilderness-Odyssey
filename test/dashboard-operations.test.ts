@@ -79,3 +79,39 @@ test('runtime rejects stale Discord staff rows in Discord mode after Administrat
     assert.equal(runtime.store.operationRows().length, 0);
   } finally { runtime.stop(); db.close(); }
 });
+
+test('logout cannot label an already accepted remote operation cancelled; reconciliation continues without redispatch', async () => {
+  const f = await fixture();
+  try {
+    const op = f.store.mutate(f.actor, '/ai-requests', 'accepted-queue-001', {}, 'server:write', () => {}, { action: 'ai.pause', parameters: { paused: true, reason: 'Planned maintenance work', revision: 'initial' } });
+    let posts = 0;
+    const main = new MainServerClient(config, async (_url, init) => {
+      if (init?.method === 'POST') { posts++; throw new Error('Acknowledgement lost after acceptance'); }
+      return posts ? Response.json({ ...op, kind: 'ai.pause', state: 'succeeded' }) : new Response('', { status: 404 });
+    }, (actor, capability) => f.auth.authorize(actor, capability));
+    await main.process(f.store); assert.equal(f.store.operation(op.id, f.actor).state, 'running');
+    f.auth.logout(f.session.sessionToken); f.advance(60000);
+    await main.process(f.store);
+    assert.equal(posts, 1); assert.equal(f.store.operation(op.id, f.actor).state, 'succeeded');
+  } finally { f.db.close(); }
+});
+
+test('the same Discord human cannot independently review historical restrictions through a dashboard alias', async () => {
+  const f = await fixture();
+  try {
+    const uuid = '12345678-1234-4234-8234-123456789012';
+    const identity = new IdentityService(f.store, 'official'), monitor = new ServiceMonitor(f.store, 'official'), moderation = new ModerationService(f.store, identity);
+    const account = identity.account('discord', 'player'); identity.linkMinecraft(account, uuid, 'Player');
+    const admin = new AdminService(f.store, monitor, moderation);
+    const historical = { id: 'discord|' + user, issuer: 'discord', subject: user, role: 'administrator' as const };
+    await admin.handle(historical, 'POST', '/players/' + uuid + '/restrictions', { scope: 'aether', reason: 'Policy violation reviewed', expiresAt: new Date(f.store.clock() + 3600000).toISOString() }, {}, 'historical-restriction-001');
+    moderation.appeal(account, uuid, 'Please review this decision.', 'historical-appeal-001');
+    const appeal = f.store.records<{ id: string; revision: string }>('appeal', uuid)[0]!;
+    const input = { decision: 'accepted', reason: 'Reviewed available evidence', revision: appeal.revision };
+    await assert.rejects(admin.handle(f.actor, 'POST', '/players/' + uuid + '/appeals/' + appeal.id + '/resolve', input, {}, 'dashboard-alias-review-001'), /another staff member/i);
+    const otherGuildAlias = { ...f.actor, id: 'discord-dashboard|345678901234567890:' + user, guildId: '345678901234567890' };
+    await assert.rejects(admin.handle(otherGuildAlias, 'POST', '/players/' + uuid + '/appeals/' + appeal.id + '/resolve', input, {}, 'dashboard-alias-review-002'), /another staff member/i);
+    const differentHuman = { ...f.actor, id: 'discord-dashboard|' + guild + ':456789012345678901', subject: '456789012345678901' };
+    await admin.handle(differentHuman, 'POST', '/players/' + uuid + '/appeals/' + appeal.id + '/resolve', input, {}, 'dashboard-alias-review-003');
+  } finally { f.db.close(); }
+});

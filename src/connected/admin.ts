@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import * as s from '../contracts/v1/admin';
 import { adminRoutes } from '../contracts/v1/routes';
-import { ConnectedStore, authorize, ServiceError, type Actor } from './store';
+import { ConnectedStore, authorize, sameStaffIdentity, ServiceError, type Actor } from './store';
 import { ServiceMonitor, type Maintenance } from './monitor';
 import { ModerationService } from './moderation';
 export type Capabilities = { actions: string[]; models: z.infer<typeof s.modelsSchema>; aiRequestsRevision: string };
@@ -125,7 +125,7 @@ export class AdminService {
       const data = s.appealInput.parse(input);
       const appeal = this.owned<Revisioned>('appeal', player.uuid, segments[3]!);
       const authors = (appeal as Revisioned & { decisionAuthors?: string[] }).decisionAuthors ?? [];
-      if (authors.includes(actor.id)) throw new ServiceError(403, 'INDEPENDENT_REVIEW_REQUIRED', 'Another staff member must review an appeal of your decision.');
+      if (authors.some(author => sameStaffIdentity(actor, author))) throw new ServiceError(403, 'INDEPENDENT_REVIEW_REQUIRED', 'Another staff member must review an appeal of your decision.');
       changed(data.revision, appeal.revision);
       this.store.put('appeal', appeal.id, player.uuid, { ...appeal, state: data.decision, revision: randomUUID() });
       // Accepting an appeal does not implicitly lift any restriction; revocation is separately audited.
