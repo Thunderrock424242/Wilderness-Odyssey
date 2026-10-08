@@ -40,5 +40,9 @@
 .staff .excerpt{white-space:pre-wrap;border-left:3px solid #807062;padding:12px 16px;overflow-wrap:anywhere}
 .staff [hidden]{display:none!important}.staff .skip-link{position:absolute;top:-100px;left:16px;padding:12px;background:#08070d;z-index:20}.staff .skip-link:focus{top:8px}
 .staff hr{border:0;border-top:1px solid #514432;margin:20px 0}
+.staff-login{max-width:680px;margin:0 auto;padding:48px 24px;overflow-wrap:anywhere}
+.staff-login h1{font-size:clamp(28px,5vw,40px);line-height:1.2;margin:8px 0 18px}
+.staff-login .ops-card{margin-top:28px}.staff-login code{color:#ffd078;font-size:.95em}
+.staff .discord-signin{display:inline-flex;align-items:center;justify-content:center;color:#171008;text-decoration:none;min-height:48px}
 @media(max-width:900px){.staff-shell{grid-template-columns:1fr}.staff-nav{padding:12px}.staff-nav ul{display:flex;flex-wrap:wrap}.staff-nav li{flex:1 1 180px}.staff-nav a{border-left:0;border-bottom:3px solid transparent}.staff-main{padding:20px}.staff-header{padding:18px 20px}}
 @media(max-width:650px){.status-grid{grid-template-columns:1fr}.status-heading{align-items:flex-start;flex-direction:column}.ops-content{padding:0 16px 40px}.ops-card{padding:20px}.metric-grid{gap:12px}.staff-header{align-items:flex-start}.maintenance-notice{margin:80px 16px 16px}.live-status--compact{padding:0 16px}}

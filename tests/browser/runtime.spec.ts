@@ -1,4 +1,15 @@
 import { expect, test } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+
+test('unconfigured staff access shows a readable protected error page', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  const response = await page.goto('/admin/');
+  expect(response?.status()).toBe(503);
+  await expect(page.getByRole('heading', { name: 'Staff access is being set up' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Go to homepage' })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+});
 
 test('compiled Pages middleware serves public pages and fails closed for staff', async ({ request }) => {
   expect((await request.get('/')).status()).toBe(200);

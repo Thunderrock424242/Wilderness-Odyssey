@@ -6,7 +6,7 @@ export const uuid = z.uuid();
 export const revision = z.string().min(1).max(120);
 export const reason = z.string().trim().min(10).max(1000);
 export const roleSchema = z.enum(['viewer', 'moderator', 'administrator']);
-export const capabilitySchema = z.enum(['status:read', 'server:write', 'players:read', 'players:write', 'reports:read', 'reports:write', 'models:read', 'models:write']);
+export const capabilitySchema = z.enum(['status:read', 'server:write', 'players:read', 'players:write', 'reports:read', 'reports:write', 'models:read', 'models:write', 'content:read', 'content:write', 'content:publish', 'configuration:read', 'configuration:write', 'configuration:credentials']);
 export type Capability = z.infer<typeof capabilitySchema>;
 export const roleCapabilities: Record<z.infer<typeof roleSchema>, readonly Capability[]> = {
   viewer: ['status:read', 'models:read'],
@@ -16,9 +16,9 @@ export const roleCapabilities: Record<z.infer<typeof roleSchema>, readonly Capab
 export const sessionSchema = z.object({
   schemaVersion: z.literal('1.0'),
   user: z.object({ id: z.string().min(1).max(200), displayName: z.string().max(100), role: roleSchema }),
-  capabilities: z.array(capabilitySchema).max(8),
+  capabilities: z.array(capabilitySchema).max(capabilitySchema.options.length),
 });
-export const browserSessionSchema = sessionSchema.extend({ csrfToken: z.string().min(1) });
+export const browserSessionSchema = sessionSchema.extend({ csrfToken: z.string().min(1), authMethod: z.enum(['access', 'discord']).optional() });
 export const operationSchema = z.object({
   id, kind: z.string().max(80),
   state: z.enum(['requested', 'approved', 'running', 'succeeded', 'failed', 'cancelled']),

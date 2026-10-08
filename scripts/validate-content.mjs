@@ -9,8 +9,9 @@ const files = walk(contentRoot).filter((file) => file.endsWith('.md'));
 const ids = new Set();
 const examples = new Set();
 const errors = [];
-const roadmapSource = readFileSync(join(root, 'src', 'data', 'roadmap.ts'), 'utf8');
-const roadmapIds = new Set([...roadmapSource.matchAll(/\bid:\s*'([^']+)'/g)].map((match) => match[1]));
+const roadmapData = JSON.parse(readFileSync(join(root, 'src', 'data', 'editable', 'roadmap.json'), 'utf8'));
+const roadmapIds = new Set(roadmapData.map(record => record.id));
+if (roadmapIds.size !== roadmapData.length) errors.push('Roadmap IDs must be unique.');
 
 for (const file of files) {
   const id = relative(contentRoot, file).replaceAll('\\', '/').replace(/\.md$/, '');

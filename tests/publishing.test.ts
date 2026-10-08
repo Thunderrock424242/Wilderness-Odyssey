@@ -37,6 +37,26 @@ describe('deployment verification', () => {
   it('accepts the matching public artifact with protected staff routes', async () => {
     await expect(verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, responder())).resolves.toBeUndefined();
   });
+  const redirected = (location: string, redirectApis = false, previewPublic = false): typeof fetch => async input => {
+    const path = new URL(String(input)).pathname;
+    if (path.startsWith('/admin') || (redirectApis && path.startsWith('/api/admin')) || (previewPublic && path === '/')) return new Response(null, { status: 303, headers: { Location: location } });
+    return responder()(input);
+  };
+  it('accepts only the configured production Discord login redirect for staff HTML', async () => {
+    await expect(verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, redirected('/login/'), 'discord')).resolves.toBeUndefined();
+    await expect(verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, redirected('https://site.pages.dev/login/'), 'discord')).resolves.toBeUndefined();
+    await expect(verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, redirected('/login/'), 'access')).rejects.toThrow(/protect/i);
+  });
+  it.each(['https://evil.example/login/', '//evil.example/login/', '/login/?next=https://evil.example', '/login/#fragment'])('rejects a changed or external login destination: %s', async location => {
+    await expect(verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, redirected(location), 'discord')).rejects.toThrow(/protect/i);
+  });
+  it('does not accept login redirects for staff APIs or public previews', async () => {
+    await expect(verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, redirected('/login/', true), 'discord')).rejects.toThrow(/protect/i);
+    await expect(verifyPublishedSite('https://site.pages.dev', sha, 'preview', {}, redirected('/login/', false, true), 'discord')).rejects.toThrow(/protect/i);
+  });
+  it.each(['access', 'discord'])('preserves explicit Cloudflare Access protection in %s mode', async mode => {
+    await expect(verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, redirected('https://team.cloudflareaccess.com/cdn-cgi/access/login', true), mode)).resolves.toBeUndefined();
+  });
 });
 describe('deployment hostname coverage', () => {
   it('checks canonical production, production Pages, unique deployment, and branch alias hosts', () => {

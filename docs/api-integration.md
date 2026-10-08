@@ -10,7 +10,13 @@ All response envelopes use `schemaVersion: "1.0"`. Breaking changes require a ne
 
 The website calls only same-origin `/api/public/v1/status` and `/api/admin/v1/*`. Public upstream URL is separately configured. Administration paths map explicitly to `KINETIC_ADMIN_ORIGIN/v1/admin/*`; arbitrary paths, hostnames, commands, and caller-provided upstream credentials are rejected.
 
-## Two independent identities at Kinetic
+## Discord authentication
+
+The new website flow uses bot-mediated self-enrollment, Discord OAuth and opaque backend sessions. Its exact endpoints, runtime schemas and machine-authentication requirements are documented in [discord-admin-auth.md](discord-admin-auth.md). In Discord mode, `X-WO-Admin-Session` replaces the human Access assertion; Kinetic still independently verifies the gateway's signed machine Access identity and checks enrollment and current guild Administrator permission on every request and queued execution. The bot implementation remains a separate deliverable.
+
+## Legacy Access identities at Kinetic
+
+The following human-assertion flow applies only when `STAFF_AUTH_MODE=access` is explicitly selected. It is not a fallback for Discord failures.
 
 The Pages Function validates the website Access JWT's signature, issuer, audience, expiry, issued-at, subject, and human identity. It sends:
 - Machine authentication through `CF-Access-Client-Id` and `CF-Access-Client-Secret` to Kinetic's own Access application.
@@ -83,7 +89,7 @@ Return only approved installed models, with opaque safe IDs, current readiness, 
 
 Use 401 for invalid identity, 403 for denied policy, 404 for unknown/hidden records, 409 for stale revisions/idempotency conflicts, 422 for rejected policy input, 429 for rate limiting, and 503 for unavailable dependencies. Avoid raw exception strings. The gateway does not forward upstream cookies, redirects, CORS headers, or raw error bodies.
 
-The gateway caps mutation JSON at 16 KiB, public responses at 64 KiB, administration responses at 1 MiB, and upstream requests at eight seconds. Collections are bounded in the schema. Player/report list endpoints support cursor pagination; detail histories are explicitly recent bounded windows. Apply per-actor and per-machine rate limits in Kinetic and appropriate edge controls before exposure.
+The gateway caps ordinary mutation JSON at 16 KiB, public responses at 64 KiB, and operation responses at 1 MiB. Hosted authoring has fixed separate routes: content saves/responses allow 2 MiB; uploads allow a 12 MiB image plus at most 1 MiB multipart overhead. Authoring JSON requests have an eight-second upstream deadline and image requests fifteen seconds. Collections are bounded in the schema. Player/report list endpoints support cursor pagination; detail histories are explicitly recent bounded windows. Apply per-actor and per-machine rate limits in Kinetic and appropriate edge controls before exposure. See the [hosted administrator guide](hosted-admin-setup.md) and generated `authoring` contracts for private drafts, reviewed publication, connection settings, and credential replacement.
 
 ## Cross-project acceptance
 

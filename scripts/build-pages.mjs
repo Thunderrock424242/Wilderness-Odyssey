@@ -7,6 +7,6 @@ execFileSync(process.execPath, ['node_modules/wrangler/bin/wrangler.js', 'pages'
 for (const file of readdirSync('dist/_astro')) {
   if (!file.endsWith('.js')) continue;
   const source = readFileSync(join('dist/_astro', file), 'utf8');
-  if (/KINETIC_ACCESS_CLIENT_SECRET|KINETIC_ADMIN_ORIGIN|CSRF_SECRET|X-WO-User-Assertion/.test(source)) throw new Error('Server-only integration code leaked into a browser bundle: ' + file);
+  if (/KINETIC_ACCESS_CLIENT_SECRET|KINETIC_ADMIN_ORIGIN|CSRF_SECRET|X-WO-User-Assertion|X-WO-Admin-Session/.test(source)) throw new Error('Server-only integration code leaked into a browser bundle: ' + file);
 }
 console.log('Compiled Pages Functions and checked browser bundles for server-only integration code.');

@@ -1,0 +1,10 @@
+---
+import '../styles/operations.css';
+import '../styles/authoring.css';
+type Props = { title: string; capability: string };
+const { title, capability } = Astro.props;
+---
+<!doctype html><html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="robots" content="noindex,nofollow" /><meta name="color-scheme" content="dark" /><title>{title} | Wilderness Odyssey Staff</title><link rel="icon" href="/images/logo.png" /></head>
+<body class="staff"><a class="skip-link" href="#authoring-main">Skip to dashboard</a><header class="staff-header"><a class="staff-brand" href="/">Wilderness Odyssey<small>Staff administration</small></a><div class="staff-actions"><span data-authoring-identity>Verifying access…</span><button class="secondary" type="button" data-authoring-signout disabled>Sign out</button></div></header>
+<div class="staff-shell"><nav class="staff-nav" aria-label="Staff sections"><ul><li><a href="/admin/">Server Management</a></li><li><a href="/admin/models/">AI Model Management</a></li><li><a href="/admin/content/">Transmissions</a></li><li><a href="/admin/content/pages/">Site content</a></li><li><a href="/admin/settings/">Service settings</a></li></ul><a href="/">Public website</a></nav>
+<main id="authoring-main" class="staff-main" data-authoring-root data-capability={capability}><p class="ops-kicker">Administration</p><h1>{title}</h1><p data-authoring-message class="staff-message" role="status">Checking administrator access…</p><div class="staff-actions"><a href="/login/" data-authoring-signin>Sign in with Discord</a><button type="button" class="secondary" data-authoring-refresh>Refresh</button></div><div data-authoring-workspace hidden><slot /></div><noscript><p>JavaScript and a currently authorized administrator session are required.</p></noscript></main></div></body></html>

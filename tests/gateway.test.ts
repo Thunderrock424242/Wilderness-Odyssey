@@ -7,7 +7,7 @@ import { publicStatusSchema } from '../contracts/v1/status';
 import type { GatewayEnv } from '../server/env';
 
 const env: GatewayEnv = {
-  ENVIRONMENT: 'production', ALLOWED_HOSTS: 'site.example.com', ACCESS_TEAM_DOMAIN: 'https://team.cloudflareaccess.com', ACCESS_AUDIENCE: 'production-audience',
+  ENVIRONMENT: 'production', STAFF_AUTH_MODE: 'access', ALLOWED_HOSTS: 'site.example.com', ACCESS_TEAM_DOMAIN: 'https://team.cloudflareaccess.com', ACCESS_AUDIENCE: 'production-audience',
   KINETIC_ADMIN_ORIGIN: 'https://backend.example.com', PUBLIC_STATUS_URL: 'https://status.example.com/v1/status',
   KINETIC_ACCESS_CLIENT_ID: 'machine-id', KINETIC_ACCESS_CLIENT_SECRET: 'machine-secret', CSRF_SECRET: 'test-only-secret-with-at-least-32-bytes',
 };

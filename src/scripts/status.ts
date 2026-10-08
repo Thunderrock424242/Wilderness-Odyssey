@@ -5,6 +5,7 @@ const panels = [...document.querySelectorAll<HTMLElement>('[data-live-status]')]
 const notices = [...document.querySelectorAll<HTMLElement>('[data-maintenance]')];
 let lastStatus: PublicStatus | null = null;
 let failed = false;
+let notConfigured = false;
 let timer: ReturnType<typeof setTimeout>;
 let failures = 0;
 let loading = false;
@@ -13,9 +14,14 @@ function put(root: Element, selector: string, value: string) { root.querySelecto
 function render() {
   const view = statusPresentation(lastStatus);
   const usable = view.freshness !== 'unknown' && lastStatus;
+  const detail = failed && usable
+    ? 'Last confirmed ' + new Date(lastStatus!.observedAt).toLocaleString() + '. These measurements may be out of date.'
+    : view.detail;
   for (const panel of panels) {
-    panel.dataset.freshness = failed ? 'stale' : view.freshness;
-    put(panel, '[data-status-detail]', (failed ? 'Refresh failed. ' : '') + view.detail);
+    panel.dataset.freshness = failed && usable ? 'stale' : view.freshness;
+    put(panel, '[data-status-detail]', notConfigured
+      ? usable ? 'Live status is not connected. ' + detail : 'Live status is being set up. Minecraft and Aether measurements are unavailable until the status service is connected. This does not confirm a server outage.'
+      : (failed ? 'Refresh failed. ' : '') + detail);
     put(panel, '[data-status-minecraft]', failed && usable && view.freshness === 'fresh' ? 'Last known: ' + lastStatus!.minecraft.state : view.minecraft);
     put(panel, '[data-status-aether]', failed && usable && view.freshness === 'fresh' ? 'Last known: ' + (lastStatus!.aether.requestsPaused ? 'paused' : lastStatus!.aether.inference) : view.aether);
     const metrics: Record<string, string> = {};
@@ -60,10 +66,15 @@ function render() {
 async function refresh() {
   if (loading || document.hidden) return;
   clearTimeout(timer); loading = true;
+  notConfigured = false;
   document.querySelectorAll<HTMLButtonElement>('[data-status-refresh]').forEach(button => { button.disabled = true; });
   try {
     const response = await fetch('/api/public/v1/status', { signal: AbortSignal.timeout(8000), credentials: 'same-origin', cache: 'no-store' });
-    if (!response.ok) throw new Error();
+    if (!response.ok) {
+      const error: unknown = await response.json().catch(() => null);
+      notConfigured = response.status === 503 && typeof error === 'object' && error !== null && 'code' in error && error.code === 'NOT_CONFIGURED';
+      throw new Error();
+    }
     lastStatus = publicStatusSchema.parse(await response.json());
     failed = false; failures = 0;
   } catch { failed = true; failures++; }

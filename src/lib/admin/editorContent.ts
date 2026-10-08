@@ -21,14 +21,14 @@ turndown.addRule('cms-image', {
   },
 });
 
-export function markdownToEditorHtml(markdown: string, basePath: string): string {
+export function markdownToEditorHtml(markdown: string, basePath: string, resolveImage?: (path: string) => string): string {
   const html = sanitizeHtml(marked.parse(markdown, { async: false }) as string);
   const document = new DOMParser().parseFromString(html, 'text/html');
   document.querySelectorAll<HTMLImageElement>('img').forEach((image) => {
     const source = image.getAttribute('src') ?? '';
     if (source.startsWith('/')) {
       image.dataset.publicSrc = source;
-      image.src = `${basePath}${source}`.replace(/\/\/{2,}/g, '/');
+      image.src = resolveImage ? resolveImage(source) : `${basePath}${source}`.replace(/\/\/{2,}/g, '/');
     }
   });
   return document.body.innerHTML;
@@ -38,8 +38,8 @@ export function editorHtmlToMarkdown(html: string): string {
   return turndown.turndown(sanitizeHtml(html)).trim();
 }
 
-export function markdownToPreviewHtml(markdown: string, basePath: string): string {
-  return markdownToEditorHtml(markdown, basePath);
+export function markdownToPreviewHtml(markdown: string, basePath: string, resolveImage?: (path: string) => string): string {
+  return markdownToEditorHtml(markdown, basePath, resolveImage);
 }
 
 function sanitizeHtml(html: string): string {

@@ -33,8 +33,9 @@ const bootstrap = {
   config: {
     apiBase,
     basePath: import.meta.env.BASE_URL.replace(/\/$/, ''),
-    mode: apiBase ? 'api' : mockEnabled ? 'mock' : 'unavailable',
+    mode: apiBase ? 'api' : mockEnabled ? 'mock' : 'api',
     localMode,
+    hosted: !apiBase && !mockEnabled,
   },
   roadmap: ROADMAP_ITEMS.map(({ id, phase, title }) => ({ id, phase, title })),
   seeds,
@@ -75,6 +76,7 @@ const bootstrap = {
         <button class="admin-button" type="submit">Open command console</button>
         <p class="admin-form-error" data-admin-login-error aria-live="polite"></p>
       </form>
+      <div data-admin-hosted-signin hidden><a class="admin-button" href="/login/">Sign in with Discord</a><a class="admin-button admin-button--secondary" href="/admin/">Dashboard</a></div>
     </section>
 
     <div class="admin-workspace" data-admin-workspace hidden>
@@ -83,6 +85,9 @@ const bootstrap = {
         <nav aria-label="Admin sections">
           <button type="button" class="is-active" data-admin-route="dashboard">Transmission archive</button>
           <button type="button" data-admin-create>New transmission</button>
+          <a href="/admin/content/pages/">Site information, roadmap, and gallery</a>
+          <a href="/admin/settings/">Service settings</a>
+          <a href="/admin/">Server dashboard</a>
         </nav>
         <div class="admin-operator">
           <small>AUTHORIZED OPERATOR</small>

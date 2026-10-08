@@ -13,6 +13,7 @@ import {
   validateTransmission,
 } from '../lib/admin/cms';
 import { HttpAdminCmsService, UnavailableAdminCmsService } from '../lib/admin/api';
+import { HostedAdminCmsService } from '../lib/admin/hostedApi';
 import { editorHtmlToMarkdown, markdownToEditorHtml, markdownToPreviewHtml } from '../lib/admin/editorContent';
 import type {
   AdminCmsService,
@@ -25,9 +26,10 @@ import type {
   PublishingStatus,
 } from '../lib/admin/types';
 import type { TransmissionType } from '../data/site';
+import { AdminApiError } from '../lib/admin/types';
 
 type AdminBootstrap = {
-  config: { apiBase: string; basePath: string; localMode: boolean; mode: 'api' | 'mock' | 'unavailable' };
+  config: { apiBase: string; basePath: string; localMode: boolean; mode: 'api' | 'mock' | 'unavailable'; hosted: boolean };
   roadmap: { id: string; phase: string; title: string }[];
   seeds: AdminTransmissionSummary[];
 };
@@ -124,6 +126,7 @@ const editor = new Editor({
 void initialize();
 
 async function createAdminService(): Promise<AdminCmsService> {
+  if (bootstrap.config.hosted) return new HostedAdminCmsService();
   if (bootstrap.config.mode === 'api') return new HttpAdminCmsService(bootstrap.config.apiBase);
   if (bootstrap.config.mode === 'mock' && import.meta.env.DEV) {
     const { MockAdminCmsService } = await import('../lib/admin/mock');
@@ -133,6 +136,11 @@ async function createAdminService(): Promise<AdminCmsService> {
 }
 
 async function initialize() {
+  if (bootstrap.config.hosted) {
+    loginForm.hidden = true;
+    loginNote.textContent = 'Sign in with Discord using your enrolled administrator account.';
+    required<HTMLElement>('[data-admin-hosted-signin]').hidden = false;
+  }
   if (service.mode === 'unavailable') {
     unavailableView.hidden = false;
     return;
@@ -172,10 +180,9 @@ loginForm.addEventListener('submit', async (event) => {
 });
 
 required<HTMLButtonElement>('[data-admin-logout]').addEventListener('click', async () => {
-  await service.logout();
-  session = { authenticated: false };
-  workspace.hidden = true;
-  loginView.hidden = false;
+  try { await service.logout(); }
+  catch (error) { loginError.textContent = errorMessage(error); }
+  finally { session = { authenticated: false }; workspace.hidden = true; loginView.hidden = false; }
 });
 
 root.querySelectorAll<HTMLButtonElement>('[data-admin-create]').forEach((button) => button.addEventListener('click', openNewTransmission));
@@ -322,7 +329,7 @@ function createRecordCard(record: AdminTransmissionSummary): HTMLElement {
   meta.className = 'admin-record__meta';
   const badge = document.createElement('span');
   badge.className = `admin-record__badge${record.draft ? ' admin-record__badge--draft' : ''}`;
-  badge.textContent = record.draft ? 'DRAFT' : 'PUBLISHED';
+  badge.textContent = record.draft ? 'DRAFT' : bootstrap.config.hosted ? 'READY FOR PUBLICATION' : 'PUBLISHED';
   const type = document.createElement('span');
   type.textContent = record.type;
   const date = document.createElement('span');
@@ -340,8 +347,9 @@ function createRecordCard(record: AdminTransmissionSummary): HTMLElement {
   actions.append(
     recordButton('Preview', 'preview', record.id, true),
     recordButton('Edit', 'edit', record.id),
-    recordButton(record.draft ? 'Publish' : 'Unpublish', record.draft ? 'publish' : 'unpublish', record.id),
+    recordButton(bootstrap.config.hosted ? 'Request publication' : record.draft ? 'Publish' : 'Unpublish', bootstrap.config.hosted || record.draft ? 'publish' : 'unpublish', record.id),
   );
+  if (bootstrap.config.hosted && record.sourceRevision) actions.append(recordButton('Request unpublish', 'unpublish', record.id, true));
   article.append(information, actions);
   return article;
 }
@@ -398,7 +406,7 @@ function fillForm(input: AdminTransmissionInput) {
   formField<HTMLInputElement>('draft').checked = input.draft;
   formField<HTMLInputElement>('featured').checked = input.featured;
   syncingEditor = true;
-  editor.commands.setContent(markdownToEditorHtml(input.bodyMarkdown, bootstrap.config.basePath));
+  editor.commands.setContent(markdownToEditorHtml(input.bodyMarkdown, bootstrap.config.basePath, service.assetPreview?.bind(service)));
   syncingEditor = false;
   markdownInput.value = input.bodyMarkdown;
   renderCover();
@@ -470,6 +478,14 @@ async function saveTransmission() {
 }
 
 async function setPublishedState(id: string, shouldPublish: boolean, button: HTMLButtonElement) {
+  if (service.publishTransmission) {
+    if (!window.confirm('This submits content and its images to the public GitHub repository for review. Source becomes public immediately; the website updates only after merge and deployment approval. Continue?')) return;
+    setBusy(button, true, 'Requesting review…');
+    try { await service.getTransmission(id); const status = await service.publishTransmission(id, shouldPublish ? 'publish' : 'unpublish', true); setPublishing(status); showToast(status.message); if (status.operationId) void trackPublishing(status.operationId, true); }
+    catch (error) { showToast(errorMessage(error)); }
+    finally { setBusy(button, false); }
+    return;
+  }
   setBusy(button, true, shouldPublish ? 'Publishing…' : 'Unpublishing…');
   try {
     const transmission = await service.getTransmission(id);
@@ -539,7 +555,7 @@ function setEditingMode(mode: typeof editingMode) {
   } else if (editingMode === 'markdown') {
     current.bodyMarkdown = markdownInput.value;
     syncingEditor = true;
-    editor.commands.setContent(markdownToEditorHtml(current.bodyMarkdown, bootstrap.config.basePath));
+    editor.commands.setContent(markdownToEditorHtml(current.bodyMarkdown, bootstrap.config.basePath, service.assetPreview?.bind(service)));
     syncingEditor = false;
   }
   editingMode = mode;
@@ -737,7 +753,7 @@ function renderPreview() {
     preview.appendChild(cover);
   }
   const content = document.createElement('div');
-  content.innerHTML = markdownToPreviewHtml(input.bodyMarkdown, bootstrap.config.basePath);
+  content.innerHTML = markdownToPreviewHtml(input.bodyMarkdown, bootstrap.config.basePath, service.assetPreview?.bind(service));
   preview.appendChild(content);
   if (input.galleryImages.length) {
     const heading = document.createElement('h2');
@@ -789,13 +805,13 @@ function setPublishing(status: PublishingStatus) {
   publishing.classList.toggle('admin-alert--error', status.state === 'failed');
   publishing.classList.toggle('admin-alert--warning', ['local-saved', 'mock-saved'].includes(status.state));
   publishing.textContent = `${status.state.replace(/-/g, ' ').toUpperCase()} // ${status.message}`;
-  if (status.commitUrl || status.deploymentUrl) {
+  if (status.commitUrl || status.deploymentUrl || status.pullRequestUrl) {
     publishing.append(' ');
     const link = document.createElement('a');
-    link.href = status.deploymentUrl || status.commitUrl || '#';
+    link.href = status.deploymentUrl || status.pullRequestUrl || status.commitUrl || '#';
     link.target = '_blank';
     link.rel = 'noreferrer';
-    link.textContent = status.deploymentUrl ? 'Open deployment' : 'Open commit';
+    link.textContent = status.deploymentUrl ? 'Open deployment' : status.pullRequestUrl ? 'Open review' : 'Open commit';
     publishing.appendChild(link);
   }
 }
@@ -806,7 +822,7 @@ async function trackPublishing(operationId: string, toastUpdates = false) {
     try {
       const status = await service.getPublishingStatus(operationId);
       setPublishing(status);
-      if (['published', 'failed', 'checks-passed', 'local-saved', 'mock-saved'].includes(status.state)) {
+      if (['published', 'failed', 'cancelled', 'awaiting-review', 'checks-passed', 'local-saved', 'mock-saved'].includes(status.state)) {
         if (toastUpdates) showToast(status.message);
         return;
       }
@@ -836,11 +852,12 @@ function updateDescriptionCount() {
 }
 
 function publicAsset(path: string): string {
+  if (service.assetPreview) return service.assetPreview(path);
   return path.startsWith('/') ? `${bootstrap.config.basePath}${path}`.replace(/\/\/{2,}/g, '/') : path;
 }
 
 function cloneInput(transmission: AdminTransmission): AdminTransmissionInput {
-  const { id: _id, revision: _revision, createdAt: _createdAt, ...input } = structuredClone(transmission);
+  const { id: _id, revision: _revision, sourceRevision: _sourceRevision, createdAt: _createdAt, ...input } = structuredClone(transmission);
   return input;
 }
 
@@ -849,6 +866,9 @@ function optionalValue(value: string): string | undefined {
 }
 
 function errorMessage(error: unknown): string {
+  if (bootstrap.config.hosted && error instanceof AdminApiError && [401, 403].includes(error.status)) {
+    workspace.hidden = true; loginView.hidden = false; session = { authenticated: false }; summaries = []; recordsNode.replaceChildren(); current = createTransmissionDraft(''); currentId = undefined; form.reset(); editor.commands.setContent('<p></p>'); preview.replaceChildren(); galleryList.replaceChildren(); coverPreview.replaceChildren();
+  }
   return error instanceof Error ? error.message : 'The admin operation failed unexpectedly.';
 }
 

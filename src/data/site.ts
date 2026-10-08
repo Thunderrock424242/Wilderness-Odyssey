@@ -1,28 +1,7 @@
-export const SITE = {
-  name: 'Wilderness Odyssey',
-  tagline: 'The World Reborn',
-  description:
-    'A cinematic post-Exodus Minecraft survival odyssey shaped by Project Threshold, Echo Earth, anomaly weather, and a world reclaimed by nature.',
-  status: 'Pre-alpha — version 0.1.0 in development',
-  version: '0.1.0',
-  minecraftVersion: '1.21.1',
-  neoForgeVersion: 'Not published',
-  downloadStatus: 'No public build is available yet',
-  featuredTransmission: 'version-0-1-0-takes-shape',
-  links: {
-    curseForge: 'https://www.curseforge.com/minecraft/modpacks/wilderness-odyssey',
-    discord: 'https://discord.gg/XHSFDb7EM5',
-    github: 'https://github.com/Thunderrock424242/Wilderness-Odyssey',
-  },
-  social: {
-    title: 'Wilderness Odyssey // Surface Access Restored',
-    description:
-      'BUNKER_OS reports breathable air, hostile anomaly weather, and a world reclaimed by nature. Wake up, gear up, and step outside.',
-    image: '/images/logo.png',
-  },
-  footer: 'A post-Exodus survival project by Thunderrock424242.',
-  author: 'Thunderrock424242',
-} as const;
+import siteData from './editable/site.json';
+import { siteDataSchema } from '../../contracts/v1/content';
+
+export const SITE = siteDataSchema.parse(siteData);
 
 export const NAV_ITEMS = [
   { label: 'Home', href: '/' },

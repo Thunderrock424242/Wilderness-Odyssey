@@ -1,0 +1,10 @@
+---
+import AuthoringLayout from '../../../layouts/AuthoringLayout.astro';
+---
+<AuthoringLayout title="Site content" capability="content:read">
+  <p class="authoring-note">Edit site information, roadmap records, and gallery captions here. Saving keeps a private draft. Request publication when it is ready for public review.</p>
+  <label>Content section<select data-page-kind><option value="site">Site information</option><option value="roadmap">Roadmap</option><option value="gallery">Gallery</option></select></label>
+  <form data-page-form><div class="authoring-fields" data-page-fields></div><button type="submit">Save private draft</button></form>
+  <section><h2>Request publication</h2><label class="authoring-check"><input type="checkbox" data-page-public-ack /><span>I understand that the saved content becomes public in the GitHub pull request, before website deployment is approved.</span></label><div class="authoring-actions"><button type="button" data-page-publish>Submit saved draft for review</button><button type="button" class="secondary" data-page-publication-refresh hidden>Check publication</button></div><p data-page-publication role="status"></p><a data-page-review hidden target="_blank" rel="noopener noreferrer">Open publication review</a></section>
+</AuthoringLayout>
+<script src="../../../scripts/adminPages.ts"></script>

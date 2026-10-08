@@ -1,0 +1,13 @@
+.staff [data-authoring-workspace] { max-width: 980px; }
+.authoring-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.authoring-grid label, .authoring-fields label { display: grid; gap: .4rem; margin-bottom: 1rem; }
+.authoring-fields fieldset { min-width: 0; border: 1px solid #345646; padding: 1rem; margin-block: 1rem; }
+.authoring-fields legend { padding-inline: .3rem; }
+.staff textarea { min-height: 90px; width: 100%; }
+.staff input, .staff select, .staff textarea { max-width: 100%; box-sizing: border-box; }
+.authoring-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-block: 1rem; }
+.authoring-note { color: #b8c7be; max-width: 70ch; }
+.authoring-check { display: flex !important; align-items: flex-start; gap: .6rem; }
+.authoring-check input { width: auto; margin-top: .3rem; }
+.authoring-record { border: 1px solid #345646; padding: 1rem; margin-block: 1rem; }
+@media (max-width: 640px) { .authoring-grid { grid-template-columns: minmax(0, 1fr); } }

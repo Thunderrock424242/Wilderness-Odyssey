@@ -190,11 +190,13 @@ document.querySelectorAll<HTMLElement>('[data-terminal]').forEach((terminal) => 
       event.preventDefault();
       historyIndex = Math.min(history.length, historyIndex + 1);
       input.value = history[historyIndex] ?? '';
-    } else if (event.key === 'Tab') {
-      event.preventDefault();
+    } else if (event.key === 'Tab' && !event.shiftKey) {
       const value = input.value.trim().toLowerCase();
-      const match = phraseSuggestions.find((suggestion) => suggestion.startsWith(value));
-      if (match) input.value = match;
+      const match = value ? phraseSuggestions.find((suggestion) => suggestion.startsWith(value)) : undefined;
+      if (match && match !== value) {
+        event.preventDefault();
+        input.value = match;
+      }
     }
   });
 

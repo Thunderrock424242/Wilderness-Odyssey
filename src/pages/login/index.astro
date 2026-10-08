@@ -1,0 +1,39 @@
+---
+import '../../styles/operations.css';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Sign in with Discord | Wilderness Odyssey Staff</title>
+    <link rel="icon" href="/images/logo.png" />
+  </head>
+  <body class="staff">
+    <a class="skip-link" href="#login-main">Skip to sign-in</a>
+    <header class="staff-header"><a class="staff-brand" href="/">Wilderness Odyssey<small>Staff administration</small></a><a href="/support/">Get help</a></header>
+    <main id="login-main" class="staff-login">
+      <p class="ops-kicker">Dashboard access</p>
+      <h1>Sign in with Discord</h1>
+      <p>Use the Discord account you registered with the Wilderness Odyssey bot.</p>
+      <p class="staff-message" data-login-message role="status" hidden></p>
+      <section class="ops-card" aria-labelledby="access-heading">
+        <h2 id="access-heading">Enable your access first</h2>
+        <ol>
+          <li>In the Wilderness Odyssey Discord server, run <code>/dashboard enable</code>.</li>
+          <li>The bot checks that you have Administrator permission in that server.</li>
+          <li>After the bot confirms your access, sign in below.</li>
+        </ol>
+        <p>You keep access while you remain an administrator. Run <code>/dashboard disable</code> to revoke your own dashboard access.</p>
+      </section>
+      <a class="ops-button discord-signin" href="/api/auth/discord/start">Sign in with Discord</a>
+      <p class="ops-muted">Discord handles your password. The dashboard checks your access through the bot.</p>
+      <p><a href="/">Return to the website</a> · <a href="/status/">Public server status</a></p>
+      <noscript><p>The sign-in link works without JavaScript. JavaScript is required to use the dashboard after signing in.</p></noscript>
+    </main>
+    <script src="../../scripts/login.ts"></script>
+  </body>
+</html>

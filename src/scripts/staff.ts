@@ -1,12 +1,16 @@
 import { z } from 'zod';
 import { browserSessionSchema, incidentsSchema, modelsSchema, mutationSchema, overviewSchema, playerDetailSchema, playersSchema, reportDetailSchema, reportsSchema, roleCapabilities, type BrowserSession, type Capability } from '../../contracts/v1/admin';
 import { statusPresentation } from '../lib/status';
+import { logoutSchema } from '../../contracts/v1/auth';
 
 const main = document.querySelector<HTMLElement>('[data-staff-section]')!;
 const workspace = main.querySelector<HTMLElement>('[data-staff-workspace]')!;
 const message = main.querySelector<HTMLElement>('[data-staff-message]')!;
 const result = main.querySelector<HTMLElement>('[data-operation-result]')!;
 const section = main.dataset.staffSection!;
+const signout = document.querySelector<HTMLButtonElement>('[data-staff-signout]')!;
+let logoutCsrf: string | null = null;
+let authMethod: 'access' | 'discord' = 'discord';
 let session: BrowserSession | null = null;
 let overview: z.infer<typeof overviewSchema> | null = null;
 let player: z.infer<typeof playerDetailSchema> | null = null;
@@ -77,6 +81,10 @@ async function load() {
     const nextSession = await api('/session', browserSessionSchema);
     if (current !== generation) return;
     session = nextSession;
+    logoutCsrf = session.csrfToken;
+    authMethod = session.authMethod ?? 'discord';
+    signout.disabled = false;
+    one<HTMLAnchorElement>('[data-staff-signin]').href = authMethod === 'access' ? '/admin/' : '/login/';
     if (!can(requiredCapability[section])) { clearPrivateState(); message.textContent = 'Your role does not permit this section. Choose an authorized section from the navigation.'; return; }
     document.querySelector('[data-staff-identity]')!.textContent = session.user.displayName + ' · ' + session.user.role;
     one('[data-staff-signin]').hidden = true;
@@ -229,6 +237,24 @@ main.querySelectorAll<HTMLFormElement>('[data-form]').forEach(form => form.addEv
 main.querySelector<HTMLFormElement>('[data-player-search]')?.addEventListener('submit', event => { event.preventDefault(); playerQuery = String(new FormData(event.currentTarget as HTMLFormElement).get('q') ?? '').trim(); void searchPlayers().catch(showError); });
 main.querySelector('[data-player-next]')?.addEventListener('click', () => { if (playerCursor) void searchPlayers(playerCursor).catch(showError); });
 main.querySelector('[data-report-next]')?.addEventListener('click', () => { if (reportCursor) void loadReports(reportCursor).catch(showError); });
+signout.addEventListener('click', async () => {
+  if (authMethod === 'access') { location.assign('/cdn-cgi/access/logout'); return; }
+  if (!logoutCsrf) return;
+  signout.disabled = true;
+  try {
+    const response = await fetch('/api/auth/logout', {
+      method: 'POST', credentials: 'same-origin', redirect: 'error', cache: 'no-store',
+      // Allow the gateway's eight-second backend timeout to return the cookie
+      // deletion and an honest revocation result before aborting in the browser.
+      headers: { 'X-CSRF-Token': logoutCsrf }, signal: AbortSignal.timeout(15000),
+    });
+    if (response.ok && logoutSchema.safeParse(await response.json()).success) {
+      logoutCsrf = null; clearPrivateState(); location.replace('/login/?signed_out=1');
+    } else if (response.headers.get('X-WO-Browser-Session-Ended') === 'true') {
+      logoutCsrf = null; clearPrivateState(); location.replace('/login/?error=logout_unconfirmed');
+    } else throw new Error('Sign-out could not be confirmed. Try again, or run /dashboard disable in Discord to revoke your access.');
+  } catch (error) { showError(error); signout.disabled = false; }
+});
 one('[data-staff-refresh]').addEventListener('click', () => { void load(); });
 window.addEventListener('pagehide', clearPrivateState);
 window.addEventListener('pageshow', event => { if (event.persisted) location.reload(); });
@@ -239,7 +265,7 @@ setInterval(async () => {
     const renewed = await api('/session', browserSessionSchema);
     if (!session) return;
     if (renewed.user.id !== prior.user.id || renewed.user.role !== prior.user.role || renewed.capabilities.join(',') !== prior.capabilities.join(',')) { clearPrivateState(); await load(); }
-    else session = renewed;
+    else { session = renewed; logoutCsrf = renewed.csrfToken; }
   } catch (error) { clearPrivateState(); showError(error); }
 }, 60000);
 void load();

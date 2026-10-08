@@ -28,5 +28,6 @@ document.querySelectorAll<HTMLElement>('[data-roadmap-dashboard]').forEach((dash
 
   form?.addEventListener('input', apply);
   form?.addEventListener('change', apply);
+  form?.addEventListener('submit', (event) => { event.preventDefault(); apply(); });
   form?.addEventListener('reset', () => window.requestAnimationFrame(apply));
 });

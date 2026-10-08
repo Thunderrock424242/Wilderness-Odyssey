@@ -1,0 +1,21 @@
+import { configurationInput, configurationSchema, credentialInput, type Configuration } from '../../contracts/v1/configuration';
+import { authoringShell } from '../lib/admin/authoringShell';
+let view: Configuration | null = null;
+const shell = authoringShell(async api => { render(await api.request('/configuration', configurationSchema)); });
+const form = shell.root.querySelector<HTMLFormElement>('[data-settings-form]')!, credentialForm = shell.root.querySelector<HTMLFormElement>('[data-credential-form]')!;
+function render(value: Configuration) {
+  view = value;
+  for (const [key, data] of Object.entries(value.settings)) { const input = form.elements.namedItem(key); if (input instanceof HTMLInputElement) input.value = data === null ? '' : String(data); }
+  shell.root.querySelector('[data-settings-state]')!.textContent = 'Application: ' + value.application.state.replaceAll('-', ' ') + '. ' + value.verification.message + ' Read access: ' + (value.verification.readVerified ? 'verified' : 'unverified') + '. Write access: ' + (value.verification.writeVerified ? 'verified' : 'unverified') + '.';
+  shell.root.querySelector('[data-credential-state]')!.textContent = ['read', 'write'].map(scope => { const data = value.credentials[scope as 'read' | 'write']; return scope + ': ' + (data.configured ? 'configured' : 'not configured') + (data.updatedAt ? ' · replaced ' + new Date(data.updatedAt).toLocaleString() : ''); }).join(' | ');
+  const list = shell.root.querySelector('[data-settings-bootstrap]')!; list.replaceChildren(...value.bootstrap.map(item => { const li = document.createElement('li'); li.textContent = item.label + ': ' + (item.ready ? 'ready' : 'host setup required'); return li; }));
+  form.hidden = !shell.api.can('configuration:write'); credentialForm.hidden = !shell.api.can('configuration:credentials');
+}
+async function change(formNode: HTMLFormElement, work: () => Promise<Configuration>) {
+  if (!view) return; const buttons = formNode.querySelectorAll<HTMLButtonElement>('button'); buttons.forEach(button => { button.disabled = true; }); shell.message.textContent = 'Submitting change…';
+  try { render(await work()); shell.message.textContent = 'Saved. Review the connection verification and application state above.'; } catch (value) { shell.error(value); } finally { buttons.forEach(button => { button.disabled = false; }); }
+}
+form.addEventListener('submit', event => { event.preventDefault(); if (!view) return; const data = new FormData(form), settings = { mainOrigin: String(data.get('mainOrigin') ?? '').trim() || null, intervalMs: Number(data.get('intervalMs')), staleSeconds: Number(data.get('staleSeconds')), failures: Number(data.get('failures')), recoveries: Number(data.get('recoveries')), staffChannel: String(data.get('staffChannel') ?? '').trim() || null, publicChannel: String(data.get('publicChannel') ?? '').trim() || null }; void change(form, async () => { const input = configurationInput.safeParse({ settings, revision: view!.revision, reason: data.get('reason') }); if (!input.success) throw new Error('Check the settings. Monitoring must be more frequent than the freshness limit.'); return shell.api.request('/configuration', configurationSchema, { method: 'PUT', body: JSON.stringify(input.data) }); }); });
+shell.root.querySelector('[data-settings-verify]')!.addEventListener('click', () => { void change(form, () => shell.api.request('/configuration/verification', configurationSchema, { method: 'POST', body: JSON.stringify({ revision: view!.revision }) })); });
+credentialForm.addEventListener('submit', event => { event.preventDefault(); if (!view) return; const data = new FormData(credentialForm), input = credentialInput.safeParse({ scope: data.get('scope'), value: data.get('value'), reason: data.get('reason'), revision: view.revision }); (credentialForm.elements.namedItem('value') as HTMLInputElement).value = ''; void change(credentialForm, async () => { if (!input.success) throw new Error('Enter a credential of at least 32 characters and a reason of at least 10 characters.'); return shell.api.request('/configuration/credentials', configurationSchema, { method: 'PUT', body: JSON.stringify(input.data) }); }); });
+void shell.refresh();

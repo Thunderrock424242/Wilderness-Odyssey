@@ -1,5 +1,8 @@
 # Copy to .dev.vars for local Functions; configure real values privately.
 # Never use production credentials for local development or preview.
+# STAFF_AUTH_MODE, DISCORD_GUILD_ID and DISCORD_REDIRECT_URI are non-secret
+# Pages runtime variables; configure them in the selected environment.
+# Discord application secrets belong only on the bot backend.
 KINETIC_ACCESS_CLIENT_ID=""
 KINETIC_ACCESS_CLIENT_SECRET=""
 CSRF_SECRET=""

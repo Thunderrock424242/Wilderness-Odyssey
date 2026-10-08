@@ -109,6 +109,9 @@ jobs:
         run: node scripts/configure-pages.mjs
         env:
           ALLOWED_HOSTS: ${{ vars.ALLOWED_HOSTS }}
+          STAFF_AUTH_MODE: ${{ vars.STAFF_AUTH_MODE }}
+          DISCORD_REDIRECT_URI: ${{ vars.DISCORD_REDIRECT_URI }}
+          DISCORD_GUILD_ID: ${{ vars.DISCORD_GUILD_ID }}
           ACCESS_TEAM_DOMAIN: ${{ vars.ACCESS_TEAM_DOMAIN }}
           ACCESS_AUDIENCE: ${{ vars.ACCESS_AUDIENCE }}
           PUBLIC_STATUS_URL: ${{ vars.PUBLIC_STATUS_URL }}
@@ -123,6 +126,7 @@ jobs:
         id: verify
         run: node scripts/verify-deployment.mjs
         env:
+          STAFF_AUTH_MODE: ${{ vars.STAFF_AUTH_MODE }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           PREVIEW_ACCESS_CLIENT_ID: ${{ secrets.PREVIEW_ACCESS_CLIENT_ID }}

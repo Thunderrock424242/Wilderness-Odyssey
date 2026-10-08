@@ -6,6 +6,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 const base = '/';
 const required = [
+  'login/index.html',
   'index.html', 'admin/index.html', 'admin/content/index.html', 'admin/players/index.html', 'admin/reports/index.html', 'admin/models/index.html', 'status/index.html', 'support/index.html', 'support/troubleshooting/index.html', '_worker.js', '_routes.json', 'revision.json', 'roadmap/index.html', 'features/index.html', 'gallery/index.html', 'news/index.html',
   'devlogs/index.html', 'patches/index.html', 'lore/index.html', 'blog/index.html', 'logs/index.html',
   'transmissions/index.html', 'roadmap.html', 'gallery.html', 'news.html', 'patch-notes.html', 'patches.html',
@@ -46,7 +47,7 @@ if (errors.length) {
 
 function toDistTarget(value, sourceFile) {
   const clean = value.split(/[?#]/)[0];
-  if (!clean || clean === '/cdn-cgi/access/logout') return undefined;
+  if (!clean || clean === '/cdn-cgi/access/logout' || clean === '/api/auth/discord/start') return undefined;
   let path;
   if (clean.startsWith(base)) path = clean.slice(base.length);
   else if (clean.startsWith('/')) return undefined;

@@ -17,6 +17,7 @@ function initCursor() {
   const cursor = document.querySelector<HTMLElement>('#cur');
   const trail = document.querySelector<HTMLElement>('#curt');
   if (!cursor || !trail || !window.matchMedia('(pointer: fine)').matches) return;
+  document.documentElement.classList.add('custom-cursor');
   let x = 0;
   let y = 0;
   document.addEventListener('mousemove', (event) => {
@@ -52,18 +53,38 @@ function initNav() {
   const links = nav?.querySelector<HTMLElement>('.n-links');
   if (!nav || !toggle || !links) return;
   document.documentElement.classList.add('js');
-  const setOpen = (open: boolean) => {
+  const setOpen = (open: boolean, restoreFocus = false) => {
     nav.classList.toggle('nav-open', open);
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+    if (restoreFocus) toggle.focus();
   };
   const update = () => nav.classList.toggle('solid', window.scrollY > 60);
   update();
   window.addEventListener('scroll', update, { passive: true });
   toggle.addEventListener('click', () => setOpen(!nav.classList.contains('nav-open')));
   links.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
-  document.addEventListener('keydown', (event) => { if (event.key === 'Escape') setOpen(false); });
-  window.addEventListener('resize', () => { if (window.innerWidth > 900) setOpen(false); }, { passive: true });
+  // A breakpoint can hide a focused link before the media-query event runs.
+  let focusedNavElement: HTMLElement | null = null;
+  nav.addEventListener('focusin', (event) => {
+    focusedNavElement = event.target instanceof HTMLElement ? event.target : null;
+  });
+  nav.addEventListener('focusout', (event) => {
+    if (event.relatedTarget instanceof Node || focusedNavElement?.getClientRects().length) focusedNavElement = null;
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && nav.classList.contains('nav-open')) setOpen(false, nav.contains(document.activeElement));
+  });
+  const compactNav = window.matchMedia('(max-width: 1280px)');
+  compactNav.addEventListener('change', () => {
+    const focused = nav.contains(document.activeElement) ? document.activeElement : focusedNavElement;
+    if (compactNav.matches) setOpen(false, links.contains(focused));
+    else {
+      const toggleFocused = focused === toggle;
+      setOpen(false);
+      if (toggleFocused) links.querySelector<HTMLAnchorElement>('a')?.focus();
+    }
+  });
 }
 
 function initReveal() {
@@ -81,6 +102,7 @@ function initReveal() {
 
 function initHeroCanvas() {
   const hero = document.querySelector<HTMLElement>('#hero');
+  hero?.classList.add('bars-open');
   const canvas = document.querySelector<HTMLCanvasElement>('#hero-canvas');
   const context = canvas?.getContext('2d');
   if (!hero || !canvas || !context || reducedMotion) return;
@@ -139,7 +161,6 @@ function initHeroCanvas() {
   resize();
   const count = window.innerWidth < 700 ? 38 : 72;
   for (let index = 0; index < count; index += 1) particles.push(spawn(true));
-  hero.classList.add('bars-open');
   draw();
   window.addEventListener('resize', resize, { passive: true });
   document.addEventListener('visibilitychange', () => {

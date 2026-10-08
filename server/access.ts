@@ -1,19 +1,15 @@
 import { createRemoteJWKSet, jwtVerify, type JWTVerifyGetKey } from 'jose';
 import type { GatewayEnv } from './env';
 import { GatewayError, httpsUrl } from './http';
+import { validateStaffHost } from './staff-host';
 
 // Only public signing keys are shared; user identities and permissions are never cached.
 const keySets = new Map<string, ReturnType<typeof createRemoteJWKSet>>();
 export async function verifyAccess(request: Request, env: GatewayEnv, keySet?: JWTVerifyGetKey, allowPreviewService = false) {
-  const url = new URL(request.url);
-  if (!['production', 'preview'].includes(env.ENVIRONMENT ?? '') || !env.ACCESS_AUDIENCE || !env.ACCESS_TEAM_DOMAIN || !env.ALLOWED_HOSTS) {
+  validateStaffHost(request, env);
+  if (!env.ACCESS_AUDIENCE || !env.ACCESS_TEAM_DOMAIN) {
     throw new GatewayError(503, 'ACCESS_NOT_CONFIGURED', 'Staff access has not been configured.');
   }
-  const hosts = env.ALLOWED_HOSTS.split(',').map(value => value.trim().toLowerCase()).filter(Boolean);
-  const allowed = hosts.some(host => host === url.host.toLowerCase() ||
-    (env.ENVIRONMENT === 'preview' && /^\*\.[a-z0-9-]+\.pages\.dev$/.test(host) &&
-      url.hostname.endsWith(host.slice(1)) && !url.hostname.slice(0, -host.slice(1).length).includes('.')));
-  if (!allowed || url.protocol !== 'https:') throw new GatewayError(403, 'HOST_DENIED', 'Staff access is not available on this hostname.');
   const issuer = httpsUrl(env.ACCESS_TEAM_DOMAIN, true).origin;
   if (!/^https:\/\/[a-z0-9-]+\.cloudflareaccess\.com$/.test(issuer)) throw new GatewayError(503, 'ACCESS_NOT_CONFIGURED', 'Staff access has not been configured.');
   const assertion = request.headers.get('Cf-Access-Jwt-Assertion');

@@ -4,7 +4,7 @@ Project Purpose
 
 This repository contains the public Wilderness Odyssey website and related browser-facing interfaces.
 
-The site is primarily a multi-page Vite application deployed through GitHub Pages.
+The site is an Astro static application deployed on Cloudflare Pages, with Pages Functions for authenticated backend integration. GitHub Pages URLs are legacy compatibility routes.
 
 Primary responsibilities include:
 
@@ -22,38 +22,24 @@ The website may display and request privileged functionality, but authorization 
 
 Project Structure & Module Organization
 
-This repository is a multi-page Vite site.
+Astro route entry points live in src/pages/, reusable components in src/components/, and shared document layouts in src/layouts/.
 
-Root HTML files such as:
-
-* index.html
-* blog.html
-* gallery.html
-* other page entry files
-
-act as separate page entry points.
-
-Shared styling lives in style.css.
+Shared styling lives in src/styles/, including global.css, original-parity.css, and operations.css.
 
 TypeScript application code lives under src/.
 
 Keep responsibilities separated:
 
-* src/content/ — data-driven copy, records, blog posts, changelogs, and other structured content.
-* src/renderContent.ts — shared rendering logic for structured content.
-* src/ focused modules such as terminal.ts, pageEffects.ts, or equivalent interaction modules.
-* src/services/ — browser-side API clients where appropriate.
-* src/config/ — non-secret frontend configuration.
-* src/types/ — shared TypeScript types and API contracts.
+* src/content/ — Astro content collections for transmissions and roadmap records.
+* src/data/ — shared site copy, features, gallery records, roadmap tracks, and survivor logs.
+* src/scripts/ — browser interaction modules such as terminal.ts and pageEffects.ts.
+* src/lib/ — reusable presentation helpers and browser API clients.
+* contracts/v1/ — versioned API schemas shared by the browser and gateway.
+* server/ and functions/ — trusted Pages gateway code; keep it out of browser bundles.
 * scripts/ — build-time and generation helpers.
 * public/ — static assets copied directly to the built site.
 
-Generated assets currently include items such as:
-
-* public/blog/
-* public/logo.png
-
-when produced from source content such as src/content/blogPosts.ts and the source logo.
+Astro generates route HTML, feeds, and sitemaps in dist/. scripts/build-pages.mjs adds the compiled Pages worker, route configuration, and revision metadata. npm run contracts:export regenerates contracts/v1/schemas.json from the TypeScript schemas.
 
 Treat dist/ as disposable build output.
 
@@ -66,33 +52,39 @@ Use the repository scripts already defined in package.json.
 Primary commands:
 
 * npm ci installs the exact dependency versions from package-lock.json.
-* npm run dev regenerates blog share pages and starts Vite on 127.0.0.1.
-* npm run build runs strict TypeScript checks, generates share pages, builds all HTML entry points, and copies required social assets into dist/.
+* npm run dev starts Astro on 127.0.0.1.
+* npm run check runs Astro and gateway TypeScript checks plus content validation.
+* npm test runs the Vitest suite.
+* npm run build generates the static Astro site and compiles the Pages gateway.
 * npm run preview -- --port 4173 serves the production build locally.
+* npm run preview:pages -- --port 8788 serves the compiled Cloudflare Pages runtime locally.
+* npm run verify runs checks, unit tests, the build, and generated-site link checks.
+* npm run test:e2e runs Playwright against the static preview and Pages runtime.
+* npm run admin starts the separate loopback-only local content editor.
 
 The production preview is expected under:
 
-http://127.0.0.1:4173/Wilderness-Odyssey/
+http://127.0.0.1:4173/
 
-The /Wilderness-Odyssey/ prefix comes from vite.config.ts.
+astro.config.mjs uses base: '/'. Legacy /Wilderness-Odyssey/ paths redirect through public/_redirects.
 
-Do not casually change the Vite base path because it directly affects GitHub Pages routing and asset loading.
+Preserve both the Cloudflare root-path contract and legacy redirects. The static preview does not enforce staff authentication; use the Pages runtime to validate the gateway.
 
-There is currently no automated unit-test suite.
+Automated unit tests live in tests/ and browser tests in tests/browser/.
 
 Before considering a website change complete:
 
-1. Run npm run build.
+1. Run npm run verify and npm run test:e2e.
 2. Resolve all TypeScript errors.
 3. Preview the production build.
 4. Inspect all directly affected pages.
 5. Check internal navigation.
 6. Test keyboard behavior for interactive elements.
 7. Test narrow/mobile layouts.
-8. Verify GitHub Pages base-path behavior.
+8. Verify root-path behavior and legacy redirects in the Pages runtime.
 9. Check browser console output for unexpected errors.
 
-The deployment workflow also checks internal links and records non-blocking Lighthouse results.
+The deployment workflow also checks generated internal links and production dependencies. Deployment remains gated by the configured protected environments and owner approval.
 
 Aim to keep accessibility, best-practices, and SEO scores at or above 0.90.
 
@@ -112,7 +104,7 @@ Naming conventions:
 * camelCase for functions and variables.
 * PascalCase for types, interfaces, and classes.
 * UPPER_SNAKE_CASE for exported content collections or true constants.
-* camel-cased TypeScript content files such as blogPosts.ts.
+* camel-cased TypeScript data and interaction files such as survivorLogs.ts.
 * kebab-cased page files such as patch-notes.html.
 
 TypeScript runs in strict mode.
@@ -215,23 +207,23 @@ Avoid continuous polling when slower refresh intervals or event-driven updates a
 
 Do not add expensive page effects that noticeably hurt mobile performance or accessibility.
 
-GitHub Pages Deployment
+Cloudflare Pages Deployment and Legacy URLs
 
-The public site is deployed through GitHub Pages.
+The public site is deployed through Cloudflare Pages.
 
 Treat the configured base path as part of the deployment contract.
 
-Do not assume the site is hosted at /.
+The current base is /. Preserve the former /Wilderness-Odyssey/ URLs and HTML aliases as redirects.
 
 When adding links, assets, or dynamically generated paths:
 
-* respect the Vite base configuration,
-* avoid root-relative paths that bypass the configured base,
+* respect astro.config.mjs and the shared withBase helper,
+* keep legacy redirects pointing to the corresponding current route,
 * verify generated URLs in production preview.
 
 Call out any change that modifies:
 
-* vite.config.ts,
+* astro.config.mjs,
 * GitHub Actions deployment,
 * public paths,
 * generated assets,
@@ -262,7 +254,7 @@ Frontend code must not be the final authority for:
 * AI/model administration,
 * Minecraft administrative actions.
 
-Never embed Cloudflare secrets or privileged credentials into the Vite bundle.
+Never embed Cloudflare secrets or privileged credentials into browser bundles.
 
 Admin Dashboard
 
@@ -368,14 +360,14 @@ Security & Configuration
 
 The deployed website is public client-side code.
 
-Assume anything shipped in the Vite bundle can be inspected by users.
+Assume anything shipped in browser bundles can be inspected by users.
 
 Never place secrets in:
 
 * src/,
 * HTML,
 * public/,
-* Vite-exposed environment variables,
+* Astro PUBLIC_* environment variables,
 * frontend JSON configuration,
 * generated static files.
 
@@ -391,7 +383,7 @@ Never commit:
 * session secrets,
 * .env files containing secrets.
 
-Values intentionally exposed through VITE_* variables must be safe for public disclosure.
+Values intentionally exposed through PUBLIC_* variables must be safe for public disclosure.
 
 Privileged integrations require a trusted backend.
 
@@ -572,7 +564,7 @@ Pull requests should:
 * link relevant issues,
 * include before/after screenshots for visual changes,
 * mention generated-file updates,
-* call out changes to GitHub Pages paths,
+* call out changes to public paths or legacy GitHub Pages redirects,
 * explain new backend/API requirements,
 * note security or permission implications.
 
@@ -584,7 +576,7 @@ Do not delete pages, content, deployment logic, scripts, configuration, or integ
 
 Be especially careful when modifying:
 
-* vite.config.ts,
+* astro.config.mjs,
 * GitHub Actions,
 * build scripts,
 * generated blog behavior,

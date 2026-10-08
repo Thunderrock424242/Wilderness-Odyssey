@@ -37,14 +37,17 @@ Status comes only from the sanitized bot API through the same-origin gateway. Mi
 
 ## Staff dashboard
 
-Cloudflare Access protects the hosted staff interface. Pages Functions independently validate the assertion; Kinetic independently authenticates the gateway and authorizes each actor/action/resource.
+The website supports Discord sign-in at `/login/`. Users first enable their own access through the Discord bot, which verifies Administrator permission in its authorized server. Pages keeps session credentials in HttpOnly cookies; Kinetic authenticates the gateway and authorizes every session, actor, action and resource. Live sign-in requires the matching bot backend implementation. See [Discord setup and backend contract](docs/discord-admin-auth.md) and the [bot Codex implementation message](docs/discord-admin-bot-codex-message.md).
 
 - `/admin/`: Server Management.
 - `/admin/players/`: verified player moderation and appeals.
 - `/admin/reports/`: submitted AI reports and relevant excerpts.
 - `/admin/models/`: approved installed models and permitted settings.
+- `/admin/content/`: private transmission drafts and reviewed publication requests.
+- `/admin/content/pages/`: site information, roadmap records, and gallery content.
+- `/admin/settings/`: approved connections, scoped credential replacement, and verification.
 
-Viewer, Moderator, and Administrator are backend-assigned roles. Hidden buttons are not authorization. The gateway exposes no shell, RCON, arbitrary Ollama commands, or private upstream credentials. Staff responses are not cached. The dashboard does not retain all private conversations.
+Discord enrollment admits current server administrators within the existing Administrator capability ceiling. The explicitly configured legacy Access flow retains Viewer, Moderator, and Administrator assignments. Hidden buttons are not authorization. The gateway exposes no shell, RCON, arbitrary Ollama commands, or private upstream credentials. Staff responses are not cached. The dashboard does not retain all private conversations.
 
 See [API contracts and integration](docs/api-integration.md) and [deployment, Access setup, and rollback](docs/cloudflare-deployment.md).
 
@@ -62,7 +65,7 @@ Open `http://127.0.0.1:4321/admin/content/`. This starts the existing loopback-o
 - Passing checks is not publication. The editor distinguishes checks passed, awaiting approval, deploying, and verified publication.
 - Deployment still requires the configured approval gate.
 
-Hosted `/admin/content/` does not connect to a remote publishing service. Real editing remains local. The development-only mock can be enabled with `PUBLIC_ADMIN_MOCK=true`; mock content never becomes a real save or deployment.
+Hosted editing uses the signed-in staff session and the separate bot backend. Follow the [hosted administrator setup guide](docs/hosted-admin-setup.md) for one-time host configuration, content import, enrollment, encrypted credentials, and optional GitHub App publication. The development-only mock can be enabled with `PUBLIC_ADMIN_MOCK=true`; mock content never becomes a real save or deployment.
 
 ## Creating content
 

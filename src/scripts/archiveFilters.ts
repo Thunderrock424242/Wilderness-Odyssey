@@ -31,5 +31,6 @@ document.querySelectorAll<HTMLElement>('[data-archive-filter]').forEach((archive
 
   form?.addEventListener('input', apply);
   form?.addEventListener('change', apply);
+  form?.addEventListener('submit', (event) => { event.preventDefault(); apply(); });
   form?.addEventListener('reset', () => window.requestAnimationFrame(apply));
 });

@@ -31,6 +31,7 @@ export type AdminTransmissionInput = {
 export type AdminTransmission = AdminTransmissionInput & {
   id: string;
   revision?: string;
+  sourceRevision?: string | null;
   createdAt?: string;
 };
 
@@ -71,6 +72,10 @@ export type PublishingState =
   | 'published'
   | 'local-saved'
   | 'mock-saved'
+  | 'draft-saved'
+  | 'requested'
+  | 'awaiting-review'
+  | 'cancelled'
   | 'failed';
 
 export type PublishingStatus = {
@@ -78,6 +83,7 @@ export type PublishingStatus = {
   message: string;
   operationId?: string;
   commitUrl?: string;
+  pullRequestUrl?: string;
   deploymentUrl?: string;
 };
 
@@ -98,6 +104,8 @@ export interface AdminCmsService {
   deleteTransmission(id: string): Promise<void>;
   uploadMedia(file: File, slug: string, purpose: AdminMediaPurpose): Promise<AdminMediaUpload>;
   getPublishingStatus(operationId: string): Promise<PublishingStatus>;
+  publishTransmission?(id: string, action: 'publish' | 'unpublish', acknowledgePublicSource: boolean): Promise<PublishingStatus>;
+  assetPreview?(path: string): string;
 }
 
 export class AdminApiError extends Error {

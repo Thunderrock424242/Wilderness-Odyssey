@@ -1,0 +1,25 @@
+---
+import AuthoringLayout from '../../../layouts/AuthoringLayout.astro';
+---
+<AuthoringLayout title="Service settings" capability="configuration:read">
+  <p class="authoring-note">Save approved connection settings here. Changes take effect after a backend restart. Host authentication, encryption keys, and GitHub App credentials are configured once on the trusted host.</p>
+  <p data-settings-state role="status"></p><ul data-settings-bootstrap></ul>
+  <form data-settings-form>
+    <div class="authoring-grid">
+      <label>Main-server HTTPS origin<input name="mainOrigin" type="url" placeholder="https://approved-server.example" /></label>
+      <label>Monitoring interval (milliseconds)<input name="intervalMs" type="number" min="5000" max="300000" required /></label>
+      <label>Freshness limit (seconds)<input name="staleSeconds" type="number" min="15" max="300" required /></label>
+      <label>Failures before outage<input name="failures" type="number" min="2" max="20" required /></label>
+      <label>Recoveries before online<input name="recoveries" type="number" min="2" max="20" required /></label>
+      <label>Staff notification channel ID<input name="staffChannel" inputmode="numeric" pattern="[0-9]{17,22}" /></label>
+      <label>Public notification channel ID<input name="publicChannel" inputmode="numeric" pattern="[0-9]{17,22}" /></label>
+      <label>Reason for change<textarea name="reason" minlength="10" maxlength="1000" required></textarea></label>
+    </div>
+    <div class="authoring-actions"><button type="submit">Save settings</button><button type="button" class="secondary" data-settings-verify>Verify saved connection</button></div>
+  </form>
+  <section><h2>Replace connection credentials</h2><p class="authoring-note">Stored credentials are never shown. Sign in again before replacing a credential if your session is more than five minutes old. Read and write credentials must be different.</p><p data-credential-state></p>
+    <form data-credential-form><div class="authoring-grid"><label>Credential scope<select name="scope"><option value="read">Read connection</option><option value="write">Write operations</option></select></label><label>New credential<input name="value" type="password" autocomplete="new-password" minlength="32" maxlength="4096" required /></label><label>Reason<textarea name="reason" minlength="10" maxlength="1000" required></textarea></label></div><button type="submit">Replace credential</button></form>
+  </section>
+  <section><h2>Operational controls</h2><p><a href="/admin/">Maintenance and AI pause</a> · <a href="/admin/models/">Model selection and inference limits</a></p></section>
+</AuthoringLayout>
+<script src="../../../scripts/adminSettings.ts"></script>

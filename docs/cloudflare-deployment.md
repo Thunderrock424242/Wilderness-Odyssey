@@ -2,6 +2,8 @@
 
 This replaces the earlier GitHub Pages deployment plan. Local implementation does not authorize deployment, DNS changes, or production operations.
 
+The website now supports Discord sessions. Configure `STAFF_AUTH_MODE=discord`, `DISCORD_GUILD_ID` matching the bot's `GUILD_ID`, and the exact HTTPS `DISCORD_REDIRECT_URI` ending in `/api/auth/discord/callback`. The deployment workflow passes these non-secret variables to its existing configuration helper. See [Discord authentication](discord-admin-auth.md) for the required backend implementation and staged transition. Existing production Access policies must remain until the replacement passes staging and their change is separately approved. Explicit `access` mode retains the previous human Access flow during that transition.
+
 ## Local commands
 
 - `npm ci`: install the lockfile.
@@ -55,6 +57,7 @@ Use distinct preview and production runtime credentials and audience values. Pre
 ## Access protection before the first preview
 
 1. Configure the approved staff identity provider and staff admission policy, with MFA as appropriate.
+   In Discord mode, complete bot self-enrollment/session integration first. Whole-preview Access protection also covers `/login/` and `/api/auth/*`; the preview verifier may access neither. Production staff page/API checks remain mandatory in Functions after any approved removal of the legacy human Access policy.
 2. Protect production `/admin`, `/admin/*`, `/api/admin`, and `/api/admin/*` on every production hostname. Use one application audience covering those paths, or explicitly revise the trust model before adding another application.
 3. Enable Access for all preview deployment URLs and branch aliases. The Pages preview toggle does not also protect the production pages.dev hostname or custom domain.
 4. Add a service-auth policy for the preview smoke-check identity. The Function accepts that exact signed service identity for public preview pages only, never staff pages or staff APIs.

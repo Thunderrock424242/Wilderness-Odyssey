@@ -6,7 +6,18 @@ function protectedResponse(response) {
   if (![302, 303, 307, 308].includes(response.status)) return false;
   try { return new URL(response.headers.get('location')).hostname.endsWith('.cloudflareaccess.com'); } catch { return false; }
 }
-export async function verifyPublishedSite(origin, sha, environment, headers = {}, fetchImpl = fetch) {
+function discordLoginResponse(response, origin) {
+  if (response.status !== 303) return false;
+  const location = response.headers.get('location');
+  if (!location) return false;
+  try {
+    const destination = new URL(location, origin);
+    return destination.origin === new URL(origin).origin && destination.pathname === '/login/' &&
+      !destination.username && !destination.password && !destination.search && !destination.hash;
+  } catch { return false; }
+}
+export async function verifyPublishedSite(origin, sha, environment, headers = {}, fetchImpl = fetch, staffAuthMode = 'access') {
+  if (!['access', 'discord'].includes(staffAuthMode)) throw new Error('Unsupported staff authentication mode.');
   const request = (path, suppliedHeaders = headers) => fetchImpl(new URL(path, origin), { headers: suppliedHeaders, redirect: 'manual', cache: 'no-store', signal: AbortSignal.timeout(10000) });
   if (environment === 'preview') {
     const anonymous = await request('/', {});
@@ -21,7 +32,9 @@ export async function verifyPublishedSite(origin, sha, environment, headers = {}
   }
   for (const path of ['/admin', '/admin/', '/admin/players/', '/admin/reports/', '/admin/models/', '/admin/content/', '/api/admin/v1/session', '/api/admin/v1/models']) {
     const response = await request(path, environment === 'preview' ? headers : {});
-    if (!protectedResponse(response)) throw new Error('Staff route protection failed: ' + path);
+    const discordRedirect = environment === 'production' && staffAuthMode === 'discord' &&
+      path.startsWith('/admin') && discordLoginResponse(response, origin);
+    if (!protectedResponse(response) && !discordRedirect) throw new Error('Staff route protection failed: ' + path);
     await response.body?.cancel();
   }
   const status = await request('/api/public/v1/status');
@@ -50,6 +63,7 @@ export function verificationTargets(deployment, project, environment, canonical)
 }
 async function main() {
   const { CLOUDFLARE_ACCOUNT_ID: account, CLOUDFLARE_API_TOKEN: token, CLOUDFLARE_PAGES_PROJECT: project, GITHUB_SHA: sha, DEPLOY_BRANCH: branch, DEPLOY_ENVIRONMENT: environment } = process.env;
+  const staffAuthMode = process.env.STAFF_AUTH_MODE || 'discord';
   if (!/^[a-f0-9]{32}$/.test(account ?? '') || !/^[a-z0-9-]+$/.test(project ?? '') || !/^[a-f0-9]{40}$/.test(sha ?? '') || !['production', 'preview'].includes(environment ?? '') || !token || !branch) throw new Error('Deployment verification configuration is incomplete.');
   const endpoint = 'https://api.cloudflare.com/client/v4/accounts/' + account + '/pages/projects/' + project + '/deployments';
   let deployment;
@@ -66,7 +80,7 @@ async function main() {
   const targets = verificationTargets(deployment, project, environment, process.env.SITE_URL);
   const previewHeaders = { 'CF-Access-Client-Id': process.env.PREVIEW_ACCESS_CLIENT_ID || '', 'CF-Access-Client-Secret': process.env.PREVIEW_ACCESS_CLIENT_SECRET || '' };
   if (targets.some(target => target.environment === 'preview') && (!previewHeaders['CF-Access-Client-Id'] || !previewHeaders['CF-Access-Client-Secret'])) throw new Error('Preview verification credentials are required for deployment URLs.');
-  for (const target of targets) await verifyPublishedSite(target.origin, sha, target.environment, target.environment === 'preview' ? previewHeaders : {});
+  for (const target of targets) await verifyPublishedSite(target.origin, sha, target.environment, target.environment === 'preview' ? previewHeaders : {}, fetch, staffAuthMode);
   const publishedOrigin = environment === 'production' ? secureOrigin(process.env.SITE_URL) : secureOrigin(deployment.url);
   if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, 'deployment_url=' + publishedOrigin + '\n');
   console.log('Verified deployment revision, public pages, and protected staff routes.');
