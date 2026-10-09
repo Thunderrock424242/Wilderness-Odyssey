@@ -29,6 +29,12 @@ import { isSetupSection, runSetupDoctor } from '../services/setupDoctorService';
 import { supportStatusEmbed } from './status';
 import { beginSuggestionFromPanel } from '../services/suggestionService';
 import { beginOtherHelpTicket } from '../services/supportTicketService';
+import {
+  beginSupportGuide,
+  handleSupportGuideButton,
+  supportGuideOptions,
+  type SupportGuideCategory,
+} from '../services/supportGuideService';
 import { postStaffLog } from '../services/staffLogService';
 import { requireStaff } from '../utils/permissions';
 import {
@@ -46,16 +52,7 @@ const playtestPanelCustomId = 'panel:playtest';
 const staffPanelCustomId = 'panel:staff';
 const setupPanelCustomId = 'panel:setup';
 
-type SupportActionCategory =
-  | 'bug'
-  | 'crash'
-  | 'performance'
-  | 'feedback'
-  | 'suggestion'
-  | 'notsure'
-  | 'other'
-  | 'playtest'
-  | 'question';
+type SupportActionCategory = SupportGuideCategory | 'notsure';
 
 interface SupportActionPreset {
   value: SupportActionCategory;
@@ -67,48 +64,9 @@ const supportActionPresets: SupportActionPreset[] = [
   {
     value: 'notsure',
     label: 'Help me choose',
-    optionDescription: 'See a short guide to the right option.'
+    optionDescription: 'Browse detailed pages for every option with left and right arrows.'
   },
-  {
-    value: 'bug',
-    label: 'Report a gameplay bug',
-    optionDescription: 'Something is broken in-game, but the game still runs.'
-  },
-  {
-    value: 'crash',
-    label: 'Game crashed or will not launch',
-    optionDescription: 'The game closes unexpectedly or fails to start.'
-  },
-  {
-    value: 'performance',
-    label: 'Report lag or low FPS',
-    optionDescription: 'The game runs slowly, stutters, freezes, or has low FPS.'
-  },
-  {
-    value: 'feedback',
-    label: 'Share feedback',
-    optionDescription: 'Tell us how the current gameplay, balance, or difficulty feels.'
-  },
-  {
-    value: 'suggestion',
-    label: 'Suggest an idea',
-    optionDescription: 'Propose a new feature, content, or quality-of-life improvement.'
-  },
-  {
-    value: 'playtest',
-    label: 'Get playtest help',
-    optionDescription: 'Help with test builds, CurseForge setup, sessions, or Spark.'
-  },
-  {
-    value: 'question',
-    label: 'Ask a question',
-    optionDescription: 'Ask the community about gameplay, setup, or the modpack.'
-  },
-  {
-    value: 'other',
-    label: 'Contact staff privately',
-    optionDescription: 'Open a private staff ticket for account issues or anything else.'
-  }
+  ...supportGuideOptions,
 ];
 
 export const supportPanelCommand: SlashCommand = {
@@ -212,6 +170,10 @@ export const supportPanelCommand: SlashCommand = {
 };
 
 export async function handleSupportPanelComponent(interaction: ButtonInteraction | StringSelectMenuInteraction): Promise<boolean> {
+  if (interaction.isButton() && await handleSupportGuideButton(interaction)) {
+    return true;
+  }
+
   const supportButtonPrefix = `${supportPanelCustomId}:`;
   const supportContinuePrefix = `${supportContinueCustomId}:`;
   const isSupportButton = interaction.isButton() && interaction.customId.startsWith(supportButtonPrefix);
@@ -325,21 +287,7 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
   }
 
   if (category === 'notsure') {
-    await interaction.reply({
-      embeds: [
-        baseEmbed('Help me choose', 'Choose what sounds closest to your issue using the menu below.')
-          .addFields(
-            { name: 'Game crashes or will not launch', value: '**Game crashed or will not launch**' },
-            { name: 'Broken mechanics or missing content', value: '**Report a gameplay bug**' },
-            { name: 'Lag, low FPS, or freezes', value: '**Report lag or low FPS**' },
-            { name: 'New content or an improvement idea', value: '**Suggest an idea**' },
-            { name: 'Thoughts on balance or playtests', value: '**Share feedback**' },
-            { name: 'Account, installation, or other help', value: '**Contact staff privately**' }
-          )
-      ],
-      components: [supportTriageMenu()],
-      flags: 'Ephemeral'
-    });
+    await beginSupportGuide(interaction);
     return true;
   }
 
@@ -651,14 +599,6 @@ function knownIssuesGateButtons(category: 'bug' | 'crash'): ActionRowBuilder<But
   );
 }
 
-function supportTriageMenu(): ActionRowBuilder<StringSelectMenuBuilder> {
-  return supportActionMenu(
-    supportTriageCustomId,
-    'Choose what sounds closest',
-    ['crash', 'bug', 'suggestion', 'feedback', 'performance', 'other']
-  );
-}
-
 function supportButton(category: string, label: string, style: ButtonStyle): ButtonBuilder {
   return new ButtonBuilder()
     .setCustomId(`${supportPanelCustomId}:${category}`)
@@ -668,7 +608,7 @@ function supportButton(category: string, label: string, style: ButtonStyle): But
 
 function supportPanelDescription(): string {
   return [
-    'Choose what you need help with below. If you are unsure, start with **Help me choose**.',
+    'Choose an option below. Not sure which one fits? **Help me choose** opens a private guide with a page for every option. Use the left and right arrows to browse detailed explanations and examples, then choose the action on the page.',
     'Bug, crash, and performance reports begin in a private channel. You can review your report before posting. **Contact staff privately** opens a private ticket.'
   ].join('\n\n');
 }

@@ -161,7 +161,7 @@ Configuration, architecture, provider extension, linking, bridge payload rules, 
 
 Staff can run `/supportpanel` in a channel to post persistent button/menu panels. Use `panel_type:all` to post the player-facing support, info, and playtest panels together.
 
-The default support panel uses a short welcome and one dropdown with direct action labels and descriptions. Help me choose appears first for players who are unsure. It keeps the privacy note in the welcome text and omits the posting timestamp. Custom titles, descriptions, and images are still supported.
+The default support panel uses a welcome and one dropdown with direct action labels and descriptions. Help me choose appears first and opens a private eight-page guide: one page for each support action, with examples, preparation, next steps, and advice on choosing a different option. Left/right arrows edit the same guide message, a page counter shows your position, and each page has a button to start its existing support flow. The main panel explains this guide, keeps the privacy note, and omits the posting timestamp. Custom titles, descriptions, and images are still supported.
 
 Staff can run `/setup` directly without posting a panel. Use `section:channels`, `section:permissions`, `section:qa`, or `section:playtest` for focused checks. Results are private and show the exact environment setting or permission to fix. Optional features are marked OFF; long results continue in separate messages without hiding findings.
 
@@ -186,7 +186,7 @@ Panel types:
 
 Support Hub dropdown options:
 
-- Help me choose - get a short guide to finding the right support option.
+- Help me choose - browse a private guide with a detailed page for each option, left/right arrows, and a button to start the selected action.
 - Report a gameplay bug - check known issues, then describe the issue in a private channel and review the report before posting.
 - Game crashed or will not launch - check known issues, then share a crash report or latest.log in a private support channel with step-by-step guidance.
 - Report lag or low FPS - describe lag, low FPS, or freezes in a private channel and review the report before posting to the issues forum.
