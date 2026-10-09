@@ -156,7 +156,7 @@ a, button, select, summary { cursor: pointer; }
 .page-hero__glow { position: absolute; width: 620px; height: 620px; right: -180px; bottom: -300px; border: 1px solid rgba(58,184,255,.05); border-radius: 50%; box-shadow: 0 0 120px rgba(58,184,255,.025); }
 .page-hero-inner { position: relative; z-index: 2; width: min(980px,100%); margin: 0; padding: 0; }
 .page-hero__copy { max-width: 980px; }
-.page-title { max-width: 100%; color: var(--white); font: 400 clamp(1.8rem, 8.5vw, 6.5rem)/1.05 var(--F-display); letter-spacing: .025em; overflow-wrap: normal; text-transform: uppercase; }
+.page-title { max-width: 100%; color: var(--white); font: 400 clamp(1.8rem, 8.5vw, 6.5rem)/1.05 var(--F-display); letter-spacing: .025em; overflow-wrap: break-word; text-transform: uppercase; }
 .page-copy { max-width: 66ch; }
 .page-hero__actions { justify-content: flex-start; margin-top: 2rem; }
 

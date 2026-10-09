@@ -164,18 +164,28 @@ test('essential navigation, metadata, and terminal copy use readable type sizes'
   expect(smallText).toEqual([]);
 });
 
-test('long titles stay inside the page when web fonts are unavailable', async ({ page }) => {
-  await page.route('https://fonts.googleapis.com/**', route => route.abort());
-  await page.setViewportSize({ width: 320, height: 844 });
-  await page.goto('/support/troubleshooting/');
-  const clipped = await page.locator('.page-title').evaluate(heading => {
-    const range = document.createRange();
-    range.selectNodeContents(heading);
-    const bounds = heading.getBoundingClientRect();
-    return [...range.getClientRects()].some(rect => rect.left < bounds.left - 1 || rect.right > bounds.right + 1);
-  });
-  expect(clipped).toBe(false);
-});
+for (const fallback of ['installed', 'generic']) {
+  for (const width of [320, 390, 1440]) {
+    test(`long titles stay inside the page with ${fallback} fallback fonts at ${width}px`, async ({ page }) => {
+      await page.route(/^https:\/\/fonts\.(?:googleapis|gstatic)\.com\//, route => route.abort());
+      await page.setViewportSize({ width, height: 844 });
+      await page.goto('/support/troubleshooting/');
+      await page.evaluate(() => document.fonts.ready);
+      const overflowingRects = await page.locator('.page-title').evaluate((heading, useGeneric) => {
+        // Exercise hosts without the locally installed condensed fallback font.
+        if (useGeneric) heading.style.setProperty('--F-display', 'sans-serif');
+        const range = document.createRange();
+        range.selectNodeContents(heading);
+        const bounds = heading.getBoundingClientRect();
+        return [...range.getClientRects()]
+          .filter(rect => rect.left < bounds.left - 1 || rect.right > bounds.right + 1)
+          .map(rect => ({ left: rect.left, right: rect.right, containerLeft: bounds.left, containerRight: bounds.right }));
+      }, fallback === 'generic');
+      expect(overflowingRects).toEqual([]);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+    });
+  }
+}
 
 test('gallery filter has no stray text and describes pending records honestly', async ({ page }) => {
   await page.goto('/gallery/');
