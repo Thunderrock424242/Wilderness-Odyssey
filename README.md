@@ -178,15 +178,15 @@ Panel types:
 
 Support Hub dropdown options:
 
-- Bug report - shows a quick known-issues check, then opens a private guided bug intake.
-- Crash / logs - shows a quick known-issues check, then opens a private guided crash intake.
-- Performance issue - opens a private guided performance intake and posts to the issues forum with the performance tag after confirmation.
+- Gameplay bugs - check known issues, then describe the issue in a private channel and review the report before posting.
+- Crashes & launch issues - check known issues, then share a crash report or latest.log in a private support channel with step-by-step guidance.
+- Lag & performance - describe lag, low FPS, or freezes in a private channel and review the report before posting to the issues forum.
 - Feedback - opens a feedback modal.
-- Suggestion - opens a suggestion modal with voting on the created forum post.
-- Help me pick - shows a short routing menu for users who are not sure.
+- Suggestions - share an idea through a form, with voting on the created forum post.
+- Help me choose - get a short guide to finding the right support option.
 - Other help - asks for a summary/details, then creates a private staff ticket.
 - Playtest help - explains playtest ZIP acceptance, `/playtest start`, and report linking.
-- Q&A question - points players to the community Q&A forum when configured.
+- Ask a question - find the community Q&A forum or channels when configured.
 
 Bug, crash, and performance intakes ask one question at a time in a private channel. Players can reply `n/a` for optional fields, review the answers, edit a selected field, and then confirm before the forum post is created. Bug and performance reviews show local duplicate hints from known issues and previous reports when a strong match is found; crash posts show duplicate hints after the log signature is analyzed.
 

@@ -67,66 +67,66 @@ interface SupportActionPreset {
 const supportActionPresets: SupportActionPreset[] = [
   {
     value: 'bug',
-    label: 'Bug report',
-    fieldTitle: 'Bug report',
-    fieldDescription: 'Broken gameplay, bad behavior, missing content, or reproducible issues. Opens a private guided intake channel.',
-    optionDescription: 'Known-issues check, then private bug intake.'
+    label: 'Gameplay bugs',
+    fieldTitle: 'Gameplay bugs',
+    fieldDescription: 'Report broken mechanics, missing content, or unexpected in-game behavior.',
+    optionDescription: 'Broken mechanics, missing content, or unexpected in-game behavior.'
   },
   {
     value: 'crash',
-    label: 'Crash / logs',
-    fieldTitle: 'Crash / logs',
-    fieldDescription: 'Crash reports, latest.log, Java/loader errors, or launch failures. Opens a private guided intake channel.',
-    optionDescription: 'Known-issues check, then private crash intake.'
+    label: 'Crashes & launch issues',
+    fieldTitle: 'Crashes & launch issues',
+    fieldDescription: 'Get help with crashes, launch errors, and sharing crash reports or latest.log.',
+    optionDescription: 'Game crashes, Java or mod loader errors, and launch problems.'
   },
   {
     value: 'performance',
-    label: 'Performance issue',
-    fieldTitle: 'Performance issue',
-    fieldDescription: 'Lag, FPS drops, stutter, freezes, RAM pressure, shaders, or worldgen performance.',
-    optionDescription: 'Open a private performance intake.'
+    label: 'Lag & performance',
+    fieldTitle: 'Lag & performance',
+    fieldDescription: 'Report lag, low FPS, stuttering, freezes, or slow world generation.',
+    optionDescription: 'Lag, low FPS, stuttering, freezes, or slow world generation.'
   },
   {
     value: 'feedback',
     label: 'Feedback',
     fieldTitle: 'Feedback',
-    fieldDescription: 'Playtest impressions, balance notes, pacing, difficulty, and polish.',
-    optionDescription: 'Open a feedback form.'
+    fieldDescription: 'Share your thoughts on balance, pacing, difficulty, and playtests.',
+    optionDescription: 'Your thoughts on balance, pacing, difficulty, and playtests.'
   },
   {
     value: 'suggestion',
-    label: 'Suggestion',
-    fieldTitle: 'Suggestion',
-    fieldDescription: 'New ideas, quality-of-life requests, content proposals, and voting.',
-    optionDescription: 'Create a suggestion with voting.'
+    label: 'Suggestions',
+    fieldTitle: 'Suggestions',
+    fieldDescription: 'Suggest new content, improvements, or quality-of-life changes.',
+    optionDescription: 'New content ideas, improvements, or quality-of-life changes.'
   },
   {
     value: 'notsure',
-    label: 'Help me pick',
-    fieldTitle: 'Help me pick',
-    fieldDescription: 'A short routing menu for players who are not sure where their issue belongs.',
-    optionDescription: 'Show a guided routing menu.'
+    label: 'Help me choose',
+    fieldTitle: 'Help me choose',
+    fieldDescription: 'Find the right option with a few simple pointers.',
+    optionDescription: 'Not sure where to start? Find the right option here.'
   },
   {
     value: 'other',
     label: 'Other help',
     fieldTitle: 'Other help',
-    fieldDescription: 'Private staff ticket for anything that does not fit the structured report options.',
-    optionDescription: 'Open a private staff ticket.'
+    fieldDescription: 'Contact the support team about anything else.',
+    optionDescription: 'Get help from the support team with anything else.'
   },
   {
     value: 'playtest',
     label: 'Playtest help',
     fieldTitle: 'Playtest help',
-    fieldDescription: 'ZIP, CurseForge import, tester sessions, report linking, and Spark guidance.',
-    optionDescription: 'Get ZIP, session, and Spark guidance.'
+    fieldDescription: 'Get help installing test builds, starting sessions, or recording performance.',
+    optionDescription: 'Test builds, CurseForge setup, playtest sessions, and Spark profiling.'
   },
   {
     value: 'question',
-    label: 'Q&A question',
-    fieldTitle: 'Q&A question',
-    fieldDescription: 'Points players to configured Q&A channels for bot answers or team handoff.',
-    optionDescription: 'Learn where to ask Q&A questions.'
+    label: 'Ask a question',
+    fieldTitle: 'Ask a question',
+    fieldDescription: 'Find where to ask gameplay, setup, or modpack questions.',
+    optionDescription: 'Find where to ask gameplay, setup, or modpack questions.'
   }
 ];
 
@@ -346,14 +346,14 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
   if (category === 'notsure') {
     await interaction.reply({
       embeds: [
-        baseEmbed('Help Me Pick', 'No problem. Choose the closest match and I will route you to the right flow.')
+        baseEmbed('Help me choose', 'Choose what sounds closest to your issue using the menu below.')
           .addFields(
-            { name: 'Game closed or will not launch', value: 'Use crash report.' },
-            { name: 'Something is broken in-game', value: 'Use bug report.' },
-            { name: 'Lag, stutter, FPS, or freezes', value: 'Use performance report.' },
-            { name: 'Idea or request', value: 'Use suggestion.' },
-            { name: 'Opinion, balance, pacing, or playtest notes', value: 'Use feedback.' },
-            { name: 'Private or account/install help', value: 'Use Other Help.' }
+            { name: 'Game crashes or will not launch', value: '**Crashes & launch issues**' },
+            { name: 'Broken mechanics or missing content', value: '**Gameplay bugs**' },
+            { name: 'Lag, low FPS, or freezes', value: '**Lag & performance**' },
+            { name: 'New content or an improvement idea', value: '**Suggestions**' },
+            { name: 'Thoughts on balance or playtests', value: '**Feedback**' },
+            { name: 'Account, installation, or other help', value: '**Other help**' }
           )
       ],
       components: [supportTriageMenu()],
@@ -397,18 +397,18 @@ async function handleSupportTriageSelection(interaction: StringSelectMenuInterac
 async function showKnownIssuesGate(interaction: ButtonInteraction | StringSelectMenuInteraction, category: 'bug' | 'crash'): Promise<void> {
   const label = category === 'bug' ? 'bug report' : 'crash report';
   const uploadGuidance = category === 'crash'
-    ? 'Continue to open a private crash intake channel. I will ask for the log upload there, redact it, and create the Crash forum post after you confirm.'
-    : 'Continue to open a private bug intake channel. I will ask one question at a time, including optional screenshots/logs, then post the final report after you confirm.';
+    ? 'Share your crash report or latest.log in a private channel. Sensitive information in the log is redacted before storage. Review your report before confirming the forum post.'
+    : 'Describe the issue in a private channel, one question at a time. You can add screenshots or logs, then review your report before confirming the forum post.';
   await interaction.reply({
     embeds: [
-      baseEmbed('Quick Duplicate Check', `Before starting the ${label}, you can check known issues or continue now.`)
+      baseEmbed('Check known issues', `Your issue may already have a fix or workaround. Check the list, or continue with your ${label}.`)
         .addFields(
           {
-            name: 'Why this exists',
-            value: 'If staff already knows about it, you can skip filing another report. If you are not sure, continue anyway.'
+            name: 'Before you report',
+            value: 'If your issue is listed, try the suggested steps. If it persists or you are unsure, continue with your report.'
           },
           {
-            name: 'Guided intake',
+            name: 'What happens next',
             value: uploadGuidance
           }
         )
@@ -644,9 +644,9 @@ function supportPanelPayload(input: {
   imageUrl: string | null;
 }) {
   const embed = baseEmbed(
-    input.title ?? 'Wilderness Oddesy Support Hub',
+    input.title ?? 'Wilderness Odyssey Support',
     input.description ?? supportPanelDescription()
-  );
+  ).setFooter({ text: 'Wilderness Odyssey | Community support' });
 
   if (!input.description) {
     embed.addFields(
@@ -664,16 +664,16 @@ function supportPanelPayload(input: {
 
   return {
     embeds: [embed],
-    components: [supportActionMenu(supportPanelCustomId, 'Select a support option')]
+    components: [supportActionMenu(supportPanelCustomId, 'Choose how we can help')]
   };
 }
 
 function knownIssuesGateButtons(category: 'bug' | 'crash'): ActionRowBuilder<ButtonBuilder> {
   return new ActionRowBuilder<ButtonBuilder>().addComponents(
-    supportButton('knownissues', 'View Known Issues', ButtonStyle.Secondary),
+    supportButton('knownissues', 'View known issues', ButtonStyle.Secondary),
     new ButtonBuilder()
       .setCustomId(`${supportContinueCustomId}:${category}`)
-      .setLabel(category === 'bug' ? 'Continue Bug Report' : 'Continue Crash Report')
+      .setLabel(category === 'bug' ? 'Continue bug report' : 'Continue crash report')
       .setStyle(ButtonStyle.Primary)
   );
 }
@@ -681,7 +681,7 @@ function knownIssuesGateButtons(category: 'bug' | 'crash'): ActionRowBuilder<But
 function supportTriageMenu(): ActionRowBuilder<StringSelectMenuBuilder> {
   return supportActionMenu(
     supportTriageCustomId,
-    'Pick what sounds closest',
+    'Choose what sounds closest',
     ['crash', 'bug', 'suggestion', 'feedback', 'performance', 'other']
   );
 }
@@ -695,9 +695,9 @@ function supportButton(category: string, label: string, style: ButtonStyle): But
 
 function supportPanelDescription(): string {
   return [
-    'Pick the support route that fits best. If you are unsure, choose Help me pick.',
-    'Reports go to staff triage. Other Help opens a private ticket.'
-  ].join('\n');
+    'Need a hand? Choose an option below. Not sure where to start? Select **Help me choose**.',
+    'Bug, crash, and performance reports start privately, with a review before posting. **Other help** opens a private ticket with staff.'
+  ].join('\n\n');
 }
 
 function qaQuestionHelpText(): string {
