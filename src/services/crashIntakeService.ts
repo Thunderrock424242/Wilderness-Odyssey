@@ -153,7 +153,7 @@ export async function handleCrashIntakeMessage(message: Message): Promise<boolea
     const resultMessage = {
       content: result.posted
         ? `Thanks, your crash report was created as **${result.report.publicId}** and sent to staff.`
-        : `Thanks, your crash report was saved as **${result.report.publicId}**. Staff channel posting is not configured yet, but I kept the report locally.`,
+        : `Thanks, your crash report was saved as **${result.report.publicId}**. I could not post it to the staff archive. Your report is saved; ask staff to look up this ID. You do not need to submit it again.`,
       embeds: [result.embed],
       components: [reportReceiptButtons('crash', result.report.publicId)],
       allowedMentions: { parse: [] }

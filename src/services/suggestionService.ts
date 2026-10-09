@@ -98,7 +98,7 @@ export async function handleSuggestionModal(interaction: ModalSubmitInteraction)
   const posted = await postSuggestion(interaction, suggestion);
 
   await interaction.editReply({
-    content: `Thanks, your suggestion was received. Your suggestion ID is **${suggestion.publicId}**.${posted ? ' The archive has been updated.' : ' Suggestions channel posting is not configured yet, but I saved the suggestion locally.'}`
+    content: `Thanks, your suggestion was received. Your suggestion ID is **${suggestion.publicId}**.${posted ? ' Your idea is posted for community discussion and staff review.' : ' I could not post it to the suggestions archive. Your idea is saved; ask staff to look up this ID.'}`
   });
 
   await postStaffLog(interaction.client, {
@@ -308,7 +308,7 @@ function mapSuggestion(row: SuggestionRow): SuggestionRecord {
 function suggestionModal(draftId: string): ModalBuilder {
   return new ModalBuilder()
     .setCustomId(`suggest:${draftId}`)
-    .setTitle('Wilderness Oddesy Suggestion')
+    .setTitle('Wilderness Odyssey Suggestion')
     .addComponents(
       textInputRow('title', 'Suggestion title', TextInputStyle.Short, true, 'Short, clear title.'),
       textInputRow('details', 'Suggestion details', TextInputStyle.Paragraph, true, 'What should be added or changed, and why?')

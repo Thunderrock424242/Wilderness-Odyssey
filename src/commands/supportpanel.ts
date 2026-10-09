@@ -25,7 +25,8 @@ import {
   listChangelogEntries,
   listKnownIssues
 } from '../services/knownIssuesService';
-import { setupDoctorEmbed } from '../services/setupDoctorService';
+import { isSetupSection, runSetupDoctor } from '../services/setupDoctorService';
+import { supportStatusEmbed } from './status';
 import { beginSuggestionFromPanel } from '../services/suggestionService';
 import { beginOtherHelpTicket } from '../services/supportTicketService';
 import { postStaffLog } from '../services/staffLogService';
@@ -197,15 +198,16 @@ export const supportPanelCommand: SlashCommand = {
     const description = interaction.options.getString('description');
     const imageUrl = interaction.options.getString('image_url');
 
+    await interaction.deferReply({ flags: 'Ephemeral' });
+
     try {
       for (const payload of panelPayloads(panelType, { title, description, imageUrl })) {
         await interaction.channel.send(payload);
       }
     } catch (error) {
       if (isMissingPermissionsError(error)) {
-        await interaction.reply({
+        await interaction.editReply({
           content: supportPanelPermissionMessage(),
-          flags: 'Ephemeral'
         });
         return;
       }
@@ -213,9 +215,8 @@ export const supportPanelCommand: SlashCommand = {
       throw error;
     }
 
-    await interaction.reply({
+    await interaction.editReply({
       content: panelType === 'all' ? 'All set. Player panels posted.' : 'All set. Panel posted.',
-      flags: 'Ephemeral'
     });
 
     await postStaffLog(interaction.client, {
@@ -274,7 +275,7 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
         return true;
       }
 
-      await interaction.reply({ embeds: [await setupDoctorEmbed(interaction)], flags: 'Ephemeral' });
+      await runSetupDoctor(interaction, isSetupSection(category) ? category : 'full');
       return true;
     }
   }
@@ -528,7 +529,7 @@ async function handleStaffPanelSelection(interaction: StringSelectMenuInteractio
   }
 
   if (category === 'setup') {
-    await interaction.reply({ embeds: [await setupDoctorEmbed(interaction)], flags: 'Ephemeral' });
+    await runSetupDoctor(interaction);
     return;
   }
 
@@ -646,15 +647,15 @@ function supportPanelPayload(input: {
   const embed = baseEmbed(
     input.title ?? 'Wilderness Odyssey Support',
     input.description ?? supportPanelDescription()
-  ).setFooter({ text: 'Wilderness Odyssey | Community support' });
+  )
+    .setTimestamp(null)
+    .setFooter({ text: 'Wilderness Odyssey · Community support' });
 
   if (!input.description) {
     embed.addFields(
-      ...supportActionPresets.map((preset) => ({
-        name: preset.fieldTitle,
-        value: preset.fieldDescription,
-        inline: false
-      }))
+      { name: 'Fix a problem', value: 'Gameplay bugs\nCrashes & launch issues\nLag & performance', inline: false },
+      { name: 'Share your ideas', value: 'Feedback\nSuggestions', inline: false },
+      { name: 'Get guidance', value: 'Playtest help · Ask a question\nOther help · Help me choose', inline: false }
     );
   }
 
@@ -695,8 +696,8 @@ function supportButton(category: string, label: string, style: ButtonStyle): But
 
 function supportPanelDescription(): string {
   return [
-    'Need a hand? Choose an option below. Not sure where to start? Select **Help me choose**.',
-    'Bug, crash, and performance reports start privately, with a review before posting. **Other help** opens a private ticket with staff.'
+    'Need a hand? Choose an option below.\nNot sure where to start? Select **Help me choose**.',
+    'Bug, crash, and performance reports start privately. Review your report before posting. Other help opens a private staff ticket.'
   ].join('\n\n');
 }
 
@@ -742,7 +743,7 @@ function supportActionMenu(
 
 function infoPanelPayload() {
   const embed = baseEmbed(
-    'Wilderness Oddesy Info Center',
+    'Wilderness Odyssey Info Center',
     'Use this panel for common player information without remembering status commands.'
   )
     .addFields(
@@ -771,7 +772,7 @@ function infoPanelPayload() {
 
 function playtestPanelPayload() {
   const embed = baseEmbed(
-    'Wilderness Oddesy Playtest Center',
+    'Wilderness Odyssey Playtest Center',
     'Use this panel during test builds so sessions, reports, and Spark links stay organized.'
   )
     .addFields(
@@ -804,7 +805,7 @@ function playtestPanelPayload() {
 
 function staffPanelPayload() {
   const embed = baseEmbed(
-    'Wilderness Oddesy Staff Console',
+    'Wilderness Odyssey Staff Console',
     'Staff-only quick reference for triage, playtest publishing, known issues, and Q&A handoffs.'
   )
     .setColor(0x6d5b98)
@@ -836,7 +837,7 @@ function staffPanelPayload() {
 
 function setupPanelPayload() {
   const embed = baseEmbed(
-    'Wilderness Oddesy Setup Doctor',
+    'Wilderness Odyssey Setup Doctor',
     'Run these checks after changing config, channels, permissions, or hosting environments.'
   )
     .setColor(0x6d5b98)
@@ -862,18 +863,7 @@ function setupPanelPayload() {
   };
 }
 
-function statusPanelEmbed() {
-  const supportChannel = config.channelIds.support ? `<#${config.channelIds.support}>` : config.status.supportChannels.join(', ');
-  return baseEmbed('Support Status', 'Wilderness Oddesy systems online.')
-    .addFields(
-      { name: 'Latest modpack version', value: config.status.latestModpackVersion, inline: true },
-      { name: 'Recommended Java', value: config.status.recommendedJavaVersion, inline: true },
-      { name: 'Recommended RAM', value: config.status.recommendedRam, inline: true },
-      { name: 'Support channels', value: supportChannel },
-      { name: 'Known unstable features', value: config.status.knownUnstableFeatures.join(', ') || 'None configured' },
-      { name: 'Server status', value: config.status.serverStatusLabel }
-    );
-}
+const statusPanelEmbed = supportStatusEmbed;
 
 function playtestChecklistEmbed() {
   const checklist = [

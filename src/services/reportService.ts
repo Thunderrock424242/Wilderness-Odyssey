@@ -54,6 +54,7 @@ import {
 } from '../utils/supportTeam';
 import { reportCounter } from './metricsService';
 import { postStaffLog } from './staffLogService';
+import { logger } from '../utils/logger';
 
 interface BugDraft {
   userId: string;
@@ -217,41 +218,48 @@ export async function postToConfiguredChannel(
     return { posted: false };
   }
 
-  const channel = await client.channels.fetch(channelId).catch(() => null);
-  if (!channel) {
-    return { posted: false };
-  }
-
-  if (channel.isThreadOnly()) {
-    if (!options.forumPost) {
+  try {
+    const channel = await client.channels.fetch(channelId);
+    if (!channel) {
       return { posted: false };
     }
 
-    const thread = await channel.threads.create({
-      name: forumPostTitle(options.forumPost.title),
-      message: payload,
-      appliedTags: resolveForumTagIds(channel.availableTags, options.forumPost.tags ?? [])
-    });
-    const starterMessage = await thread.fetchStarterMessage().catch(() => null);
+    if (channel.isThreadOnly()) {
+      if (!options.forumPost) {
+        return { posted: false };
+      }
 
+      const thread = await channel.threads.create({
+        name: forumPostTitle(options.forumPost.title),
+        message: payload,
+        appliedTags: resolveForumTagIds(channel.availableTags, options.forumPost.tags ?? [])
+      });
+      const starterMessage = await thread.fetchStarterMessage().catch(() => null);
+
+      return {
+        posted: true,
+        channelId: thread.id,
+        messageId: starterMessage?.id ?? thread.id,
+        threadId: thread.id
+      };
+    }
+
+    if (!channel.isSendable()) {
+      return { posted: false };
+    }
+
+    const message = await channel.send(payload);
     return {
       posted: true,
-      channelId: thread.id,
-      messageId: starterMessage?.id ?? thread.id,
-      threadId: thread.id
+      channelId: message.channelId,
+      messageId: message.id
     };
-  }
-
-  if (!channel.isSendable()) {
+  } catch (error) {
+    const code = typeof error === 'object' && error !== null && 'code' in error && typeof error.code === 'number'
+      ? error.code : undefined;
+    logger.warn({ channelId, code, operation: 'archive-report' }, 'Discord archive delivery failed; the saved report is retained.');
     return { posted: false };
   }
-
-  const message = await channel.send(payload);
-  return {
-    posted: true,
-    channelId: message.channelId,
-    messageId: message.id
-  };
 }
 
 export function forumPostTitle(title: string): string {
@@ -311,24 +319,48 @@ export async function readTextAttachmentUrl(name: string, size: number, url: str
     throw new Error('Please attach a `.txt` or `.log` file.');
   }
 
-  if (size > config.maxLogBytes) {
+  if (!Number.isFinite(size) || size <= 0 || size > config.maxLogBytes) {
     throw new Error(`This file is too large. The current limit is ${Math.floor(config.maxLogBytes / 1024)} KB.`);
+  }
+
+  const parsedUrl = URL.parse(url);
+  if (!parsedUrl || parsedUrl.protocol !== 'https:' || parsedUrl.username || parsedUrl.password
+    || parsedUrl.port || !['cdn.discordapp.com', 'media.discordapp.net'].includes(parsedUrl.hostname)
+    || !parsedUrl.pathname.startsWith('/attachments/')) {
+    throw new Error('Please upload a Discord-hosted HTTPS log attachment.');
   }
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15_000);
 
   try {
-    const response = await fetch(url, { signal: controller.signal });
+    const response = await fetch(url, { signal: controller.signal, redirect: 'error' });
     if (!response.ok) {
-      throw new Error(`Discord returned HTTP ${response.status} while reading the attachment.`);
+      throw new Error('The log could not be downloaded. Upload it again and retry.');
     }
-
-    const buffer = Buffer.from(await response.arrayBuffer());
-    if (buffer.byteLength > config.maxLogBytes) {
+    const declaredSize = Number(response.headers.get('content-length'));
+    if (declaredSize > config.maxLogBytes) {
+      await response.body?.cancel();
       throw new Error(`This file is too large. The current limit is ${Math.floor(config.maxLogBytes / 1024)} KB.`);
     }
-
+    if (!response.body) { throw new Error('The log response was empty. Upload the file again.'); }
+    const reader = response.body.getReader();
+    const chunks: Buffer[] = [];
+    let total = 0;
+    try {
+      while (true) {
+        const result = await reader.read();
+        if (result.done) { break; }
+        total += result.value.byteLength;
+        if (total > config.maxLogBytes) {
+          await reader.cancel();
+          throw new Error(`This file is too large. The current limit is ${Math.floor(config.maxLogBytes / 1024)} KB.`);
+        }
+        chunks.push(Buffer.from(result.value));
+      }
+    } finally { reader.releaseLock(); }
+    const buffer = Buffer.concat(chunks, total);
+    if (buffer.includes(0)) { throw new Error('Please upload a text log. Binary files are not supported.'); }
     return buffer.toString('utf8');
   } finally {
     clearTimeout(timeout);
@@ -471,7 +503,7 @@ export async function handleBugReportModal(interaction: ModalSubmitInteraction):
   );
 
   await interaction.editReply({
-    content: `Thanks, your bug report was received. Your bug ID is **${report.publicId}**.${posted ? ' The dev team has been notified.' : ' Staff channel posting is not configured yet, but I saved the report locally.'}`,
+    content: `Thanks, your bug report was received. Your bug ID is **${report.publicId}**.${posted ? ' Your report is posted for staff review.' : ' I could not post it to the staff archive. Your report is saved; ask staff to look up this ID. You do not need to submit it again.'}`,
     components: [reportReceiptButtons('bug', report.publicId)]
   });
 
@@ -530,6 +562,7 @@ export async function handlePerformanceReportModal(interaction: ModalSubmitInter
   }
 
   performanceDrafts.delete(draftId);
+  await interaction.deferReply({ flags: 'Ephemeral' });
 
   const report = createPerformanceReport({
     userId: interaction.user.id,
@@ -563,10 +596,9 @@ export async function handlePerformanceReportModal(interaction: ModalSubmitInter
     }
   );
 
-  await interaction.reply({
-    content: `Thanks, your performance report was received. Your report ID is **${report.publicId}**.${posted ? ' The dev team has been notified.' : ' Staff channel posting is not configured yet, but I saved the report locally.'}`,
+  await interaction.editReply({
+    content: `Thanks, your performance report was received. Your report ID is **${report.publicId}**.${posted ? ' Your report is posted for staff review.' : ' I could not post it to the staff archive. Your report is saved; ask staff to look up this ID. You do not need to submit it again.'}`,
     components: [reportReceiptButtons('performance', report.publicId)],
-    flags: 'Ephemeral'
   });
 
   await postStaffLog(interaction.client, {
@@ -620,6 +652,7 @@ export async function handleFeedbackModal(interaction: ModalSubmitInteraction): 
   }
 
   feedbackDrafts.delete(draftId);
+  await interaction.deferReply({ flags: 'Ephemeral' });
 
   const report = createFeedbackReport({
     userId: interaction.user.id,
@@ -650,10 +683,9 @@ export async function handleFeedbackModal(interaction: ModalSubmitInteraction): 
     }
   );
 
-  await interaction.reply({
-    content: `Thanks, your field notes were received. Your feedback ID is **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but I saved the report locally.'}`,
+  await interaction.editReply({
+    content: `Thanks, your feedback is saved. Your feedback ID is **${report.publicId}**.${posted ? '' : ' I could not post it to the staff archive. Your report is saved; ask staff to look up this ID. You do not need to submit it again.'}`,
     components: [reportReceiptButtons('feedback', report.publicId)],
-    flags: 'Ephemeral'
   });
 
   await postStaffLog(interaction.client, {
@@ -995,6 +1027,7 @@ export async function handleReportUpdateModal(interaction: ModalSubmitInteractio
   }
 
   const details = interaction.fields.getTextInputValue('details');
+  await interaction.deferReply({ flags: 'Ephemeral' });
   appendReportUpdate({
     reportType: type,
     reportPublicId: publicId,
@@ -1003,10 +1036,14 @@ export async function handleReportUpdateModal(interaction: ModalSubmitInteractio
     details
   });
 
-  await sendToConfiguredChannel(interaction.client, reportChannelForType(type), {
+  const posted = await sendToConfiguredChannel(interaction.client, reportDestinationForType(type), {
     embeds: [
       feedbackReportUpdateEmbed(type, normalizeReportId(publicId), interaction.user.id, details)
-    ]
+    ],
+    allowedMentions: { parse: [] },
+  }, {
+    forumPost: { title: reportForumTitle(normalizeReportId(publicId), 'Update', details),
+      tags: type === 'spark' ? [] : reportForumTagsForType(type) },
   });
 
   await postStaffLog(interaction.client, {
@@ -1020,9 +1057,8 @@ export async function handleReportUpdateModal(interaction: ModalSubmitInteractio
     ]
   });
 
-  await interaction.reply({
-    content: `Thanks, I added that extra information to **${normalizeReportId(publicId)}**.`,
-    flags: 'Ephemeral'
+  await interaction.editReply({
+    content: `Your update is saved for **${normalizeReportId(publicId)}**.${posted ? ' Staff can review it in the report archive.' : ' I could not post it to the archive. Ask staff to look up this ID; you do not need to submit it again.'}`,
   });
   return true;
 }
@@ -1465,7 +1501,7 @@ function mapFeedback(row: FeedbackRow): FeedbackReportRecord {
 function bugReportModal(draftId: string): ModalBuilder {
   return new ModalBuilder()
     .setCustomId(`bugreport:${draftId}`)
-    .setTitle('Wilderness Oddesy Bug Report')
+    .setTitle('Wilderness Odyssey Bug Report')
     .addComponents(
       textInputRow('modpack_version', 'Modpack version', TextInputStyle.Short, true, 'Example: 0.1.0', defaultModpackVersion() ?? undefined),
       textInputRow('happened', 'What happened?', TextInputStyle.Paragraph, true, 'Describe the bug clearly.'),
@@ -1491,7 +1527,7 @@ function performanceReportModal(draftId: string): ModalBuilder {
 function feedbackReportModal(draftId: string): ModalBuilder {
   return new ModalBuilder()
     .setCustomId(`feedback:${draftId}`)
-    .setTitle('Wilderness Oddesy Feedback')
+    .setTitle('Wilderness Odyssey Feedback')
     .addComponents(
       textInputRow('summary', 'Short summary', TextInputStyle.Short, true, 'Example: Rifts feel too punishing early.'),
       textInputRow('details', 'Details', TextInputStyle.Paragraph, true, 'Tell staff what you noticed and what would help.')

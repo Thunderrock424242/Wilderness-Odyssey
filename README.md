@@ -1,6 +1,6 @@
-# Wilderness Oddesy Discord Bot
+# Wilderness Odyssey Discord Bot
 
-Friendly Discord support and dev help desk bot for the **Wilderness Oddesy** Minecraft modpack community. It helps players submit bugs, crash logs, suggestions, feedback, optional performance reports, Spark profiler links, and organized playtesting sessions.
+Discord support and dev help desk bot for the **Wilderness Odyssey** Minecraft modpack community. Players can submit reports, ask staff for help, share suggestions, and organize playtests through guided menus.
 
 The personality is light in-universe support AI: helpful, calm, and a little eerie, without making support answers confusing.
 
@@ -32,6 +32,8 @@ The personality is light in-universe support AI: helpful, calm, and a little eer
 
 ## Setup
 
+Start with the [short setup guide](docs/bot-setup.md). It covers the minimum channels, permissions, and a first-run check using `/setup`. The [October 9 bot audit](docs/bot-audit-2026-10-09.md) records the fixes and remaining improvements.
+
 1. Create a Discord application at the [Discord Developer Portal](https://discord.com/developers/applications).
 2. Open the application, create a bot, and copy the bot token.
 3. Copy `.env.example` to `.env`.
@@ -39,12 +41,12 @@ The personality is light in-universe support AI: helpful, calm, and a little eer
 5. Invite the bot with OAuth2 scopes:
    - `bot`
    - `applications.commands`
-6. If using Q&A auto-responses or Minecraft server verification relay, enable Message Content Intent for the bot in the Discord Developer Portal.
+6. Enable Message Content Intent in the bot's Developer Portal settings. The current bot requests this intent and uses it for guided report answers, Q&A, and the verification relay.
 7. Give the bot permission to send messages, embeds, and buttons in configured report channels.
 8. Install dependencies:
 
 ```bash
-npm install
+npm ci
 ```
 
 9. Deploy slash commands:
@@ -59,6 +61,8 @@ npm run deploy
 npm run build
 npm start
 ```
+
+11. As staff, run `/setup` in the support channel. Fix the named settings or channel permissions, then run `/supportpanel` to post the player hub. Changes to slash-command definitions require `npm run deploy` again.
 
 Development:
 
@@ -142,7 +146,7 @@ Tables:
 - `/playtest checklist` - shows the singleplayer stability checklist.
 - `/knownissues` - shows staff-configured known issues; accepts an optional version filter.
 - `/changelog` - shows recent changelog entries.
-- `/status` - shows modpack version, Java/RAM recommendations, support channels, unstable features, and server status placeholder.
+- `/status` - shows observed server availability, player counts, service metrics, and recommended modpack/Java/RAM settings. Missing telemetry remains unknown or unavailable.
 - `/aether help|ask|status|lore|diagnose|link|unlink|profile|settings` - optional Aether Core routing, diagnostics, UUID linking, profile, and preference commands. See [`docs/aether-core.md`](docs/aether-core.md).
 
 ## Aether Core
@@ -156,6 +160,10 @@ Configuration, architecture, provider extension, linking, bridge payload rules, 
 ## Panels
 
 Staff can run `/supportpanel` in a channel to post persistent button/menu panels. Use `panel_type:all` to post the player-facing support, info, and playtest panels together.
+
+The default support panel groups its options into Fix a problem, Share your ideas, and Get guidance above one dropdown. It keeps the privacy note in the welcome text and omits the posting timestamp. Custom titles, descriptions, and images are still supported.
+
+Staff can run `/setup` directly without posting a panel. Use `section:channels`, `section:permissions`, `section:qa`, or `section:playtest` for focused checks. Results are private and show the exact environment setting or permission to fix. Optional features are marked OFF; long results continue in separate messages without hiding findings.
 
 Recommended server layout:
 

@@ -16,7 +16,7 @@ import { sparkReportEmbed } from '../utils/embeds';
 export const sparkReportCommand: SlashCommand = {
   data: new SlashCommandBuilder()
     .setName('sparkreport')
-    .setDescription('Attach a Spark profiler result to a Wilderness Oddesy playtest session.')
+    .setDescription('Attach a Spark profiler result to a Wilderness Odyssey playtest session.')
     .addStringOption((option) =>
       option
         .setName('session_id')
@@ -157,7 +157,7 @@ export const sparkReportCommand: SlashCommand = {
       });
 
       await interaction.editReply({
-        content: `Thanks, your Spark report was archived as **${report.publicId}**.${posted ? ' Staff can review it now.' : ' Spark report channel posting is not configured yet, but I saved the report locally.'}`,
+        content: `Thanks, your Spark report was archived as **${report.publicId}**.${posted ? ' Staff can review it now.' : ' I could not post it to the Spark archive. Your report is saved; ask staff to look up this ID.'}`,
         components: [reportReceiptButtons('spark', report.publicId)]
       });
 

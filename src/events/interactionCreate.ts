@@ -133,6 +133,12 @@ export async function handleInteraction(
         return;
       }
     }
+    if (interaction.isRepliable() && !interaction.replied && !interaction.deferred) {
+      await interaction.reply({
+        content: 'This form or button is no longer available. Use `/help` or the Support Hub to start again.',
+        flags: 'Ephemeral',
+      });
+    }
   } catch (error) {
     captureException(error, {
       source: 'interaction',
@@ -146,7 +152,10 @@ export async function handleInteraction(
         flags: 'Ephemeral'
       } as const;
 
-      if (interaction.deferred || interaction.replied) {
+      // deferUpdate targets the shared component message; its errors must stay private.
+      if (interaction.deferred && !interaction.replied && interaction.ephemeral !== null) {
+        await interaction.editReply({ content: message.content, embeds: [], components: [] }).catch(() => undefined);
+      } else if (interaction.deferred || interaction.replied) {
         await interaction.followUp(message).catch(() => undefined);
       } else {
         await interaction.reply(message).catch(() => undefined);

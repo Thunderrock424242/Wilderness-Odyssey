@@ -17,7 +17,7 @@ import type {
 } from 'discord.js';
 import { LRUCache } from 'lru-cache';
 import { config } from '../config';
-import { baseEmbed, bugReportEmbed, performanceReportEmbed } from '../utils/embeds';
+import { baseEmbed, bugReportEmbed, fitEmbed, performanceReportEmbed } from '../utils/embeds';
 import { redactLog } from './logParser';
 import { linkReportToSession } from './playtestSessionService';
 import { archiveCrashAttachment } from './crashReportService';
@@ -47,6 +47,7 @@ import {
   teamAlertContent
 } from '../utils/supportTeam';
 import { postStaffLog } from './staffLogService';
+import { logger } from '../utils/logger';
 import { maybeReplyWithKnownAnswer } from './qaService';
 import {
   addDuplicateHintsField,
@@ -90,6 +91,7 @@ interface IntakeSession {
   editingKey: string | null;
   answers: Record<string, string | null>;
   attachments: Record<string, Attachment | undefined>;
+  savedReportId?: string;
 }
 
 const intakeTtlMs = 60 * 60_000;
@@ -268,6 +270,14 @@ export async function handleReportIntakeComponent(
   }
 
   const action = interaction.customId.slice(intakeCustomIdPrefix.length);
+  if (session.mode === 'submitted') {
+    await interaction.reply({ content: 'This report is already being submitted. Please wait for your report ID.', flags: 'Ephemeral' });
+    return true;
+  }
+  if (action !== 'cancel' && session.mode !== 'review') {
+    await interaction.reply({ content: 'Finish answering the current question, then use the latest review message.', flags: 'Ephemeral' });
+    return true;
+  }
   if (interaction.isStringSelectMenu()) {
     if (action !== 'edit-field') {
       return true;
@@ -293,7 +303,11 @@ export async function handleReportIntakeComponent(
   }
 
   if (action === 'submit') {
-    await interaction.update({ components: [] });
+    // Lock before the first await so simultaneous clicks cannot submit twice.
+    session.mode = 'submitted';
+    try {
+      await interaction.update({ components: [] });
+    } catch (error) { session.mode = 'review'; throw error; }
     await submitSessionFromInteraction(interaction, session);
     return true;
   }
@@ -310,6 +324,11 @@ export async function handleReportIntakeComponent(
   if (action === 'cancel') {
     session.mode = 'submitted';
     reportIntakes.delete(session.channelId);
+    await interaction.update({
+      content: 'Report cancelled. Nothing was posted. Staff can close this private channel when you are finished.',
+      embeds: [],
+      components: []
+    });
     await postStaffLog(interaction.client, {
       title: 'Report Intake Cancelled',
       description: `${reportLabel(session.type)} intake cancelled by the player.`,
@@ -317,11 +336,6 @@ export async function handleReportIntakeComponent(
         { name: 'Channel', value: `<#${session.channelId}> (${session.channelId})`, inline: true },
         { name: 'Player', value: `<@${session.userId}> (${session.username})`, inline: true }
       ]
-    });
-    await interaction.update({
-      content: 'Report intake cancelled. You can close this channel, or start again from the Support Hub whenever you are ready.',
-      embeds: [],
-      components: []
     });
     return true;
   }
@@ -354,11 +368,11 @@ async function beginReportIntake(
     return;
   }
 
+  await interaction.deferReply({ flags: 'Ephemeral' });
   const parent = await resolveSupportTicketParentId(interaction);
   if (parent.error) {
-    await interaction.reply({
+    await interaction.editReply({
       content: `${parent.error} Please fix \`SUPPORT_TICKET_CATEGORY_ID\` or ask staff to create a private report channel.`,
-      flags: 'Ephemeral'
     });
     return;
   }
@@ -411,9 +425,8 @@ async function beginReportIntake(
   });
   await askNextQuestion(channelSender(channel), session);
 
-  await interaction.reply({
-    content: `I created a private ${reportLabel(type).toLowerCase()} intake channel for you: <#${channel.id}>. I will ask the questions there; use \`n/a\` for optional fields.`,
-    flags: 'Ephemeral'
+  await interaction.editReply({
+    content: `Your private report channel is ready: <#${channel.id}>. Answer the questions there, then review before posting. You can skip optional details with \`n/a\`.`,
   });
 }
 
@@ -482,7 +495,7 @@ function questionsForType(type: ReportIntakeType): IntakeQuestion[] {
       {
         key: 'anomalyContext',
         label: 'Nearby feature',
-        prompt: 'Was it near special Wilderness Oddesy content like a rift, anomaly, structure, mob, or custom item?',
+        prompt: 'Was it near special Wilderness Odyssey content like a rift, anomaly, structure, mob, or custom item?',
         optional: true
       },
       {
@@ -785,7 +798,7 @@ async function sendEditPicker(message: Message, session: IntakeSession): Promise
 }
 
 function reviewEmbed(session: IntakeSession) {
-  const embed = baseEmbed(`Review ${reportLabel(session.type)}`, 'Confirm the details before I post this to the forum.');
+  const embed = baseEmbed(`Review your ${reportLabel(session.type).toLowerCase()}`, 'Check your details before posting. The report may be visible to other server members. Use Edit to change an answer.');
   for (const question of questionsForType(session.type)) {
     embed.addFields({
       name: question.label,
@@ -799,7 +812,7 @@ function reviewEmbed(session: IntakeSession) {
       value: duplicateHintsText(hints)
     });
   }
-  return embed;
+  return fitEmbed(embed);
 }
 
 function reviewButtonsRow(): ActionRowBuilder<ButtonBuilder> {
@@ -861,11 +874,19 @@ async function submitSession(
 
     reportIntakes.delete(session.channelId);
   } catch (error) {
+    logger.warn({ operation: 'submit-report', type: session.type, channelId: session.channelId,
+      category: error instanceof Error ? error.name : 'unknown' }, 'Report intake could not be completed.');
+    if (session.savedReportId) {
+      reportIntakes.delete(session.channelId);
+      await sendResult({
+        content: `Your report is saved as **${session.savedReportId}**, but I could not finish the confirmation. Ask staff to look up this ID; you do not need to submit it again.`,
+        allowedMentions: { parse: [] },
+      });
+      return;
+    }
     session.mode = 'review';
     await sendResult({
-      content: error instanceof Error
-        ? `Sorry, I could not submit that report yet: ${error.message}`
-        : 'Sorry, I could not submit that report because of an unknown error.',
+      content: 'Your report could not be completed. Check any log attachments and try again. If this continues, ask staff for help in this channel.',
       embeds: [reviewEmbed(session)],
       components: [reviewButtonsRow()]
     });
@@ -912,6 +933,7 @@ async function submitBugReport(
     logFileName: bugLog?.name ?? null,
     redactedLog
   });
+  session.savedReportId = report.publicId;
 
   const playtestSessionId = answer(session, 'playtestSessionId');
   if (playtestSessionId) {
@@ -943,7 +965,7 @@ async function submitBugReport(
   );
 
   await sendResult({
-    content: `Thanks, your bug report was submitted as **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but I saved the report locally.'}`,
+    content: `Thanks, your bug report was submitted as **${report.publicId}**.${posted ? '' : ' I could not post it to the staff archive. Your report is saved; ask staff to look up this ID. You do not need to submit it again.'}`,
     embeds: [reportEmbed],
     components: [reportReceiptButtons('bug', report.publicId)],
     allowedMentions: { parse: [] }
@@ -980,6 +1002,7 @@ async function submitPerformanceReport(
     lagLocation: requiredAnswer(session, 'lagLocation'),
     activity: requiredAnswer(session, 'activity')
   });
+  session.savedReportId = report.publicId;
   const duplicateHints = findDuplicateHints({
     type: 'performance',
     text: performanceDuplicateText(report),
@@ -1006,7 +1029,7 @@ async function submitPerformanceReport(
   );
 
   await sendResult({
-    content: `Thanks, your performance report was submitted as **${report.publicId}**.${posted ? '' : ' Staff channel posting is not configured yet, but I saved the report locally.'}`,
+    content: `Thanks, your performance report was submitted as **${report.publicId}**.${posted ? '' : ' I could not post it to the staff archive. Your report is saved; ask staff to look up this ID. You do not need to submit it again.'}`,
     embeds: [reportEmbed],
     components: [reportReceiptButtons('performance', report.publicId)],
     allowedMentions: { parse: [] }
@@ -1042,11 +1065,12 @@ async function submitCrashReport(
     activity: answer(session, 'activity'),
     steps: answer(session, 'steps')
   });
+  session.savedReportId = result.report.publicId;
 
   await sendResult({
     content: result.posted
       ? `Thanks, your crash report was submitted as **${result.report.publicId}** and sent to staff.`
-      : `Thanks, your crash report was saved as **${result.report.publicId}**. Staff channel posting is not configured yet, but I kept the report locally.`,
+      : `Thanks, your crash report was saved as **${result.report.publicId}**. I could not post it to the staff archive. Your report is saved; ask staff to look up this ID. You do not need to submit it again.`,
     embeds: [result.embed],
     components: [reportReceiptButtons('crash', result.report.publicId)],
     allowedMentions: { parse: [] }
@@ -1066,9 +1090,10 @@ async function submitCrashReport(
 function introEmbed(session: IntakeSession) {
   return baseEmbed(`${reportLabel(session.type)} Intake`, 'I will walk you through this one question at a time, then show a review before posting.')
     .addFields(
-      { name: 'Optional fields', value: 'Reply `n/a` if you do not want to provide an optional field.' },
+      { name: 'Optional fields', value: 'Reply `n/a` or `skip` to skip an optional detail. Use `n/a` to accept a suggested default.' },
       { name: 'Review', value: 'At the end, reply `yes` to submit or `no` to edit a field before the forum post is created.' },
-      { name: 'Privacy', value: 'Do not share passwords, tokens, private files, or personal information.' }
+      { name: 'Privacy', value: 'Do not share passwords, tokens, private files, or personal information. This channel is private; the final report may be public.' },
+      { name: 'Time limit', value: 'Complete this form within one hour. An unfinished form expires if the bot restarts; use the Support Hub to start again.' }
     );
 }
 

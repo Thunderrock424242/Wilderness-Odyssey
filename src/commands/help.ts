@@ -5,7 +5,7 @@ import { helpPayload } from '../services/helpService';
 export const helpCommand: SlashCommand = {
   data: new SlashCommandBuilder()
     .setName('help')
-    .setDescription('Show the Wilderness Oddesy support menu.'),
+    .setDescription('Show the Wilderness Odyssey support menu.'),
   async execute(interaction) {
     await interaction.reply({
       ...helpPayload(),

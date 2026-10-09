@@ -8,25 +8,22 @@ import {
   StringSelectMenuInteraction
 } from 'discord.js';
 import { baseEmbed, privacyEmbed } from '../utils/embeds';
+import { supportStatusEmbed } from '../commands/status';
 
 type HelpTopic = 'install' | 'crash' | 'bug' | 'suggestions' | 'performance' | 'spark' | 'knownissues' | 'playtesting' | 'privacy';
 
 export function helpPayload() {
   const embed = baseEmbed(
-    'Wilderness Oddesy Help',
-    'Select a support topic below.'
+    'Wilderness Odyssey · Help',
+    'Choose a topic or use a button below. Reports start privately so you can review your details before posting.'
   )
     .addFields(
-      { name: 'Install help', value: 'Setup, Java, RAM, launcher, and clean profile checks.', inline: true },
-      { name: 'Crash help', value: 'Use the Support Hub crash button for private log upload.', inline: true },
-      { name: 'Bug report', value: 'Use the Support Hub for reproducible gameplay/content issues.', inline: true },
-      { name: 'Suggestions', value: 'Use the Support Hub to submit ideas and vote in the suggestions forum.', inline: true },
-      { name: 'Performance help', value: 'Use `/performance` or optional `/perfreport` for lag/FPS reports.', inline: true },
-      { name: 'Spark reports', value: 'Use `/playtest start` and `/sparkreport` to archive profiler links.', inline: true },
-      { name: 'Known issues', value: 'Use `/knownissues` for staff-maintained instability notes.', inline: true },
-      { name: 'Playtesting', value: 'Use `/playtest` for the singleplayer stability checklist.', inline: true },
-      { name: 'Connected services', value: 'Use /status and /players for observed availability, /report for private AI evidence or bug intake, and /aether token for account controls. /maintenance and /modlog require assigned staff access.' },
-      { name: 'Privacy', value: 'Use `/privacy` to see exactly what reports collect and avoid.', inline: true }
+      { name: 'Game will not launch or crashes', value: 'Choose **Crash help**. Have your crash report or latest.log ready.', inline: true },
+      { name: 'Something in the game is broken', value: 'Choose **Report bug**. Describe what happened and how to repeat it.', inline: true },
+      { name: 'Need a person to help', value: 'Choose **Ask staff** for a private support ticket.', inline: true },
+      { name: 'Install, lag, ideas, or playtests', value: 'Choose a topic from the menu. `/knownissues` lists current fixes and workarounds.', inline: true },
+      { name: 'Server availability', value: 'Choose **Server status** for recent observations and recommended pack settings.', inline: true },
+      { name: 'Before sharing logs', value: 'Remove personal details and secrets. Redaction is best-effort. Final reports may be public.', inline: true }
     );
 
   const menu = new StringSelectMenuBuilder()
@@ -45,9 +42,11 @@ export function helpPayload() {
     );
 
   const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder().setCustomId('supportpanel:category:bug').setLabel('Report bug').setStyle(ButtonStyle.Primary),
+    new ButtonBuilder().setCustomId('supportpanel:category:crash').setLabel('Crash help').setStyle(ButtonStyle.Primary),
+    new ButtonBuilder().setCustomId('supportpanel:category:other').setLabel('Ask staff').setStyle(ButtonStyle.Secondary),
     new ButtonBuilder().setCustomId('help:privacy').setLabel('Privacy').setStyle(ButtonStyle.Secondary),
-    new ButtonBuilder().setCustomId('help:playtesting').setLabel('Playtesting').setStyle(ButtonStyle.Secondary),
-    new ButtonBuilder().setCustomId('help:status').setLabel('Status').setStyle(ButtonStyle.Primary)
+    new ButtonBuilder().setCustomId('help:status').setLabel('Server status').setStyle(ButtonStyle.Secondary)
   );
 
   return {
@@ -70,8 +69,9 @@ export async function handleHelpComponent(interaction: StringSelectMenuInteracti
 
   if (topic === 'status') {
     await interaction.reply({
-      content: 'Use `/status` for the current support/status page.',
-      flags: 'Ephemeral'
+      embeds: [supportStatusEmbed()],
+      flags: 'Ephemeral',
+      allowedMentions: { parse: [] },
     });
     return true;
   }
@@ -88,7 +88,7 @@ export async function handleHelpComponent(interaction: StringSelectMenuInteracti
 function helpTopicEmbed(topic: HelpTopic): EmbedBuilder {
   switch (topic) {
     case 'install':
-      return baseEmbed('Install Help', 'Clean installs solve many wilderness disturbances.')
+      return baseEmbed('Install help', 'Start with the recommended pack, Java version, and RAM settings.')
         .addFields(
           { name: 'Checklist', value: 'Use the recommended Java version from `/status`, allocate the recommended RAM, install the exact pack version, and avoid extra mods during troubleshooting.' },
           { name: 'Guided topics', value: 'Use `/installhelp` for CurseForge ZIP import, Modrinth, Prism Launcher, Java/RAM, clean profile repair, or server/client mismatch help.' },
@@ -99,7 +99,7 @@ function helpTopicEmbed(topic: HelpTopic): EmbedBuilder {
         .addFields(
           { name: 'Accepted files', value: 'Upload `.txt` or `.log` files. Large files are rejected before parsing.' },
           { name: 'Slash shortcut', value: '`/crash file:<crash-report-or-latest.log>` preloads the log, then opens the same private review flow.' },
-          { name: 'Analysis', value: 'The bot checks common signatures like Java mismatch, duplicate mods, out-of-memory, worldgen, mixins, renderer issues, and Wilderness Oddesy API/content crashes.' }
+          { name: 'Analysis', value: 'The bot checks common signatures like Java mismatch, duplicate mods, out-of-memory, worldgen, mixins, renderer issues, and Wilderness Odyssey API/content crashes.' }
         );
     case 'bug':
       return baseEmbed('Bug Report Help', 'Use **Bug** in the Support Hub when the game runs but something behaves incorrectly.')
@@ -133,5 +133,7 @@ function helpTopicEmbed(topic: HelpTopic): EmbedBuilder {
         .addFields({ name: 'Goal', value: 'Try core pack flows for 30 minutes and report bugs, crashes, and performance trouble with the matching commands.' });
     case 'privacy':
       return privacyEmbed();
+    default:
+      return baseEmbed('Help topic unavailable', 'Use `/help` to open the current menu, or choose Ask staff for a private ticket.');
   }
 }

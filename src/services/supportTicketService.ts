@@ -133,11 +133,11 @@ async function createOtherHelpTicket(input: {
     return;
   }
 
+  await interaction.deferReply({ flags: 'Ephemeral' });
   const parent = await resolveSupportTicketParentId(interaction);
   if (parent.error) {
-    await interaction.reply({
+    await interaction.editReply({
       content: `${parent.error} Please fix \`SUPPORT_TICKET_CATEGORY_ID\` or run this from a channel inside the private support category.`,
-      flags: 'Ephemeral'
     });
     return;
   }
@@ -175,9 +175,8 @@ async function createOtherHelpTicket(input: {
     ]
   });
 
-  await interaction.reply({
+  await interaction.editReply({
     content: `I created your private support ticket: <#${channel.id}>. Staff can help you there.`,
-    flags: 'Ephemeral'
   });
 }
 

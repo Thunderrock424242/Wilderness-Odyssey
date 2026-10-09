@@ -43,6 +43,30 @@ function claimedByText(userId: string | null | undefined): string {
   return userId ? `<@${userId}>` : 'Unclaimed';
 }
 
+// Shorten display text only. Complete submitted details remain in storage.
+export function fitEmbed(embed: EmbedBuilder): EmbedBuilder {
+  if (embed.data.title) { embed.setTitle(truncate(embed.data.title, 256)); }
+  if (embed.data.description) { embed.setDescription(truncate(embed.data.description, 2048)); }
+  if (embed.data.footer) { embed.setFooter({ ...embed.data.footer, text: truncate(embed.data.footer.text, 128) }); }
+  if (embed.data.author) { embed.setAuthor({ ...embed.data.author, name: truncate(embed.data.author.name, 128) }); }
+  const fields = (embed.data.fields ?? []).slice(0, 25).map(field => ({
+    ...field, name: truncate(field.name, 128), value: truncate(field.value, 1024),
+  }));
+  const metadata = (embed.data.title?.length ?? 0) + (embed.data.description?.length ?? 0)
+    + (embed.data.footer?.text.length ?? 0) + (embed.data.author?.name.length ?? 0)
+    + fields.reduce((total, field) => total + field.name.length, 0);
+  const budget = 5900 - metadata;
+  let low = 1;
+  let high = 1024;
+  while (low < high) {
+    const cap = Math.ceil((low + high) / 2);
+    if (fields.reduce((total, field) => total + Math.min(field.value.length, cap), 0) <= budget) {
+      low = cap;
+    } else { high = cap - 1; }
+  }
+  return embed.setFields(fields.map(field => ({ ...field, value: truncate(field.value, low) })));
+}
+
 function hasProvidedValue(value: string | null | undefined): value is string {
   return Boolean(value?.trim());
 }
@@ -56,7 +80,7 @@ export function baseEmbed(title: string, description?: string): EmbedBuilder {
     .setTitle(title)
     .setColor(colors.primary)
     .setTimestamp()
-    .setFooter({ text: 'Wilderness Oddesy systems online.' });
+    .setFooter({ text: 'Wilderness Odyssey · Community support' });
 
   if (description) {
     embed.setDescription(description);
@@ -68,7 +92,7 @@ export function baseEmbed(title: string, description?: string): EmbedBuilder {
 export function privacyEmbed(): EmbedBuilder {
   return baseEmbed(
     'Privacy and Reports',
-    'Wilderness Oddesy support reports are opt-in and meant only to help staff diagnose modpack issues.'
+    'Wilderness Odyssey support reports are opt-in and meant only to help staff diagnose modpack issues.'
   )
     .addFields(
       {
@@ -199,7 +223,7 @@ export function playtestPrivacyPolicyEmbeds(): EmbedBuilder[] {
 }
 
 export function bugReportEmbed(report: BugReportRecord): EmbedBuilder {
-  const embed = baseEmbed(`Bug Report ${report.publicId}`, 'Anomaly report archived.')
+  const embed = baseEmbed(`Bug report · ${report.publicId}`, 'Saved for staff review. Use Add information to share follow-up details.')
     .setColor(colors.warning)
     .addFields(
       { name: 'Status', value: report.status, inline: true },
@@ -266,7 +290,7 @@ export function bugReportEmbed(report: BugReportRecord): EmbedBuilder {
     });
   }
 
-  return embed;
+  return fitEmbed(embed);
 }
 
 export function crashReportEmbed(report: CrashReportRecord): EmbedBuilder {
@@ -363,7 +387,7 @@ export function suggestionEmbed(report: SuggestionRecord, votes: SuggestionVoteC
 }
 
 export function playtestSessionEmbed(session: PlaytestSessionRecord, links: LinkedReportRecord[] = []): EmbedBuilder {
-  const embed = baseEmbed(`Playtest Session ${session.publicId}`, 'Wilderness Oddesy systems are watching for instability.')
+  const embed = baseEmbed(`Playtest Session ${session.publicId}`, 'Keep your test notes and linked reports together here.')
     .setColor(colors.staff)
     .addFields(
       { name: 'Status', value: session.status, inline: true },
@@ -530,10 +554,10 @@ export function sparkReportEmbed(report: SparkReportRecord, session?: PlaytestSe
 }
 
 export function knownIssuesEmbed(issues: KnownIssueRecord[]): EmbedBuilder {
-  const embed = baseEmbed('Known Issues & Upcoming Fixes', 'Current instability notes and solved bugs queued by the Wilderness Oddesy staff console.');
+  const embed = baseEmbed('Known issues & upcoming fixes', 'Check for a workaround before reporting. A planned fix may still need a future release.');
 
   if (issues.length === 0) {
-    return embed.setDescription('No known issues are listed right now. That is good news, and you can still report anything that feels off.');
+    return embed.setDescription('No issues are listed for this view. You can still report a problem through `/help`.');
   }
 
   for (const issue of issues.slice(0, 10)) {
@@ -553,7 +577,7 @@ export function knownIssuesEmbed(issues: KnownIssueRecord[]): EmbedBuilder {
     });
   }
 
-  return embed;
+  return fitEmbed(embed);
 }
 
 function knownIssueStatusLabel(status: string): string {
@@ -565,7 +589,7 @@ function knownIssueStatusLabel(status: string): string {
 }
 
 export function changelogEmbed(entries: ChangelogEntryRecord[]): EmbedBuilder {
-  const embed = baseEmbed('Latest Changelog', 'Recent Wilderness Oddesy modpack notes.');
+  const embed = baseEmbed('Latest Changelog', 'Recent Wilderness Odyssey modpack notes.');
 
   if (entries.length === 0) {
     return embed.setDescription('No changelog entries have been added yet.');
@@ -588,12 +612,12 @@ export function searchResultsEmbed(keyword: string, results: ReportSearchResult[
     return embed.addFields({ name: 'No matches', value: 'I could not find any reports matching that keyword.' });
   }
 
-  for (const result of results) {
+  for (const result of results.slice(0, 25)) {
     embed.addFields({
       name: `${result.publicId} (${result.type})`,
       value: `${truncate(result.title, 850)}\nStatus: ${result.status ?? 'n/a'} | Created: ${result.createdAt}`
     });
   }
 
-  return embed;
+  return fitEmbed(embed);
 }

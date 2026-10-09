@@ -18,6 +18,7 @@ import { suggestCommand } from './suggest';
 import { sparkReportCommand } from './sparkreport';
 import { supportPanelCommand } from './supportpanel';
 import { shutdownCommand } from './shutdown';
+import { setupCommand } from './setup';
 import { aetherCommand } from '../aether/discord/aetherCommand';
 import { config } from '../config';
 
@@ -46,6 +47,7 @@ export function createCommandList(aetherCommandEnabled = config.aether.commandEn
     maintenanceCommand,
     modlogCommand,
     dashboardCommand,
+    setupCommand,
   ];
 
   return aetherCommandEnabled ? [...existingCommands, aetherCommand] : existingCommands;

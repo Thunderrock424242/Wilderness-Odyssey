@@ -1,278 +1,222 @@
-import {
-  ChannelType,
-  EmbedBuilder,
-  PermissionsBitField,
-  StringSelectMenuInteraction
-} from 'discord.js';
+import { ChannelType, PermissionsBitField } from 'discord.js';
+import type { ChatInputCommandInteraction, StringSelectMenuInteraction } from 'discord.js';
 import { config } from '../config';
-import { colors, truncate } from '../utils/embeds';
+import { baseEmbed, colors } from '../utils/embeds';
 
-type CheckState = 'OK' | 'WARN' | 'MISSING';
+export type SetupSection = 'full' | 'channels' | 'permissions' | 'qa' | 'playtest';
+type SetupInteraction = ChatInputCommandInteraction | StringSelectMenuInteraction;
+type CheckState = 'OK' | 'WARN' | 'MISSING' | 'OFF';
+type CheckGroup = 'Configuration' | 'Permissions' | 'Channels' | 'Q&A' | 'Playtests';
 
 interface CheckLine {
   state: CheckState;
+  group: CheckGroup;
   label: string;
   detail: string;
 }
 
-export async function setupDoctorEmbed(interaction: StringSelectMenuInteraction): Promise<EmbedBuilder> {
+interface ChannelCheck {
+  label: string;
+  variable: string;
+  id?: string;
+  kind: 'forum' | 'category' | 'text';
+  group: CheckGroup;
+  required?: boolean;
+  readOnly?: boolean;
+  files?: boolean;
+  tags?: string[];
+}
+
+export async function runSetupDoctor(interaction: SetupInteraction, section: SetupSection = 'full'): Promise<void> {
+  await interaction.deferReply({ flags: 'Ephemeral' });
+  const embeds = await setupDoctorEmbeds(interaction, section);
+  await interaction.editReply({ embeds: [embeds[0]], allowedMentions: { parse: [] } });
+  for (const embed of embeds.slice(1)) {
+    await interaction.followUp({ embeds: [embed], flags: 'Ephemeral', allowedMentions: { parse: [] } });
+  }
+}
+
+export function isSetupSection(value: string): value is SetupSection {
+  return ['full', 'channels', 'permissions', 'qa', 'playtest'].includes(value);
+}
+
+export async function setupDoctorEmbeds(interaction: SetupInteraction, section: SetupSection = 'full') {
   const checks: CheckLine[] = [];
-
-  checks.push(...requiredConfigChecks());
-  checks.push(...permissionChecks(interaction));
-  checks.push(...await channelChecks(interaction));
-
-  const missing = checks.filter((check) => check.state === 'MISSING').length;
-  const warnings = checks.filter((check) => check.state === 'WARN').length;
-  const color = missing > 0 ? colors.danger : warnings > 0 ? colors.warning : colors.primary;
-
-  return new EmbedBuilder()
-    .setTitle('Setup Doctor')
-    .setColor(color)
-    .setDescription(`Health check complete. Missing: ${missing}. Warnings: ${warnings}.`)
-    .addFields(
-      { name: 'Config', value: formatChecks(checks.filter((check) => configLabels.has(check.label))) },
-      { name: 'Permissions', value: formatChecks(checks.filter((check) => permissionLabels.has(check.label))) },
-      { name: 'Channels', value: formatChecks(checks.filter((check) => channelLabels.has(check.label))) }
-    )
-    .setTimestamp();
-}
-
-function requiredConfigChecks(): CheckLine[] {
-  return [
-    checkValue('Discord token', config.discordToken ? 'configured' : null, 'Required for login.'),
-    checkValue('Client ID', config.clientId ? 'configured' : null, 'Required for slash command deployment.'),
-    checkValue('Guild ID', config.guildId, 'Recommended for fast guild command deployment.'),
-    checkValue('Support team role', config.support.teamRoleId, 'Recommended for report pings and Other Help ticket access.'),
-    checkValue('Dev team role', config.dev.teamRoleId, 'Recommended so crash and bug reports can alert devs directly.'),
-    checkValue('Staff log channel', config.channelIds.staffLog, 'Required for ticket transcripts, ticket deletion, shutdown requests, and staff action audit logs.'),
-    checkValue('Q&A alert channel', config.qa.alertChannelId, 'Required if Q&A forum or channel forwarding is enabled.'),
-    checkValue('Q&A forum ID', config.qa.forumChannelId, 'Recommended for organized player questions.'),
-    {
-      state: config.qa.channelIds.length > 0 || config.qa.forumChannelId ? 'OK' : 'WARN',
-      label: 'Q&A watch channels',
-      detail: config.qa.channelIds.length > 0
-        ? `${config.qa.channelIds.length} legacy text channel(s) configured.`
-        : config.qa.forumChannelId
-          ? 'Using the community Q&A forum.'
-          : 'No Q&A forum or watch channels configured.'
-    },
-    {
-      state: 'OK',
-      label: 'In-bot playtest policies',
-      detail: 'Terms and privacy are available from playtest gate buttons.'
-    },
-    {
-      state: 'OK',
-      label: 'External terms URL',
-      detail: config.playtest.termsUrl ? 'Configured.' : 'Optional external copy not configured.'
-    },
-    {
-      state: 'OK',
-      label: 'External privacy URL',
-      detail: config.playtest.privacyUrl ? 'Configured.' : 'Optional external copy not configured.'
-    },
-    {
-      state: config.minecraftVerification.relayChannelId || config.minecraftVerification.apiEnabled ? 'OK' : 'WARN',
-      label: 'Minecraft verify method',
-      detail: config.minecraftVerification.relayChannelId
-        ? 'Server relay enabled; in-game /wo link posts through a private Discord webhook.'
-        : config.minecraftVerification.apiEnabled
-          ? `Client API enabled on ${config.minecraftVerification.apiHost}:${config.minecraftVerification.apiPort}.`
-          : 'Not configured; enable server relay or the client API path.'
-    },
-    {
-      state: config.minecraftVerification.relayChannelId && !config.minecraftVerification.relayWebhookId ? 'WARN' : 'OK',
-      label: 'Minecraft relay webhook',
-      detail: config.minecraftVerification.relayWebhookId
-        ? 'Exact webhook ID restriction configured.'
-        : config.minecraftVerification.relayChannelId
-          ? 'Recommended so only the server webhook can complete links.'
-          : 'Not needed unless server relay is enabled.'
-    },
-    {
-      state: config.minecraftVerification.verifiedRoleId ? 'OK' : 'WARN',
-      label: 'Minecraft verified role',
-      detail: config.minecraftVerification.verifiedRoleId
-        ? 'Configured.'
-        : 'Optional; configure this if verified players should get a Discord role.'
-    },
-    {
-      state: !config.minecraftVerification.apiEnabled || config.minecraftVerification.publicBaseUrl ? 'OK' : 'WARN',
-      label: 'Minecraft verify URL',
-      detail: config.minecraftVerification.apiEnabled
-        ? config.minecraftVerification.publicBaseUrl
-          ? 'Configured.'
-          : 'Needed only for the client API path.'
-        : 'Not needed unless the client API path is enabled.'
+  if (section === 'full') {
+    checks.push(
+      configCheck('Server', 'GUILD_ID', config.guildId, 'Use the server ID for fast command registration.'),
+      configCheck('Support role', 'SUPPORT_TEAM_ROLE_ID', config.support.teamRoleId, 'Set a support role so staff can access private tickets.'),
+      configCheck('Dev role', 'DEV_TEAM_ROLE_ID', config.dev.teamRoleId, 'Optional role for bug and crash alerts.'),
+      { state: 'WARN', group: 'Configuration', label: 'Player message access',
+        detail: 'Confirm Message Content Intent is enabled in the Developer Portal for guided reports, Q&A, and the verification relay.' },
+    );
+  }
+  if (section === 'full' || section === 'permissions') {
+    checks.push(...permissionChecks(interaction));
+  }
+  if (section === 'full' || section === 'qa') {
+    const enabled = Boolean(config.qa.forumChannelId || config.qa.channelIds.length);
+    checks.push({ state: enabled ? 'OK' : 'OFF', group: 'Q&A', label: 'Automatic answers',
+      detail: enabled ? 'Configured; enable Message Content Intent in the Developer Portal.' : 'Optional. Set QA_FORUM_CHANNEL_ID to enable.' });
+  }
+  if (section === 'full' || section === 'playtest') {
+    const relay = Boolean(config.minecraftVerification.relayChannelId);
+    const api = config.minecraftVerification.apiEnabled;
+    checks.push({ state: relay || api ? 'OK' : 'OFF', group: 'Playtests', label: 'Minecraft linking',
+      detail: relay ? 'Server relay configured.' : api ? 'Trusted server API configured.' : 'Optional. Needed for verified playtest sessions.' });
+    if (relay) {
+      checks.push({ state: config.minecraftVerification.relayWebhookId && config.guildId ? 'OK' : 'MISSING',
+        group: 'Playtests', label: 'Relay trust', detail: 'Relay requires MINECRAFT_VERIFY_RELAY_WEBHOOK_ID and GUILD_ID.' });
     }
-  ];
+    if (api) {
+      checks.push({ state: (process.env.MAIN_SERVER_INGEST_TOKEN?.trim().length ?? 0) >= 32 ? 'OK' : 'MISSING',
+        group: 'Playtests', label: 'Server API authentication', detail: 'Requires MAIN_SERVER_INGEST_TOKEN with at least 32 characters on the trusted server. Never share it with players.' });
+    }
+    checks.push({ state: 'OK', group: 'Playtests', label: 'Terms and privacy', detail: 'Available from the playtest acceptance buttons.' });
+  }
+  if (section !== 'permissions') {
+    const definitions = channelDefinitions().filter(item => section === 'full' || section === 'channels'
+      || (section === 'qa' && item.group === 'Q&A') || (section === 'playtest' && item.group === 'Playtests'));
+    // Bound concurrent REST work when several legacy Q&A channels are configured.
+    for (let offset = 0; offset < definitions.length; offset += 4) {
+      checks.push(...await Promise.all(definitions.slice(offset, offset + 4).map(item => channelCheck(interaction, item))));
+    }
+  }
+  return renderChecks(checks, section);
 }
 
-function permissionChecks(interaction: StringSelectMenuInteraction): CheckLine[] {
+function configCheck(label: string, variable: string, value: string | undefined, detail: string): CheckLine {
+  return { state: value ? 'OK' : 'WARN', group: 'Configuration', label,
+    detail: value ? `${variable} configured.` : `${variable}: ${detail}` };
+}
+
+function permissionChecks(interaction: SetupInteraction): CheckLine[] {
+  const permissions = interaction.appPermissions;
+  const inThread = interaction.channel?.isThread();
+  const flags = [
+    [PermissionsBitField.Flags.ViewChannel, 'View Channel'],
+    [inThread ? PermissionsBitField.Flags.SendMessagesInThreads : PermissionsBitField.Flags.SendMessages,
+      inThread ? 'Send Messages in Threads' : 'Send Messages'],
+    [PermissionsBitField.Flags.EmbedLinks, 'Embed Links'],
+    [PermissionsBitField.Flags.ReadMessageHistory, 'Read Message History'],
+    [PermissionsBitField.Flags.AttachFiles, 'Attach Files'],
+    [PermissionsBitField.Flags.ManageChannels, 'Manage Channels'],
+  ] as const;
+  return flags.map(([flag, label]) => ({
+    state: permissions?.has(flag) ? 'OK' : 'MISSING', group: 'Permissions', label,
+    detail: permissions?.has(flag) ? 'Allowed here.' : `Allow ${label} for the bot here.`,
+  }));
+}
+
+function channelDefinitions(): ChannelCheck[] {
+  const channels: ChannelCheck[] = [
+    { label: 'Staff log', variable: 'STAFF_LOG_CHANNEL_ID', id: config.channelIds.staffLog, kind: 'text', group: 'Channels', required: true, files: true },
+    { label: 'Support hub', variable: 'SUPPORT_CHANNEL_ID', id: config.channelIds.support, kind: 'text', group: 'Channels' },
+    { label: 'Private ticket category', variable: 'SUPPORT_TICKET_CATEGORY_ID', id: config.channelIds.supportTicketCategory, kind: 'category', group: 'Channels' },
+  ];
+  if (config.forumChannels.issues) {
+    channels.push({ label: 'Issues forum', variable: 'ISSUES_FORUM_CHANNEL_ID', id: config.forumChannels.issues, kind: 'forum', group: 'Channels',
+      files: true,
+      tags: [...config.forumTags.bug, ...config.forumTags.crash, ...config.forumTags.performance, ...config.forumTags.bugConfirmed, ...config.forumTags.bugSolved] });
+  } else {
+    channels.push(
+      { label: 'Bug reports', variable: 'BUG_REPORTS_CHANNEL_ID', id: config.channelIds.bugReports, kind: 'text', group: 'Channels', required: true },
+      { label: 'Crash reports', variable: 'CRASH_REPORTS_CHANNEL_ID', id: config.channelIds.crashReports, kind: 'text', group: 'Channels', required: true, files: true },
+      { label: 'Performance reports', variable: 'PERFORMANCE_REPORTS_CHANNEL_ID', id: config.channelIds.performanceReports, kind: 'text', group: 'Channels', required: true },
+    );
+  }
+  if (config.forumChannels.ideas) {
+    channels.push({ label: 'Ideas forum', variable: 'IDEAS_FORUM_CHANNEL_ID', id: config.forumChannels.ideas, kind: 'forum', group: 'Channels',
+      tags: [...config.forumTags.feedback, ...config.forumTags.suggestion] });
+  } else {
+    channels.push(
+      { label: 'Feedback', variable: 'FEEDBACK_CHANNEL_ID', id: config.channelIds.feedbackReports, kind: 'text', group: 'Channels', required: true },
+      { label: 'Suggestions', variable: 'SUGGESTIONS_CHANNEL_ID', id: config.channelIds.suggestions, kind: 'text', group: 'Channels', required: true },
+    );
+  }
+  channels.push(
+    { label: 'Q&A forum', variable: 'QA_FORUM_CHANNEL_ID', id: config.qa.forumChannelId, kind: 'forum', group: 'Q&A' },
+    ...config.qa.channelIds.map(id => ({ label: 'Q&A channel', variable: 'QA_CHANNEL_IDS', id, kind: 'text' as const, group: 'Q&A' as const })),
+    { label: 'Q&A alerts', variable: 'QA_ALERT_CHANNEL_ID', id: config.qa.alertChannelId, kind: 'text', group: 'Q&A', required: Boolean(config.qa.forumChannelId || config.qa.channelIds.length) },
+    { label: 'Playtest sessions', variable: 'PLAYTEST_SESSIONS_CHANNEL_ID', id: config.channelIds.playtestSessions, kind: 'text', group: 'Playtests' },
+    { label: 'Playtest category', variable: 'PLAYTEST_CATEGORY_ID', id: config.channelIds.playtestCategory, kind: 'category', group: 'Playtests' },
+    { label: 'Spark reports', variable: 'SPARK_REPORTS_CHANNEL_ID', id: config.channelIds.sparkReports, kind: 'text', group: 'Playtests' },
+    { label: 'Verification relay', variable: 'MINECRAFT_VERIFY_RELAY_CHANNEL_ID', id: config.minecraftVerification.relayChannelId, kind: 'text', group: 'Playtests' },
+  );
+  return channels;
+}
+
+async function channelCheck(interaction: SetupInteraction, item: ChannelCheck): Promise<CheckLine> {
+  const result = (state: CheckState, detail: string): CheckLine => ({ state, group: item.group, label: item.label,
+    detail: `${item.variable}: ${detail}` });
+  if (!item.id) {
+    return result(item.required ? 'MISSING' : 'OFF', item.required ? 'Set a channel ID.' : 'Optional; not configured.');
+  }
+  const channel = await interaction.client.channels.fetch(item.id).catch(() => null);
+  if (!channel || !('guildId' in channel) || channel.guildId !== interaction.guildId) {
+    return result('MISSING', 'Channel not found in this server. Copy its ID with Developer Mode.');
+  }
+  const validType = item.kind === 'forum' ? channel.type === ChannelType.GuildForum
+    : item.kind === 'category' ? channel.type === ChannelType.GuildCategory
+    : channel.type === ChannelType.GuildText || channel.type === ChannelType.GuildAnnouncement;
+  if (!validType) {
+    return result('MISSING', `Must be a Discord ${item.kind === 'text' ? 'text channel' : item.kind}.`);
+  }
   const member = interaction.guild?.members.me;
-  const channelPermissions = member && interaction.channel && 'permissionsFor' in interaction.channel
-    ? interaction.channel.permissionsFor(member)
-    : null;
-
+  const permissions = member && 'permissionsFor' in channel ? channel.permissionsFor(member) : null;
   const required = [
-    [PermissionsBitField.Flags.ViewChannel, 'View channel', 'Needed to see configured channels.'],
-    [PermissionsBitField.Flags.SendMessages, 'Send messages', 'Needed for panels and report posts.'],
-    [PermissionsBitField.Flags.CreatePublicThreads, 'Create public threads', 'Needed for report posts in Discord forum channels.'],
-    [PermissionsBitField.Flags.EmbedLinks, 'Embed links', 'Needed for clean support cards.'],
-    [PermissionsBitField.Flags.ReadMessageHistory, 'Read history', 'Useful for Q&A and context.']
+    [PermissionsBitField.Flags.ViewChannel, 'View Channel'],
+    ...(item.kind === 'category' ? [[PermissionsBitField.Flags.ManageChannels, 'Manage Channels']] as const : [
+      [PermissionsBitField.Flags.ReadMessageHistory, 'Read Message History'],
+      ...(!item.readOnly ? [
+        [item.kind === 'forum' ? PermissionsBitField.Flags.SendMessagesInThreads : PermissionsBitField.Flags.SendMessages,
+          item.kind === 'forum' ? 'Send Messages in Threads' : 'Send Messages'],
+        [PermissionsBitField.Flags.EmbedLinks, 'Embed Links'],
+        ...(item.files ? [[PermissionsBitField.Flags.AttachFiles, 'Attach Files']] as const : []),
+        ...(item.kind === 'forum' && item.group !== 'Q&A' ? [[PermissionsBitField.Flags.SendMessages, 'Send Messages']] as const : []),
+      ] as const : []),
+    ] as const),
   ] as const;
-
-  const optional = [
-    [PermissionsBitField.Flags.ManageChannels, 'Manage channels', 'Needed for /playtest publish and Other Help ticket creation.'],
-    [PermissionsBitField.Flags.AttachFiles, 'Attach files', 'Useful for future generated exports or logs.']
-  ] as const;
-
-  const checks: CheckLine[] = [];
-  for (const [flag, label, detail] of required) {
-    checks.push({
-      state: channelPermissions?.has(flag) ? 'OK' : 'MISSING',
-      label,
-      detail
-    });
+  const missing = required.filter(([flag]) => !permissions?.has(flag)).map(([, label]) => label);
+  if (missing.length) {
+    return result('MISSING', `Allow ${missing.join(', ')} in <#${item.id}>.`);
   }
-
-  for (const [flag, label, detail] of optional) {
-    checks.push({
-      state: channelPermissions?.has(flag) ? 'OK' : 'WARN',
-      label,
-      detail
-    });
-  }
-
-  return checks;
-}
-
-async function channelChecks(interaction: StringSelectMenuInteraction): Promise<CheckLine[]> {
-  const channelMap: Array<[string, string | undefined, boolean]> = [
-    ['Issues forum', config.forumChannels.issues, false],
-    ['Feedback/suggestions forum', config.forumChannels.ideas, false],
-    ...(!config.forumChannels.issues
-      ? [
-        ['Bug reports', config.channelIds.bugReports, true] as [string, string | undefined, boolean],
-        ['Crash reports', config.channelIds.crashReports, true] as [string, string | undefined, boolean],
-        ['Performance reports', config.channelIds.performanceReports, true] as [string, string | undefined, boolean]
-      ]
-      : []),
-    ...(!config.forumChannels.ideas
-      ? [
-        ['Feedback', config.channelIds.feedbackReports, true] as [string, string | undefined, boolean],
-        ['Suggestions', config.channelIds.suggestions, true] as [string, string | undefined, boolean]
-      ]
-      : []),
-    ['Spark reports', config.channelIds.sparkReports, true],
-    ['Playtest sessions', config.channelIds.playtestSessions, true],
-    ['Minecraft verify relay', config.minecraftVerification.relayChannelId, false],
-    ['Support', config.channelIds.support, false],
-    ['Community Q&A forum', config.qa.forumChannelId, false],
-    ['Q&A alert', config.qa.alertChannelId, config.qa.channelIds.length > 0 || Boolean(config.qa.forumChannelId)],
-    ['Support ticket category', config.channelIds.supportTicketCategory, false],
-    ['Playtest category', config.channelIds.playtestCategory, false]
-  ];
-
-  const checks: CheckLine[] = [];
-  for (const [label, channelId, required] of channelMap) {
-    if (!channelId) {
-      checks.push({
-        state: required ? 'MISSING' : 'WARN',
-        label,
-        detail: required ? 'Not configured.' : 'Optional channel not configured.'
-      });
-      continue;
+  if (item.tags && 'availableTags' in channel) {
+    const missingTags = [...new Set(item.tags)].filter(tag => !channel.availableTags.some(available => available.id === tag || available.name.toLowerCase() === tag.toLowerCase()));
+    if (missingTags.length) {
+      return result('WARN', `Add forum tags or update tag settings: ${missingTags.join(', ')}.`);
     }
-
-    const channel = await interaction.client.channels.fetch(channelId).catch(() => null);
-    if (!channel) {
-      checks.push({ state: 'MISSING', label, detail: `Configured ID ${channelId} was not found.` });
-      continue;
-    }
-
-    if (label.endsWith('category')) {
-      checks.push({
-        state: channel.type === ChannelType.GuildCategory ? 'OK' : 'MISSING',
-        label,
-        detail: channel.type === ChannelType.GuildCategory
-          ? `Configured category: ${channelId}.`
-          : `Configured ID ${channelId} is <#${channelId}>, but it must be a Discord category.`
-      });
-      continue;
-    }
-
-    const sendable = 'isSendable' in channel && channel.isSendable();
-    const threadOnly = 'isThreadOnly' in channel && channel.isThreadOnly();
-    checks.push({
-      state: sendable || threadOnly ? 'OK' : 'WARN',
-      label,
-      detail: sendable || threadOnly ? `Configured: <#${channelId}>.` : `Found <#${channelId}>, but it may not be sendable.`
-    });
   }
-
-  return checks;
+  return result('OK', `<#${item.id}> ready.`);
 }
 
-function checkValue(label: string, value: string | null | undefined, missingDetail: string): CheckLine {
-  return {
-    state: value ? 'OK' : 'WARN',
-    label,
-    detail: value ? 'Configured.' : missingDetail
-  };
-}
-
-function formatChecks(checks: CheckLine[]): string {
-  if (checks.length === 0) {
-    return 'No checks in this group.';
+function renderChecks(checks: CheckLine[], section: SetupSection) {
+  const missing = checks.filter(check => check.state === 'MISSING').length;
+  const warnings = checks.filter(check => check.state === 'WARN').length;
+  const description = `${missing ? `${missing} item(s) need attention.` : 'No blocking issues found in these checks.'} ${warnings} recommendation(s).\nFix the listed settings in Kinetic environment variables or Discord, restart if settings changed, then run /setup again.`;
+  const color = missing ? colors.danger : warnings ? colors.warning : colors.primary;
+  const fields: Array<{ name: string; value: string }> = [];
+  for (const group of ['Configuration', 'Permissions', 'Channels', 'Q&A', 'Playtests'] as const) {
+    let value = '';
+    for (const check of checks.filter(check => check.group === group)) {
+      const line = `**${check.state} · ${check.label}**\n${check.detail}\n`;
+      // Split long fields and pages without discarding findings.
+      for (let offset = 0; offset < line.length; offset += 900) {
+        const part = line.slice(offset, offset + 900);
+        if (value.length + part.length > 1000) { fields.push({ name: group, value }); value = ''; }
+        value += part;
+      }
+    }
+    if (value) { fields.push({ name: group, value }); }
   }
-
-  return truncate(checks.map((check) => `${check.state}: ${check.label} - ${check.detail}`).join('\n'), 1024);
+  const embeds = [baseEmbed(`Setup check · ${section}`, description).setColor(color)];
+  for (const field of fields) {
+    let embed = embeds[embeds.length - 1];
+    if (embed.length + field.name.length + field.value.length > 5500 || (embed.data.fields?.length ?? 0) === 25) {
+      embed = baseEmbed(`Setup check · ${section} (continued)`, description).setColor(color);
+      embeds.push(embed);
+    }
+    embed.addFields(field);
+  }
+  return embeds;
 }
-
-const configLabels = new Set([
-  'Discord token',
-  'Client ID',
-  'Guild ID',
-  'Support team role',
-  'Dev team role',
-  'Q&A alert channel',
-  'Q&A forum ID',
-  'Q&A watch channels',
-  'In-bot playtest policies',
-  'External terms URL',
-  'External privacy URL',
-  'Minecraft verify method',
-  'Minecraft relay webhook',
-  'Minecraft verified role',
-  'Minecraft verify URL'
-]);
-
-const permissionLabels = new Set([
-  'View channel',
-  'Send messages',
-  'Create public threads',
-  'Embed links',
-  'Read history',
-  'Manage channels',
-  'Attach files'
-]);
-
-const channelLabels = new Set([
-  'Issues forum',
-  'Feedback/suggestions forum',
-  'Bug reports',
-  'Crash reports',
-  'Feedback',
-  'Performance reports',
-  'Suggestions',
-  'Spark reports',
-  'Playtest sessions',
-  'Minecraft verify relay',
-  'Support',
-  'Community Q&A forum',
-  'Q&A alert',
-  'Support ticket category',
-  'Playtest category'
-]);

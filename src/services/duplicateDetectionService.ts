@@ -1,6 +1,6 @@
 import type { EmbedBuilder } from 'discord.js';
 import { getDb } from '../db';
-import { truncate } from '../utils/embeds';
+import { fitEmbed, truncate } from '../utils/embeds';
 
 export type DuplicateHintType = 'known_issue' | 'bug' | 'crash' | 'performance';
 
@@ -107,10 +107,10 @@ export function addDuplicateHintsField(embed: EmbedBuilder, hints: DuplicateHint
     return embed;
   }
 
-  return embed.addFields({
+  return fitEmbed(embed.addFields({
     name: 'Possible duplicates',
     value: duplicateHintsText(hints)
-  });
+  }));
 }
 
 function duplicateCandidates(excludePublicId?: string | null): Candidate[] {
