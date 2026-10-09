@@ -60,74 +60,54 @@ type SupportActionCategory =
 interface SupportActionPreset {
   value: SupportActionCategory;
   label: string;
-  fieldTitle: string;
-  fieldDescription: string;
   optionDescription: string;
 }
 
 const supportActionPresets: SupportActionPreset[] = [
   {
+    value: 'notsure',
+    label: 'Help me choose',
+    optionDescription: 'See a short guide to the right option.'
+  },
+  {
     value: 'bug',
-    label: 'Gameplay bugs',
-    fieldTitle: 'Gameplay bugs',
-    fieldDescription: 'Report broken mechanics, missing content, or unexpected in-game behavior.',
-    optionDescription: 'Broken mechanics, missing content, or unexpected in-game behavior.'
+    label: 'Report a gameplay bug',
+    optionDescription: 'Something is broken in-game, but the game still runs.'
   },
   {
     value: 'crash',
-    label: 'Crashes & launch issues',
-    fieldTitle: 'Crashes & launch issues',
-    fieldDescription: 'Get help with crashes, launch errors, and sharing crash reports or latest.log.',
-    optionDescription: 'Game crashes, Java or mod loader errors, and launch problems.'
+    label: 'Game crashed or will not launch',
+    optionDescription: 'The game closes unexpectedly or fails to start.'
   },
   {
     value: 'performance',
-    label: 'Lag & performance',
-    fieldTitle: 'Lag & performance',
-    fieldDescription: 'Report lag, low FPS, stuttering, freezes, or slow world generation.',
-    optionDescription: 'Lag, low FPS, stuttering, freezes, or slow world generation.'
+    label: 'Report lag or low FPS',
+    optionDescription: 'The game runs slowly, stutters, freezes, or has low FPS.'
   },
   {
     value: 'feedback',
-    label: 'Feedback',
-    fieldTitle: 'Feedback',
-    fieldDescription: 'Share your thoughts on balance, pacing, difficulty, and playtests.',
-    optionDescription: 'Your thoughts on balance, pacing, difficulty, and playtests.'
+    label: 'Share feedback',
+    optionDescription: 'Tell us how the current gameplay, balance, or difficulty feels.'
   },
   {
     value: 'suggestion',
-    label: 'Suggestions',
-    fieldTitle: 'Suggestions',
-    fieldDescription: 'Suggest new content, improvements, or quality-of-life changes.',
-    optionDescription: 'New content ideas, improvements, or quality-of-life changes.'
-  },
-  {
-    value: 'notsure',
-    label: 'Help me choose',
-    fieldTitle: 'Help me choose',
-    fieldDescription: 'Find the right option with a few simple pointers.',
-    optionDescription: 'Not sure where to start? Find the right option here.'
-  },
-  {
-    value: 'other',
-    label: 'Other help',
-    fieldTitle: 'Other help',
-    fieldDescription: 'Contact the support team about anything else.',
-    optionDescription: 'Get help from the support team with anything else.'
+    label: 'Suggest an idea',
+    optionDescription: 'Propose a new feature, content, or quality-of-life improvement.'
   },
   {
     value: 'playtest',
-    label: 'Playtest help',
-    fieldTitle: 'Playtest help',
-    fieldDescription: 'Get help installing test builds, starting sessions, or recording performance.',
-    optionDescription: 'Test builds, CurseForge setup, playtest sessions, and Spark profiling.'
+    label: 'Get playtest help',
+    optionDescription: 'Help with test builds, CurseForge setup, sessions, or Spark.'
   },
   {
     value: 'question',
     label: 'Ask a question',
-    fieldTitle: 'Ask a question',
-    fieldDescription: 'Find where to ask gameplay, setup, or modpack questions.',
-    optionDescription: 'Find where to ask gameplay, setup, or modpack questions.'
+    optionDescription: 'Ask the community about gameplay, setup, or the modpack.'
+  },
+  {
+    value: 'other',
+    label: 'Contact staff privately',
+    optionDescription: 'Open a private staff ticket for account issues or anything else.'
   }
 ];
 
@@ -349,12 +329,12 @@ export async function handleSupportPanelComponent(interaction: ButtonInteraction
       embeds: [
         baseEmbed('Help me choose', 'Choose what sounds closest to your issue using the menu below.')
           .addFields(
-            { name: 'Game crashes or will not launch', value: '**Crashes & launch issues**' },
-            { name: 'Broken mechanics or missing content', value: '**Gameplay bugs**' },
-            { name: 'Lag, low FPS, or freezes', value: '**Lag & performance**' },
-            { name: 'New content or an improvement idea', value: '**Suggestions**' },
-            { name: 'Thoughts on balance or playtests', value: '**Feedback**' },
-            { name: 'Account, installation, or other help', value: '**Other help**' }
+            { name: 'Game crashes or will not launch', value: '**Game crashed or will not launch**' },
+            { name: 'Broken mechanics or missing content', value: '**Report a gameplay bug**' },
+            { name: 'Lag, low FPS, or freezes', value: '**Report lag or low FPS**' },
+            { name: 'New content or an improvement idea', value: '**Suggest an idea**' },
+            { name: 'Thoughts on balance or playtests', value: '**Share feedback**' },
+            { name: 'Account, installation, or other help', value: '**Contact staff privately**' }
           )
       ],
       components: [supportTriageMenu()],
@@ -651,21 +631,13 @@ function supportPanelPayload(input: {
     .setTimestamp(null)
     .setFooter({ text: 'Wilderness Odyssey · Community support' });
 
-  if (!input.description) {
-    embed.addFields(
-      { name: 'Fix a problem', value: 'Gameplay bugs\nCrashes & launch issues\nLag & performance', inline: false },
-      { name: 'Share your ideas', value: 'Feedback\nSuggestions', inline: false },
-      { name: 'Get guidance', value: 'Playtest help · Ask a question\nOther help · Help me choose', inline: false }
-    );
-  }
-
   if (input.imageUrl) {
     embed.setImage(input.imageUrl);
   }
 
   return {
     embeds: [embed],
-    components: [supportActionMenu(supportPanelCustomId, 'Choose how we can help')]
+    components: [supportActionMenu(supportPanelCustomId, 'What do you need help with?')]
   };
 }
 
@@ -696,8 +668,8 @@ function supportButton(category: string, label: string, style: ButtonStyle): But
 
 function supportPanelDescription(): string {
   return [
-    'Need a hand? Choose an option below.\nNot sure where to start? Select **Help me choose**.',
-    'Bug, crash, and performance reports start privately. Review your report before posting. Other help opens a private staff ticket.'
+    'Choose what you need help with below. If you are unsure, start with **Help me choose**.',
+    'Bug, crash, and performance reports begin in a private channel. You can review your report before posting. **Contact staff privately** opens a private ticket.'
   ].join('\n\n');
 }
 

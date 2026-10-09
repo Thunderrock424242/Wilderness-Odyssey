@@ -161,7 +161,7 @@ Configuration, architecture, provider extension, linking, bridge payload rules, 
 
 Staff can run `/supportpanel` in a channel to post persistent button/menu panels. Use `panel_type:all` to post the player-facing support, info, and playtest panels together.
 
-The default support panel groups its options into Fix a problem, Share your ideas, and Get guidance above one dropdown. It keeps the privacy note in the welcome text and omits the posting timestamp. Custom titles, descriptions, and images are still supported.
+The default support panel uses a short welcome and one dropdown with direct action labels and descriptions. Help me choose appears first for players who are unsure. It keeps the privacy note in the welcome text and omits the posting timestamp. Custom titles, descriptions, and images are still supported.
 
 Staff can run `/setup` directly without posting a panel. Use `section:channels`, `section:permissions`, `section:qa`, or `section:playtest` for focused checks. Results are private and show the exact environment setting or permission to fix. Optional features are marked OFF; long results continue in separate messages without hiding findings.
 
@@ -186,15 +186,15 @@ Panel types:
 
 Support Hub dropdown options:
 
-- Gameplay bugs - check known issues, then describe the issue in a private channel and review the report before posting.
-- Crashes & launch issues - check known issues, then share a crash report or latest.log in a private support channel with step-by-step guidance.
-- Lag & performance - describe lag, low FPS, or freezes in a private channel and review the report before posting to the issues forum.
-- Feedback - opens a feedback modal.
-- Suggestions - share an idea through a form, with voting on the created forum post.
 - Help me choose - get a short guide to finding the right support option.
-- Other help - asks for a summary/details, then creates a private staff ticket.
-- Playtest help - explains playtest ZIP acceptance, `/playtest start`, and report linking.
+- Report a gameplay bug - check known issues, then describe the issue in a private channel and review the report before posting.
+- Game crashed or will not launch - check known issues, then share a crash report or latest.log in a private support channel with step-by-step guidance.
+- Report lag or low FPS - describe lag, low FPS, or freezes in a private channel and review the report before posting to the issues forum.
+- Share feedback - opens a feedback modal.
+- Suggest an idea - share an idea through a form, with voting on the created forum post.
+- Get playtest help - explains playtest ZIP acceptance, `/playtest start`, and report linking.
 - Ask a question - find the community Q&A forum or channels when configured.
+- Contact staff privately - asks for a summary/details, then creates a private staff ticket.
 
 Bug, crash, and performance intakes ask one question at a time in a private channel. Players can reply `n/a` for optional fields, review the answers, edit a selected field, and then confirm before the forum post is created. Bug and performance reviews show local duplicate hints from known issues and previous reports when a strong match is found; crash posts show duplicate hints after the log signature is analyzed.
 
