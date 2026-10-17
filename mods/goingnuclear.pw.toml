@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "goingnuclear"
 filename = "goingnuclear-0.512-4.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

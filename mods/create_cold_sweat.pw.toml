@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "create_cold_sweat"
 filename = "create_cold_sweat-1.1.2.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

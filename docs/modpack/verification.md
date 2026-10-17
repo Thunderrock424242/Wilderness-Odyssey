@@ -36,10 +36,13 @@ the oversized ZIP as migration input.
 | --- | --- |
 | Full unittest suite on Windows, Python 3.13 | 112 discovered: 111 passed, one host symlink-creation skip |
 | Full unittest suite on Windows, bundled Python 3.12.14 | 112 discovered: 111 passed, same skip |
+| Follow-up full suite on Windows, Python 3.13 | 123 discovered: 122 passed, one host symlink-creation skip |
+| Follow-up full suite on Windows, bundled Python 3.12.14 | 123 discovered: 122 passed, same skip |
+| Independent focused follow-up review | 68 focused tests passed, one skip; zero client/server static validation errors; no remaining important finding in reviewed code |
 | Windows process lifecycle fixtures | Actual harmless Python subprocesses stood in for Java; startup/timeout/stop/child cleanup, suspended Job ownership, cancellation and fresh trials covered |
 | Real local import followed by repeat import | 280 files scanned; repeat had zero mod changes; no profile metadata change |
-| Current client manifest validation | Correctly BLOCKED by six declared Minecraft version conflicts below |
-| Fresh snapshot materialized from the staged Git tree | Same six conflicts; **zero manifest/hash drift**, including LF text portability |
+| Current client and server manifest validation | Both pass with explicit runtime/schema warnings; the six original range errors were validator false positives, corrected below |
+| Fresh snapshot materialized from the initial staged Git tree | **Zero manifest/hash drift**, including LF text portability; initial range errors were subsequently corrected |
 | Tracked repository audit | Passed: no tracked JARs, oversized full-pack archives, flagged credentials or personal installation state |
 | New workflow syntax/expression validation | actionlint 1.7.12 passed all three new workflows; binary verified against publisher checksum |
 | Code/workflow/metadata whitespace check | Passed; imported upstream config whitespace was deliberately preserved |
@@ -60,9 +63,10 @@ selection ambiguity, changed isolation signatures, and report/temp/cache mixing.
 Each substantive fix has a regression that failed before the fix. No known
 important review finding is being deferred.
 
-## Current readiness blockers
+## Follow-up fixes and current readiness
 
-These installed JARs declare Minecraft `[1.21,1.21.1)`, which excludes 1.21.1:
+The initial validator reported six installed JARs declaring Minecraft
+`[1.21,1.21.1)`:
 
 | Inventory ID | Installed filename |
 | --- | --- |
@@ -73,18 +77,51 @@ These installed JARs declare Minecraft `[1.21,1.21.1)`, which excludes 1.21.1:
 | `naturescompass` | `NaturesCompass-1.21.1-3.4.0-neoforge.jar` |
 | `toofast` | `toofast-1.21.0-0.4.3.6.jar` |
 
-These are literal declared-range conflicts, **not observed runtime crashes or
-proof that each mod is incompatible**. No mod was updated, disabled, removed or
-patched to silence validation. The tracked/current profile FML dependency override
-tables are empty. Confirm intended author-supported files or supported loader
-behavior before making a reviewed change; do not blanket-disable constraints.
+Those errors were **validator false positives**, not incompatible mods. The
+installed NeoForge 21.1.256 and target 21.1.262 both use FML **4.0.45**. Its
+[immutable VersionSupportMatrix source](https://github.com/neoforged/FancyModLoader/blob/44982c69cddbb01b27318dfcac0b3c707b3e94a9/loader/src/main/java/net/neoforged/fml/loading/VersionSupportMatrix.java)
+explicitly accepts Minecraft **1.21** and NeoForge **21.0.166** aliases when the
+actual Minecraft version is 1.21.1. The source JAR and installed binary were also
+inspected. This is separate from a user-configured dependency override table.
+Validation and isolation now share that verified matrix, while unknown FML and
+genuinely incompatible ranges still fail. No mod bytes were changed.
 
-All 280 top-level records currently have unreviewed dedicated-server support.
-Their generated scope is client-only as a conservative projection, not a claim
-that every mod is intrinsically client-only. Server QA fails closed pending side
-reviews. The 279-entry standalone packwiz index omits the manual API, so it is
-explicitly incomplete. The guarded installer can supply exact private local bytes
-once static blockers are resolved. CurseForge export blocks that manual API.
+The new explicit `loader` command checked official Maven metadata and pinned
+**NeoForge 21.1.262** for Minecraft 1.21.1. Its official installer SHA-256 is
+`e86f5d78ed310465bd1ecf79823abcbc58782699b068ac776f4c5e226d994a8f`.
+The live profile remains **21.1.256**, recorded separately in migration provenance.
+Repeated imports preserve the deliberate Git target. CI never chooses "latest."
+
+All **280** records now have hash-bound side reviews: **232** use exact-file
+Modrinth SHA-1/SHA-512 matches and environment evidence; **47** use provider-proven
+file identities plus author project declarations; the manual API uses its own
+author's project declaration. These are installation-scope decisions, not runtime
+compatibility results. Detailed evidence URLs and scope are in `review.json`.
+The current split is **229 both / 49 client / 2 dedicated server**. BlueChunks
+follows its required BlueMap dependency into the dedicated-server distribution;
+leaving it in the client projection correctly failed dependency validation.
+
+The actual enabled files were reconstructed offline into new external copies:
+**278 client JARs** and **231 server JARs**, with exact SHA-256 checks. Neither
+operation launched Minecraft or modified the source profile. The 279-entry
+standalone packwiz index still omits the manual API, so it remains explicitly
+incomplete; use the guarded installer with the exact private local API.
+
+Local CurseForge export now supports explicit `--include-owned-api` authorization
+with `--local-mods`. It includes only the exact pinned owned API JAR in overrides,
+and **277** client CurseForge file references; other manual JARs remain blocked.
+Two actual local ZIP builds had identical SHA-256:
+`106472086311309c1f8ff5ab8a4a6401a5caaaa21f59474cf42cf6356866a25f`.
+No artifact was published. Hosted packaging/full online reconstruction still need
+an approved exact public API source; no version-only match or invented URL was used.
+
+The first hosted validation exposed a Linux cancellation-fixture failure. Its
+mock injected Ctrl+C on every later sleep, including POSIX subprocess cleanup.
+It now injects once and allows cleanup to finish, matching a single cancellation.
+The Windows native metadata fallback also disables curl config loading before
+other arguments, retaining certificate/host verification and forbidding redirects.
+A focused independent review found that config-loading gap; it was fixed and
+the review found no remaining important issue in the changed code scope.
 
 Strict TOML and ordinary JSON are checked where understood. Relaxed JSON configs
 such as Lithostitched, JSON5/JSONC/HOCON/YAML/SNBT, complex Maven/Fabric constraints,
@@ -108,18 +145,19 @@ optional and retention/MSPT/CPU measurements remain unmeasured when unavailable.
 Temporary heap growth is never labeled a confirmed leak. The process-budget
 limits and active-processor setting are not an OS-level CPU percentage quota.
 
-Fixture release ZIPs were built and compared; the current actual pack cannot be
-released through this exporter yet. ZIP entry content/order/time/host metadata is
-deterministic in tested toolchains; reproducible bytes across independent
+Fixture and actual local owner-authorized release ZIPs were built and compared.
+Launcher import/runtime testing and hosted publication remain unperformed.
+ZIP entry content/order/time/host metadata is deterministic in tested toolchains;
+reproducible bytes across independent
 Python/zlib builds remain to be established. The packwiz executable was not run.
 No performance baseline was fabricated or promoted. No publishing, production
 deployment, issue creation, merge, private runner registration or scheduled QA was
 performed. The original website workflow was not executed.
 
-Recommended order: resolve the six metadata conflicts with evidence; review the
-50 preserved custom-content differences and new assets/licenses; review server
-sides/essential libraries; give the manual API a supported pinned distribution
-source; then run a disposable actual pack, collect a clean baseline, and add a
+Recommended order: review the 50 preserved custom-content differences and new
+assets/licenses; give the manual API a supported pinned distribution source;
+explicitly accept the Minecraft EULA and run the disposable actual pack, collect
+a clean baseline, and add a
 measured gameplay workload. Enable scheduled QA only after that real acceptance.
 
 See [the setup and operations guide](README.md) for Windows commands, workflow

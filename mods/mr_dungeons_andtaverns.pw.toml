@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "mr_dungeons_andtaverns"
 filename = "dungeons-and-taverns-v4.4.4 [NeoForge].jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

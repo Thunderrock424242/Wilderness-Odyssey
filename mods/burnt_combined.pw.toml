@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "burnt_combined"
 filename = "burnt-1.10.5.2-neoforge-1.21.1.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "forest_ruins"
 filename = "forest_ruins-1.0.0-neoforge-1.21.1.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

@@ -41,6 +41,12 @@ def main(argv=None):
     sync.add_argument('--reports',type=Path,required=True)
     sync.add_argument('--pack-version',help='Deliberate release version; does not select mod updates.')
     sub.add_parser('reindex',help='Regenerate packwiz files after reviewed inventory/custom-content edits.')
+    loader = sub.add_parser('loader',help='Check/pin stable NeoForge for Minecraft 1.21.1 from official metadata; dry-run unless --apply.')
+    selection = loader.add_mutually_exclusive_group(required=True)
+    selection.add_argument('--latest',action='store_true')
+    selection.add_argument('--version',help='Exact stable NeoForge 21.1.x version.')
+    loader.add_argument('--apply',action='store_true')
+    loader.add_argument('--reports',type=Path,required=True)
     check = sub.add_parser('validate')
     check.add_argument('--side',choices=['client','server'],default='client')
     check.add_argument('--require-downloads',action='store_true')
@@ -65,6 +71,8 @@ def main(argv=None):
             cmd.add_argument('--reports',type=Path,required=True)
     release = sub.add_parser('package')
     release.add_argument('--output',type=Path,required=True)
+    release.add_argument('--local-mods',type=Path,help='Read exact private API bytes from this directory; never upload or commit them.')
+    release.add_argument('--include-owned-api',action='store_true',help='Explicitly authorize bundling your own pinned Wilderness Odyssey API in this local ZIP. Other manual mods remain blocked.')
     audit = sub.add_parser('audit-repository')
     audit.add_argument('--reports',type=Path,required=True)
     diff = sub.add_parser('compare',help='Compare compatible actual QA reports with an explicitly recorded baseline.')
@@ -159,6 +167,11 @@ def main(argv=None):
         elif args.command == 'reindex':
             generate(root,lock)
             print('Regenerated pinned packwiz view. Run validate before installation or packaging.')
+        elif args.command == 'loader':
+            from .loader import check_loader
+            data=check_loader(root,lock,latest=args.latest,version=args.version,apply=args.apply)
+            _report(args.reports,'loader',data)
+            print(json.dumps(data,indent=2))
         elif args.command == 'validate':
             data = validate(root,lock,args.side,args.require_downloads)
             _report(args.reports,'validation',data)
@@ -174,7 +187,7 @@ def main(argv=None):
             print(json.dumps(install(root,lock,args.destination,args.side,args.local_mods,args.cache,args.offline),indent=2))
         elif args.command == 'package':
             from .release import package
-            print(json.dumps(package(root,lock,args.output),indent=2))
+            print(json.dumps(package(root,lock,args.output,local_mods=args.local_mods,include_owned_api=args.include_owned_api),indent=2))
         elif args.command == 'qa':
             from .runner import run_qa
             data = run_qa(root,lock,args)

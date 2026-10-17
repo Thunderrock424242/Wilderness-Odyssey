@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "jadeaddons"
 filename = "JadeAddons-1.21.1-NeoForge-6.1.2.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "illagerwarship"
 filename = "illagerwarship-1.0.1-neoforge-1.21.1.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

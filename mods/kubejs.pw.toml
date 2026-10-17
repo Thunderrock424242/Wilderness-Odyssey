@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "kubejs"
 filename = "kubejs-neoforge-2101.7.2-build.377.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "cameramonitoring"
 filename = "cameramonitoring-neoforge-1.21.1-1.4.5.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

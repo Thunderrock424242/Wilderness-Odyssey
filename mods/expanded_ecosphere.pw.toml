@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "expanded_ecosphere"
 filename = "expanded_ecosphere-neoforge-3.4.7.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

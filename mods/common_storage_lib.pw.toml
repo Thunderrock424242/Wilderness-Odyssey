@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "common_storage_lib"
 filename = "common-storage-lib-neoforge-1.21.1-0.0.10.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

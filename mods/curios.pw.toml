@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "curios"
 filename = "curios-neoforge-9.5.1+1.21.1.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

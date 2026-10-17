@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "eclipticseasons_multimodpatch"
 filename = "Ecliptic-Seasons-MultiMod-Patch-1.21.1-neoforge-0.32.1.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

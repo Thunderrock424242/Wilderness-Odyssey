@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "tropicraft"
 filename = "Tropicraft-9.8.1.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

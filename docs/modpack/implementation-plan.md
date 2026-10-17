@@ -8,6 +8,8 @@ interoperability, no JARs in Git. Spec: [design.md](design.md).
 
 Global constraints: Minecraft 1.21.1; Java 21; loader comes from the selected
 current profile; no live-profile writes; no public self-hosted PR execution.
+Follow-up authorization adds an explicit latest-stable **21.1.x** Git target;
+the actual profile loader remains recorded separately and unchanged.
 
 Review focus: stale launcher metadata; malformed/embedded JAR metadata; Windows
 path collisions and symlinks; uncertain dependency/side evidence; nonreproducing
@@ -33,3 +35,9 @@ or changed crash signatures. Tests must exercise each of these input classes.
 Execution record and test evidence are maintained in `docs/modpack/verification.md`.
 
 Draft pull request: https://github.com/Thunderrock424242/Wilderness-Odyssey/pull/37
+
+Follow-up: [x] correct FML matrix false positives; [x] explicit loader check/pin
+and repeat-import preservation; [x] author-backed sides for all 280 hashes;
+[x] single-cancellation Linux fixture; [x] actual client/server file reconstruction;
+[x] exact local owned-API export and repeat ZIP comparison; [x] future update guide.
+Actual Minecraft launch and hosted API availability remain separate acceptance gates.

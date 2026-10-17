@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "fastsuite"
 filename = "FastSuite-1.21.1-6.0.7.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

@@ -57,8 +57,16 @@ def scan_profile(profile, reviews=None, previous=None):
     before_files=snapshot()
     result = {'schema': 1, 'name': 'Wilderness Odyssey', 'version': (previous or {}).get('version', '0.1.0'),
               'minecraft': '1.21.1', 'neoforge': match[1], 'java': 21,
-              'migration': {'status': 'imported', 'source': 'local-curseforge-profile'},
+              'migration': {'status': 'imported', 'source': 'local-curseforge-profile', 'profile_neoforge':match[1]},
               'mods': [], 'disabled_files': []}
+    policy = (previous or {}).get('loader_policy',{})
+    if (policy.get('mode') == 'explicit' and policy.get('minecraft') == result['minecraft']
+            and policy.get('version') == previous.get('neoforge')
+            and policy.get('fml') == previous.get('fml')):
+        # A deliberate Git target may be newer than the read-only live profile.
+        # Keep both facts; importing mods must not silently downgrade that target.
+        for field in ('loader_policy','neoforge','fml'):
+            result[field] = previous[field]
     reviews = reviews or {}
     used_ids, filenames = set(), set()
     for path in sorted(folder.iterdir(), key=lambda p: p.name.casefold()):
@@ -115,7 +123,8 @@ def changes(old, new):
     return {'added': sorted(after.keys() - before.keys()), 'removed': sorted(before.keys() - after.keys()),
             'updated': sorted(k for k in before.keys() & after.keys() if before[k] != after[k]),
             'unresolved': sorted(k for k, m in after.items() if not m['source'].get('verified') or m['side'] == 'unknown' or m['issues']),
-            'loader_before': (old or {}).get('neoforge'), 'loader_after': new['neoforge']}
+            'loader_before': (old or {}).get('neoforge'), 'loader_after': new['neoforge'],
+            'profile_neoforge':new.get('migration',{}).get('profile_neoforge')}
 
 
 def config_changes(root, profile):

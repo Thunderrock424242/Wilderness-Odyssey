@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "projectexplosive"
 filename = "projectexplosive-0.7.2-beta.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

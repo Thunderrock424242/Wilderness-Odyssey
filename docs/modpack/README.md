@@ -9,9 +9,14 @@ The first real import scanned **280 enabled JARs** from the user-selected
 `Wilderness Odyssey (1)` profile. **279** have CurseForge file identities verified
 against provider hashes. The local Wilderness Odyssey API 5.0.0 JAR is **manual**.
 Minecraft **1.21.1** and NeoForge **21.1.256** were read from that profile; the API
-development project independently uses the same loader version. This was an
-inventory import, not a Minecraft launch. Read [verification.md](verification.md)
-before trying QA or generating a release.
+development project independently uses the same loader version. The Git target
+is now **21.1.262**, the latest stable **21.1.x** build checked against official
+NeoForge metadata on 2026-10-17. The live profile stays unchanged at 21.1.256.
+Client/server files were reconstructed and local release ZIPs compared; Minecraft
+has not been launched. Read [verification.md](verification.md) for proof limits.
+
+For future mod/config/loader updates, start with the short
+[update checklist](updating.md).
 
 ## Windows setup and everyday synchronization
 
@@ -69,6 +74,7 @@ and Linux checkouts agree; binary assets and JAR hashes remain byte-exact.
 | `metadata.py`, `sync.py` | Read embedded NeoForge/Forge/Fabric and nested-library metadata; compare current installed files |
 | `pack.py`, `repository.py` | Validate integrity, numeric ranges, side/dependency evidence, tracked binaries/private files and simple config syntax |
 | `providers.py`, `install.py` | Restricted-provider handling, content cache, exact-byte reconstruction into a fresh directory |
+| `loader.py`, `qa/tool-lock.json` | Explicit stable Minecraft 1.21.1 loader selection, official FML dependency and installer checksum |
 | `diagnostics.py`, `runner.py` | Crash classification, bounded actual server lifecycle, optional JVM evidence and reports |
 | `isolation.py` | Dependency-aware repeated delta debugging via the same disposable scenario |
 | `regression.py`, `release.py` | Explicit comparable baselines and deterministic CurseForge reference ZIPs |
@@ -83,7 +89,7 @@ read-only scan. The packwiz executable itself has not been exercised here.
 **The current standalone packwiz projection is incomplete:** manual files such as
 the Wilderness Odyssey API are absent from its index. Its header and validation
 report disclose that fact. Use the guarded `tools.modpack install` command with
-private local files for full reconstruction once validation blockers are fixed.
+private local files for full reconstruction.
 Do not advertise a generic packwiz installation as the complete current pack.
 
 ## Review sides and manual sources
@@ -92,8 +98,13 @@ NeoForge dependency-side metadata does not establish whether its containing mod
 can run on a dedicated server. Unknown entries remain `side: unknown`; their
 generated packwiz scope is conservatively `client`, meaning client-profile
 candidate with server support unreviewed, **not** a proven client-only mod.
-Server validation fails until sides are explicitly reviewed from author evidence
-and tested. Fabric's explicit environment can supply a side when available.
+Server validation fails until sides are explicitly reviewed from author evidence.
+Runtime testing is a separate requirement. Fabric's explicit environment can
+supply a side when available. All 280 current records have hash-bound side reviews:
+232 use exact-file Modrinth evidence, 47 use provider-identified author projects,
+and the manual API uses its author's project declaration. The current split is
+229 both, 49 client, 2 dedicated server. BlueMap and its required BlueChunks add-on
+are excluded from the client reconstruction. No installed JAR was removed.
 
 An example review entry (replace both the key and hash with actual inventory data):
 
@@ -117,7 +128,8 @@ Neither filenames nor a fuzzy launcher match prove a CurseForge project/file ID.
 For direct/Modrinth sources, a hash-bound review may provide a source with `kind`,
 `url`, `permission: "author-approved"`, and pinned Modrinth `project_id` and
 `version_id` when applicable. This records a deliberate download authorization;
-it does not enable non-CurseForge redistribution in the release exporter.
+it does not enable arbitrary non-CurseForge redistribution in the release exporter.
+Your own manual API has a separate explicit local export option described below.
 
 ## Reconstruct without touching your installed pack
 
@@ -144,8 +156,9 @@ bootstrap requires a separately prepared library cache/network boundary.
 
 ## Actual server QA and conditional isolation
 
-First resolve static blockers and review client/server sides. Review the pinned
-installer in `qa/tool-lock.json` if the profile's NeoForge version changes.
+Client and server static validation now pass, with runtime/schema warnings.
+Review the pinned installer in `qa/tool-lock.json` when deliberately updating the
+Git target with `loader --latest --apply` or `loader --version ... --apply`.
 Then, using a full Java 21 JDK and an adequately sized disposable directory:
 
 ```powershell
@@ -188,7 +201,9 @@ client-only memory problems require separate client tests.
 
 * **Validate pinned modpack** runs secretless static/tool checks on hosted Windows
   and Linux. Pack-readiness failures are separate from tool-test failures. Current
-  metadata conflicts intentionally fail readiness; the report is still uploaded.
+  client manifest readiness currently passes with explicit unverified warnings.
+  A feature PR triggers one validation run; pushes to the target branch validate
+  merged changes without duplicating the PR's run.
 * **Disposable Minecraft server QA** is hosted-only and accepts trusted manual
   runs on `1.21-neoforge`. Configure a `modpack-qa` environment with required
   reviewers and deployment branches restricted to that branch before using keys.
@@ -202,7 +217,8 @@ client-only memory problems require separate client tests.
   rehashed. There are no broad stale-cache restore keys.
 * **Build pinned CurseForge ZIP (no publishing)** only creates a CI artifact. It
   never publishes to CurseForge or replaces a release. Manual/non-CurseForge files
-  block export until a supported distribution path exists. Existing resource and
+  block the default hosted export until an exact approved download path exists.
+  Local owner-authorized API packaging is available below. Existing resource and
   shader assets retain their existing ownership; review any new asset's license
   before adding it to the tracked content list.
 
@@ -235,9 +251,22 @@ workloads, seeds, heap settings, profiling modes or runtimes are inconclusive.
 Single-run threshold changes are warning indicators, not proven regressions or
 leaks. Full retained-object attribution requires additional retention evidence.
 
-The deterministic release contains exact CurseForge references, reviewed overrides
-and SHA-256 checksums. No mod JAR is bundled. Currently the manual API and declared
-Minecraft range conflicts block a real release. Only fixture releases were built.
+The default release contains exact CurseForge references, reviewed overrides
+and SHA-256 checksums, with no bundled mod JARs. It correctly blocks the manual
+API because the exact installed 5.0.0 artifact has no verified public file ID.
+For a local export of **your own API**, explicitly authorize its inclusion:
+
+```powershell
+py -3 -m tools.modpack package --output "$env:TEMP\Wilderness-Odyssey-local.zip" --local-mods 'C:\Users\mason\curseforge\minecraft\Instances\Wilderness Odyssey (1)\mods' --include-owned-api
+```
+
+This bundles only the exact pinned `wildernessodysseyapi` bytes in
+`overrides/mods`; every other mod remains a provider reference. Other manual mods
+still block export. The API JAR/ZIP stays outside Git and nothing is published.
+The actual client export contains 277 CurseForge references plus the owned API;
+two local builds were byte-identical. Launcher ZIP import and Minecraft runtime
+acceptance remain untested. Hosted packaging still needs an approved exact API
+download source, rather than substituting a different published API version.
 
 The rejected `modpack/Wilderness Odyssey-0.1.0.zip` is over GitHub's regular file
 limit. Deleting it in a later commit does not remove earlier blobs. This feature

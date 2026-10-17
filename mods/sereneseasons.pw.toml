@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "sereneseasons"
 filename = "ecliptic-seasons-serene-api-bridge-1.21.1-neoforge-10.1.0.3-patch11-1.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

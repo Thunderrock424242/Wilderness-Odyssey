@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "exposure_expanded"
 filename = "exposure_expanded-neoforge-1.0.1.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

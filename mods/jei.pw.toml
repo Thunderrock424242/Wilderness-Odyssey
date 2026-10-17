@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "jei"
 filename = "jei-1.21.1-neoforge-19.64.0.455.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

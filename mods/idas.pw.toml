@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "idas"
 filename = "idas-1.13.7+1.21.1-neoforge.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

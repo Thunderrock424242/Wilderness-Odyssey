@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "regions_unexplored"
 filename = "regions-unexplored-0.6.2-neoforge-21.1.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

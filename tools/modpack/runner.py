@@ -21,7 +21,7 @@ import time
 from .common import PackError, digest, empty_destination, junction, outside_repo, read_json, safe_path, write_json, write_text
 from .diagnostics import analyze_memory, classify, render_report
 from .install import install
-from .pack import validate, version_satisfies
+from .pack import validate, dependency_satisfies
 from .providers import fetch
 
 
@@ -700,7 +700,7 @@ def _isolation_graph(lock):
                 raise PackError('Isolation is inconclusive: dependency side metadata is unknown.')
             identifier = dep.get('id')
             owner, version = providers.get(identifier, (None, builtins.get(identifier)))
-            if version is None or version_satisfies(version, dep.get('version', '*')) is not True:
+            if version is None or dependency_satisfies(lock, identifier, version, dep.get('version', '*')) is not True:
                 raise PackError('Isolation is inconclusive: a dependency or version constraint cannot be proved safe.')
             if owner and owner != mod['id']:
                 required.add(owner)

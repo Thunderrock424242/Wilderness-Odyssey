@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "particlerain"
 filename = "particlerain-4.0.2+1.21.1-neoforge.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

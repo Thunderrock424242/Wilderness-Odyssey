@@ -60,6 +60,17 @@ class ManagementTests(unittest.TestCase):
         self.assertEqual(changed['source']['kind'], 'manual')
         self.assertTrue(any('hash' in s.lower() for s in changed['issues']))
 
+    def test_explicit_loader_pin_survives_profile_sync_with_provenance(self):
+        self.save()
+        previous=scan_profile(self.profile)
+        previous.update(neoforge='21.1.262',fml='4.0.45',loader_policy={
+            'mode':'explicit','minecraft':'1.21.1','version':'21.1.262','fml':'4.0.45'})
+        scanned=scan_profile(self.profile,previous=previous)
+        self.assertEqual('21.1.262',scanned['neoforge'])
+        self.assertEqual('4.0.45',scanned['fml'])
+        self.assertEqual('21.1.256',scanned['migration']['profile_neoforge'])
+        self.assertEqual('21.1.256',changes(previous,scanned)['profile_neoforge'])
+
     def test_real_launcher_dependency_shape(self):
         jar = self.profile/'mods/example.jar'
         self.meta['installedAddons'] = [{'addonID':123,'installedFile':{'id':456,'fileName':jar.name,

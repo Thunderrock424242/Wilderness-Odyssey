@@ -13,8 +13,14 @@ CurseForge file hashes. `modpack/lock.json` is the import-owned inventory; gener
 packwiz `pack.toml`, `index.toml`, and `mods/*.pw.toml` are the interoperable install
 view. Generation is deterministic; validation rejects drift between the views.
 `modpack/review.json` holds deliberate hash-bound side/source/essential decisions.
-No updater selects a latest version. No filename-only project match is accepted.
+Mod versions come from the reviewed profile, with no automatic latest-mod selection.
+The explicit `loader --latest` command can check stable **21.1.x** builds from
+official Maven metadata; `--apply` records an exact NeoForge/FML/installer pin.
+Later imports preserve that deliberate target while recording the profile's actual
+loader separately. CI never floats versions. No filename-only match is accepted.
 Unresolved identities and sides remain explicit and block unattended readiness.
+Required builtin ranges use the verified FML matrix for known versions, shared
+by validation and isolation rather than bypassed in one code path.
 
 Only tracked allowlisted custom asset roots are indexed. Import does not replace
 existing custom files. It reports config differences and can copy explicitly
@@ -25,7 +31,10 @@ The installer verifies every indexed byte and every mod hash, respects restricte
 provider downloads, accepts a private local JAR directory, and writes only a new
 empty destination outside the repository. Each QA trial gets its own installation
 and world. Cache keys are content hashes. Release ZIP generation is deterministic
-and references CurseForge IDs; unsupported redistribution blocks export.
+and references CurseForge IDs; unsupported redistribution blocks export. A local
+`--include-owned-api --local-mods ...` export can include only the exact pinned
+owner-supplied Wilderness Odyssey API; its JAR stays outside Git, and hosted
+export still requires a verified exact distribution source.
 
 ## Diagnostics and isolation interfaces
 

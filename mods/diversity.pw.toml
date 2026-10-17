@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "diversity"
 filename = "diversity-neoforge-1.21.1-2.5.3.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

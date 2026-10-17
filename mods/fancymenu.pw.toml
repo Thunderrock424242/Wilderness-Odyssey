@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "fancymenu"
 filename = "fancymenu_neoforge_3.9.14_MC_1.21.1.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

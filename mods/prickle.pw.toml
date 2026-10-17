@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "prickle"
 filename = "prickle-neoforge-1.21.1-21.1.11.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "architectury"
 filename = "architectury-13.0.11-neoforge.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

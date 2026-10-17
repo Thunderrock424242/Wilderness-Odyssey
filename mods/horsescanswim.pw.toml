@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "horsescanswim"
 filename = "horsescanswim-1.1.0.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

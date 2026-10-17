@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "tectonic"
 filename = "tectonic-3.0.28-neoforge-21.1.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

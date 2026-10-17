@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "eclipticseasons_bundles"
 filename = "EclipticSeasons-Bundles-0.18.1.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

@@ -22,7 +22,7 @@ on:
       - '.gitattributes'
       - '.github/workflows/modpack-*.yml'
   push:
-    branches: [1.21-neoforge, 'codex/**']
+    branches: [1.21-neoforge]
     paths:
       - 'pack.toml'
       - 'index.toml'

@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "cf-1689768"
 filename = "mezz_config-1.21.1-neoforge-0.6.8-standalone.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "modernfix"
 filename = "modernfix-neoforge-5.27.26+mc1.21.1.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

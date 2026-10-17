@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "terralith"
 filename = "Terralith_1.21.x_v2.6.2.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

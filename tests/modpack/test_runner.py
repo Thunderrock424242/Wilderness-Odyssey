@@ -362,6 +362,13 @@ class RunnerTests(unittest.TestCase):
         with self.assertRaises(PackError):
             self.runner._isolation_graph(self.lock)
 
+    def test_isolation_graph_uses_the_same_verified_fml_matrix_as_validation(self):
+        self.lock['mods'][0]['requires']=[{'id':'minecraft','version':'[1.21,1.21.1)','side':'both'}]
+        self.assertTrue(self.runner._isolation_graph(self.lock))
+        self.lock['fml']='unverified'
+        with self.assertRaises(PackError):
+            self.runner._isolation_graph(self.lock)
+
     def test_artifact_copy_failure_does_not_skip_owned_trial_cleanup(self):
         with patch.object(self.runner, '_collect_artifacts', side_effect=OSError('fixture disk error')):
             result = self.run_qa()
@@ -373,8 +380,14 @@ class RunnerTests(unittest.TestCase):
         self.server_mode = 'crash'
         self.args.isolate = True
         original_sleep = self.runner.time.sleep
+        injected = False
         def cancel_second_trial(seconds):
-            if sum('nogui' in command for command, _ in self.commands) >= 2:
+            nonlocal injected
+            # One Ctrl+C, then allow process cleanup to wait. subprocess.wait
+            # also uses this module's time.sleep on POSIX; repeatedly raising
+            # here interrupts cleanup itself and tests a different scenario.
+            if not injected and sum('nogui' in command for command, _ in self.commands) >= 2:
+                injected = True
                 raise KeyboardInterrupt()
             original_sleep(seconds)
         with patch.object(self.runner.time, 'sleep', side_effect=cancel_second_trial):

@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "ancient_remnants"
 filename = "ancient_remnants-1.5.2+1.21.1-neoforge.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

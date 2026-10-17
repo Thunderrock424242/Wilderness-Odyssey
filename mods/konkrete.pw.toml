@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "konkrete"
 filename = "konkrete_neoforge_1.9.9_MC_1.21.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

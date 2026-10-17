@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "betteradvancedtooltips"
 filename = "better-advanced-tooltips-2101.1.0-build.5.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

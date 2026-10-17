@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "distanthorizons"
 filename = "DistantHorizons-3.3.3-1.21.1-fabric-neoforge.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "memorysettings"
 filename = "memorysettings-1.21-6.0.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

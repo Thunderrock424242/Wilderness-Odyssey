@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "kiwi"
 filename = "Kiwi-1.21.1-NeoForge-15.8.7.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

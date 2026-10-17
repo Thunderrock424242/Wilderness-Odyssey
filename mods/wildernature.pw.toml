@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "wildernature"
 filename = "letsdo-wildernature-neoforge-1.1.8.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

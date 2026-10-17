@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "camping"
 filename = "letsdo-camping-neoforge-2.1.6.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

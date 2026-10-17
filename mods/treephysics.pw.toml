@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "treephysics"
 filename = "treephysics-neoforge-1.21.1-2.4.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

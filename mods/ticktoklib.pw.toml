@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "ticktoklib"
 filename = "ticktoklib-1.4.3.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

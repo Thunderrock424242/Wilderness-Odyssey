@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "aquamirae"
 filename = "aquamirae-neoforge-1.21.1-7.2.12.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

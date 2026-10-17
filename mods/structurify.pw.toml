@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "structurify"
 filename = "structurify-neoforge-2.0.43+mc1.21.1.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

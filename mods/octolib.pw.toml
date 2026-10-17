@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "octolib"
 filename = "OctoLib-NEOFORGE-0.6.2+1.21.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

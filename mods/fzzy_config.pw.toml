@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "fzzy_config"
 filename = "fzzy_config-0.7.7+1.21+neoforge.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "mr_lukis_ancientcities"
 filename = "lukis-ancient-cities-v1.2.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "cbcaeronauticsmissiles"
 filename = "cbcaeronauticsmissiles-0.2.0.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

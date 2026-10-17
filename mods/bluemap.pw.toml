@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "bluemap"
 filename = "bluemap-5.7-neoforge.jar"
-side = "client"
+side = "server"
 pin = true
 
 [download]

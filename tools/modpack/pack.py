@@ -137,6 +137,27 @@ def version_satisfies(version, constraint):
     return (not lo or cmp(str(version), lo) >= (0 if left == '[' else 1)) and (not hi or cmp(str(version), hi) <= (0 if right == ']' else -1))
 
 
+def dependency_satisfies(lock, mod_id, version, constraint):
+    """Mirror the verified FML matrix, without widening unrelated constraints.
+
+    FML 4.0.45 VersionSupportMatrix accepts Minecraft 1.21 and NeoForge
+    21.0.166 aliases on Minecraft 1.21.1. Verified source:
+    https://github.com/neoforged/FancyModLoader/blob/44982c69cddbb01b27318dfcac0b3c707b3e94a9/loader/src/main/java/net/neoforged/fml/loading/VersionSupportMatrix.java
+    The two legacy pins below have this exact FML dependency in their POMs.
+    Unknown/new FML versions require review instead of inheriting this matrix.
+    """
+    match = version_satisfies(version, constraint)
+    fml = lock.get('fml', {'21.1.256':'4.0.45', '21.1.262':'4.0.45'}.get(lock.get('neoforge')))
+    if match is True or lock.get('minecraft') != '1.21.1' or fml != '4.0.45':
+        return match
+    aliases = {'minecraft':'1.21', 'neoforge':'21.0.166'}
+    if mod_id in aliases and version == lock.get(mod_id):
+        alias_match = version_satisfies(aliases[mod_id], constraint)
+        if alias_match is True:
+            return True
+    return match
+
+
 def _schema_errors(lock):
     if not isinstance(lock,dict) or lock.get('schema') != 1 or not isinstance(lock.get('mods'),list):
         return ['Unsupported inventory schema; expected an object with schema=1 and mods array.']
@@ -244,7 +265,7 @@ def validate(root, lock, side='client', require_downloads=False):
             if not versions:
                 errors.append(f'{m["id"]}: missing {side} dependency {dep["id"]}')
             else:
-                matches = [version_satisfies(v,dep.get('version','*')) for v in versions]
+                matches = [dependency_satisfies(lock,dep['id'],v,dep.get('version','*')) for v in versions]
                 if all(match is False for match in matches):
                     errors.append(f'{m["id"]}: {dep["id"]} {", ".join(versions)} does not satisfy {dep["version"]}')
                 elif len(versions) > 1 and any(match is not True for match in matches):

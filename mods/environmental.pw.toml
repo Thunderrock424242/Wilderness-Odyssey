@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "environmental"
 filename = "environmental-1.21.1-5.0.1.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

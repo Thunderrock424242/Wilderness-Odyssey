@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "structure_layout_optimizer"
 filename = "structure_layout_optimizer-neoforge-1.0.12.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

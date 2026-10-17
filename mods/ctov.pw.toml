@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "ctov"
 filename = "[Neoforge]ctov-3.6.3.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

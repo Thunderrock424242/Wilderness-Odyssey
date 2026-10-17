@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "alexsmobs"
 filename = "alexsmobs-1.22.17.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

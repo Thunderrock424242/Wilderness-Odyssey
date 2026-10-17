@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "pointblank"
 filename = "pointblank-neoforge-1.21-2.2.0.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

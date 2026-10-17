@@ -8,7 +8,7 @@ import zipfile
 from unittest import mock
 
 from tools.modpack.common import PackError, digest
-from tools.modpack.pack import generate, validate
+from tools.modpack.pack import generate, validate, dependency_satisfies
 from tools.modpack.install import install
 from tools.modpack.release import package
 
@@ -46,6 +46,23 @@ class PackTests(unittest.TestCase):
         self.assertEqual(before, (self.repo/'index.toml').read_bytes())
         (self.repo/'config/example.toml').write_text('enabled=false')
         self.assertTrue(any('hash' in e for e in validate(self.repo, self.lock)['errors']))
+
+    def test_neoforge_fml_matrix_accepts_only_verified_1211_aliases(self):
+        for loader in ('21.1.256','21.1.262'):
+            self.lock['neoforge']=loader
+            self.assertTrue(dependency_satisfies(self.lock,'minecraft','1.21.1','[1.21,1.21.1)'))
+            self.assertTrue(dependency_satisfies(self.lock,'neoforge',loader,'[21.0,21.1)'))
+            self.assertFalse(dependency_satisfies(self.lock,'minecraft','1.21.1','[1.20,1.21)'))
+            self.assertFalse(dependency_satisfies(self.lock,'minecraft','1.21.1','[1.22,)'))
+        self.lock['fml']='unverified'
+        self.assertFalse(dependency_satisfies(self.lock,'minecraft','1.21.1','[1.21,1.21.1)'))
+
+    def test_validator_uses_verified_fml_matrix_for_required_builtins(self):
+        self.lock['mods'][0]['requires']=[{'id':'minecraft','version':'[1.21,1.21.1)','side':'both'}]
+        generate(self.repo,self.lock,self.assets)
+        self.assertTrue(validate(self.repo,self.lock)['ready'])
+        self.lock['fml']='unverified'
+        self.assertFalse(validate(self.repo,self.lock)['ready'])
 
     def test_malformed_inventory_is_reported_without_a_parser_traceback(self):
         generate(self.repo,self.lock,self.assets)
@@ -188,6 +205,34 @@ class PackTests(unittest.TestCase):
         generate(self.repo, self.lock, self.assets)
         with self.assertRaisesRegex(PackError, 'CurseForge'):
             package(self.repo, self.lock, self.base/'blocked.zip')
+
+    def test_release_owned_api_requires_explicit_flag_and_exact_local_bytes(self):
+        mod=self.lock['mods'][0]
+        mod.update(id='wildernessodysseyapi',source={'kind':'manual','verified':False},
+                   provides=[{'id':'wildernessodysseyapi','version':'5.0.0','embedded':False}])
+        generate(self.repo,self.lock,self.assets)
+        with self.assertRaises(PackError):
+            package(self.repo,self.lock,self.base/'no-consent.zip',local_mods=self.local)
+        with self.assertRaises(PackError):
+            package(self.repo,self.lock,self.base/'no-bytes.zip',include_owned_api=True)
+        first,second=self.base/'owned.zip',self.base/'repeat.zip'
+        package(self.repo,self.lock,first,local_mods=self.local,include_owned_api=True)
+        package(self.repo,self.lock,second,local_mods=self.local,include_owned_api=True)
+        self.assertEqual(digest(first),digest(second))
+        with zipfile.ZipFile(first) as archive:
+            self.assertEqual(self.jar.read_bytes(),archive.read('overrides/mods/test.jar'))
+            self.assertEqual([],json.loads(archive.read('manifest.json'))['files'])
+            self.assertIn('overrides/mods/test.jar',archive.read('SHA256SUMS.txt').decode())
+        self.jar.write_bytes(b'wrong API version')
+        with self.assertRaisesRegex(PackError,'SHA-256'):
+            package(self.repo,self.lock,self.base/'bad.zip',local_mods=self.local,include_owned_api=True)
+        self.assertFalse((self.base/'bad.zip').exists())
+
+    def test_owned_api_flag_cannot_bundle_unrelated_manual_mod(self):
+        self.lock['mods'][0]['source']={'kind':'manual','verified':False}
+        generate(self.repo,self.lock,self.assets)
+        with self.assertRaises(PackError):
+            package(self.repo,self.lock,self.base/'other.zip',local_mods=self.local,include_owned_api=True)
 
     def test_release_bytes_do_not_depend_on_windows_or_linux_host(self):
         generate(self.repo,self.lock,self.assets)

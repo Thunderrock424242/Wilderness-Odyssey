@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "fragmentum"
 filename = "fragmentum-5.4.0+1.21.1-neoforge.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

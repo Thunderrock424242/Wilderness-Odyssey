@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "zfastnoise"
 filename = "zfastnoise-1.0.13+1.21.1+neoforge.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

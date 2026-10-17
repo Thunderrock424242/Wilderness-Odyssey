@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "es_x_letsdo"
 filename = "EclipticSeasonsLetsDo-1.0.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

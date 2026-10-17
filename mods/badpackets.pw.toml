@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "badpackets"
 filename = "badpackets-neo-0.8.2.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

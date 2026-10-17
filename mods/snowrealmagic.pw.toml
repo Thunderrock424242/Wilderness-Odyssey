@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "snowrealmagic"
 filename = "SnowRealMagic-1.21.1-NeoForge-12.2.3.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]

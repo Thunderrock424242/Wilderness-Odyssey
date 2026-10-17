@@ -1,7 +1,7 @@
 # Generated: server eligibility is unreviewed when inventory side=unknown.
 name = "create_pillagers_arise"
 filename = "create_pillagers_arise NeoForge 1.21.1-132.36.jar"
-side = "client"
+side = "both"
 pin = true
 
 [download]
