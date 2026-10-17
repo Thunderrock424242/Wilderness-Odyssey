@@ -1,6 +1,6 @@
 # Modpack troubleshooting expansion
 
-Date: 2026-10-17. Status: proposed design, awaiting written-spec review.
+Date: 2026-10-17. Status: written design approved by the user in this chat.
 
 ## Intended outcome
 
