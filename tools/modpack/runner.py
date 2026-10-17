@@ -128,12 +128,25 @@ def _environment(java, temporary):
     temporary.mkdir(parents=True,exist_ok=True)
     environment = {'PATH': str(Path(java).parent) + os.pathsep + os.defpath,
                    'TEMP': str(temporary), 'TMP': str(temporary), 'TMPDIR': str(temporary)}
+    locations = {'HOME':'home','USERPROFILE':'home','APPDATA':'home/AppData/Roaming',
+                 'LOCALAPPDATA':'home/AppData/Local','XDG_CACHE_HOME':'home/.cache',
+                 'XDG_DATA_HOME':'home/.local/share','XDG_CONFIG_HOME':'home/.config'}
+    for name,relative in locations.items():
+        directory = safe_path(temporary,relative)
+        directory.mkdir(parents=True,exist_ok=True)
+        environment[name] = str(directory)
     for name in ('SystemRoot', 'WINDIR'):
         if os.environ.get(name):
             environment[name] = os.environ[name]
     if os.name != 'nt':
         environment['LANG'] = 'C.UTF-8'
     return environment
+
+
+def _jvm_environment_flags(environment):
+    # Java's user.home is not reliably derived from HOME/USERPROFILE on Windows.
+    return ['-Duser.home='+environment['HOME'], '-Djava.io.tmpdir='+environment['TEMP'],
+            '-XX:ActiveProcessorCount=4']
 
 
 def _kill_tree(process, environment):
@@ -578,7 +591,7 @@ def _run_trial(root, lock, args, destination, reports, java, environment, cache,
         active, active_start = 'installer', time.monotonic()
         installer_log = safe_path(reports, 'installer.log')
         result['artifacts']['installer_log'] = str(installer_log)
-        outcome = _command([java, '-jar', str(installer), '--installServer'], destination,
+        outcome = _command([java, *_jvm_environment_flags(environment), '-jar', str(installer), '--installServer'], destination,
                            environment, installer_log, _remaining(_INSTALLER_SECONDS, deadline))
         result['log_truncated'] |= outcome['truncated']
         if outcome['timed_out'] or outcome['exit_code'] != 0:
@@ -592,7 +605,7 @@ def _run_trial(root, lock, args, destination, reports, java, environment, cache,
         server_log = safe_path(reports, 'server.log')
         result['artifacts']['server_log'] = str(server_log)
         active, active_start = 'startup', time.monotonic()
-        child = _Process([java, *_java_flags(args), '@' + argument_file, 'nogui'], destination, environment, server_log)
+        child = _Process([java, *_jvm_environment_flags(environment), *_java_flags(args), '@' + argument_file, 'nogui'], destination, environment, server_log)
         start = active_start
         outcome = _wait(child, _remaining(args.startup_seconds, deadline), ready=True)
         ready = outcome == 'ready'
@@ -747,7 +760,7 @@ def run_qa(root, lock, args) -> dict:
         setup_temp=tempfile.TemporaryDirectory(prefix='wo-setup-jvm-',dir=reports.parent)
         environment = _environment(java, setup_temp.name)
         version_log = safe_path(reports, 'java-version.log')
-        version = _command([java, '-version'], reports, environment, version_log, 15)
+        version = _command([java, *_jvm_environment_flags(environment), '-version'], reports, environment, version_log, 15)
         result['artifacts']['java_version_log'] = str(version_log)
         match = re.search(r'\b(?:openjdk|java) version "(\d+)(?:\.|\")', version['logs'])
         if version['timed_out'] or version['exit_code'] != 0 or not match or match[1] != '21':
@@ -809,7 +822,7 @@ def run_qa(root, lock, args) -> dict:
         result['artifacts'].update(source_artifacts)
         result['context'] = {'scenario': 'startup-soak-v1', 'seed': 424242,
             'minecraft': lock.get('minecraft'), 'neoforge': lock.get('neoforge'), 'java_major': 21,
-            'heap_mb': args.memory_mb, 'profiling': args.profiling,
+            'heap_mb': args.memory_mb, 'profiling': args.profiling, 'active_processors':4,
             'startup_timeout_seconds': args.startup_seconds, 'soak_seconds': args.soak_seconds}
         result.setdefault('memory', analyze_memory(result.get('samples', [])))
         try:

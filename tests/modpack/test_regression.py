@@ -7,7 +7,7 @@ from tools.modpack.common import PackError
 class RegressionTests(unittest.TestCase):
     def report(self):
         return {'category':'success','context':{'scenario':'startup-soak-v1','seed':424242,'java_major':21,'heap_mb':4096,
-            'minecraft':'1.21.1','neoforge':'21.1.256','profiling':'basic','soak_seconds':120},
+            'minecraft':'1.21.1','neoforge':'21.1.256','profiling':'basic','soak_seconds':120,'active_processors':4},
             'phases':{s:{'status':'passed'} for s in ('startup','soak','shutdown')},
             'metrics':{'startup_seconds':100,'avg_mspt':None,'worst_mspt':None},'private_logs':'do not copy'}
 

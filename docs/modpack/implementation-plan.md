@@ -40,4 +40,6 @@ Follow-up: [x] correct FML matrix false positives; [x] explicit loader check/pin
 and repeat-import preservation; [x] author-backed sides for all 280 hashes;
 [x] single-cancellation Linux fixture; [x] actual client/server file reconstruction;
 [x] exact local owned-API export and repeat ZIP comparison; [x] future update guide.
-Actual Minecraft launch and hosted API availability remain separate acceptance gates.
+Actual disposable server startup/idle-soak/shutdown now passed after fixing private
+runtime directories. Client/launcher acceptance and hosted API availability remain
+separate gates; no baseline or publication was promoted.

@@ -114,7 +114,7 @@ class RunnerTests(unittest.TestCase):
             script = 'import sys\nprint("x"*20000)\nprint(' + repr(READY) + ',flush=True)\nsys.stdin.readline()'
         elif self.server_mode == 'child':
             script = ('import sys, subprocess\n'
-                      'child=subprocess.Popen([sys.executable,"-c","import time; time.sleep(60)"],stdin=subprocess.DEVNULL)\n'
+                      'child=subprocess.Popen([' + repr(sys.executable) + ',"-c","import time; time.sleep(60)"],stdin=subprocess.DEVNULL)\n'
                       'print("CHILD_PID="+str(child.pid),flush=True)\n'
                       'print(' + repr(READY) + ',flush=True)\nsys.stdin.readline()')
         else:
@@ -152,6 +152,7 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual('eula=true\n', (self.args.destination / 'eula.txt').read_text())
         launch = next(command for command, _ in self.commands if 'nogui' in command)
         self.assertIn('-Xmx512M', launch)
+        self.assertIn('-XX:ActiveProcessorCount=4', launch)
         self.assertTrue(any(argument.startswith('@libraries/net/neoforged/neoforge/21.1.256/') for argument in launch))
         for command, options in self.commands:
             self.assertFalse(options.get('shell', False))
@@ -162,12 +163,27 @@ class RunnerTests(unittest.TestCase):
         self.assertIsNone(result['metrics']['worst_mspt'])
         self.assertEqual({'scenario': 'startup-soak-v1', 'seed': 424242, 'minecraft': '1.21.1',
                           'neoforge': '21.1.256', 'java_major': 21, 'heap_mb': 512, 'profiling': 'off',
-                          'startup_timeout_seconds': 1, 'soak_seconds': 0}, result['context'])
+                          'startup_timeout_seconds': 1, 'soak_seconds': 0, 'active_processors':4}, result['context'])
         self.assertIsNone(result['source_commit'])
         self.assertIsNone(result['dirty'])
         self.assertFalse((self.args.destination / 'mods').exists())
         self.assertEqual(b'fixture pinned mod bytes', (self.local / 'example.jar').read_bytes())
         self.assert_reports(result)
+
+    def test_runtime_has_private_home_and_app_data_instead_of_inheriting_user_paths(self):
+        with patch.dict(os.environ,{'LOCALAPPDATA':'private-real-app-data','APPDATA':'private-real-roaming',
+                                    'USERPROFILE':'private-real-home','HOME':'private-real-home'}):
+            result=self.run_qa()
+        self.assertEqual('success',result['category'])
+        for command,options in self.commands:
+            if 'nogui' not in command and '--installServer' not in command:
+                continue
+            env=options['env']
+            for key in ('HOME','USERPROFILE','APPDATA','LOCALAPPDATA','XDG_CACHE_HOME','XDG_DATA_HOME','XDG_CONFIG_HOME'):
+                self.assertTrue(Path(env[key]).is_relative_to(Path(env['TEMP'])),key)
+                self.assertNotIn('private-real',env[key])
+            self.assertIn('-Duser.home='+env['HOME'],command)
+            self.assertIn('-Djava.io.tmpdir='+env['TEMP'],command)
 
     def test_installer_success_and_asset_loading_never_count_as_readiness(self):
         self.server_mode = 'no_ready'
@@ -401,6 +417,7 @@ class RunnerTests(unittest.TestCase):
     def test_children_are_stopped_when_the_ready_parent_exits_cleanly(self):
         self.server_mode = 'child'
         result = self.run_qa()
+        self.assertEqual('success',result['category'],result)
         logs = Path(result['artifacts']['server_log']).read_text()
         child_pid = int(logs.split('CHILD_PID=')[1].splitlines()[0])
         if os.name == 'nt':

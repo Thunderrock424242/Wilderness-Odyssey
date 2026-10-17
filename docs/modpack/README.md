@@ -12,8 +12,10 @@ Minecraft **1.21.1** and NeoForge **21.1.256** were read from that profile; the 
 development project independently uses the same loader version. The Git target
 is now **21.1.262**, the latest stable **21.1.x** build checked against official
 NeoForge metadata on 2026-10-17. The live profile stays unchanged at 21.1.256.
-Client/server files were reconstructed and local release ZIPs compared; Minecraft
-has not been launched. Read [verification.md](verification.md) for proof limits.
+Client/server files were reconstructed and local release ZIPs compared. An actual
+disposable server passed startup, a 120-second idle soak and graceful shutdown
+with the user's explicit EULA acceptance. Read [verification.md](verification.md)
+for the harness fix, remaining warnings and proof limits.
 
 For future mod/config/loader updates, start with the short
 [update checklist](updating.md).
@@ -163,7 +165,7 @@ Then, using a full Java 21 JDK and an adequately sized disposable directory:
 
 ```powershell
 py -3 -m tools.modpack validate --side server --reports "$env:TEMP\wo-server-validation"
-py -3 -m tools.modpack qa --destination "$env:TEMP\wo-server-copy" --reports "$env:TEMP\wo-server-report" --local-mods 'C:\Users\mason\curseforge\minecraft\Instances\Wilderness Odyssey (1)\mods' --java 'C:\Path\To\jdk-21\bin\java.exe' --memory-mb 4096 --startup-seconds 600 --soak-seconds 120 --profiling basic --accept-eula
+py -3 -m tools.modpack qa --destination "$env:TEMP\wo-server-copy" --reports "$env:TEMP\wo-server-report" --local-mods 'C:\Users\mason\curseforge\minecraft\Instances\Wilderness Odyssey (1)\mods' --java 'C:\Path\To\jdk-21\bin\java.exe' --memory-mb 6144 --startup-seconds 600 --soak-seconds 120 --profiling basic --accept-eula
 ```
 
 `--accept-eula` is your explicit acceptance of the
@@ -173,6 +175,16 @@ recording; `native` enables native-memory tracking. Post-GC retention, GC histor
 threads and native/CPU information are reported only when actually collected.
 No forced GC or heap dumps run by default. Treat recordings/logs as potentially
 sensitive when sharing them.
+
+Java home, temporary files, Windows app data and XDG locations are redirected
+into private per-trial directories, which are cleaned after the owned processes
+stop. `ActiveProcessorCount=4` guides JVM thread-pool sizing; it is not an OS CPU
+percentage quota or a cap on arbitrary mod-created threads.
+
+The successful local run used 6144 MiB and approached that heap ceiling. The
+hosted workflow's conservative 4096 MiB default is not proven sufficient for this
+pack; it also offers 6144 MiB for a runner with enough remaining host memory.
+Hosted Minecraft execution itself remains untested and gated on API availability.
 
 The only live scenario implemented is fixed-seed startup plus an **idle soak**,
 followed by a save/stop command and bounded shutdown. Readiness requires the exact

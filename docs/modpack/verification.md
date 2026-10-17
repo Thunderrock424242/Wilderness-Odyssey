@@ -38,6 +38,7 @@ the oversized ZIP as migration input.
 | Full unittest suite on Windows, bundled Python 3.12.14 | 112 discovered: 111 passed, same skip |
 | Follow-up full suite on Windows, Python 3.13 | 123 discovered: 122 passed, one host symlink-creation skip |
 | Follow-up full suite on Windows, bundled Python 3.12.14 | 123 discovered: 122 passed, same skip |
+| Runtime-fix full suites on Windows Python 3.13 and 3.12.14 | 125 discovered: 124 passed, one host symlink-creation skip, each |
 | Independent focused follow-up review | 68 focused tests passed, one skip; zero client/server static validation errors; no remaining important finding in reviewed code |
 | Windows process lifecycle fixtures | Actual harmless Python subprocesses stood in for Java; startup/timeout/stop/child cleanup, suspended Job ownership, cancellation and fresh trials covered |
 | Real local import followed by repeat import | 280 files scanned; repeat had zero mod changes; no profile metadata change |
@@ -47,6 +48,7 @@ the oversized ZIP as migration input.
 | New workflow syntax/expression validation | actionlint 1.7.12 passed all three new workflows; binary verified against publisher checksum |
 | Code/workflow/metadata whitespace check | Passed; imported upstream config whitespace was deliberately preserved |
 | Website/asset preservation diff | Existing website workflow, shader/resource packs and historical mod list unchanged |
+| Hosted CI on `3b1d99a` | [Run 39035566829](https://github.com/Thunderrock424242/Wilderness-Odyssey/actions/runs/39035566829) passed manifest readiness, Ubuntu/Python 3.11 and Windows/Python 3.11 tool/repository checks |
 
 The suite covers stale/ambiguous provider identities, nested libraries and work
 budgets, malformed manifests, concurrent launcher metadata changes, repeat sync,
@@ -128,14 +130,61 @@ such as Lithostitched, JSON5/JSONC/HOCON/YAML/SNBT, complex Maven/Fabric constra
 and multiple embedded-library selections produce explicit unverified warnings.
 No complete mod-specific schema catalog or online availability sweep ran.
 
+## Actual disposable server acceptance
+
+After the user explicitly accepted the Minecraft EULA, actual Java 21 server QA
+ran against the reconstructed 231-JAR server projection with **NeoForge 21.1.262**,
+**Corretto 21.0.12.1**, **6144 MiB** heap and seed **424242**.
+
+The first run installed NeoForge successfully but failed during mod construction.
+Resourceful Lib `GlobalStorage.<clinit>` passed the missing Windows
+`LOCALAPPDATA` variable to `Path.of`; exact installed-byte `javap` inspection
+confirmed this. The harness had stripped that standard environment variable.
+The fix supplies private trial-local home/app-data/XDG directories, plus explicit
+Java `user.home` and `java.io.tmpdir`, rather than inheriting personal directories
+or changing mod versions. A failed-before/fixed-after regression covers the path
+and secret-isolation contract. The fixture's nested Python also now uses the
+outer interpreter path so Store Python's private-profile rewriting cannot break
+its child-process cleanup test.
+
+The corrected run, `pr37-runtime-02`, **passed**:
+
+| Phase | Actual result |
+| --- | --- |
+| Official installer | Succeeded, 22.78 seconds; downloaded installer matched pinned SHA-256 |
+| Startup | Exact Minecraft readiness observed after 116.64 seconds from JVM launch |
+| Idle soak | Completed 120.00 seconds |
+| Graceful shutdown | Exit code zero, 7.50 seconds; no forced termination |
+| Cleanup | Disposable `mods`, `qa-world`, private setup/runtime directories and owned Java process removed |
+
+The API generated its starter area and modded dimensions during first-world
+startup. That incidental work is not a controlled worldgen benchmark. Two raw
+heap samples were approximately **4.50 GiB** and **5.74 GiB**; thread counts were
+382 and 385. Heap was near the 6 GiB ceiling, but post-GC retention/GC trends and
+CPU/MSPT are unmeasured by the summary; these samples do **not** establish a leak.
+Raw GC logs and bounded thread stacks were retained privately.
+
+Nonfatal diagnostics remain: missing optional biome/dimension IDs in Cold Sweat
+configs, Integrated API data parsing messages, a malformed Natural Sizes language
+asset, and repeated dummy-block-entity warnings during starter-area generation.
+A passed lifecycle does not clear these warnings or justify replacing preserved
+custom settings. No mod was silently removed to obtain this result.
+
+The run records source `3b1d99a` plus **dirty=true** for the in-progress runtime
+fixes; it is not a promoted clean baseline. No baseline was created. Full logs
+and reports remain outside Git under the local modpack reports directory.
+The parser now preserves fatal FML cause chains even when NeoForge returns code
+zero, rather than presenting only the last launcher frames. Known loading
+failures do not automatically enable binary isolation or assign mod blame.
+
 ## Proof boundaries and next work
 
-**No actual Minecraft client or server was launched.** No real modpack startup,
-world-generation performance, memory leak, gameplay scenario, multiplayer,
-rendering, shader, GPU or live production compatibility was established. No
-CurseForge/provider integration download was exercised with a real API key. The
-NeoForge installer is pinned from publisher SHA-256 metadata; execution/hash
-failure behavior was tested with fixtures, not that real installer.
+**No Minecraft client or launcher ZIP import was tested.** One successful
+dedicated-server startup/idle-soak/shutdown run does not establish long gameplay,
+repeatable worldgen performance, retained-object leaks, multiplayer, rendering,
+shader, GPU or live production compatibility. No CurseForge/provider integration
+download was exercised with a real API key. The official NeoForge installer was
+actually executed successfully in the disposable copy.
 
 The implemented live runner is startup plus idle soak. Repeatable player-driven
 chunk generation/unloading, teleports, entity workloads, warmup comparisons,
@@ -155,9 +204,9 @@ deployment, issue creation, merge, private runner registration or scheduled QA w
 performed. The original website workflow was not executed.
 
 Recommended order: review the 50 preserved custom-content differences and new
-assets/licenses; give the manual API a supported pinned distribution source;
-explicitly accept the Minecraft EULA and run the disposable actual pack, collect
-a clean baseline, and add a
+assets/licenses and nonfatal runtime diagnostics; give the manual API a supported
+pinned distribution source; repeat acceptance from a clean committed checkout
+before deliberately collecting a baseline, and add a
 measured gameplay workload. Enable scheduled QA only after that real acceptance.
 
 See [the setup and operations guide](README.md) for Windows commands, workflow

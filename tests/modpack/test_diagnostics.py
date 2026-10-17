@@ -38,6 +38,25 @@ class ClassificationTests(unittest.TestCase):
                 self.assertFalse(result["crashed"])
                 self.assertFalse(result["isolation_eligible"])
 
+    def test_fml_loading_failure_with_zero_exit_keeps_cause_before_large_mod_inventory(self):
+        logs = ('[13:08:16] [modloading-worker-0/ERROR]: Failed to create mod instance. ModID: resourcefullib\n'
+                'java.lang.ExceptionInInitializerError: null\n'
+                ' at example.ResourcefulLib.init(ResourcefulLib.java:8)\n'
+                'Caused by: java.lang.NullPointerException\n'
+                ' at java.base/java.util.Objects.requireNonNull(Objects.java:233)\n'
+                ' at example.GlobalStorage.initialize(GlobalStorage.java:34)\n'
+                + 'installed mod inventory row\n'*400
+                + '[13:08:19] [main/ERROR]: Failed to start the minecraft server\n'
+                'net.neoforged.fml.ModLoadingException: Loading errors encountered:\n'
+                ' at loader.ModLoader.waitForFuture(ModLoader.java:281)\n')
+        result=diagnostics.classify(logs,0)
+        self.assertEqual('startup_failure',result['category'])
+        self.assertTrue(result['crashed'])
+        self.assertFalse(result['isolation_eligible'])
+        self.assertIn('NullPointerException','\n'.join(result['evidence']))
+        self.assertIn('GlobalStorage','\n'.join(result['evidence']))
+        self.assertEqual([],result['suspects'])
+
     def test_direct_failures_are_not_candidates_for_isolation(self):
         cases = [
             ("Missing or unsupported mandatory dependencies:\nMod ID: 'example', Requested by: 'quest'", "dependency_failure"),

@@ -4,7 +4,7 @@ import re
 from .common import PackError
 
 METRICS = {'startup_seconds':1.25,'avg_mspt':1.20,'worst_mspt':1.30}
-CONTEXT = ('scenario','seed','minecraft','neoforge','java_major','heap_mb','profiling','soak_seconds')
+CONTEXT = ('scenario','seed','minecraft','neoforge','java_major','heap_mb','profiling','soak_seconds','active_processors')
 
 
 def _number(value):

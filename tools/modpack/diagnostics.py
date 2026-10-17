@@ -81,6 +81,10 @@ _STARTUP_ERROR = re.compile(
     r"Unrecognized VM option",
     re.IGNORECASE,
 )
+_MOD_LOADING_FAILURE = re.compile(
+    r'ModLoadingException:\s*Loading errors encountered|Description:\s*Mod loading failures have occurred',
+    re.IGNORECASE,
+)
 _GAMEPLAY = re.compile(
     r"Description:\s*(?:Ticking (?:entity|block entity|memory connection)|"
     r"Exception ticking world|Exception in server tick loop)", re.IGNORECASE,
@@ -203,7 +207,9 @@ def classify(
 
     # A running process is not a failed trial. Direct fatal evidence may explain
     # a missing exit after the harness deadline, so inspect it before timeouts.
-    failure_context = exit_code not in (None, 0) or timed_out
+    loading_positions = [i for i,line in enumerate(lines) if _MOD_LOADING_FAILURE.search(line)] if not started else []
+    # NeoForge's Main can catch a fatal loading error and still return code zero.
+    failure_context = exit_code not in (None, 0) or timed_out or (exit_code is not None and bool(loading_positions))
     if failure_context:
         for category, pattern, message, next_step in _DIRECT_FAILURES:
             positions = [i for i, line in enumerate(lines) if pattern.search(line)]
@@ -218,6 +224,20 @@ def classify(
             result.update(category="startup_failure", message="The Java process could not initialize the server.",
                           confidence="high", evidence=_evidence(lines, positions),
                           next_step="Correct the Java version, launch options or verified server files, then retry startup.")
+            return result
+
+        if loading_positions:
+            instances = [i for i,line in enumerate(lines) if 'Failed to create mod instance.' in line]
+            trace = _crash_trace(lines[instances[-1]:instances[-1]+120]) if instances else _crash_trace(lines)
+            causes = [i for i,line in enumerate(trace) if line.lstrip().startswith('Caused by:')]
+            root = trace[causes[-1]:causes[-1]+8] if causes else trace[:8]
+            evidence = [_safe(line,_MAX_EVIDENCE_LINE) for line in root+trace[:4]]
+            evidence += _evidence(lines,loading_positions)[:4]
+            result.update(category='startup_failure',
+                message='NeoForge reported a fatal mod-loading failure before server readiness.',
+                confidence='high',crashed=True,evidence=evidence[:_MAX_EVIDENCE_LINES],
+                signature=_signature(trace,'startup_failure'),
+                next_step='Inspect the cause chain and runtime environment in the loader/crash logs before changing mods; a named mod alone does not establish blame.')
             return result
 
         trace = _crash_trace(lines)
@@ -337,7 +357,7 @@ def render_report(result: dict) -> str:
     ]
     phases = result.get("phases", {})
     phases = phases if isinstance(phases, Mapping) else {}
-    for name in ("installer", "startup", "soak", "shutdown"):
+    for name in ("validation", "setup", "installer", "startup", "soak", "shutdown"):
         phase = phases.get(name, {})
         phase = phase if isinstance(phase, Mapping) else {"status": phase}
         status = str(phase.get("status", "not_measured")).replace("_", " ")
