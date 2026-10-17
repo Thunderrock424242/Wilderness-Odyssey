@@ -79,3 +79,8 @@ Real profile access and any actual server launch are recorded separately.
 Workloads requiring a player/instrumentation mod, retained-object analysis,
 automatic baseline promotion, client rendering and production deployment remain
 explicit follow-up work until implemented and tested. Publishing is manual.
+
+The proposed expansion for performance, memory and general issue diagnosis is
+specified in [the troubleshooting design](../superpowers/specs/2026-10-17-modpack-troubleshooting-design.md).
+That document records the next delivery and its acceptance criteria; its status
+is separate from the implemented foundation described above.
