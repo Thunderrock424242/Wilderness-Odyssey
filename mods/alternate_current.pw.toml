@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "alternate_current"
+filename = "alternate_current-mc1.21-1.9.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d23731fcb31cf561544fd7a97b0076b3abb42a0ece0631f86de9a1425fe046f5"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 548115
+file-id = 5665477

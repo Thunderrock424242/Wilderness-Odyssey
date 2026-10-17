@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "spark"
+filename = "spark-1.10.124-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "647e8a81afbe414dba1df4ba15fd06c5d32d4cb544e68828405e8e074c2e16db"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 361579
+file-id = 6225208

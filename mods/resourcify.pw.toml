@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "resourcify"
+filename = "Resourcify (1.21.1-neoforge)-1.8.7.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "e36e59e9d4d389809d2ac2701104d64140fdcb7aedf09189b94b9596b8669894"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 870076
+file-id = 9001238

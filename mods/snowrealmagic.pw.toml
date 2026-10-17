@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "snowrealmagic"
+filename = "SnowRealMagic-1.21.1-NeoForge-12.2.3.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "7077cd92e2e6402bedaea25350d077cf77107b00917151eb65cb25ffa994ad72"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 308663
+file-id = 8988910

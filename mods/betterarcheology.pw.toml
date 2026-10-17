@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "betterarcheology"
+filename = "betterarcheology-neoforge-1.21.1-1.3.9.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "b972bf4f95bfc48103a0f8e2112d565703cff2bd9cdb0f016caf159febb6986c"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 835687
+file-id = 9099893

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "placebo"
+filename = "Placebo-1.21.1-9.9.4.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d8952c019d6e54befe37155bc9876985ec57bf73dd33872115c7a65ac6bceba0"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 283644
+file-id = 9153039

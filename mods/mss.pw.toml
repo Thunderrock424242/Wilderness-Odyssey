@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "mss"
+filename = "MoogsSoaringStructures-universal-1.21-2.2.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "2caca5b2dab3ea4541eb3207bab9d5efcc034e3bf7d89788fd95d7b582d24ed2"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1040210
+file-id = 8931330

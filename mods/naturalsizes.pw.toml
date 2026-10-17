@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "naturalsizes"
+filename = "naturalsizes-1.2-neoforge-1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "5705be92aadf89e8b21bea0f333bdbe33a7ce67b6a2f48cc74f704cbff8f13f7"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1516625
+file-id = 8596871

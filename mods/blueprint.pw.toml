@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "blueprint"
+filename = "blueprint-1.21.1-8.2.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "698b2e901e371202a583c1057fa50bb7b2415a359263b37dc8e62d3b73ea8a74"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 382216
+file-id = 8819375

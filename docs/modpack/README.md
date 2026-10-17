@@ -1,0 +1,248 @@
+# Maintaining the pinned modpack
+
+The current local CurseForge profile supplies installed versions. Git stores the
+inventory, hashes, packwiz metadata and reviewed custom files. Installed JARs,
+profile exports, accounts, saves, logs, recordings and QA worlds stay outside Git.
+The website branch and its deployment workflow remain separate.
+
+The first real import scanned **280 enabled JARs** from the user-selected
+`Wilderness Odyssey (1)` profile. **279** have CurseForge file identities verified
+against provider hashes. The local Wilderness Odyssey API 5.0.0 JAR is **manual**.
+Minecraft **1.21.1** and NeoForge **21.1.256** were read from that profile; the API
+development project independently uses the same loader version. This was an
+inventory import, not a Minecraft launch. Read [verification.md](verification.md)
+before trying QA or generating a release.
+
+## Windows setup and everyday synchronization
+
+Install Python 3.11 or newer and Git. A server QA run also requires a full Java 21
+JDK, including `jcmd` for optional memory samples. The importer needs no Python
+packages, packwiz executable, API key, Minecraft login or Java process.
+
+Run these commands from the feature checkout, after closing launcher updates:
+
+```powershell
+py -3 -m tools.modpack sync --profile 'C:\Users\mason\curseforge\minecraft\Instances\Wilderness Odyssey (1)' --reports "$env:TEMP\wo-sync"
+```
+
+That is a dry run. Review `sync.md` and `sync.json` in the report directory. They
+list added/updated/removed/unresolved mods and custom-file differences. They do
+not contain raw CurseForge account/profile metadata or JAR contents.
+
+Apply the same scan when ready:
+
+```powershell
+py -3 -m tools.modpack sync --profile 'C:\Users\mason\curseforge\minecraft\Instances\Wilderness Odyssey (1)' --reports "$env:TEMP\wo-sync" --apply --copy-new-configs
+py -3 -m tools.modpack validate --reports "$env:TEMP\wo-validation"
+py -3 -m unittest discover -s tests/modpack -v
+git status --short
+```
+
+`--copy-new-configs` copies only safe **missing** files from `config`,
+`defaultconfigs`, `kubejs`, `scripts` and `datapacks`. It skips credentials,
+archives, JARs, large files and personal-state filenames. It never replaces an
+existing file. Updated existing configs, new resource/shader packs and datapack
+ZIPs appear in the report for deliberate content/distribution review. The initial
+import copied 195 missing custom files; it preserved 50 existing differing paths.
+No launcher profile, JAR, save or player file is written, disabled or deleted.
+
+After a reviewed config change or deliberate inventory edit:
+
+```powershell
+py -3 -m tools.modpack reindex
+py -3 -m tools.modpack validate --reports "$env:TEMP\wo-validation"
+```
+
+New imported files remain indexed across repeat scans before staging. Stage only
+the reviewed config/metadata/tool paths. Index hashes use LF for text so Windows
+and Linux checkouts agree; binary assets and JAR hashes remain byte-exact.
+`mods/list` is preserved as historical reference, not an exact dependency lock.
+
+## What is authoritative
+
+| Files/module | Responsibility |
+| --- | --- |
+| `modpack/lock.json` | Import-owned exact installed inventory: SHA-256, sizes, mod IDs, versions, dependencies and identity evidence |
+| `modpack/review.json` | Deliberate side/source/essential decisions bound to the exact JAR SHA-256 |
+| `pack.toml`, `index.toml`, `mods/*.pw.toml` | Deterministically generated standard packwiz projection, exact file IDs and hashes, pinned against automatic update |
+| `modpack/assets.json`, `generated-files.json` | Reviewed custom-content list and ownership of generated files |
+| `metadata.py`, `sync.py` | Read embedded NeoForge/Forge/Fabric and nested-library metadata; compare current installed files |
+| `pack.py`, `repository.py` | Validate integrity, numeric ranges, side/dependency evidence, tracked binaries/private files and simple config syntax |
+| `providers.py`, `install.py` | Restricted-provider handling, content cache, exact-byte reconstruction into a fresh directory |
+| `diagnostics.py`, `runner.py` | Crash classification, bounded actual server lifecycle, optional JVM evidence and reports |
+| `isolation.py` | Dependency-aware repeated delta debugging via the same disposable scenario |
+| `regression.py`, `release.py` | Explicit comparable baselines and deterministic CurseForge reference ZIPs |
+
+Do not edit generated packwiz files by hand or run `packwiz update` as the version
+authority; it will cause drift against the scanned inventory. The generator uses
+the [packwiz pack format](https://packwiz.infra.link/reference/pack-format/pack-toml/)
+and [CurseForge metadata downloads](https://github.com/packwiz/packwiz/blob/master/curseforge/curseforge.go).
+This keeps a standard interchange view without downloading a separate tool for a
+read-only scan. The packwiz executable itself has not been exercised here.
+
+**The current standalone packwiz projection is incomplete:** manual files such as
+the Wilderness Odyssey API are absent from its index. Its header and validation
+report disclose that fact. Use the guarded `tools.modpack install` command with
+private local files for full reconstruction once validation blockers are fixed.
+Do not advertise a generic packwiz installation as the complete current pack.
+
+## Review sides and manual sources
+
+NeoForge dependency-side metadata does not establish whether its containing mod
+can run on a dedicated server. Unknown entries remain `side: unknown`; their
+generated packwiz scope is conservatively `client`, meaning client-profile
+candidate with server support unreviewed, **not** a proven client-only mod.
+Server validation fails until sides are explicitly reviewed from author evidence
+and tested. Fabric's explicit environment can supply a side when available.
+
+An example review entry (replace both the key and hash with actual inventory data):
+
+```json
+{
+  "some_mod": {
+    "sha256": "EXACT_64_CHARACTER_HASH_FROM_LOCK",
+    "side": "both",
+    "essential": true
+  }
+}
+```
+
+Then rerun `sync --apply`. Updated bytes invalidate the review. `essential` protects
+that mod and its transitive dependencies during isolation. Required libraries
+also remain through dependency closure. For ambiguous metadata or an unknown
+dependency graph, live isolation stops instead of guessing.
+
+Manual/unresolved files require the **exact pinned bytes** in `--local-mods`.
+Neither filenames nor a fuzzy launcher match prove a CurseForge project/file ID.
+For direct/Modrinth sources, a hash-bound review may provide a source with `kind`,
+`url`, `permission: "author-approved"`, and pinned Modrinth `project_id` and
+`version_id` when applicable. This records a deliberate download authorization;
+it does not enable non-CurseForge redistribution in the release exporter.
+
+## Reconstruct without touching your installed pack
+
+```powershell
+py -3 -m tools.modpack install --destination "$env:TEMP\wo-client-copy" --local-mods 'C:\Users\mason\curseforge\minecraft\Instances\Wilderness Odyssey (1)\mods' --offline
+```
+
+The destination must be new/empty and outside the repository and source profile.
+The installer never modifies an existing installation. It validates before
+copying and rehashes cached/local/downloaded files. Partial staging copies are
+cleaned up if reconstruction fails. This reconstructs files; it does not launch a
+client or install a client launcher/loader.
+
+For online CurseForge downloads, set `CURSEFORGE_API_KEY` only in your process or
+protected CI environment, never in Git. The installer asks the official API for
+the exact file and honors current author distribution restrictions. Restricted,
+unavailable or unsupported files fail with `--local-mods` instructions. It never
+constructs a CDN URL to bypass a restriction or substitutes a newer file.
+An optional `--cache` must also be outside the repository and the source profile.
+
+`--offline` prevents harness mod/installer downloads. NeoForge's official
+`--installServer` bootstrap can still resolve runtime libraries; fully offline
+bootstrap requires a separately prepared library cache/network boundary.
+
+## Actual server QA and conditional isolation
+
+First resolve static blockers and review client/server sides. Review the pinned
+installer in `qa/tool-lock.json` if the profile's NeoForge version changes.
+Then, using a full Java 21 JDK and an adequately sized disposable directory:
+
+```powershell
+py -3 -m tools.modpack validate --side server --reports "$env:TEMP\wo-server-validation"
+py -3 -m tools.modpack qa --destination "$env:TEMP\wo-server-copy" --reports "$env:TEMP\wo-server-report" --local-mods 'C:\Users\mason\curseforge\minecraft\Instances\Wilderness Odyssey (1)\mods' --java 'C:\Path\To\jdk-21\bin\java.exe' --memory-mb 4096 --startup-seconds 600 --soak-seconds 120 --profiling basic --accept-eula
+```
+
+`--accept-eula` is your explicit acceptance of the
+[Minecraft EULA](https://www.minecraft.net/eula). No workflow assumes acceptance
+from a successful download. `--profiling off` reduces overhead; `jfr` adds a bounded
+recording; `native` enables native-memory tracking. Post-GC retention, GC history,
+threads and native/CPU information are reported only when actually collected.
+No forced GC or heap dumps run by default. Treat recordings/logs as potentially
+sensitive when sharing them.
+
+The only live scenario implemented is fixed-seed startup plus an **idle soak**,
+followed by a save/stop command and bounded shutdown. Readiness requires the exact
+Minecraft `Done (...)! For help, type "help"` server message. Installer success or
+asset-loading progress cannot count as startup. Each run owns and cleans its
+disposable world; only bounded diagnostic artifacts remain. Ctrl+C cancels the
+current process/trial, preserves available evidence and stops further isolation.
+
+Add `--isolate --max-tests 12` only when investigating a reliable startup/soak
+failure. It activates only for an uncertain trace-backed crash, confirms repeated
+full-pack signatures, preserves dependency closures, and compares repeated
+subsets/complements against the original signature. Known dependency failures,
+OOM/JVM faults, timeouts, warnings, success and changed signatures do not establish
+an isolated culprit. Rankings are observations, not automatic blame or removal.
+Each trial uses the same seed and scenario in a fresh external copy. Budgets limit
+tests, JVM memory, startup/soak time, wall-clock isolation and active processors.
+
+Gameplay/worldgen/teleport/entity/chunk-unloading workloads, warmup cycles, MSPT,
+loaded-mod counts and detailed executor attribution are not implemented yet.
+JFR and bounded stacks can support later investigation of weather, anomalies,
+worldgen, asynchronous tasks and Aether when present; the harness does not claim
+to exercise those systems. Client rendering, shaders, GPU, multiplayer and
+client-only memory problems require separate client tests.
+
+## GitHub workflows and execution security
+
+* **Validate pinned modpack** runs secretless static/tool checks on hosted Windows
+  and Linux. Pack-readiness failures are separate from tool-test failures. Current
+  metadata conflicts intentionally fail readiness; the report is still uploaded.
+* **Disposable Minecraft server QA** is hosted-only and accepts trusted manual
+  runs on `1.21-neoforge`. Configure a `modpack-qa` environment with required
+  reviewers and deployment branches restricted to that branch before using keys.
+  Store `CURSEFORGE_API_KEY` in that environment only. There is no PR-triggered
+  server job and no public self-hosted runner job.
+* The weekly schedule remains inert until a successful real QA run and deliberate
+  repository variables `ENABLE_MODPACK_QA_SCHEDULE=true`,
+  `MODPACK_QA_BASELINE_VALIDATED=true`, and `MODPACK_QA_ACCEPT_EULA=true`. Keep them
+  unset during initial migration. Reviewers may still need to approve scheduled
+  environment deployments. Cache keys include lock/tool hashes and every hit is
+  rehashed. There are no broad stale-cache restore keys.
+* **Build pinned CurseForge ZIP (no publishing)** only creates a CI artifact. It
+  never publishes to CurseForge or replaces a release. Manual/non-CurseForge files
+  block export until a supported distribution path exists. Existing resource and
+  shader assets retain their existing ownership; review any new asset's license
+  before adding it to the tracked content list.
+
+Actions are pinned to verified commit SHAs, use `contents: read`, persist no Git
+credentials, and retain diagnostics for seven days. Workflows upload report
+directories, not test worlds or entire installations. No workflow files duplicate
+issues or automatically change a baseline. Automatic cancellation can terminate a
+hosted VM without graceful Minecraft shutdown; no production world is involved.
+
+For heavy Windows QA, run the CLI manually on a disposable copy. If automation is
+needed, use a **separate private QA repository and ephemeral Windows VM** with no
+personal data. Restrict runner access to that private repository/runner group,
+disable fork/PR execution, require environment approval for an exact reviewed pack
+commit, and destroy the VM after the run. Keep that runner unavailable to the
+public modpack repository. No personal-machine runner is configured by this PR.
+
+## Baselines, release ZIPs and the large-file push error
+
+Baseline creation is a deliberate local command after a successful actual run
+from a committed, reviewed source. It stores only whitelisted summary metrics:
+
+```powershell
+py -3 -m tools.modpack baseline --candidate "$env:TEMP\wo-server-report\report.json" --name startup-soak-reviewed
+py -3 -m tools.modpack compare --current "$env:TEMP\wo-next-report\report.json" --baseline qa/baselines/startup-soak-reviewed.json --reports "$env:TEMP\wo-comparison"
+py -3 -m tools.modpack package --output "$env:TEMP\Wilderness-Odyssey-0.1.0.zip"
+```
+
+Review and commit a baseline deliberately; CI never promotes one. Different
+workloads, seeds, heap settings, profiling modes or runtimes are inconclusive.
+Single-run threshold changes are warning indicators, not proven regressions or
+leaks. Full retained-object attribution requires additional retention evidence.
+
+The deterministic release contains exact CurseForge references, reviewed overrides
+and SHA-256 checksums. No mod JAR is bundled. Currently the manual API and declared
+Minecraft range conflicts block a real release. Only fixture releases were built.
+
+The rejected `modpack/Wilderness Odyssey-0.1.0.zip` is over GitHub's regular file
+limit. Deleting it in a later commit does not remove earlier blobs. This feature
+branch starts at the remote `1.21-neoforge` before the rejected local ZIP commits;
+push this branch and review its PR. Do not merge/cherry-pick the large-ZIP commits
+into it. `.gitignore` and the tracked-file guard prevent future archive additions.
+Keep full exports outside Git; no Git LFS or history rewrite is needed for this
+feature branch. The original local branch/commits are preserved for recovery.

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "mr_lukis_ancientcities"
+filename = "lukis-ancient-cities-v1.2.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "b7ac57ef8f18a46ba2fbac4458450145153a77a28dd2071aba2959dff81ec574"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1190728
+file-id = 7179736

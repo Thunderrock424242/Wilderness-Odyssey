@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "bcc"
+filename = "better-compatability-checker-neoforge-21.1.8.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "1ed1373aa54a486f19a0c68c7446fe39c227628e7f5048bff97917189307e7e8"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 551894
+file-id = 7404415

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "cbcaeronauticsmissiles"
+filename = "cbcaeronauticsmissiles-0.2.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "5e401ca48cec71341a1121092132a7720b908ccad945f286a7b8347de76de4e5"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1654531
+file-id = 8746555

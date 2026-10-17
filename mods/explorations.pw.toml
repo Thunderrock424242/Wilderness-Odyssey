@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "explorations"
+filename = "explorations-neoforge-1.21.1-1.6.4.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "0765ca3d3beab2cad003c32be7a5d41e64e53af357c7d43c807d6786e9ff41f1"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 550247
+file-id = 9110634

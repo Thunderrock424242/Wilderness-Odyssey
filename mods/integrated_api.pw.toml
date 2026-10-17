@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "integrated_api"
+filename = "integrated_api-neoforge-1.21.1-1.9.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "3621edbd54dec28b704e03b792cc392f6d37a2cecf832d7b11c485a1765d4a3d"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 817709
+file-id = 9151098

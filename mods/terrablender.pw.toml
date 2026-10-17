@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "terrablender"
+filename = "TerraBlender-neoforge-1.21.1-4.1.0.8.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "edb34c388fe17ea88d0a7fd11174bbf8ae8f28a4c8ce886f1bf9a5cf0ebc36b8"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 940057
+file-id = 6054947

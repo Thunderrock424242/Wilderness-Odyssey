@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "crash_assistant"
+filename = "CrashAssistant-neoforge-1.20.6-1.21.4-1.11.12.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "42f582333ffe61366e68a9320d3c205153f2fdc5b53ad715b01543f85828e6b0"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1154099
+file-id = 8636685

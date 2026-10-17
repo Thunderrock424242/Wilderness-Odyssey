@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "ferritecore"
+filename = "ferritecore-7.0.3-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d87ea28262715ebff45b8a82d493e6b468e7a4521bc021df5d88302196d030a8"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 429235
+file-id = 7524151

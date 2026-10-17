@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "toofast"
+filename = "toofast-1.21.0-0.4.3.6.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "54852c9d395b4dc870d1c8a587e4fade9fb05474540ae4d3dd196663dd6a6114"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 550678
+file-id = 6819714

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "sushigocrafting"
+filename = "sushigocrafting-1.21-0.6.6.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "676339578ce74c17e4f4ce21db50556c699d2a9a74a093b5d977af468ead81e9"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 452500
+file-id = 8772115

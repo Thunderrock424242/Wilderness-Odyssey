@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "horsescanswim"
+filename = "horsescanswim-1.1.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "c617edc7afae10aee495ea8557b1bfeac7fc18cdaa265f45e5c4eb6a21d04b8a"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 937337
+file-id = 5427645

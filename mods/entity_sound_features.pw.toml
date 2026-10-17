@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "entity_sound_features"
+filename = "entity_sound_features-0.8.2-1.21-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d139dc128d1aa0c234b6b19b26e9f04f7545af5d6b41e4faaac00d806ebab8cf"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1060324
+file-id = 8782839

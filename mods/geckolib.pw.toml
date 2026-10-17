@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "geckolib"
+filename = "geckolib-neoforge-1.21.1-4.9.3.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "20a1995e4074f387ff549e2c57ea79dd7d41ee83c6afb9dd6a6e840e592d1c47"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 388172
+file-id = 8893490

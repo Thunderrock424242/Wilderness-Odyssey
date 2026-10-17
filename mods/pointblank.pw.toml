@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "pointblank"
+filename = "pointblank-neoforge-1.21-2.2.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "203131e58706c623477bd6ccab91ff75e7b5389d33efa1339243cee26e7fe170"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 961053
+file-id = 8855569

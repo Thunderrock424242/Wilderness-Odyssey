@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "burnt_combined"
+filename = "burnt-1.10.5.2-neoforge-1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "b7d78fc3398f6d2c143b3b9811ff39435be488d20ce6bc4f93e141682cf9de98"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 998916
+file-id = 8994537

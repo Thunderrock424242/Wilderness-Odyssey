@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "structures"
+filename = "Structures v4.4.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "f72581a992393725192c427376c480eff2214e995dcde7473a621c9b890fdbf3"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1391238
+file-id = 9174459

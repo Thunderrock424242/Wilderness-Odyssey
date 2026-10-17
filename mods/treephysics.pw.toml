@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "treephysics"
+filename = "treephysics-neoforge-1.21.1-2.4.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d53b43e65e4a22070ea630c313284fe4857340b14c182adda8d44bc9946807e7"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1522010
+file-id = 8695244

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "u_desert"
+filename = "u_desert-2.0.3+mc1.21-1.21.11.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "4dad266af14834216cf71a76c19f63853db575e9ac2c39e29d378292a1970e6c"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 960356
+file-id = 7560368

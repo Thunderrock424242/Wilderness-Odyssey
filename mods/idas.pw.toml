@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "idas"
+filename = "idas-1.13.7+1.21.1-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "7f5031dd90ae0b32d7fe5c6c47c877cac1eb95a178bc78d196cb24c17ce82522"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 605375
+file-id = 8232359

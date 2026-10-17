@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "resourcefullib"
+filename = "resourcefullib-neoforge-1.21-3.0.12.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "5e36f2c69de008dc5795f730c84ab767688f15c810944b585485349a0c911261"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 570073
+file-id = 5973188

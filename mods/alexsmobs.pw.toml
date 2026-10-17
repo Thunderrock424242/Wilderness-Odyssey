@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "alexsmobs"
+filename = "alexsmobs-1.22.17.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "6e502855f79e4c9f2a11d560a9b88a3ab295aa378c44b0f0a0dd95f95d0301a6"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1415721
+file-id = 7528193

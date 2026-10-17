@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "timber_tales"
+filename = "timber_tales-neoforge-mc1.21.1-1.1.3.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "328f92fef0b9cd5b3a841cc9473eb521029481dd27f505e960c705a8ccd4cbe6"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1614748
+file-id = 8967432

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "modernfix"
+filename = "modernfix-neoforge-5.27.26+mc1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "09f6842c63d14b3f1707f1f4a6f4602052f237f7efa9be135e41d3d97acf2a13"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 790626
+file-id = 9101836

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "exposure"
+filename = "exposure-neoforge-1.21.1-1.9.19.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "c3579a314f77a9368c8312a1ace1dc8d510590869f7589b8ab3df24c42adca2f"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 871755
+file-id = 8957000

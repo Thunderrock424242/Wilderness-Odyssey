@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "quick_pack"
+filename = "quick-pack-neoforge-1.5.1+1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "1c3e963bdbf829bee1fe6dee29fdc5792890c09e67134849d54cf87b9ce3d431"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1380888
+file-id = 9005037

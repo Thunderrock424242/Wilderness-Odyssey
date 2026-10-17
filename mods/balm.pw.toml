@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "balm"
+filename = "balm-neoforge-1.21.1-21.0.66.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "6be660e1f6d169553bf44f66d4f78bb9e96a1d66ce108d9608819e3ce6bfba34"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 531761
+file-id = 8969738

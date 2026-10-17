@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "projectexplosive"
+filename = "projectexplosive-0.7.2-beta.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "3cbf5a76d8b6123a489df54f0165c31df6c5f6993dd07e9506232fcb3f3cebb2"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1736831
+file-id = 9117332

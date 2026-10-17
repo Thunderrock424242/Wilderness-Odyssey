@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "dynamictrees"
+filename = "dynamictrees-neoforge-1.21.1-1.7.2.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "ef94737b99e68a0b489b56f901fcc71a3ac8e7a16e3a22ac8413c5f66df566f0"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 252818
+file-id = 8227322

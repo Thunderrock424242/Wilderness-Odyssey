@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "particular"
+filename = "particular-1.21.1-NeoForge-1.5.7.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "42c5ba95472c233a455da440e08a74be69cba616493292c0830cf47a47a9498e"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1219053
+file-id = 8662697

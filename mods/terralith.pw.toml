@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "terralith"
+filename = "Terralith_1.21.x_v2.6.2.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d38bd304897731b42f6c013cdc07e082e74411e80c74aabcee385251beb3b546"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 513688
+file-id = 8222737

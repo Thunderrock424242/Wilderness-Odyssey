@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "takesapillage"
+filename = "takesapillage-neoforge-1.0.13+mc1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "9856f3ec50a9182cdd768f12f1a0477f4cebe78bb1adb5422588f1f742f94b10"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1111063
+file-id = 9018153

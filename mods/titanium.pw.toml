@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "titanium"
+filename = "titanium-1.21-4.0.51.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "b227aca8447c79d4789f77a896231c5a403f747ccd4d133165aaaf177c40c2d6"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 287342
+file-id = 9129904

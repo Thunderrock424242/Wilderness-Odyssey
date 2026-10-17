@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "common_storage_lib"
+filename = "common-storage-lib-neoforge-1.21.1-0.0.10.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "921bd8d255a65b5e21a5c74aa661d1ea4ed034febcfbb5939da054ce08f9d109"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1028211
+file-id = 8421542

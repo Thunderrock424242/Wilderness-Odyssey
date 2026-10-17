@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "gnetum"
+filename = "gnetum-3.3.6.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "19471108f3c2d799831ee52bc9d04d99cf745f0c1699b992ee981508befb583b"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1220460
+file-id = 8312039

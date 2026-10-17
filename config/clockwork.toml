@@ -1,0 +1,94 @@
+["Clockwork Flamethrower"]
+	# Usage seconds per blaze powder used
+	# 
+	# Default: 60
+	# Range: 1 ~ 100000
+	FLAMETHROWER_USAGE_SECONDS_PER_POWDER = 60
+	# Default durability
+	# 
+	# Default: 300
+	# Range: 0 ~ 100000
+	FLAMETHROWER_DEFAULT_DURABILITY = 300
+
+[Dragonfly]
+	# Default health
+	# 
+	# Default: 20.0
+	# Range: 0.0 ~ 1000.0
+	DRAGONFLY_DEFAULT_HEALTH = 20.0
+	# Default walking speed
+	# 
+	# Default: 0.20000000298023224
+	# Range: 0.0 ~ 1000.0
+	DRAGONFLY_DEFAULT_WALKING_SPEED = 0.20000000298023224
+	# Default flying speed
+	# 
+	# Default: 0.6499999761581421
+	# Range: 0.0 ~ 1000.0
+	DRAGONFLY_DEFAULT_FLYING_SPEED = 0.6499999761581421
+	# Broken Dragonfly natural spawn rules in the format (weight, minCount, maxCount, biomes/tags). Biomes use their id (like
+	# minecraft:jungle), biome tags are prefixed with # (like #minecraft:is_forest). Set the weight to 0 to disable natural
+	# spawning
+	# 
+	# Default: 50, 1, 1, minecraft:jungle, minecraft:old_growth_spruce_taiga, minecraft:old_growth_pine_taiga
+	# 
+	# [!] Requires game restart to take effect.
+	BROKEN_DRAGONFLY_SPAWN = "50, 1, 1, minecraft:jungle, minecraft:old_growth_spruce_taiga, minecraft:old_growth_pine_taiga"
+	# How much health does the clockwork gear restore
+	# 
+	# Default: 3.0
+	# Range: 0.0 ~ 1000.0
+	CLOCKWORK_GEAR_HEAL_AMOUNT = 3.0
+
+["Clockwork Wings"]
+	# Boost velocity multiplier
+	# 
+	# Default: 1.0
+	# Range: 0.0 ~ 1000.0
+	CLOCKWORK_WINGS_BOOST_VELOCITY = 1.0
+	# Default flying sink force
+	# 
+	# Default: 0.004225
+	# Range: 0.0 ~ 1000.0
+	CLOCKWORK_WINGS_DEFAULT_SINK = 0.004225
+	# Boost cooldown ticks
+	# 
+	# Default: 60
+	# Range: 0 ~ 1000
+	CLOCKWORK_WINGS_BOOST_COOLDOWN_TICKS = 60
+	# Default durability
+	# 
+	# Default: 320
+	# Range: 0 ~ 100000
+	CLOCKWORK_WINGS_DEFAULT_DURABILITY = 320
+	# Default velocity reduction multiplier. This is multiplied each tick, so even high values can stop the entity
+	# 
+	# Default: 0.97725
+	# Range: 0.0 ~ 1000.0
+	CLOCKWORK_WINGS_DEFAULT_VELOCITY = 0.97725
+
+["Clockwork Drill"]
+	# Number of clockwork gears needed to repair the drill once it has broken
+	# 
+	# Default: 1
+	# Range: 1 ~ 100
+	DRILL_CLOCKWORK_GEAR_AMOUNT = 1
+	# Number of blocks mined until the drill breaks
+	# 
+	# Default: 128
+	# Range: 1 ~ 10000
+	DRILL_BLOCKS_UNTIL_BROKEN = 128
+
+["Clockwork Crossbows"]
+	# Barrel Crossbow durability. Each fired arrow costs 1 and each firework costs 3, like the vanilla crossbow. Set to 0 for
+	# an unbreakable crossbow
+	# 
+	# Default: 465
+	# Range: 0 ~ 100000
+	BARREL_CROSSBOW_DEFAULT_DURABILITY = 465
+	# Scope Crossbow durability. Each fired arrow costs 1 and each firework costs 3, like the vanilla crossbow. Set to 0 for an
+	# unbreakable crossbow
+	# 
+	# Default: 465
+	# Range: 0 ~ 100000
+	SCOPE_CROSSBOW_DEFAULT_DURABILITY = 465

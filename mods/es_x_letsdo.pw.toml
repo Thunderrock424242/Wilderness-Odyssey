@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "es_x_letsdo"
+filename = "EclipticSeasonsLetsDo-1.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "b945cfe15061015641e76a3a1c5eafaf4ac6adbf4c26a3e5e9957727fc4c05b3"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1356039
+file-id = 7047367

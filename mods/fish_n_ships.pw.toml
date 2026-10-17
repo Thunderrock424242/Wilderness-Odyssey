@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "fish_n_ships"
+filename = "fish_n_ships-neoforge-1.21.1-1.1.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "933d9edadfc53f29887aa057cf2d82cb6bed3e8a1abd72fabef986c1bdd8926a"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1603064
+file-id = 8868643

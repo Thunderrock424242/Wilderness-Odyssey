@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "cf-351264"
+filename = "kotlinforforge-5.12.0-all.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "095aed94f21b4e55895b21ea957750ae3ab829fbcfc6d3c66a3489f5f1128d46"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 351264
+file-id = 8335665

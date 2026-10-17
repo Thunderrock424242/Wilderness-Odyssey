@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "reanimal"
+filename = "reanimal-0.6.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "36a7ac3783aa4451d271dbf65386027ceccfe5a583f47be35086e6d76008f575"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1387943
+file-id = 8024635

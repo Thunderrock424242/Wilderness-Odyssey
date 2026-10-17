@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "cherishedworlds"
+filename = "cherishedworlds-neoforge-10.1.1+1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "73a352263e4d21dc4eaa9d52b31f949b896c507aec373e4218b0942fff8f73a3"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 308240
+file-id = 6353949

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "feur_extension_fossil"
+filename = "feur_extension_fossil-1.21.1-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "264de9449985ac49484e4c11e231c68de2ac472e920c89e2fe00b1a069c5d8a0"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1117070
+file-id = 7163026

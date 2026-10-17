@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "dynamic_fps"
+filename = "dynamic-fps-3.11.4+minecraft-1.21.0-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "78cb67c9faeff5d1cb4da48d41e48ecc47baddaaec0f792e6edc8207aee0ab8e"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 335493
+file-id = 7546938

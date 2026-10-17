@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "neo_auth"
+filename = "NeoAuth-1.21.1-1.0.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "cd945b64ba805e42ca0b039ba0df69eb087182988ebc35d0bde8e7df400eda72"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1140741
+file-id = 7069504

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "sounds"
+filename = "sounds-2.4.22+lts+1.21.1-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d3bda0a7a5b1f267747da182e788139da380f625eaf96a5c2a8fa5bcb8d908b7"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 925889
+file-id = 7325254

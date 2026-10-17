@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "eclipticseasons_multimodpatch"
+filename = "Ecliptic-Seasons-MultiMod-Patch-1.21.1-neoforge-0.32.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "45f7b189544562bf4bce0a65f30b8172630313f4b9d180b93189b53c9eb7ac87"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1316748
+file-id = 8813347

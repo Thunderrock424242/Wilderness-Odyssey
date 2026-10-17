@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "knightlib"
+filename = "knightlib-neoforge-1.21.1-2.0.5.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "1f54ebeb4f90e36fdbe4f85e391f06d0a4c1fbf3e1ed55abcb93c062bd045939"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1105855
+file-id = 9190296

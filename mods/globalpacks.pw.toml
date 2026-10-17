@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "globalpacks"
+filename = "globalpacks-neoforge-1.21.1-21.0.6.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "598781933726c596ac95a4dc960861af0746d5713a12fb8a05d4b8cef45ec48d"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 317134
+file-id = 6634585

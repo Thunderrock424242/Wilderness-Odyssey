@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "spawn"
+filename = "spawn-4.0.8-1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "705dabdfb29b163500334a08c095b51ea8800db08b6c96ec430c52b30d6d9842"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 935694
+file-id = 8881073

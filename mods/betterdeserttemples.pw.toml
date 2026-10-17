@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "betterdeserttemples"
+filename = "YungsBetterDesertTemples-1.21.1-NeoForge-4.1.5.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "2c3191ad447092cc7873a06e92f16bd3e2ff9dc31e93268b8893d06dd89e1fd6"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1015114
+file-id = 6276955

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "kubejs"
+filename = "kubejs-neoforge-2101.7.2-build.377.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "43b656bc2d4ce867141abb828c9481f080a38585b99bcfa07e54732a4976a601"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 238086
+file-id = 8843626

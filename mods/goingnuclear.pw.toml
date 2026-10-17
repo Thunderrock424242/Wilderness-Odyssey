@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "goingnuclear"
+filename = "goingnuclear-0.512-4.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "3d802d9462e8f501b41c7cf8b0f764925472134b5f1497b02e454c96c6aad309"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1732437
+file-id = 9199233

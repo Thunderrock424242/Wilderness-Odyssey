@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "structure_layout_optimizer"
+filename = "structure_layout_optimizer-neoforge-1.0.12.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "ef8eb29c5c4f111c74a49d379843e4c2f51d11b28c8116a49be13636c83f4385"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1087831
+file-id = 7439136

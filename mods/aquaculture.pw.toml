@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "aquaculture"
+filename = "Aquaculture-1.21.1-2.7.21.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "45f00f9059838b2fecc988861111d8b3d4613a5f1b3688a8dbfa8655751b85bb"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 60028
+file-id = 7901588

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "fastsuite"
+filename = "FastSuite-1.21.1-6.0.7.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "3e274cd01bdc27dff8e2514213f1c45306c86fe38e4271a4209bc1471de6c70d"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 475117
+file-id = 7527945

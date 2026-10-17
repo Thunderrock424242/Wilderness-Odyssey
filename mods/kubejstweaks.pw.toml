@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "kubejstweaks"
+filename = "kubejstweaks-1.0.6.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "2a444fb6e0931f30acc4d5880b164cc7bc8fe24801973a75bde384996c827e8f"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1306367
+file-id = 7516288

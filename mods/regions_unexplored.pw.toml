@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "regions_unexplored"
+filename = "regions-unexplored-0.6.2-neoforge-21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "ccf32ed714f2724f54406b9e02a8d6f94d87dc5c72397bc39b3d6ed8f32412ea"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 659110
+file-id = 8419667

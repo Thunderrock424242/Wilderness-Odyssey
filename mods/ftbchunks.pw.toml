@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "ftbchunks"
+filename = "ftb-chunks-neoforge-2101.1.22.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "4ba1b3352184fa7f6e2aa4bca76edd074867697d62344dfa50dcccdb4dab5217"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 314906
+file-id = 8791113

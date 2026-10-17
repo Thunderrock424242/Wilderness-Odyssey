@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "creatingspace"
+filename = "creatingspace-1.21.1-1.7.22.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "b80103cb546fc83aae2669e1906356ea87b587f59c437d8515e1cddd125f9be5"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 858897
+file-id = 8882869

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "unusualfishmod"
+filename = "unusualfishmod-1.21.1-1.1.13.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "997fc3e6f4be629a06f06126aa504dd6e8788423fd71f4c4a6125b095e717ace"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 568300
+file-id = 8326460

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "geckos"
+filename = "geckos-0.1.7+1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "20eca8cba5a9e575e0f874bcd32887e5ed061bab642ae4b2933d85b803982d28"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1521862
+file-id = 8570702

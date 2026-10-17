@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "moreculling"
+filename = "moreculling-neoforge-1.21.1-1.0.10.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "008068af65deec86382b4fdde61e7f495e54861cc28d5a5b000c32b435213ed3"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 630104
+file-id = 8833217

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "environmental"
+filename = "environmental-1.21.1-5.0.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d0578ab961461bc25ee59d86c44f3b90565e4782cab431dfd897f50080d5988b"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 388992
+file-id = 7122147

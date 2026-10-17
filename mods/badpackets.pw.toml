@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "badpackets"
+filename = "badpackets-neo-0.8.2.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "6e97bf8c2a66df484e8c100a1fc1b615b8beac70ec44f4c3bc07bb672dcd54c6"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 615134
+file-id = 6067146

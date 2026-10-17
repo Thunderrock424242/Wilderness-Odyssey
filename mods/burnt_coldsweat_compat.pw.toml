@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "burnt_coldsweat_compat"
+filename = "burnt_coldsweat_compat-1.0.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "97c85e7a642ac5ad84f5456889778621ef827149a15f920ddc3a47851a395ca0"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1512898
+file-id = 7920464

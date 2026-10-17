@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "the_sift"
+filename = "mielon's-the-sift-1.1.0-mc1.21.1-neo.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d3850f08efb7eade3d1f6847de4ee164bf6d37e207e33be25dbaf14251ec8abe"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1691925
+file-id = 9011966

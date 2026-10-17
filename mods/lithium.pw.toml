@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "lithium"
+filename = "lithium-neoforge-0.15.4+mc1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "488f33216030c1cb0baa33e59de3d657d08d5795a6c2080c8c8bbbc133fc8757"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 360438
+file-id = 8330365

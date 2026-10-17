@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "hapi"
+filename = "hapi-neoforge-1.21.1-1.1.3.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "c134b74c8d9b9a449fda88d3ef4ad652a2ed394b5693a7e440a008bd1a33c937"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 883374
+file-id = 9063597

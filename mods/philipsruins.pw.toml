@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "philipsruins"
+filename = "Philips-Ruins1.21.1-2.0-NeoForge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "8a0aaee82b287c22abf4a7ea79e88fdbbe717418a0fbd8e44d4bd86146db9a1a"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 569737
+file-id = 6058135

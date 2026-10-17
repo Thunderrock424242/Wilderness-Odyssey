@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "create_pillagers_arise"
+filename = "create_pillagers_arise NeoForge 1.21.1-132.36.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "11eb7465055bd389618a5965ad588daa08f765fbfc33f3a6e8ad1f42a0e6251e"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1094958
+file-id = 8329999

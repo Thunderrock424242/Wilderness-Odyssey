@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "entityculling"
+filename = "entityculling-neoforge-1.11.3-mc1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "fa73ac70a3766568203b730a1573b4b54d88fb48dff4a33d8c4a80be9b8d17d5"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 448233
+file-id = 9100286

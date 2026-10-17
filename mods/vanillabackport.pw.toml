@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "vanillabackport"
+filename = "VanillaBackport-neoforge-1.21.1-1.1.7.10.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "ecd807ac358e243ede17819455788c7b7a0ce5e0af4aecee82c1c62c586d818d"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 417430
+file-id = 8229724

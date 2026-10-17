@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "coolrain"
+filename = "coolrain-1.21.1-NeoForge-1.0.2.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "8c2c6070b41509b68a5b32fe0881a9d21393bd737d58aa6b45c7d96e2ae66fec"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1346978
+file-id = 8819888

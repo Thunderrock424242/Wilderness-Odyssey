@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "nomansland"
+filename = "nomansland-1.6.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "7555dba9f768438b35b34436acf0650c5aebe974f7a36859371073f656c87f0a"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 538493
+file-id = 9172033

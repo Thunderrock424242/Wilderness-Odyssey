@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "yungscavebiomes"
+filename = "YungsCaveBiomes-1.21.1-NeoForge-3.1.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "7585587e5cb7859e26189c6ec0a5b829c5c228f095e4e843fa3add61f817dd20"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1111586
+file-id = 6913179

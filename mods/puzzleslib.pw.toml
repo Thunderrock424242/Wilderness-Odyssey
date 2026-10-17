@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "puzzleslib"
+filename = "puzzleslib-v21.1.64-mc1.21.1+neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "8f0694456687614dea3861515ce04e2a0d0bf9d87aa48ea2edc4972b0ba4e88b"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 495476
+file-id = 9130151

@@ -1,0 +1,99 @@
+name: Validate pinned modpack
+
+on:
+  pull_request:
+    branches: [1.21-neoforge]
+    paths:
+      - 'pack.toml'
+      - 'index.toml'
+      - 'modpack/**'
+      - 'mods/**'
+      - 'config/**'
+      - 'defaultconfigs/**'
+      - 'kubejs/**'
+      - 'scripts/**'
+      - 'datapacks/**'
+      - 'resourcepacks/**'
+      - 'shaderpacks/**'
+      - 'tools/modpack/**'
+      - 'tests/modpack/**'
+      - 'qa/**'
+      - '.gitignore'
+      - '.gitattributes'
+      - '.github/workflows/modpack-*.yml'
+  push:
+    branches: [1.21-neoforge, 'codex/**']
+    paths:
+      - 'pack.toml'
+      - 'index.toml'
+      - 'modpack/**'
+      - 'mods/**'
+      - 'config/**'
+      - 'defaultconfigs/**'
+      - 'kubejs/**'
+      - 'scripts/**'
+      - 'datapacks/**'
+      - 'resourcepacks/**'
+      - 'shaderpacks/**'
+      - 'tools/modpack/**'
+      - 'tests/modpack/**'
+      - 'qa/**'
+      - '.gitignore'
+      - '.gitattributes'
+      - '.github/workflows/modpack-*.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: modpack-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tools:
+    name: Tools and repository safety (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.11'
+      - name: Import, reconstruction, crash parser and isolation tests
+        run: python -m unittest discover -s tests/modpack -v
+      - name: Tracked binaries, large archives and private-state guard
+        run: python -m tools.modpack audit-repository --reports "${{ runner.temp }}/pack-validation"
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        if: always()
+        with:
+          name: repository-audit-${{ runner.os }}
+          path: ${{ runner.temp }}/pack-validation/
+          retention-days: 7
+          if-no-files-found: ignore
+  manifest:
+    name: Current pack readiness (failures require review)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.11'
+      - name: Validate pinned inventory and indexed configuration
+        run: python -m tools.modpack validate --reports "${{ runner.temp }}/pack-validation"
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        if: always()
+        with:
+          name: pack-readiness
+          path: ${{ runner.temp }}/pack-validation/
+          retention-days: 7
+          if-no-files-found: error

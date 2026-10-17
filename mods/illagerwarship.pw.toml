@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "illagerwarship"
+filename = "illagerwarship-1.0.1-neoforge-1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "e4c132c07d1aa04edc55b6e405657992c3d36da6f9f25ec8f460db405c5a7b32"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1091632
+file-id = 6561660

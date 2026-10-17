@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "forest_ruins"
+filename = "forest_ruins-1.0.0-neoforge-1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "4484f12949bef6c03c9a045c62b4b7f333b386b95f888ebe3eb0e522ed764495"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1271504
+file-id = 6557260

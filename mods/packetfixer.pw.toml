@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "packetfixer"
+filename = "packetfixer-3.3.1-1.20.5-1.21.X-merged.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "2979a8a3f44e5d5df4f9f6315d18c220f3debf736bb8a2c2740acdfb13bd820f"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 689467
+file-id = 7221528

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "wits"
+filename = "wits-neoforge-1.3.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "1ac1297df094f4019589093f5a4a5e1ddbef2bdaf494a7c83aa049ed225e0698"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 909375
+file-id = 8412915

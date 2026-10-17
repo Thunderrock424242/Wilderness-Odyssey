@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "structurify"
+filename = "structurify-neoforge-2.0.43+mc1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "0ba60a53952b1ab413311cd1238ce46dd5ca2fd38a49e380c7a73e14609b1536"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1087551
+file-id = 9144485

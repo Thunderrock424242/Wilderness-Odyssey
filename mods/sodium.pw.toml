@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "sodium"
+filename = "sodium-neoforge-0.8.13+mc1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "575d187b15328d7bddd8a9b1bee64333c22c14735f5780ec49eac0cd5503c08d"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 394468
+file-id = 8756580

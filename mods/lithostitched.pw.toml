@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "lithostitched"
+filename = "lithostitched-1.8.1-neoforge-21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "e0da669fa5facc61a09b9b7bae21b322993de1fcd1eb05787adffb7309598cca"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 936015
+file-id = 9170709

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "tide"
+filename = "tide-neoforge-1.21.1-2.1.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "f7c4592c593901cf14de8fc24e9252fd1a959e6559964ce128bc8e2c8660c8ca"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 884685
+file-id = 8570111

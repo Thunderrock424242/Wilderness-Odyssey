@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "clockwork"
+filename = "clockwork-neoforge-1.21.1-1.1.6.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "015f2f9b210f41db9ec0d0bb868a3dbdfd51567e0c1904a7ce85d96341a99848"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 596411
+file-id = 9206209

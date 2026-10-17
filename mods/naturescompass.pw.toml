@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "naturescompass"
+filename = "NaturesCompass-1.21.1-3.4.0-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "0e249ac11b2f916c5570d9679e188da652fa5664ba9cdb7be5dc9ff69497539c"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 252848
+file-id = 7892954

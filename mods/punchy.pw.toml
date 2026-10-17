@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "punchy"
+filename = "punchy-2.8f-neoforge-1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "da1b35797ae52ab607c9ffdd6c334bd678600a6af814a411d6882deb82a4e305"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1374153
+file-id = 9172981

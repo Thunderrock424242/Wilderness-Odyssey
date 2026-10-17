@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "coldsweat_altitude"
+filename = "coldsweat_altitude-0.8.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "98e73aece61d474470b1900a111d9f6e66f1d23a05081232ab6b6aa394262dbe"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1528631
+file-id = 9027134

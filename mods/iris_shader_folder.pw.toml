@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "iris_shader_folder"
+filename = "iris_shader_folder-1.4.3-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "6bfa6a4562ee848d7681e2826fef5e40a643fa66c61f2eda43f0a7407d8dbc8c"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1351246
+file-id = 9195489

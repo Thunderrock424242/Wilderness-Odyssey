@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "item_descriptions"
+filename = "item_descriptions-2.8.0+1.21.1-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "29773325b0aaac251471b7d9fc15ed3b6712c68b429a5354c6097637e053bfab"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1101501
+file-id = 8228839

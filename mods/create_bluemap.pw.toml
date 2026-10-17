@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "create_bluemap"
+filename = "create_bluemap-1.1.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "1dc287271f7db558146e4473954f204f526f368259a274d5df0a67e953b66050"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1274107
+file-id = 7203817

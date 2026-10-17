@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "badmobs"
+filename = "badmobs-neoforge-1.21.1-21.1.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "046886dcf78abc26bb6ec3a6f209a4326cd055ee40ef696d2572656bd5a8a3d5"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 233258
+file-id = 7055133

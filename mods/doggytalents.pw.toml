@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "doggytalents"
+filename = "DoggyTalentsNext-1.21.1-1.19.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "9ab4d538634aab3c65e3ea3ade1aa2ce7b8cf1fa726c117029a4c0f12c787f97"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 694492
+file-id = 8726874

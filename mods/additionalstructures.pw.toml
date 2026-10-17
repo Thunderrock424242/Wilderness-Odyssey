@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "additionalstructures"
+filename = "AdditionalStructures-1.21-(v.6.3.2-NEO).jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "0540b1b3ac7c1b93159278d8e3c924b8af371fd3be9be0501e5f478ca8f64e24"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 297680
+file-id = 6584803

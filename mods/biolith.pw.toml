@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "biolith"
+filename = "biolith-neoforge-3.0.14.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "ded9169efb903198046cf44cf91a290ec836ed83a28e29179087eb860e0e6ce9"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 852512
+file-id = 8435635

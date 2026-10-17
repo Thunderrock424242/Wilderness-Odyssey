@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "ftblibrary"
+filename = "ftb-library-neoforge-2101.1.37.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "624c2d2d1cbadb946d967e17757bd5b2d129d4d3ed71f2da0c70607d04476ac2"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 404465
+file-id = 9008089

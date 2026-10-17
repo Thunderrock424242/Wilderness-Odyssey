@@ -1,0 +1,169 @@
+# Don't change this! Version used to track needed updates.
+version = 0
+allayMagicDensity = 0.2
+vexMagicDensity = 0.2
+allayTwinklingSounds = true
+allayDuplicatedSounds = true
+sheepShearFluff = true
+improvedDragonFireballTrail = true
+dragonsBreathClouds = true
+commandBlockMinecartParticles = "ON"
+endCrystalMagicDensity = 1.0
+endCrystalMagicNeedsFire = false
+endCrystalsDisableFireEffects = true
+minecartSparksDisplayType = "DEFAULT"
+minecartSparksDensity = 0.5
+slimeTrails = true
+magmaCubeTrails = true
+replaceSlimeSquishParticles = true
+replaceOozingEffectParticles = true
+replaceSpellCasterParticles = true
+ironGolemCrackParticles = true
+spectralArrowParticles = true
+wardenDeathSoulParticles = true
+freezingSnowFlakes = true
+featherTicklingPandas = true
+improvedPandaSneezes = true
+villagerWorkAtWorkstationParticles = true
+improvedBrownMooshroomFeedingEffects = true
+improvedMooshroomShearingEffects = true
+replaceBlazeSmoke = true
+animalFeedingParticles = true
+animalFeedingSoundVolume = 1.0
+underwaterEntityPoofBubbles = true
+improvedWetWolfShakeEffects = true
+improvedVillagerSweatingEffects = true
+magmaCubeLandSparks = true
+snowGolemStepSounds = true
+chargedCreeperParticlesDensity = 0.2
+chargedCreeperExplosionParticles = true
+lightningStrikeParticles = true
+shulkerTeleportParticles = true
+entityUpdateFrequency = 20
+
+[sleeping]
+playerSnoreChance = 1.0
+playerSnoreSoundVolume = 1.0
+playersHaveSleepingZs = true
+villagerSnoreChance = 1.0
+villagerSnoreSoundVolume = 1.0
+villagersHaveSleepingZs = true
+foxesHaveSleepingZs = true
+batsHaveSleepingZs = true
+catsHaveSleepingZs = true
+otherMobsHaveSleepingZs = true
+displaySleepingZsOnlyWhenSnoring = false
+adjustNameTagWhenSleeping = true
+
+[humanoids]
+drowningBubblesDisplayType = "DEFAULT"
+drowningBubblesDensity = 3
+drowningBubbleAlpha = 1.0
+forceDrowningBubblesToColumn = false
+potionRingsDisplayType = "DEFAULT"
+potionRingsParticleType = "BOTH"
+potionRingsScale = 1.0
+potionRingsAlpha = 1.0
+NPCsHavePotionRings = true
+reverseDirectionForHarmfulEffects = true
+glowingPotionRings = true
+
+[humanoids.frostyBreath]
+displayType = "DEFAULT"
+alpha = 0.5
+waitTime = 60
+seasons = "DEFAULT"
+additionalBiomes = [  ]
+
+[humanoids.player]
+enableBreathingEffectsInCreative = true
+stomachGrowlingThreshold = 6
+stomachGrowlingVolume = 1.0
+stomachGrowlingWaitTime = 15
+heartBeatingThreshold = 6
+heartbeatVolume = 1.0
+heartBeatingWaitTime = 3
+
+[dustClouds]
+scale = 2.0
+alpha = 1.0
+preventWhenRaining = false
+flyIntoWall = true
+lessViewBlocking = false
+playerFell = true
+mobFell = true
+landMaceAttack = true
+playerRunning = true
+mobRunning = true
+playerRunningRequiresSpeed = false
+
+[burning]
+smokeType = "DEFAULT"
+smokeDensity = 1.0
+flamesDensity = 1.0
+sparksDensity = 1.0
+soundVolume = 0.3
+entityBlocklist = [
+    "minecraft:lightning_bolt"
+]
+overrideDyedFlamesEffects = true
+extinguishSteam = true
+
+[explosives]
+tntUpdateSmoke = true
+tntFlamesDensity = 1
+tntSparks = true
+creeperSmoke = "UPDATED"
+creeperSparks = true
+
+[splashes]
+splashEffects = true
+splashRipples = true
+splashDroplets = true
+splashDropletSounds = true
+waterSplashBubbles = true
+explosionsCauseSplashes = true
+splashOverlayTint = 0.2
+splashOverlayAlpha = 0.8
+splashVelocityThreshold = 0.35
+entityBlocklist = [  ]
+ignoreWaterloggedBlocks = false
+splashHeightScaleModifier = 1.0
+secondarySplash = true
+secondarySplashRipples = true
+secondarySplashVelocityThreshold = 0.3
+
+[damageTaken]
+damageTypes = [
+    "minecraft:generic",
+    "minecraft:stalagmite",
+    "minecraft:trident",
+    "minecraft:fall",
+    "minecraft:falling_stalactite",
+    "minecraft:mob_projectile",
+    "minecraft:wind_charge",
+    "minecraft:arrow",
+    "minecraft:bad_respawn_point",
+    "minecraft:explosion",
+    "minecraft:falling_anvil",
+    "minecraft:falling_block",
+    "minecraft:fireball",
+    "minecraft:fly_into_wall",
+    "minecraft:lightning_bolt",
+    "minecraft:mob_attack",
+    "minecraft:mob_attack_no_aggro",
+    "minecraft:player_attack",
+    "minecraft:player_explosion",
+    "minecraft:sonic_boom",
+    "minecraft:sting",
+    "minecraft:thrown",
+    "minecraft:unattributed_fireball",
+    "minecraft:wither_skull"
+]
+damagedChickenFeathers = true
+damagedParrotFeathers = true
+damagedSnowGolemSnowflakes = true
+damagedSheepFluff = true
+damagedSlimeSlime = true
+damagedSkeletonBones = true
+damagedSkeletonHorseBones = true

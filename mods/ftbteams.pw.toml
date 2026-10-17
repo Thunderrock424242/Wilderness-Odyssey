@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "ftbteams"
+filename = "ftb-teams-neoforge-2101.1.11.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "e6bcd670493624e6906df872a9c6af4a33fe6405cac57a32c59cd4cd5838c655"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 404468
+file-id = 8724782

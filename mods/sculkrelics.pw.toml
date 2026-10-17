@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "sculkrelics"
+filename = "sculkrelics-1.0.2.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "7f1c54751906e19b8cead30891d7c9fc548c16f97ab833ba59510648f405a56d"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1727282
+file-id = 9093591

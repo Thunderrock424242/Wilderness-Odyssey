@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "curios"
+filename = "curios-neoforge-9.5.1+1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "a45df2125c26219974aba7507ffc9afe7b83acc941a386af3faacb1cc0056fde"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 309927
+file-id = 6529130

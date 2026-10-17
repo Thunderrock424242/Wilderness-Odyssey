@@ -1,0 +1,8 @@
+{
+  "neoforge": {
+    "21.1.256": {
+      "sha256": "4aad931e8fd85fbf6ba35bab647811069d35ff010900492e39db1cb8b017348c",
+      "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/21.1.256/neoforge-21.1.256-installer.jar"
+    }
+  }
+}

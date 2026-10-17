@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "moogs_structures"
+filename = "MoogsStructureLib-neoforge-1.21.1-3.4.2.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "753337838224c43dfd8070e54b587219847cbcfc3ffcd06128802fa34fb92214"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1337167
+file-id = 9047179

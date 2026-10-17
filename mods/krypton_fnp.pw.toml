@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "krypton_fnp"
+filename = "krypton_fnp-neoforge-1.21.1-0.2.28.1-1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "05ebe849611daafe533fc57ed9b5156edfa9157ced04d38a7860b1e2075984b9"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1269169
+file-id = 7461802

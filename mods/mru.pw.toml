@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "mru"
+filename = "mru-1.0.41+1.21.1-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "245ebec0b410fb1a7456bb0cd970ea015fb7c243a0f45a4d79d655dc01bb6d89"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 669659
+file-id = 9004036

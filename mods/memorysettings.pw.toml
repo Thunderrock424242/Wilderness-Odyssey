@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "memorysettings"
+filename = "memorysettings-1.21-6.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "83721e70a8702b4389ca5d83daa5b30f55797561ee30d788cec2987b7ce3e042"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 526901
+file-id = 7934534

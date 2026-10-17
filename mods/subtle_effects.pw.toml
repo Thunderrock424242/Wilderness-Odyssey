@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "subtle_effects"
+filename = "SubtleEffects-neoforge-1.21.1-1.15.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "c4faf74fa63848b8ca3c48109499008b50e8519c63cda3d0dff4d1fca176202d"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1023913
+file-id = 9150589
