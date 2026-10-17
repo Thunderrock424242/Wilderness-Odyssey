@@ -177,6 +177,69 @@ The parser now preserves fatal FML cause chains even when NeoForge returns code
 zero, rather than presenting only the last launcher frames. Known loading
 failures do not automatically enable binary isolation or assign mod blame.
 
+## Author-provided GitHub package check
+
+The author subsequently supplied [GitHub package 2538361, version
+5.0.0](https://github.com/Thunderrock424242/Wilderness-Odyssey-API/packages/2538361).
+Its JAR and published SHA-256 were downloaded anonymously, without a CurseForge
+key or GitHub token. The checksum matches the downloaded bytes:
+
+| Build | Size in bytes | SHA-256 |
+| --- | ---: | --- |
+| Imported profile, tested in `pr37-runtime-02` | 28,549,127 | `bcf0a134b9c29ac088f4952846ec173350ac309bb9a549433db8e146589e5a01` |
+| Published package supplied by the author | 29,791,899 | `1036f42ca054e480fed380e44fc02bb018a0532a371a9f80e7f9a016ae20e238` |
+
+Both declare version 5.0.0, but their contents differ: 273 existing class entries
+have different bytes, and 280 archive entries were added. Recognized embedded mod IDs,
+required dependencies and conflicts are unchanged. An external candidate snapshot
+using the published JAR passes the existing client and server static validators.
+The imported pin and live CurseForge profile were preserved; the published
+artifact was not silently treated as the previously tested build.
+
+The external candidate run `pr37-package2538361-runtime-01` used the same Java
+21, NeoForge 21.1.262, 6144 MiB heap, four JVM active processors and fresh-world
+seed as the earlier acceptance run. It **failed**:
+
+| Phase | Observed result |
+| --- | --- |
+| Official installer | Succeeded, 51.32 seconds |
+| Startup log marker | Minecraft `Done` observed after 159.61 seconds from JVM launch |
+| Requested 120-second idle soak | Failed after 100.13 seconds; watchdog reported a 61.11-second stall |
+| Shutdown | JVM had exited after the watchdog failure; graceful-stop acceptance did not pass |
+
+The watchdog sampled the server thread inside BlueMap 5.7's
+`ForgeMod.onServerStarted`, calling vanilla `saveAllChunks` and waiting in
+`ChunkStorage.flushWorker` / `CompletableFuture.join`. All three sampled C2ME
+workers were serializing chunk NBT. This identifies the sampled save/flush wait,
+not a proven culprit or deadlock. The API's performance-observation wrappers also
+appear on that call path; appearing in a stack is not evidence they caused the
+stall. No mod was removed, watchdog disabled, or save behavior changed to turn
+the failure into a pass. One run does not establish a reproducible regression.
+
+The `Done` marker preceded completion of NeoForge's server-started listeners in
+this run. It establishes a startup log milestone, not completion of every mod's
+startup work or a healthy ticking server. The report's soak phase therefore
+includes that remaining listener work. The complete lifecycle result is failed.
+The external snapshot is not a clean Git revision or a promoted baseline.
+Crash, GC and thread evidence remains in the private local report directory;
+disposable `mods`, `qa-world`, runtime temporary directory and owned JVM were
+cleaned up. The candidate export was built locally (277 provider references and
+only the author-owned API JAR bundled), but failed QA and was not published.
+
+The anonymous Maven endpoint returned HTTP 401. GitHub's public package page
+exposes anonymous asset links, but the observed signed links expire after 300
+seconds. An expiring link must not be committed as the install source. The
+existing installer requires a direct download URL and does not resolve package
+HTML. A versioned public GitHub Release asset is a suitable permanent source to
+verify and pin; changing to the published bytes also requires a deliberate new
+hash-bound review. See [GitHub's Maven authentication
+documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry).
+
+No API key is required for local QA using the exact installed or cached bytes.
+The current hosted workflow still needs an implemented private pack-input path
+to run the complete pack without provider keys. A standard CurseForge reference
+export alone does not contain those third-party JARs.
+
 ## Proof boundaries and next work
 
 **No Minecraft client or launcher ZIP import was tested.** One successful

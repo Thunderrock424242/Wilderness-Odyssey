@@ -145,8 +145,11 @@ copying and rehashes cached/local/downloaded files. Partial staging copies are
 cleaned up if reconstruction fails. This reconstructs files; it does not launch a
 client or install a client launcher/loader.
 
-For online CurseForge downloads, set `CURSEFORGE_API_KEY` only in your process or
-protected CI environment, never in Git. The installer asks the official API for
+No API key is needed when supplying the exact installed files with `--local-mods`
+and `--offline`, as in the local commands above. The Wilderness Odyssey API mod
+does not require a CurseForge key. For optional online CurseForge downloads,
+`CURSEFORGE_API_KEY` belongs only in your process or protected CI environment,
+never in Git. The installer asks the official API for
 the exact file and honors current author distribution restrictions. Restricted,
 unavailable or unsupported files fail with `--local-mods` instructions. It never
 constructs a CDN URL to bypass a restriction or substitutes a newer file.
@@ -218,9 +221,13 @@ client-only memory problems require separate client tests.
   merged changes without duplicating the PR's run.
 * **Disposable Minecraft server QA** is hosted-only and accepts trusted manual
   runs on `1.21-neoforge`. Configure a `modpack-qa` environment with required
-  reviewers and deployment branches restricted to that branch before using keys.
-  Store `CURSEFORGE_API_KEY` in that environment only. There is no PR-triggered
-  server job and no public self-hosted runner job.
+  reviewers and deployment branches restricted to that branch. Its current
+  reconstruction step uses online provider downloads; it has no uploaded-pack
+  input yet. For the requested operation without API keys, use the local
+  `--local-mods --offline` path until a private pack-input path is implemented.
+  Optional CurseForge credentials, if deliberately used, belong only in that
+  protected environment. There is no PR-triggered server job and no public
+  self-hosted runner job.
 * The weekly schedule remains inert until a successful real QA run and deliberate
   repository variables `ENABLE_MODPACK_QA_SCHEDULE=true`,
   `MODPACK_QA_BASELINE_VALIDATED=true`, and `MODPACK_QA_ACCEPT_EULA=true`. Keep them
