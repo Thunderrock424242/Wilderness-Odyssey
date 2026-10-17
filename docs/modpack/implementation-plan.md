@@ -26,8 +26,10 @@ or changed crash signatures. Tests must exercise each of these input classes.
 6. [x] QA and CI: implement disposable server lifecycle with readiness/cleanup,
    opt-in profiling, hosted static checks, protected manual QA, release artifacts,
    and a private Windows execution guide. Keep website workflow byte-identical.
-7. [ ] Verify and review: run the full suite and repository guards, import only
+7. [x] Verify and review: run the full suite and repository guards, import only
    the confirmed source, document real-runtime gaps, review changes, commit/push
    the dedicated feature branch and open a draft PR against `1.21-neoforge`.
 
 Execution record and test evidence are maintained in `docs/modpack/verification.md`.
+
+Draft pull request: https://github.com/Thunderrock424242/Wilderness-Odyssey/pull/37
