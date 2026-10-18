@@ -315,6 +315,7 @@ class _Process:
     def _drain(self):
         scan_tail = b''
         line_tail=b''
+        pending_sequence=None
         oversized=False
         try:
             with self.log.open('xb') as output:
@@ -322,20 +323,31 @@ class _Process:
                     chunk = self.process.stdout.read(8192)
                     if not chunk:
                         break
+                    received_at=time.monotonic()
                     scan = scan_tail + chunk
                     if _READY.search(scan):
                         self.ready.set()
                     scan_tail = scan[-1024:]
                     if self.observer is not None:
                         parts=(line_tail+chunk).split(b'\n')
+                        observations=[]
                         for raw in parts[:-1]:
-                            self.sequence+=1
+                            if pending_sequence is None:
+                                self.sequence+=1; pending_sequence=self.sequence
                             if not oversized and len(raw)<=16384:
-                                self.observer(raw.rstrip(b'\r').decode('utf-8',errors='replace'),self.sequence,time.monotonic())
+                                observations.append((raw,pending_sequence))
+                            pending_sequence=None
                             oversized=False
                         line_tail=parts[-1]
+                        if line_tail and pending_sequence is None:
+                            self.sequence+=1; pending_sequence=self.sequence
                         if len(line_tail)>16384:
                             line_tail=b''; oversized=True
+                        # Reserve every received line (including a partial tail)
+                        # before any callback can cause a console request. Older
+                        # bytes buffered with Done cannot acknowledge that request.
+                        for raw,sequence in observations:
+                            self.observer(raw.rstrip(b'\r').decode('utf-8',errors='replace'),sequence,received_at)
                     remaining = max(0, self.max_log_bytes - self._written)
                     if remaining:
                         written = chunk[:remaining]
@@ -648,6 +660,7 @@ class _Observation:
             if self.child.process.poll() is not None:
                 self.child.thread.join(timeout=1)
                 return 'exited'
+            if now>=end: return 'timed_out'
             with self.guard:
                 state=self.monitor.snapshot()
             if phase=='startup' and state['readiness']['verified']:
@@ -655,7 +668,6 @@ class _Observation:
                 return 'ready'
             if phase=='workload' and state['save']['acknowledged']:
                 return 'acknowledged'
-            if now>=end: return 'timed_out'
             with self.guard:
                 actions=self.monitor.tick(now,True)
             # Fixed console commands are dispatched before potentially slower
@@ -665,10 +677,15 @@ class _Observation:
                 if time.monotonic()>=end or self.child.process.poll() is not None: break
                 kind=action['kind']
                 if kind=='send_command':
-                    with self.guard:
-                        self.monitor.command_sent(action['operation'],self.child.sequence,time.monotonic())
-                        self.child.process.stdin.write((action['text']+'\n').encode('ascii'))
-                        self.child.process.stdin.flush()
+                    try:
+                        with self.guard:
+                            self.monitor.command_sent(action['operation'],self.child.sequence,time.monotonic())
+                            self.child.process.stdin.write((action['text']+'\n').encode('ascii'))
+                            self.child.process.stdin.flush()
+                    except (OSError,ValueError):
+                        self.result['diagnostic_limitations'].append('Console write unavailable; inspect the process exit and captured logs.')
+                        self.record({'event':'console_unavailable','phase':phase,'elapsed_seconds':time.monotonic()-self.start})
+                        return 'exited' if self.child.process.poll() is not None else 'console_unavailable'
                     self.record({'event':'console_request','operation':action['operation'],
                                  'phase':phase,'elapsed_seconds':time.monotonic()-self.start})
                 elif kind=='sample_resources':
@@ -815,7 +832,7 @@ def _run_trial(root, lock, args, destination, reports, java, environment, cache,
             try:
                 _collect_artifacts(destination, reports, result)
             except (OSError, PackError) as error:
-                _problem(result, 'harness_failure', f'Disposable trial artifact collection failed ({type(error).__name__}); inspect its external directory.')
+                result['diagnostic_limitations'].append(f'Optional artifact collection unavailable ({type(error).__name__}); inspect the private external trial directory.')
             try:
                 _cleanup_trial(destination)
             except (OSError, PackError) as error:

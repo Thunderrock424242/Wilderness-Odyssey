@@ -85,6 +85,19 @@ class MonitorTests(unittest.TestCase):
         self.assertEqual([],self.monitor.tick(50,True))
         self.assertFalse(self.monitor.snapshot()['readiness']['verified'])
 
+    def test_ack_after_deadline_cannot_complete_startup_or_save(self):
+        from tools.modpack.monitor import TrialMonitor
+        self.monitor=TrialMonitor(0,1,'off')
+        self.prime(.3)
+        self.monitor.observe_line(REPLY,2,1.5)
+        self.assertFalse(self.monitor.snapshot()['readiness']['verified'])
+        self.monitor=TrialMonitor(0,10,'off')
+        self.prime(.3); self.monitor.observe_line(REPLY,2,.4)
+        self.monitor.begin_save(.5,1); self.monitor.tick(.5,True)
+        self.monitor.command_sent('save',2,.5)
+        self.monitor.observe_line(SAVED,3,1.5)
+        self.assertFalse(self.monitor.snapshot()['save']['acknowledged'])
+
 
 class TimelineTests(unittest.TestCase):
     def setUp(self):

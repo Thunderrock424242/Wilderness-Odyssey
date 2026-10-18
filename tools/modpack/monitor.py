@@ -48,7 +48,7 @@ class TrialMonitor:
         if _DONE.fullmatch(line) and self.readiness['log_observed_seconds'] is None:
             self.readiness['log_observed_seconds'] = max(0, now-self.started)
         pending = self.pending
-        if not pending or sequence <= pending['sequence'] or now < pending['sent']:
+        if not pending or sequence <= pending['sequence'] or now < pending['sent'] or now >= self.deadline:
             return
         matched = _LIST.fullmatch(line) if pending['kind'] == 'heartbeat' else _SAVED.fullmatch(line)
         if not matched:

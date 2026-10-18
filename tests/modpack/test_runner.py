@@ -110,6 +110,8 @@ class RunnerTests(unittest.TestCase):
             script = 'import time\nprint("Reloading ResourceManager: vanilla",flush=True)\ntime.sleep(60)'
         elif self.server_mode == 'no_ready':
             script = 'print("Installer successfully installed; Done loading assets")'
+        elif self.server_mode == 'exit_before_probe':
+            script='import time\nprint('+repr(READY+'\n'+CRASH)+',flush=True)\ntime.sleep(60)'
         elif self.server_mode == 'crash':
             script = 'print(' + repr(READY + '\n' + CRASH) + ',flush=True)\nraise SystemExit(1)'
         else:
@@ -121,9 +123,9 @@ class RunnerTests(unittest.TestCase):
             if self.server_mode=='child':
                 script+=('child=subprocess.Popen(['+repr(sys.executable)+',"-c","import time; time.sleep(60)"],stdin=subprocess.DEVNULL)\n'
                          'print("CHILD_PID="+str(child.pid),flush=True)\n')
-            script+='print('+repr(READY)+',flush=True)\nfor line in sys.stdin:\n'
+            script+='print('+repr(READY+('\n'+REPLY if self.server_mode=='buffered_reply' else ''))+',flush=True)\nfor line in sys.stdin:\n'
             script+=' if line.strip()=="list":\n'
-            if self.server_mode in ('done_blocked','stale_reply'):
+            if self.server_mode in ('done_blocked','stale_reply','buffered_reply'):
                 script+='  continue\n'
             else:
                 if self.server_mode=='slow_list': script+='  time.sleep(0.2)\n'
@@ -139,6 +141,14 @@ class RunnerTests(unittest.TestCase):
             else:
                 script+='  print("Stopping server",flush=True)\n  break\n'
         process = self.real_popen([sys.executable, '-u', '-c', script], **options)
+        if 'nogui' in command and self.server_mode=='exit_before_probe':
+            original=process.stdin
+            class ExitBeforeWrite:
+                def write(self,data):
+                    process.kill(); process.wait(timeout=5)
+                    raise BrokenPipeError('fixture exit between poll and write')
+                def __getattr__(self,key): return getattr(original,key)
+            process.stdin=ExitBeforeWrite()
         self.processes.append(process)
         return process
 
@@ -266,6 +276,24 @@ class RunnerTests(unittest.TestCase):
         self.assertFalse(result.get('readiness',{}).get('verified',False))
         self.assertNotEqual('succeeded',result['phases']['startup']['status'])
 
+    def test_buffered_old_reply_after_done_cannot_verify_readiness(self):
+        self.server_mode='buffered_reply'
+        original=self.runner._Observation.observe
+        def delayed(observation,line,sequence,now):
+            original(observation,line,sequence,now)
+            if 'Done (' in line: self.runner.time.sleep(.2)
+        with patch.object(self.runner._Observation,'observe',delayed): result=self.run_qa()
+        self.assertFalse(result['readiness']['verified'])
+        self.assertEqual('timed_out',result['phases']['startup']['status'])
+        self.assertEqual('not_run',result['phases']['soak']['status'])
+
+    def test_optional_artifact_failure_preserves_lifecycle_diagnosis(self):
+        self.server_mode='done_blocked'
+        with patch.object(self.runner,'_collect_artifacts',side_effect=PermissionError()): result=self.run_qa()
+        self.assertEqual('timeout',result['category'])
+        self.assertEqual('timed_out',result['phases']['startup']['status'])
+        self.assertTrue(any('artifact' in message.lower() for message in result['diagnostic_limitations']))
+
     def test_startup_timing_waits_for_real_console_reply(self):
         self.server_mode='slow_list'
         result=self.run_qa()
@@ -378,6 +406,15 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(1, sum('nogui' in command for command, _ in self.commands))
         self.assert_reports(result)
 
+    def test_exit_between_poll_and_console_write_preserves_crash_evidence(self):
+        self.server_mode='exit_before_probe'
+        result=self.run_qa()
+        self.assertEqual('uncertain_crash',result['category'])
+        self.assertTrue(result['signature'])
+        self.assertEqual('failed',result['phases']['startup']['status'])
+        self.assertEqual('not_run',result['phases']['soak']['status'])
+        self.assertTrue(all(p.poll() is not None for p in self.processes))
+
     def test_isolation_confirmations_get_fresh_installs_and_cleanup_mod_copies(self):
         self.server_mode = 'crash'
         self.args.isolate = True
@@ -468,7 +505,8 @@ class RunnerTests(unittest.TestCase):
     def test_artifact_copy_failure_does_not_skip_owned_trial_cleanup(self):
         with patch.object(self.runner, '_collect_artifacts', side_effect=OSError('fixture disk error')):
             result = self.run_qa()
-        self.assertEqual('harness_failure', result['category'], result)
+        self.assertEqual('success', result['category'], result)
+        self.assertTrue(any('artifact' in message.lower() for message in result['diagnostic_limitations']))
         self.assertFalse((self.args.destination / 'mods').exists())
         self.assert_reports(result)
 
