@@ -92,3 +92,12 @@ class ExportTests(unittest.TestCase):
             self.assertNotIn(secret,html.unescape(shared))
         self.assertIn('**timeout**',shared)
 
+    def test_memory_finding_stays_visible_amid_configuration_noise(self):
+        from tools.modpack.diagnostics import render_report
+        noise=[{'code':'registry_warning_'+str(i),'category':'configuration','severity':'warning'} for i in range(40)]
+        pressure={'code':'gc_pause_pressure','category':'memory','severity':'warning','evidence':['Maximum pause 2618 ms']}
+        text=html.unescape(render_report({'category':'success','findings':noise+[pressure]}))
+        self.assertIn('gc_pause_pressure',text)
+        self.assertIn('16 of 41',text)
+        self.assertLess(text.index('gc_pause_pressure'),text.index('registry_warning'))
+

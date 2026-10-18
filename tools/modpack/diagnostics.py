@@ -375,7 +375,12 @@ def render_report(result: dict) -> str:
             f"Log marker seconds: {_safe(readiness.get('log_observed_seconds'))}; "
             f"verified seconds: {_safe(readiness.get('verified_seconds'))}."])
     lines.extend(['','## Findings',''])
-    findings=_items(result.get('findings'),16)
+    findings=[item for item in _items(result.get('findings'),220) if isinstance(item,Mapping)]
+    findings.sort(key=lambda item:({'critical':0,'error':1,'warning':2,'info':3}.get(item.get('severity'),4),
+        {'hang':0,'memory':1,'crash':2,'configuration':3}.get(item.get('category'),4)))
+    total_findings=len(findings); findings=findings[:16]
+    if total_findings>16:
+        lines.append(f'Showing 16 of {total_findings} findings; the complete bounded list is in report.json.')
     for item in findings:
         if not isinstance(item,Mapping): continue
         lines.append(f"- **{_safe(item.get('code'),100)}** ({_safe(item.get('confidence'),40)} confidence; phase {_safe(item.get('phase'),40)}): "+
