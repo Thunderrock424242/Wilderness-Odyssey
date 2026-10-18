@@ -189,10 +189,11 @@ hosted workflow's conservative 4096 MiB default is not proven sufficient for thi
 pack; it also offers 6144 MiB for a runner with enough remaining host memory.
 Hosted Minecraft execution itself remains untested and gated on API availability.
 
-The only live scenario implemented is fixed-seed startup plus an **idle soak**,
-followed by a save/stop command and bounded shutdown. Readiness requires the exact
-Minecraft `Done (...)! For help, type "help"` server message. Installer success or
-asset-loading progress cannot count as startup. Each run owns and cleans its
+The default live scenario is fixed-seed startup plus an **idle soak**,
+followed by a stop command and bounded shutdown. Readiness requires the exact
+Minecraft `Done (...)! For help, type "help"` server message followed by a fresh
+reply to the owned console probe. Installer success or asset-loading progress
+cannot count as startup. Each run owns and cleans its
 disposable world; only bounded diagnostic artifacts remain. Ctrl+C cancels the
 current process/trial, preserves available evidence and stops further isolation.
 

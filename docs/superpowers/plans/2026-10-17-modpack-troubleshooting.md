@@ -1,6 +1,6 @@
 # Modpack Troubleshooting Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Add actionable performance, memory, hang, crash and configuration diagnostics to existing disposable server QA and provide offline analysis of saved evidence.
 
@@ -10,7 +10,8 @@
 
 **Spec:** [Approved troubleshooting design](../specs/2026-10-17-modpack-troubleshooting-design.md).
 
-**Status:** Ready for user review and execution-method selection; product implementation has not started.
+**Status:** Approved for inline execution in this chat. Tasks 1-8 implemented;
+whole-branch review and fresh disposable runtime acceptance are in progress.
 
 ## Global Constraints
 
@@ -69,7 +70,7 @@ Use existing `common.py` path/link/atomic-output helpers throughout. Test new un
 
 `snapshot()['readiness']` contains `protocol=2`, `verified`, `log_observed_seconds` and `verified_seconds`. Actions use `kind=send_command|sample_resources|sample_heap|capture_threads|dump_jfr|phase_complete`, with `operation` and fixed `text` for console actions. Before `Done`, take up to three startup checkpoint dumps at 60/120/240 seconds, leaving three dump slots for an unresponsive command. Checkpoints are observations, not a declared hang or a log-silence detector.
 
-- [ ] **Step 1:** Write `test_done_without_reply_never_completes_startup`, `test_old_or_quoted_list_reply_is_ignored`, `test_quiet_responsive_server_has_no_incident`, and `test_capture_offsets_and_caps`. Assert only a response after a sent `list` request completes startup; capture offsets are exactly 10/20/40 seconds, at most six per trial, and one operation is pending. Use an injected clock and explicit line sequences.
+- [x] **Step 1:** Write `test_done_without_reply_never_completes_startup`, `test_old_or_quoted_list_reply_is_ignored`, `test_quiet_responsive_server_has_no_incident`, and `test_capture_offsets_and_caps`. Assert only a response after a sent `list` request completes startup; capture offsets are exactly 10/20/40 seconds, at most six per trial, and one operation is pending. Use an injected clock and explicit line sequences.
 
 ```python
 m = TrialMonitor(started_at=0, startup_deadline=600, profiling='basic')
@@ -79,10 +80,10 @@ self.assertIsNone(m.snapshot()['readiness']['verified_seconds'])
 ```
 
 `READY` uses the existing exact Minecraft log fixture. Also assert a pre-`Done` stall receives checkpoint evidence without a false verified/soak result.
-- [ ] **Step 2:** Run `py -3.13 -m unittest discover -s tests/modpack -p test_monitor.py -v`; expect missing-module/interface failures before implementation.
-- [ ] **Step 3:** Implement the interfaces above with monotonic timestamps and complete-line matching. Confirm vanilla `list`/save response formats against pinned Minecraft bytes; unsupported formats stay inconclusive. Add timeline boundary tests for 20,000 events, 2 MiB, a long hostile line and an output link.
-- [ ] **Step 4:** Repeat the same command; expect all monitor/timeline tests to pass without sleeping or starting Java.
-- [ ] **Step 5:** Commit only the new module/tests: `feat(modpack): add bounded progress and incident monitor`.
+- [x] **Step 2:** Run `py -3.13 -m unittest discover -s tests/modpack -p test_monitor.py -v`; expect missing-module/interface failures before implementation.
+- [x] **Step 3:** Implement the interfaces above with monotonic timestamps and complete-line matching. Confirm vanilla `list`/save response formats against pinned Minecraft bytes; unsupported formats stay inconclusive. Add timeline boundary tests for 20,000 events, 2 MiB, a long hostile line and an output link.
+- [x] **Step 4:** Repeat the same command; expect all monitor/timeline tests to pass without sleeping or starting Java.
+- [x] **Step 5:** Commit only the new module/tests: `feat(modpack): add bounded progress and incident monitor`.
 
 ### Task 2: Cross-platform owned-process resource sampler
 
@@ -90,7 +91,7 @@ self.assertIsNone(m.snapshot()['readiness']['verified_seconds'])
 
 **Interfaces:** `ResourceSampler(owned_process: subprocess.Popen, disk_path: Path)`, `sample(elapsed_seconds: float) -> dict`, and `context() -> dict`. Rows contain identity, elapsed time, CPU seconds/percent, RSS bytes, read/write I/O bytes, thread count, free disk bytes and field-level availability reasons. CPU 100% means one logical CPU. Context separately records OS CPU availability/limits and JVM processor guidance when supplied by the runner.
 
-- [ ] **Step 1:** Write counter-driven tests. Assert a 2-second CPU delta over a 1-second interval is 200%; a counter reset or zero time interval is unavailable, not zero. Assert PID reuse/exited child prevents further reads; denied I/O leaves successful RSS/CPU measurements usable. Include Linux proc names containing spaces/parentheses and Windows 64-bit counter values.
+- [x] **Step 1:** Write counter-driven tests. Assert a 2-second CPU delta over a 1-second interval is 200%; a counter reset or zero time interval is unavailable, not zero. Assert PID reuse/exited child prevents further reads; denied I/O leaves successful RSS/CPU measurements usable. Include Linux proc names containing spaces/parentheses and Windows 64-bit counter values.
 
 ```python
 self.assertEqual(200.0, second_row['cpu_percent'])
@@ -99,10 +100,10 @@ self.assertEqual('process_identity_changed', reused_row['unavailable']['process'
 ```
 
 Generate these rows from fake owned-process readers with known counters and a temporary disk path; `unavailable` maps each missing field to its reason.
-- [ ] **Step 2:** Run `py -3.13 -m unittest discover -s tests/modpack -p test_resources.py -v`; observe the missing sampler failure.
-- [ ] **Step 3:** Implement OS-specific reads through small injectable readers using Windows process APIs or bounded Linux procfs. Tie identity to the owned process; never enumerate/attach to unrelated processes. Use `shutil.disk_usage` for the destination filesystem. Unsupported limits/counters have explicit reasons.
-- [ ] **Step 4:** Repeat the focused command. Add a harmless real child-process smoke check where supported; assert valid nonnegative counters or a stated unavailable reason, without fragile speed assertions.
-- [ ] **Step 5:** Commit `feat(modpack): sample owned JVM resources on Windows and Linux`.
+- [x] **Step 2:** Run `py -3.13 -m unittest discover -s tests/modpack -p test_resources.py -v`; observe the missing sampler failure.
+- [x] **Step 3:** Implement OS-specific reads through small injectable readers using Windows process APIs or bounded Linux procfs. Tie identity to the owned process; never enumerate/attach to unrelated processes. Use `shutil.disk_usage` for the destination filesystem. Unsupported limits/counters have explicit reasons.
+- [x] **Step 4:** Repeat the focused command. Add a harmless real child-process smoke check where supported; assert valid nonnegative counters or a stated unavailable reason, without fragile speed assertions.
+- [x] **Step 5:** Commit `feat(modpack): sample owned JVM resources on Windows and Linux`.
 
 ### Task 3: Evidence readers and pure issue interpretation
 
@@ -117,17 +118,17 @@ Generate these rows from fake owned-process readers with known counters and a te
 
 Evidence dictionaries use optional `report`, `logs`, `gc_logs` (`source`/`text` records), `thread_dumps` and `limitations`; missing arrays are empty. Analysis outputs `findings`, existing classification fields, measured memory summaries and input coverage.
 
-- [ ] **Step 1:** Write `test_gc_rotation_deduplicates_complete_events`, `test_young_gc_is_not_retained_live_set`, `test_truncated_gc_remains_partial`, `test_repeated_flush_wait_is_not_mod_blame`, and `test_data_errors_group_without_fatal_crash`. Include pressure, healthy sawtooth, negative/reset counters and missing duration; assert no fixture creates a confirmed leak verdict.
+- [x] **Step 1:** Write `test_gc_rotation_deduplicates_complete_events`, `test_young_gc_is_not_retained_live_set`, `test_truncated_gc_remains_partial`, `test_repeated_flush_wait_is_not_mod_blame`, and `test_data_errors_group_without_fatal_crash`. Include pressure, healthy sawtooth, negative/reset counters and missing duration; assert no fixture creates a confirmed leak verdict.
 
 ```python
 result = analyze_evidence({'logs': 'java.lang.OutOfMemoryError: Java heap space'})
 self.assertEqual('out_of_memory', result['category'])
 self.assertNotIn('confirmed_memory_leak', [f['code'] for f in result['findings']])
 ```
-- [ ] **Step 2:** Run `py -3.13 -m unittest discover -s tests/modpack -p test_evidence.py -v`; observe missing-interface failures.
-- [ ] **Step 3:** Implement bounded readers/parsers. Accept at most the existing per-log limits (server/latest 8 MiB, crash 1 MiB, native 2 MiB, GC 8 MiB, thread 2 MiB) and a 64 MiB total input budget. Bound discovery to four crash/native/GC files and six thread dumps. Mark source changes, partial UTF-8/events, skipped binary files and unknown formats. Do not force GC or infer exit codes/readiness from absent evidence.
-- [ ] **Step 4:** Test hostile Markdown/HTML, token-bearing URLs, input links/junctions, oversized metadata/lines, concurrently changed files and unknown future report versions. Repeat the focused command and `py -3.13 -m unittest discover -s tests/modpack -p test_diagnostics.py -v`; expect pass.
-- [ ] **Step 5:** Commit `feat(modpack): interpret GC thread and configuration evidence`.
+- [x] **Step 2:** Run `py -3.13 -m unittest discover -s tests/modpack -p test_evidence.py -v`; observe missing-interface failures.
+- [x] **Step 3:** Implement bounded readers/parsers. Accept at most the existing per-log limits (server/latest 8 MiB, crash 1 MiB, native 2 MiB, GC 8 MiB, thread 2 MiB) and a 64 MiB total input budget. Bound discovery to four crash/native/GC files and six thread dumps. Mark source changes, partial UTF-8/events, skipped binary files and unknown formats. Do not force GC or infer exit codes/readiness from absent evidence.
+- [x] **Step 4:** Test hostile Markdown/HTML, token-bearing URLs, input links/junctions, oversized metadata/lines, concurrently changed files and unknown future report versions. Repeat the focused command and `py -3.13 -m unittest discover -s tests/modpack -p test_diagnostics.py -v`; expect pass.
+- [x] **Step 5:** Commit `feat(modpack): interpret GC thread and configuration evidence`.
 
 ### Task 4: Integrate verified readiness and incident sampling
 
@@ -135,7 +136,7 @@ self.assertNotIn('confirmed_memory_leak', [f['code'] for f in result['findings']
 
 **Interfaces:** `_Process` exposes sequenced complete-line observations and bounded fixed-command writes. `_run_trial` integrates `TrialMonitor`/`ResourceSampler`; process creation and all attach/cleanup stay in `runner.py`. Schema-2 reports add `readiness`, `findings`, `timeline`, `resources`, artifact availability and separate log-marker/verified-startup timings.
 
-- [ ] **Step 1:** Add real harmless subprocess fixtures: emits `Done` then blocks; replies to `list`; replies after an obsolete line; exits during attach; ignores stop; and stalls during startup listener work. Update successful fixtures to respond to `list` until `stop`, rather than exiting on the first stdin line. Assert `Done` alone leaves startup unsuccessful and soak `not_run`.
+- [x] **Step 1:** Add real harmless subprocess fixtures: emits `Done` then blocks; replies to `list`; replies after an obsolete line; exits during attach; ignores stop; and stalls during startup listener work. Update successful fixtures to respond to `list` until `stop`, rather than exiting on the first stdin line. Assert `Done` alone leaves startup unsuccessful and soak `not_run`.
 
 ```python
 self.server_mode = 'done_blocked'
@@ -143,10 +144,10 @@ result = self.run_qa()
 self.assertNotEqual('succeeded', result['phases']['startup']['status'])
 self.assertEqual('not_run', result['phases']['soak']['status'])
 ```
-- [ ] **Step 2:** Run `py -3.13 -m unittest discover -s tests/modpack -p test_runner.py -v`; confirm the current runner fails the new readiness assertion before changing its behavior.
-- [ ] **Step 3:** Integrate nonblocking monitor ticks while the existing drain thread continues reading. Schedule resource/heap/incident work using the approved budgets, including startup. One attach at a time, each bounded by five seconds and the remaining phase/trial budget. Record missed/unsupported captures. With profiling off, keep only readiness/lifecycle monitoring.
-- [ ] **Step 4:** Re-run runner and monitor tests. Assert cancellation and helper timeouts preserve shutdown and kill all owned descendants; quiet responsive fixtures do not trigger dumps; optional collection errors do not become mod crashes. Preserve private HOME/temp environment tests and source-profile byte checks.
-- [ ] **Step 5:** Commit `fix(modpack): verify console readiness and capture startup hangs`.
+- [x] **Step 2:** Run `py -3.13 -m unittest discover -s tests/modpack -p test_runner.py -v`; confirm the current runner fails the new readiness assertion before changing its behavior.
+- [x] **Step 3:** Integrate nonblocking monitor ticks while the existing drain thread continues reading. Schedule resource/heap/incident work using the approved budgets, including startup. One attach at a time, each bounded by five seconds and the remaining phase/trial budget. Record missed/unsupported captures. With profiling off, keep only readiness/lifecycle monitoring.
+- [x] **Step 4:** Re-run runner and monitor tests. Assert cancellation and helper timeouts preserve shutdown and kill all owned descendants; quiet responsive fixtures do not trigger dumps; optional collection errors do not become mod crashes. Preserve private HOME/temp environment tests and source-profile byte checks.
+- [x] **Step 5:** Commit `fix(modpack): verify console readiness and capture startup hangs`.
 
 ### Task 5: Measured save-flush scenario
 
@@ -154,7 +155,7 @@ self.assertEqual('not_run', result['phases']['soak']['status'])
 
 **Interfaces:** CLI `qa --scenario startup-soak|save-flush`, default `startup-soak`. Add a `workload` phase (`not_run` by default) and `save_flush_seconds` only when measured. `save-flush` follows successful startup/soak with one fixed `save-all flush` command, then normal shutdown.
 
-- [ ] **Step 1:** Add subprocess cases for acknowledged save, a save that blocks, early exit, unsupported acknowledgement, and startup failure before workload. Assert the workload's elapsed time/phase is separate from shutdown, and an unacknowledged save has no fabricated duration of success.
+- [x] **Step 1:** Add subprocess cases for acknowledged save, a save that blocks, early exit, unsupported acknowledgement, and startup failure before workload. Assert the workload's elapsed time/phase is separate from shutdown, and an unacknowledged save has no fabricated duration of success.
 
 ```python
 self.args.scenario = 'save-flush'
@@ -163,10 +164,10 @@ result = self.run_qa()
 self.assertNotEqual('succeeded', result['phases']['workload']['status'])
 self.assertIsNone(result['metrics'].get('save_flush_seconds'))
 ```
-- [ ] **Step 2:** Run runner/CLI focused suites; observe rejection/missing-phase failures before implementation.
-- [ ] **Step 3:** Add scenario validation and the controlled operation, with a 120-second maximum inside the total trial deadline. Suspend additional heartbeat commands while save is pending, but capture its unresponsiveness at 10/20/40 seconds. Never operate on an existing installation/world; inherit current install/disjoint-path checks. Mark save-workload failures ineligible for startup/soak-only subset isolation.
-- [ ] **Step 4:** Repeat the focused suites and `test_isolation.py`. Assert default behavior remains startup/soak/stop and graph isolation cannot silently change scenario semantics.
-- [ ] **Step 5:** Commit `feat(modpack): measure disposable save and flush acknowledgement`.
+- [x] **Step 2:** Run runner/CLI focused suites; observe rejection/missing-phase failures before implementation.
+- [x] **Step 3:** Add scenario validation and the controlled operation, with a 120-second maximum inside the total trial deadline. Suspend additional heartbeat commands while save is pending, but capture its unresponsiveness at 10/20/40 seconds. Never operate on an existing installation/world; inherit current install/disjoint-path checks. Mark save-workload failures ineligible for startup/soak-only subset isolation.
+- [x] **Step 4:** Repeat the focused suites and `test_isolation.py`. Assert default behavior remains startup/soak/stop and graph isolation cannot silently change scenario semantics.
+- [x] **Step 5:** Commit `feat(modpack): measure disposable save and flush acknowledgement`.
 
 ### Task 6: Offline analysis, readable findings and sanitized export
 
@@ -180,7 +181,7 @@ the manifest does not claim its own hash. Reserve space for it before accepting
 additional evidence, and record when limited space also requires a shorter list
 of omitted entries.
 
-- [ ] **Step 1:** Write tests asserting offline analysis never spawns/fetches, can analyze without inventory, refuses overlapping/link outputs, and summarizes malformed/partial evidence. Assert report headline retains the actual lifecycle failure even when findings/export have errors.
+- [x] **Step 1:** Write tests asserting offline analysis never spawns/fetches, can analyze without inventory, refuses overlapping/link outputs, and summarizes malformed/partial evidence. Assert report headline retains the actual lifecycle failure even when findings/export have errors.
 
 ```python
 exported = export_reports(self.reports, self.new_export, max_bytes=1024)
@@ -190,10 +191,10 @@ self.assertNotIn('private-provider-key', self.exported_text())
 ```
 
 The fixture directory contains one report, a token-bearing log and binary exclusions; `exported_text()` reads only exported text files in that temporary directory.
-- [ ] **Step 2:** Run `test_export.py`, `test_sync_cli.py` and `test_diagnostics.py` via unittest discovery; observe missing-command/export failures.
-- [ ] **Step 3:** Implement schema-2 rendering and artifact manifest (bytes/hash/truncation/omission), with bounded escaped findings before detailed evidence. Create a separate 32 MiB export, prioritizing summaries, incident index, thread excerpts and timeline/log evidence. Redact credential assignments, authorization headers, credential/token URL fields and personal paths. Reject links and binary JFR/heap/world/account inputs from export; retain private local originals.
-- [ ] **Step 4:** Repeat focused tests. Include credentials split across read boundaries, Windows/POSIX personal paths, hostile filenames, a saturated export budget and read/write failures. Assert no silent claim of complete evidence after omission.
-- [ ] **Step 5:** Commit `feat(modpack): analyze saved evidence and export bounded diagnostics`.
+- [x] **Step 2:** Run `test_export.py`, `test_sync_cli.py` and `test_diagnostics.py` via unittest discovery; observe missing-command/export failures.
+- [x] **Step 3:** Implement schema-2 rendering and artifact manifest (bytes/hash/truncation/omission), with bounded escaped findings before detailed evidence. Create a separate 32 MiB export, prioritizing summaries, incident index, thread excerpts and timeline/log evidence. Redact credential assignments, authorization headers, credential/token URL fields and personal paths. Reject links and binary JFR/heap/world/account inputs from export; retain private local originals.
+- [x] **Step 4:** Repeat focused tests. Include credentials split across read boundaries, Windows/POSIX personal paths, hostile filenames, a saturated export budget and read/write failures. Assert no silent claim of complete evidence after omission.
+- [x] **Step 5:** Commit `feat(modpack): analyze saved evidence and export bounded diagnostics`.
 
 ### Task 7: Context fingerprints and honest comparisons
 
@@ -201,7 +202,7 @@ The fixture directory contains one report, a token-bearing log and binary exclus
 
 **Interfaces:** Report context adds `report_schema`, `readiness_protocol`, full Java build, OS/CPU limits, monitor/profiling/scenario settings and seed. `content` records inventory/asset fingerprints plus relative mod/config hashes. `compare(report, baseline) -> dict` separates measured indicators from exact content changes. `baseline_from(report, commit)` remains the only promotion function.
 
-- [ ] **Step 1:** Add tests for old `Done` timing versus verified-console timing, changed JVM/CPU settings, absent sensors, and same version/different JAR hash. Assert incompatible semantics return inconclusive; content updates are displayed rather than silently making all update comparisons impossible.
+- [x] **Step 1:** Add tests for old `Done` timing versus verified-console timing, changed JVM/CPU settings, absent sensors, and same version/different JAR hash. Assert incompatible semantics return inconclusive; content updates are displayed rather than silently making all update comparisons impossible.
 
 ```python
 baseline = baseline_from(self.good_report(), 'a' * 40)
@@ -210,10 +211,10 @@ self.assertEqual('inconclusive', compare(self.good_report(), baseline)['status']
 ```
 
 Upgrade the existing successful-report fixture as `good_report()` with all schema-2 context fields and completed required phases; keep an explicit legacy fixture for compatibility tests.
-- [ ] **Step 2:** Run `py -3.13 -m unittest discover -s tests/modpack -p test_regression.py -v`; observe new context/content assertions fail.
-- [ ] **Step 3:** Implement explicit report/readiness versions, exact fingerprints and compatible metric comparisons. Old reports remain readable for analysis but cannot become new verified-readiness baselines. Require clean known commit, complete successful required phases and supported context for new promotion. Metrics absent on either side stay unavailable.
-- [ ] **Step 4:** Repeat regression/runner tests. Assert failed, dirty, source-unknown and incomplete save-flush runs cannot promote baselines; a single timing difference remains an indicator, not confirmed causation.
-- [ ] **Step 5:** Commit `feat(modpack): fingerprint diagnostic context and content changes`.
+- [x] **Step 2:** Run `py -3.13 -m unittest discover -s tests/modpack -p test_regression.py -v`; observe new context/content assertions fail.
+- [x] **Step 3:** Implement explicit report/readiness versions, exact fingerprints and compatible metric comparisons. Old reports remain readable for analysis but cannot become new verified-readiness baselines. Require clean known commit, complete successful required phases and supported context for new promotion. Metrics absent on either side stay unavailable.
+- [x] **Step 4:** Repeat regression/runner tests. Assert failed, dirty, source-unknown and incomplete save-flush runs cannot promote baselines; a single timing difference remains an indicator, not confirmed causation.
+- [x] **Step 5:** Commit `feat(modpack): fingerprint diagnostic context and content changes`.
 
 ### Task 8: Existing workflow and operations guide
 
@@ -221,17 +222,17 @@ Upgrade the existing successful-report fixture as `good_report()` with all schem
 
 **Interfaces:** Add the supported scenario choice to the existing trusted QA job; consume Task 6 export directory for step summary/artifact upload. No additional workflow, provider secret or public/self-hosted runtime path.
 
-- [ ] **Step 1:** Add repository/workflow assertions that runtime inputs are passed through environment variables, scenario is validated, upload points only to sanitized export, binary/raw installation paths are excluded, and trusted-branch/EULA/environment gates remain.
+- [x] **Step 1:** Add repository/workflow assertions that runtime inputs are passed through environment variables, scenario is validated, upload points only to sanitized export, binary/raw installation paths are excluded, and trusted-branch/EULA/environment gates remain.
 
 ```python
 self.assertIn('pack-qa-export', workflow)
 self.assertNotIn('path: ${{ runner.temp }}/pack-qa-reports/', workflow)
 self.assertIn("github.ref == 'refs/heads/1.21-neoforge'", workflow)
 ```
-- [ ] **Step 2:** Run `py -3.13 -m unittest discover -s tests/modpack -p test_repository.py -v`; observe export/scenario expectations fail on the old workflow.
-- [ ] **Step 3:** Wire supported options and sanitized summary/export, including a useful fallback when setup fails before reporting. Keep seven-day retention, action pins and inert schedule gates. Document local QA/analyze/save commands, metric meanings, optional profiling overhead, unavailable-data behavior and hosted source/input limits.
-- [ ] **Step 4:** Repeat repository tests and run `C:/Users/mason/.codex/modpack-tools/actionlint-1.7.12/actionlint.exe '-shellcheck=' .github/workflows/modpack-validation.yml .github/workflows/modpack-qa.yml .github/workflows/modpack-release.yml`; expect no findings.
-- [ ] **Step 5:** Commit `feat(modpack): expose expanded diagnostics in trusted QA workflow`.
+- [x] **Step 2:** Run `py -3.13 -m unittest discover -s tests/modpack -p test_repository.py -v`; observe export/scenario expectations fail on the old workflow.
+- [x] **Step 3:** Wire supported options and sanitized summary/export, including a useful fallback when setup fails before reporting. Keep seven-day retention, action pins and inert schedule gates. Document local QA/analyze/save commands, metric meanings, optional profiling overhead, unavailable-data behavior and hosted source/input limits.
+- [x] **Step 4:** Repeat repository tests and run `C:/Users/mason/.codex/modpack-tools/actionlint-1.7.12/actionlint.exe '-shellcheck=' .github/workflows/modpack-validation.yml .github/workflows/modpack-qa.yml .github/workflows/modpack-release.yml`; expect no findings.
+- [x] **Step 5:** Commit `feat(modpack): expose expanded diagnostics in trusted QA workflow`.
 
 ### Task 9: Whole-branch verification and actual acceptance
 
