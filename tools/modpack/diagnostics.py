@@ -179,6 +179,7 @@ def classify(
     timed_out: bool = False,
     started: bool = False,
     harness_error: str | None = None,
+    evidence_only: bool = False,
 ) -> dict:
     """Classify one trial using explicit crash evidence and process outcome.
 
@@ -209,7 +210,7 @@ def classify(
     # a missing exit after the harness deadline, so inspect it before timeouts.
     loading_positions = [i for i,line in enumerate(lines) if _MOD_LOADING_FAILURE.search(line)] if not started else []
     # NeoForge's Main can catch a fatal loading error and still return code zero.
-    failure_context = exit_code not in (None, 0) or timed_out or (exit_code is not None and bool(loading_positions))
+    failure_context = evidence_only or exit_code not in (None, 0) or timed_out or (exit_code is not None and bool(loading_positions))
     if failure_context:
         for category, pattern, message, next_step in _DIRECT_FAILURES:
             positions = [i for i, line in enumerate(lines) if pattern.search(line)]
@@ -276,7 +277,10 @@ def classify(
 def _number(value: object) -> float | int | None:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
-    return value if math.isfinite(value) and value >= 0 else None
+    try:
+        return value if math.isfinite(value) and value >= 0 else None
+    except OverflowError:
+        return None
 
 
 def _trend(points: list[tuple[float, float]]) -> dict | None:
