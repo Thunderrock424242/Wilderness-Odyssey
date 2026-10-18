@@ -38,6 +38,7 @@ class TrialMonitor:
         self.incidents = []
         self.availability = []
         self.completed = []
+        self.baseline_pending = False
 
     def observe_line(self, line, sequence, now):
         # Complete bounded lines only. Prevent a multi-line/quoted payload from
@@ -73,6 +74,7 @@ class TrialMonitor:
     def begin_soak(self, now, deadline):
         self.phase, self.deadline = 'soak', deadline
         self.next_probe = now+10
+        self.baseline_pending = self.profiling != 'off'
 
     def begin_save(self, now, deadline):
         self.phase, self.deadline = 'workload', deadline
@@ -87,6 +89,10 @@ class TrialMonitor:
             return []
         actions, self.completed = self.completed, []
         if self.profiling != 'off':
+            if self.baseline_pending:
+                self.baseline_pending=False
+                if self.capture_count < 3:
+                    self._capture(actions,'verified_ready')
             if now >= self.next_resources and self.resource_count < 1500:
                 self.resource_count += 1
                 self.next_resources = now+5

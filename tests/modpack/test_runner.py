@@ -18,6 +18,7 @@ from tools.modpack.pack import generate
 
 MODULE_PATH = Path(__file__).resolve().parents[2] / 'tools/modpack/runner.py'
 READY = '[12:00:00] [Server thread/INFO] [minecraft/DedicatedServer]: Done (1.234s)! For help, type "help"'
+REPLY = '[12:00:01] [Server thread/INFO] [minecraft/MinecraftServer]: There are 0 of a max of 20 players online: '
 CRASH = ('[12:00:01] [Server thread/ERROR]: Encountered an unexpected exception\n'
          'java.lang.RuntimeException: fixture crash\n'
          '    at example.Encounter.build(Encounter.java:41)\n')
@@ -63,6 +64,7 @@ class RunnerTests(unittest.TestCase):
         self.server_mode = 'success'
         self.installer_code = 0
         self.installer_hangs = False
+        self.jcmd_error = False
         self.version = '21.0.8'
         self.real_popen = subprocess.Popen
         self.patcher = patch.object(runner.subprocess, 'Popen', side_effect=self.fake_java)
@@ -93,7 +95,9 @@ class RunnerTests(unittest.TestCase):
             if self.installer_hangs:
                 script = 'import time\nprint("Installer processing libraries",flush=True)\ntime.sleep(60)'
         elif Path(command[0]).name.lower() in ('jcmd', 'jcmd.exe'):
-            if 'GC.heap_info' in command:
+            if self.jcmd_error:
+                script='raise SystemExit(1)'
+            elif 'GC.heap_info' in command:
                 script = 'print("garbage-first heap total 65536K, used 16384K [0x1234, 0x4321)")'
             elif 'Thread.print' in command:
                 script = 'print(\'"Server thread" #1 prio=5\\n"Reference Handler" #9 daemon prio=10\')'
@@ -107,18 +111,25 @@ class RunnerTests(unittest.TestCase):
             script = 'print("Installer successfully installed; Done loading assets")'
         elif self.server_mode == 'crash':
             script = 'print(' + repr(READY + '\n' + CRASH) + ',flush=True)\nraise SystemExit(1)'
-        elif self.server_mode == 'shutdown_crash':
-            script = ('import sys\nprint(' + repr(READY) + ',flush=True)\nsys.stdin.readline()\n'
-                      'print(' + repr(CRASH) + ',flush=True)\nraise SystemExit(1)')
-        elif self.server_mode == 'flood':
-            script = 'import sys\nprint("x"*20000)\nprint(' + repr(READY) + ',flush=True)\nsys.stdin.readline()'
-        elif self.server_mode == 'child':
-            script = ('import sys, subprocess\n'
-                      'child=subprocess.Popen([' + repr(sys.executable) + ',"-c","import time; time.sleep(60)"],stdin=subprocess.DEVNULL)\n'
-                      'print("CHILD_PID="+str(child.pid),flush=True)\n'
-                      'print(' + repr(READY) + ',flush=True)\nsys.stdin.readline()')
         else:
-            script = 'import sys\nprint(' + repr(READY) + ',flush=True)\nsys.stdin.readline()\nprint("Stopping server",flush=True)'
+            script='import sys, time, subprocess\n'
+            if self.server_mode=='flood': script+='print("x"*20000)\n'
+            if self.server_mode=='stale_reply': script+='print('+repr(REPLY)+',flush=True)\n'
+            if self.server_mode=='child':
+                script+=('child=subprocess.Popen(['+repr(sys.executable)+',"-c","import time; time.sleep(60)"],stdin=subprocess.DEVNULL)\n'
+                         'print("CHILD_PID="+str(child.pid),flush=True)\n')
+            script+='print('+repr(READY)+',flush=True)\nfor line in sys.stdin:\n'
+            script+=' if line.strip()=="list":\n'
+            if self.server_mode in ('done_blocked','stale_reply'):
+                script+='  continue\n'
+            else:
+                if self.server_mode=='slow_list': script+='  time.sleep(0.2)\n'
+                script+='  print('+repr(REPLY)+',flush=True)\n'
+            script+=' elif line.strip()=="stop":\n'
+            if self.server_mode=='shutdown_crash':
+                script+='  print('+repr(CRASH)+',flush=True)\n  raise SystemExit(1)\n'
+            else:
+                script+='  print("Stopping server",flush=True)\n  break\n'
         process = self.real_popen([sys.executable, '-u', '-c', script], **options)
         self.processes.append(process)
         return process
@@ -192,6 +203,25 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual('failed', result['phases']['startup']['status'])
         self.assertEqual('not_run', result['phases']['soak']['status'])
         self.assert_reports(result)
+
+    def test_done_then_blocked_listener_does_not_begin_soak(self):
+        self.server_mode='done_blocked'
+        result=self.run_qa()
+        self.assertNotEqual('succeeded',result['phases']['startup']['status'])
+        self.assertEqual('not_run',result['phases']['soak']['status'])
+
+    def test_stale_console_reply_does_not_complete_readiness(self):
+        self.server_mode='stale_reply'
+        result=self.run_qa()
+        self.assertFalse(result.get('readiness',{}).get('verified',False))
+        self.assertNotEqual('succeeded',result['phases']['startup']['status'])
+
+    def test_startup_timing_waits_for_real_console_reply(self):
+        self.server_mode='slow_list'
+        result=self.run_qa()
+        self.assertEqual('success',result['category'])
+        self.assertGreaterEqual(result['metrics']['startup_seconds'],0.18)
+        self.assertTrue(result['readiness']['verified'])
 
     def test_startup_timeout_kills_server_and_records_shutdown_separately(self):
         self.server_mode = 'timeout'
@@ -531,6 +561,7 @@ class RunnerTests(unittest.TestCase):
         jcmd.chmod(0o755)
         self.args.java = str(java)
         self.args.profiling = 'basic'
+        self.args.soak_seconds = 1
         result = self.run_qa()
         self.assertEqual('success', result['category'])
         self.assertEqual('measured', result['memory']['status'])
@@ -539,6 +570,31 @@ class RunnerTests(unittest.TestCase):
         self.assertIsNone(result['memory']['metrics']['post_gc_heap_bytes'])
         self.assertFalse(result['memory']['suspected_growth'])
         self.assert_reports(result)
+
+    def test_optional_attach_failure_does_not_become_mod_crash(self):
+        java=self.base/('java.exe' if os.name=='nt' else 'java')
+        java.write_bytes(b'fixture'); java.chmod(0o755)
+        java.with_name('jcmd.exe' if os.name=='nt' else 'jcmd').write_bytes(b'fixture')
+        self.args.java=str(java); self.args.profiling='basic'; self.jcmd_error=True
+        result=self.run_qa()
+        self.assertEqual('success',result['category'])
+        self.assertTrue(result['diagnostic_limitations'])
+
+    def test_startup_checkpoint_captures_real_helper_output_before_timeout(self):
+        from tools.modpack.monitor import TrialMonitor
+        class FastCheckpoint(TrialMonitor):
+            def __init__(self,*args):
+                super().__init__(*args)
+                self.checkpoints=[self.started+.05]
+        java=self.base/('java.exe' if os.name=='nt' else 'java')
+        java.write_bytes(b'fixture'); java.chmod(0o755)
+        java.with_name('jcmd.exe' if os.name=='nt' else 'jcmd').write_bytes(b'fixture')
+        self.args.java=str(java); self.args.profiling='basic'; self.server_mode='timeout'
+        with patch.object(self.runner,'TrialMonitor',FastCheckpoint): result=self.run_qa()
+        self.assertEqual('timed_out',result['phases']['startup']['status'])
+        self.assertTrue(result.get('thread_dumps'))
+        source=result['thread_dumps'][0]['source']
+        self.assertIn('Server thread',(self.args.reports/source).read_text())
 
     def test_report_records_commit_and_dirty_state_without_changing_source_repository(self):
         git = shutil.which('git')

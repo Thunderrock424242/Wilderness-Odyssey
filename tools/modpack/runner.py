@@ -23,6 +23,9 @@ from .diagnostics import analyze_memory, classify, render_report
 from .install import install
 from .pack import validate, dependency_satisfies
 from .providers import fetch
+from .monitor import TrialMonitor, EventTimeline
+from .resources import ResourceSampler
+from .evidence import read_evidence, analyze_evidence
 
 
 _MAX_LOG_BYTES = 8 * 1024 * 1024
@@ -43,13 +46,13 @@ class _StageError(PackError):
 
 def _base_result():
     result = classify('', None)
-    result.update(phases={name: {'status': 'not_run', 'seconds': None, 'evidence': []}
+    result.update(schema=2,phases={name: {'status': 'not_run', 'seconds': None, 'evidence': []}
                          for name in ('validation', 'setup', 'installer', 'startup', 'soak', 'shutdown')},
                   metrics={'avg_mspt': None, 'worst_mspt': None}, artifacts={}, samples=[], coverage=[
                       'Java 21 dedicated server startup and idle soak only.',
                       'Loaded mod count, MSPT, player gameplay, multiplayer, client rendering and GPU performance are not measured.',
                       'Heap samples do not establish retained objects or a memory leak.'],
-                  log_truncated=False)
+                  log_truncated=False,findings=[],resources=[],diagnostic_limitations=[])
     return result
 
 
@@ -269,10 +272,13 @@ class _WindowsJob:
 
 class _Process:
     """Drain pipes continuously, cap disk/memory, and always own process cleanup."""
-    def __init__(self, command, cwd, environment, log):
+    def __init__(self, command, cwd, environment, log, observer=None, max_log_bytes=None):
         self.log = Path(log)
         self.log.parent.mkdir(parents=True, exist_ok=True)
         self.environment = environment
+        self.observer=observer
+        self.sequence=0
+        self.max_log_bytes=_MAX_LOG_BYTES if max_log_bytes is None else max_log_bytes
         self.ready = threading.Event()
         self._tail = deque()
         self._tail_bytes = 0
@@ -304,6 +310,8 @@ class _Process:
 
     def _drain(self):
         scan_tail = b''
+        line_tail=b''
+        oversized=False
         try:
             with self.log.open('xb') as output:
                 while True:
@@ -314,7 +322,17 @@ class _Process:
                     if _READY.search(scan):
                         self.ready.set()
                     scan_tail = scan[-1024:]
-                    remaining = max(0, _MAX_LOG_BYTES - self._written)
+                    if self.observer is not None:
+                        parts=(line_tail+chunk).split(b'\n')
+                        for raw in parts[:-1]:
+                            self.sequence+=1
+                            if not oversized and len(raw)<=16384:
+                                self.observer(raw.rstrip(b'\r').decode('utf-8',errors='replace'),self.sequence,time.monotonic())
+                            oversized=False
+                        line_tail=parts[-1]
+                        if len(line_tail)>16384:
+                            line_tail=b''; oversized=True
+                    remaining = max(0, self.max_log_bytes - self._written)
                     if remaining:
                         written = chunk[:remaining]
                         output.write(written)
@@ -381,8 +399,8 @@ def _wait(process, seconds, *, ready=False):
         time.sleep(min(0.05, max(0, end - time.monotonic())))
 
 
-def _command(command, cwd, environment, log, seconds):
-    child = _Process(command, cwd, environment, log)
+def _command(command, cwd, environment, log, seconds, max_log_bytes=None):
+    child = _Process(command, cwd, environment, log,max_log_bytes=max_log_bytes)
     try:
         outcome = _wait(child, seconds)
         if outcome == 'timed_out':
@@ -478,16 +496,19 @@ def _java_flags(args):
     return flags
 
 
-def _sample(child, java, environment, reports, result, started, profiling, deadline):
+def _sample(child, java, environment, reports, result, started, profiling, deadline, labels=('heap','threads')):
     if profiling == 'off' or child.process.poll() is not None:
         return
     jcmd = Path(java).with_name('jcmd.exe' if os.name == 'nt' else 'jcmd')
     if not jcmd.is_file():
+        if 'jcmd unavailable' not in result['diagnostic_limitations']:
+            result['diagnostic_limitations'].append('jcmd unavailable')
         return
-    number = len(result['samples']) + 1
+    number = result.get('diagnostic_commands',0)+1
+    result['diagnostic_commands']=number
     sample = {'elapsed_seconds': max(0, time.monotonic() - started)}
-    commands = [('heap', ['GC.heap_info']), ('threads', ['Thread.print', '-l'])]
-    if profiling == 'native':
+    commands = [(key,args) for key,args in [('heap', ['GC.heap_info']), ('threads', ['Thread.print', '-l'])] if key in labels]
+    if profiling == 'native' and 'heap' in labels:
         commands.append(('native', ['VM.native_memory', 'summary']))
     for label, arguments in commands:
         if child.process.poll() is not None or _remaining(5, deadline) <= 0:
@@ -495,9 +516,11 @@ def _sample(child, java, environment, reports, result, started, profiling, deadl
         filename = f'jcmd-{number}-{label}.log'
         try:
             measured = _command([str(jcmd), str(child.process.pid), *arguments], reports,
-                                environment, safe_path(reports, filename), _remaining(5, deadline))
+                                environment, safe_path(reports, filename), _remaining(5, deadline),max_log_bytes=2*1024**2)
             result['artifacts'][f'jcmd_{number}_{label}'] = str(reports / filename)
             if measured['exit_code'] or measured['timed_out'] or measured['truncated']:
+                if len(result['diagnostic_limitations'])<50:
+                    result['diagnostic_limitations'].append(f'{filename}: unavailable, timed out or truncated.')
                 continue
             if label == 'heap':
                 for line in measured['logs'].splitlines():
@@ -508,12 +531,14 @@ def _sample(child, java, environment, reports, result, started, profiling, deadl
                             sample['heap_used_bytes'] = int(float(match[1]) * scale)
                             break
             elif label == 'threads':
+                result.setdefault('thread_dumps',[]).append({'source':filename,'elapsed_seconds':sample['elapsed_seconds']})
                 count = len(re.findall(r'^"[^"\n]+"\s+#\d+', measured['logs'], re.M))
                 if count:
                     sample['threads'] = count
         except (PackError, OSError):
             # Optional diagnostics cannot turn unavailable attach tooling into a mod crash.
-            continue
+            if len(result['diagnostic_limitations'])<50:
+                result['diagnostic_limitations'].append(f'{filename}: attach unavailable.')
     if len(sample) > 1:
         result['samples'].append(sample)
 
@@ -574,12 +599,112 @@ def _cleanup_trial(destination):
             shutil.rmtree(target)
 
 
+class _Observation:
+    """Runner-owned IO adapter around the pure monitor and optional collectors."""
+    def __init__(self,start,args,reports,java,environment,result):
+        self.start,self.args,self.reports=start,args,reports
+        self.java,self.environment,self.result=java,environment,result
+        self.monitor=TrialMonitor(start,start+args.startup_seconds,args.profiling)
+        self.guard=threading.RLock()
+        self.timeline=EventTimeline(safe_path(reports,'timeline.jsonl'))
+        self.timeline_failed=False
+        self.child=self.sampler=None
+        self.last_verified=False
+
+    def observe(self,line,sequence,now):
+        with self.guard:
+            self.monitor.observe_line(line,sequence,now)
+
+    def record(self,event):
+        if self.timeline_failed: return
+        try:
+            self.timeline.append(event)
+        except (OSError,ValueError,TypeError):
+            self.timeline_failed=True
+            self.result['diagnostic_limitations'].append('Timeline writing unavailable.')
+
+    def attach(self,child,destination):
+        self.child=child
+        self.sampler=ResourceSampler(child.process,destination)
+        self.result['resource_context']=self.sampler.context()
+
+    def drive(self,seconds,deadline,phase):
+        end=time.monotonic()+seconds
+        if phase=='startup': end=min(end,self.start+self.args.startup_seconds)
+        if deadline is not None: end=min(end,deadline)
+        with self.guard:
+            if phase=='soak': self.monitor.begin_soak(time.monotonic(),end)
+            elif phase=='workload': self.monitor.begin_save(time.monotonic(),end)
+            else: self.monitor.deadline=end
+        while True:
+            now=time.monotonic()
+            if self.child.process.poll() is not None:
+                self.child.thread.join(timeout=1)
+                return 'exited'
+            with self.guard:
+                state=self.monitor.snapshot()
+            if phase=='startup' and state['readiness']['verified']:
+                self.record({'event':'console_ready','elapsed_seconds':state['readiness']['verified_seconds']})
+                return 'ready'
+            if phase=='workload' and state['save']['acknowledged']:
+                return 'acknowledged'
+            if now>=end: return 'timed_out'
+            with self.guard:
+                actions=self.monitor.tick(now,True)
+            # Fixed console commands are dispatched before potentially slower
+            # optional attach work. The reader continues observing independently.
+            actions.sort(key=lambda action:action['kind']!='send_command')
+            for action in actions:
+                if time.monotonic()>=end or self.child.process.poll() is not None: break
+                kind=action['kind']
+                if kind=='send_command':
+                    with self.guard:
+                        self.monitor.command_sent(action['operation'],self.child.sequence,time.monotonic())
+                        self.child.process.stdin.write((action['text']+'\n').encode('ascii'))
+                        self.child.process.stdin.flush()
+                    self.record({'event':'console_request','operation':action['operation'],
+                                 'phase':phase,'elapsed_seconds':time.monotonic()-self.start})
+                elif kind=='sample_resources':
+                    row=self.sampler.sample(time.monotonic()-self.start)
+                    self.result['resources'].append(row)
+                    self.result['samples'].append({key:row.get(key) for key in ('elapsed_seconds','cpu_percent','threads')})
+                elif kind in ('sample_heap','capture_threads'):
+                    labels=('heap',) if kind=='sample_heap' else ('threads',)
+                    _sample(self.child,self.java,self.environment,self.reports,self.result,self.start,
+                            self.args.profiling,end,labels=labels)
+                    self.record({'event':kind,'reason':action.get('reason'), 'phase':phase,
+                                 'elapsed_seconds':time.monotonic()-self.start})
+                elif kind=='dump_jfr':
+                    # The active explicit JFR recording already has bounded size
+                    # and dumponexit. Dump that named recording without stopping it.
+                    jcmd=Path(self.java).with_name('jcmd.exe' if os.name=='nt' else 'jcmd')
+                    if jcmd.is_file():
+                        try:
+                            output=_command([str(jcmd),str(self.child.process.pid),'JFR.dump',
+                                'filename='+str(self.reports/'incident.jfr'),'maxsize=64m'],self.reports,
+                                self.environment,self.reports/'jfr-dump.log',_remaining(5,end),max_log_bytes=65536)
+                            if output['timed_out'] or output['exit_code']:
+                                self.result['diagnostic_limitations'].append('Incident JFR dump unavailable.')
+                        except (PackError,OSError):
+                            self.result['diagnostic_limitations'].append('Incident JFR attach unavailable.')
+            time.sleep(min(.05,max(0,end-time.monotonic())))
+
+    def close(self):
+        with self.guard:
+            state=self.monitor.snapshot()
+        self.result.update(readiness=state['readiness'],incidents=state['incidents'],save=state['save'])
+        info=self.timeline.close()
+        self.result['timeline']=info
+        self.result['artifacts']['timeline']=str(self.reports/'timeline.jsonl')
+
+
 def _run_trial(root, lock, args, destination, reports, java, environment, cache, selected=None, deadline=None):
     result = _base_result()
     runtime_temp=tempfile.TemporaryDirectory(prefix='wo-trial-jvm-',dir=Path(args.reports).resolve().parent)
     environment=_environment(java,runtime_temp.name)
     child, installed, active, active_start = None, False, 'validation', time.monotonic()
     timed_out, ready, normal_outcome = False, False, False
+    observation=None
     try:
         install(root, lock, destination, side='server', local_mods=args.local_mods,
                 cache=cache, offline=args.offline, selected=selected)
@@ -605,23 +730,23 @@ def _run_trial(root, lock, args, destination, reports, java, environment, cache,
         server_log = safe_path(reports, 'server.log')
         result['artifacts']['server_log'] = str(server_log)
         active, active_start = 'startup', time.monotonic()
-        child = _Process([java, *_jvm_environment_flags(environment), *_java_flags(args), '@' + argument_file, 'nogui'], destination, environment, server_log)
         start = active_start
-        outcome = _wait(child, _remaining(args.startup_seconds, deadline), ready=True)
+        observation=_Observation(start,args,reports,java,environment,result)
+        child = _Process([java, *_jvm_environment_flags(environment), *_java_flags(args), '@' + argument_file, 'nogui'], destination, environment, server_log,observer=observation.observe)
+        observation.attach(child,destination)
+        outcome = observation.drive(_remaining(args.startup_seconds,deadline),deadline,'startup')
         ready = outcome == 'ready'
         timed_out = outcome == 'timed_out'
         _phase(result, active, 'succeeded' if ready else 'timed_out' if timed_out else 'failed', active_start)
         if ready:
             result['metrics']['startup_seconds'] = result['phases']['startup']['seconds']
-            _sample(child, java, environment, reports, result, start, args.profiling, deadline)
             active, active_start = 'soak', time.monotonic()
             # A planned soak of zero still requires a live ready process.
-            outcome = _wait(child, _remaining(args.soak_seconds, deadline))
+            outcome = observation.drive(_remaining(args.soak_seconds,deadline),deadline,'soak')
             survived = outcome == 'timed_out' and child.process.poll() is None
             exhausted = deadline is not None and time.monotonic() >= deadline
             _phase(result, active, 'succeeded' if survived and not exhausted else 'timed_out' if exhausted else 'failed', active_start)
             timed_out |= exhausted
-            _sample(child, java, environment, reports, result, start, args.profiling, deadline)
         active, active_start = 'shutdown', time.monotonic()
         _shutdown(child, result, environment)
         timed_out |= result['phases']['shutdown']['status'] == 'forced'
@@ -673,7 +798,17 @@ def _run_trial(root, lock, args, destination, reports, java, environment, cache,
                 _cleanup_trial(destination)
             except (OSError, PackError) as error:
                 _problem(result, 'harness_failure', f'Disposable trial cleanup failed ({type(error).__name__}); inspect its external directory.')
+        if observation is not None:
+            try: observation.close()
+            except (OSError,ValueError): result['diagnostic_limitations'].append('Timeline close unavailable.')
         result['memory'] = analyze_memory(result['samples'])
+        try:
+            evidence=read_evidence(reports)
+            evidence['report']=result
+            evidence['samples']=result['samples']
+            result=analyze_evidence(evidence)
+        except (OSError,ValueError,PackError):
+            result['diagnostic_limitations'].append('Saved evidence analysis unavailable.')
         result['destination'] = str(destination)
         try:
             runtime_temp.cleanup()
