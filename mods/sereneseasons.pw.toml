@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "sereneseasons"
+filename = "ecliptic-seasons-serene-api-bridge-1.21.1-neoforge-10.1.0.3-patch11-1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "c7e3ff9d2627e08a1b3926117be276a33a4ff8db5e53d647a246e45f28bce73e"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1476693
+file-id = 8828410

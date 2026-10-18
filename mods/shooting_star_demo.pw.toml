@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "shooting_star_demo"
+filename = "the-shooting-star-demo-1.4.3-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "51b99160741a3c77aea50ec6983b6af45e5620d5bedac91aa9b06f0843e758ec"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1719195
+file-id = 9171007

@@ -1,0 +1,8 @@
+{
+  "enableMessageAnimation": true,
+  "fadeTimeMessage": 150,
+  "enableOpacity": true,
+  "removeMessageIndicator": true,
+  "enableTextFieldAnimation": true,
+  "fadeTimeTextField": 170
+}

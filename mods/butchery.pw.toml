@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "butchery"
+filename = "butchery-5.3.1-neoforge-1.21.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "4a92a2c90e8ad47b030cf76908ce32e8531a8b42418036c66221312f77339a6e"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 973620
+file-id = 9112346

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "distanthorizons"
+filename = "DistantHorizons-3.3.3-1.21.1-fabric-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "864e70def5b0d54d619b940b66bb2784e91d3f3fc253064fdc1b3fc5786cbfab"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 508933
+file-id = 9004764

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "architectury"
+filename = "architectury-13.0.11-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "9cc92f2c09533fc5482c60f993bd891c655a0e32b637037cdcb7c2b23adedeeb"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 419699
+file-id = 8492726

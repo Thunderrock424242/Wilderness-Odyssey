@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "es_x_bwg"
+filename = "EclipticSeasonsBWG-1.0.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "ab75f655737e28943049f604db8cf5c44e07b239971e775c93c42aada52f493a"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1347591
+file-id = 6999824

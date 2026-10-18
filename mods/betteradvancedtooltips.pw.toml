@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "betteradvancedtooltips"
+filename = "better-advanced-tooltips-2101.1.0-build.5.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "0f76d46f2f18eb67e67c7974170d7b27deb66473396461c8dc50d6949de1449b"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1637623
+file-id = 8576077

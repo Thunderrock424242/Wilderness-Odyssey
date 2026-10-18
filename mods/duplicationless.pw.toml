@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "duplicationless"
+filename = "duplicationless-1.21.1-1.2.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "ca0ca19a49fe49e53bdd6a034ace47c1c99440bd2b5e5736ae53401708625487"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1380105
+file-id = 8646414

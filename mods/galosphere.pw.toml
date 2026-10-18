@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "galosphere"
+filename = "Galosphere-1.21.1-1.5.5-NeoForge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "4e6f7084110c78180b327e134ce3f43420abe58b0719e6963b2e9e26a99bab5f"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 631098
+file-id = 8242886

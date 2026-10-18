@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "fusion"
+filename = "fusion-1.3.16-neoforge-mc1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "29920a6838f4f942947d208349480d7f5737f9fac6411c6eac5f3e824a438048"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 854949
+file-id = 9070353

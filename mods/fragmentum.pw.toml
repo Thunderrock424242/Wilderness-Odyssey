@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "fragmentum"
+filename = "fragmentum-5.4.0+1.21.1-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "fb7e1b28d54fda52c62df2a7c050e772030d7c75663d1679371deb0a860d3c1f"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1123977
+file-id = 9202578

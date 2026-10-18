@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "prickle"
+filename = "prickle-neoforge-1.21.1-21.1.11.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "ccf46c442ed3c7fe41ad056f0940560829ec4dd88360985dfacd78f4614eb167"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1023259
+file-id = 6961457

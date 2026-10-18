@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "eclipticseasons_bundles"
+filename = "EclipticSeasons-Bundles-0.18.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "2aa474f78321fe6c89dc71e4fbf76cbe58705c6c0a5299b41338d6f2aabe2d17"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1449802
+file-id = 8980702

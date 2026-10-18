@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "doespotatotick"
+filename = "doespotatotick-1.21.1-5.6.4.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "86ef49be076782fa70bef9a2984da11e4e7f6238a840d4f29c09aa945777bf55"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 825355
+file-id = 8405504

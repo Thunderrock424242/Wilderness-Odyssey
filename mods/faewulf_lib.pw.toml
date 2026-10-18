@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "faewulf_lib"
+filename = "faewulf_lib-neoforge-1.21.1-1.4.0.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "c333a8f91acc5b4db6658e1de40b5039689f0dd5a46588ebae32b638705637eb"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1209568
+file-id = 8586114

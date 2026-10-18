@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "biomemusic"
+filename = "biomemusic-1.21.1-4.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "ecdc9066ae9800ed2da0373fef73b4f24f0db664e357b05bdbbb8ec63e3af368"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 840873
+file-id = 8318257

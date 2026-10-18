@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "meadow"
+filename = "letsdo-meadow-neoforge-1.4.9.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "ff300d3f3b19c7a7abc16ac08bbba3fb870e89c0cfb9422b3dc2e13e0bae337d"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 821483
+file-id = 8913735

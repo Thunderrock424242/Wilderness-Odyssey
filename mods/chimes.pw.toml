@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "chimes"
+filename = "Chimes-v2.1.1-1.21.1-NeoForge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "83b83b60bb40f34b2422d785ca40e287eacb31a1fc3a4f9564ee9e7c3dcc283b"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 350464
+file-id = 7573270

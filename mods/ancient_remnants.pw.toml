@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "ancient_remnants"
+filename = "ancient_remnants-1.5.2+1.21.1-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "b16154ab1899f815c271f1a4947082b60484eacb09d8fb05170fcd77f98d29b1"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1668579
+file-id = 9084406

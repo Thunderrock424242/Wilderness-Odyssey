@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "repurposed_structures"
+filename = "repurposed_structures-7.5.22+1.21.1-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "64e64109acf7673b969aca9b3cca0bb555777cd7038aa16aa32a1548d753f257"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 368293
+file-id = 8688394

@@ -1,0 +1,32 @@
+name: Build pinned CurseForge ZIP (no publishing)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.11'
+      - name: Verify repository distribution safety
+        run: python -m tools.modpack audit-repository --reports "${{ runner.temp }}/pack-release"
+      - name: Require a validated pinned pack
+        run: python -m tools.modpack validate --reports "${{ runner.temp }}/pack-release"
+      - name: Create deterministic CurseForge reference archive
+        run: python -m tools.modpack package --output "${{ runner.temp }}/pack-release/Wilderness-Odyssey.zip"
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        if: always()
+        with:
+          name: curseforge-release-or-validation-report
+          path: ${{ runner.temp }}/pack-release/
+          retention-days: 7
+          if-no-files-found: error

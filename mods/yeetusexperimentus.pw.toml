@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "yeetusexperimentus"
+filename = "yeetusexperimentus-neoforge-87.0.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "9117db8b5905abf18f64fdf8f8d8ca5a91c23abd0a7fa2c9986c21aa17d74e75"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 635427
+file-id = 5444189

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "cf-1689768"
+filename = "mezz_config-1.21.1-neoforge-0.6.8-standalone.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "182ad8ad757175b49d573512c8fac624ee526e8138e24b36f677b0f6466e20cb"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1689768
+file-id = 9048666

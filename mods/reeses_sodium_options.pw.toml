@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "reeses_sodium_options"
+filename = "reeses-sodium-options-neoforge-2.2.4+mc1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "e4c86cad7c86c3601261441c0282571dc6b1ebeb41b694c11eb58b2becb90b51"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 511319
+file-id = 8891797

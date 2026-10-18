@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "kiwi"
+filename = "Kiwi-1.21.1-NeoForge-15.8.7.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "f1222ac3773b2814d40ee6e77129bb27a29d82ec76d7a878ba23d3f5f9f8a392"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 303657
+file-id = 8423062

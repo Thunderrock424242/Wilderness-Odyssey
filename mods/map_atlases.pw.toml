@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "map_atlases"
+filename = "map_atlases-1.21-7.0.1-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "df61ef92809ce4627a5e4bd395d930997e0d3b4a0b9fa91d0beed5c23d127d6f"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 519759
+file-id = 8981424

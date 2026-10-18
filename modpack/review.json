@@ -1,0 +1,4159 @@
+{
+  "ad_astra": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "3ufwT9JF",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "be346a4fa3dc9e26528b6eef597cff90d52e86c9fa46ab2069c41967e2a57338e6d5f780ff8e80a8823e3199049f1e4e8ca13ddfa5292b65df75e4ee16f71ddf",
+      "url": "https://api.modrinth.com/v2/version/9pnKHdCG",
+      "version_id": "9pnKHdCG"
+    },
+    "sha256": "b8d1441e284db2e1e8ce5ffe739452633c90725312e476db8d8a0a4b64126856",
+    "side": "both"
+  },
+  "additionalstructures": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "TWsbC6jW",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "c1eb080713f50ff5c9431b7a2d73f5ef2ae8338f6e9e6483224e08bf3f99cf33962f64951e905a895574c791cb5d4494a09a46d41069c4d8da5a07fd39717dce",
+      "url": "https://api.modrinth.com/v2/version/Icuq1Ueb",
+      "version_id": "Icuq1Ueb"
+    },
+    "sha256": "0540b1b3ac7c1b93159278d8e3c924b8af371fd3be9be0501e5f478ca8f64e24",
+    "side": "both"
+  },
+  "aeronautics_bundled": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "oWaK0Q19",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "dc7e8e1148fa442243889ba29412207137e1bb86206e6c92bc0a589f1374a466e93de22bdbf14f753984d86c29308fbbdc0f14a4b9618b14c0ac1666a36b46f5",
+      "url": "https://api.modrinth.com/v2/version/44pLdPGg",
+      "version_id": "44pLdPGg"
+    },
+    "sha256": "a3f330d4757640f8715d991a43eedb826e4d0e51558d859c843ae6693bd35f1e",
+    "side": "both"
+  },
+  "aerowarptics": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8787426,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1659672,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/create-aerowarptics"
+    },
+    "sha256": "121d1e10fdce23695d9b9c4baebdde3b0feaf42e4847447f5fd78cbb3bf6fa2d",
+    "side": "both"
+  },
+  "aiimprovements": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "DSVgwcji",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "ded870e90953ea915d24ac4c81799b95b321dda39936cd4cd620302b48882141fa3b9f1af658bdc6c25dc48de003223b91f3669b69efcc92c8666a3983f0fccc",
+      "url": "https://api.modrinth.com/v2/version/dGNP90t0",
+      "version_id": "dGNP90t0"
+    },
+    "sha256": "795618769ff1ac782750be9e8faaf3e3d212f1687c3baab98c1282a98a63a41e",
+    "side": "both"
+  },
+  "alexsmobs": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "EmNhnNnt",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "9f57f20693bb187c54f6d68dc34592b87d0e55a5a4628ad097b0aa39afe165f4a834b83b6590d803e64bac0b1230a8f46369bfe45851a3cc964cf3d88f235277",
+      "url": "https://api.modrinth.com/v2/version/KSgki4uc",
+      "version_id": "KSgki4uc"
+    },
+    "sha256": "6e502855f79e4c9f2a11d560a9b88a3ab295aa378c44b0f0a0dd95f95d0301a6",
+    "side": "both"
+  },
+  "alltheleaks": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8943912,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1091339,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/alltheleaks"
+    },
+    "sha256": "c9b76623003dd05dda452d9ed42cb23623b09383fe9ac1efb41c46a3b69ff601",
+    "side": "both"
+  },
+  "alternate_current": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "r0v8vy1s",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "e7715d92987ad902f316ae657558a58e647b4f076d6962e6ac5b6bdb802755f1a37c2380b69002ce930b29dc02fe96989d41818462f7bc236c4ad709b0842480",
+      "url": "https://api.modrinth.com/v2/version/PCNyL6v4",
+      "version_id": "PCNyL6v4"
+    },
+    "sha256": "d23731fcb31cf561544fd7a97b0076b3abb42a0ece0631f86de9a1425fe046f5",
+    "side": "both"
+  },
+  "amendments": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "6iTJugQR",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "bc09b6ee63aae62faf3ad1c8f44aceb8b82b1e490e463f62608da7a210301e8fa097189ff1bed2a168e842ef2f1b2e6a967b26de709d65b4ef7ed8f8623c88a7",
+      "url": "https://api.modrinth.com/v2/version/83ntBcVk",
+      "version_id": "83ntBcVk"
+    },
+    "sha256": "7bc18ef0554ab305c4af7d1bdb60b0a45edec2a5d9aabf307dd7b26cf2ad2447",
+    "side": "both"
+  },
+  "ancient_remnants": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 9084406,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1668579,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-remnants"
+    },
+    "sha256": "b16154ab1899f815c271f1a4947082b60484eacb09d8fb05170fcd77f98d29b1",
+    "side": "both"
+  },
+  "appleskin": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "EsAfCjCV",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "f4ea46273e407334b63e262e2555c9a8204f7b5e60f23f272fbaa83ad9e88800e0ee186aca840710df2dbe0a18b37758695fef2ae1a902c10b3706e3de772937",
+      "url": "https://api.modrinth.com/v2/version/uAKA6Laj",
+      "version_id": "uAKA6Laj"
+    },
+    "sha256": "38b48dd6231341c9f964ce6e42c57ec866c6cc8f72bec938390a59bafb3922df",
+    "side": "both"
+  },
+  "aquaculture": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "Vl1uNAuy",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "532571f9a9d336d7da4b175f482c2d99c31f440841f9d20dd58137e1df3218180badd54d178559fdc0ac3e08ff94eaf3f1c4d133b9e60c66775971c0a557386d",
+      "url": "https://api.modrinth.com/v2/version/5pbz0ETj",
+      "version_id": "5pbz0ETj"
+    },
+    "sha256": "45f00f9059838b2fecc988861111d8b3d4613a5f1b3688a8dbfa8655751b85bb",
+    "side": "both"
+  },
+  "aquamirae": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "k23mNPhZ",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "e47d75ff50f1d7861749fc982360165c16aa3963a205879986cc23bfc571dbc7b9eed34b7a2dd18a777c7cbc97423aaa3aadd34ccb0be4cbd713fbaea02f8e47",
+      "url": "https://api.modrinth.com/v2/version/RSbxcVPE",
+      "version_id": "RSbxcVPE"
+    },
+    "sha256": "7e3fc759c2f801c4f2686ebd47efd9bf8d28130187e53667ab72d26f6d7998b3",
+    "side": "both"
+  },
+  "architectury": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "lhGA9TYQ",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "d9f7c3bb8162577dfb461ffdf04bd6a3563c7586934a0e2a744c14421beffb8286f0d88d4c758317003f20f99fe8072a39b9d675af061e036970d36db36027f0",
+      "url": "https://api.modrinth.com/v2/version/1IiqEQGl",
+      "version_id": "1IiqEQGl"
+    },
+    "sha256": "9cc92f2c09533fc5482c60f993bd891c655a0e32b637037cdcb7c2b23adedeeb",
+    "side": "both"
+  },
+  "attributefix": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "lOOpEntO",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "09e1ff6012d5b7bef7bb701d38feaaab41db4f2fc8b9f669b820fc2c91e53098e093e401062ad80a0ce249c68aa7a6209ac9ee341518b8f640bae2393b1595ae",
+      "url": "https://api.modrinth.com/v2/version/TyNITLDY",
+      "version_id": "TyNITLDY"
+    },
+    "sha256": "b2b20f3d44e824071284c14de3f4d3323d420e1c450040b339a5c37d2c382ad4",
+    "side": "both"
+  },
+  "autumnity": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "cRh6MJ6n",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "6d7afea7903b494465742e1def892edc35a86cd29d0c0c90f0b46249ecf63dd62bc52d44b71dc216a06972cd4d33ee956bfd73cea2f8a3a798ddf68c1d232327",
+      "url": "https://api.modrinth.com/v2/version/9jUNvDKx",
+      "version_id": "9jUNvDKx"
+    },
+    "sha256": "6f63c19610a973e1dc1ac67714c7aa6c54848d62d1099eed13853abc0e034104",
+    "side": "both"
+  },
+  "badmobs": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "2NEKo1EX",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "d1832adcbb36457d5ab0bfc452b073de533df8d3a0038d1310906f9a8bdfe2fe0a46560e7effcb647742b84dd76dca270c18e384dde3e4dbcdf8cbab4ecf9bac",
+      "url": "https://api.modrinth.com/v2/version/dXIUORLX",
+      "version_id": "dXIUORLX"
+    },
+    "sha256": "046886dcf78abc26bb6ec3a6f209a4326cd055ee40ef696d2572656bd5a8a3d5",
+    "side": "both"
+  },
+  "badoptimizations": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "g96Z4WVZ",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "2b66428bd98bd5ec0e09f2ec6af801cefb7b9b99cc4f0993daeaffe8d0ccc5ee0c2a73e9f38d4f92540ead0181704d2c9e946837ec05cf710fc3b20fce3b0cac",
+      "url": "https://api.modrinth.com/v2/version/S2qthD5S",
+      "version_id": "S2qthD5S"
+    },
+    "sha256": "22e2467892d3706f43d1cf2aa637785bb8601c20b0098a82ab956e6a8fc4d2ba",
+    "side": "client"
+  },
+  "badpackets": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server",
+      "note": "Works on either; retain both profile memberships without requiring both at runtime.",
+      "project_id": "ftdbN0KK",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "9f09fbb8fe9d98b3813bee81695f7eb36521deb94bd7804e6e96b130038425c7b2e1ae2072eeb8e8d70bf424a28468b63180dbf4136c0117d7cc607afc9ec421",
+      "url": "https://api.modrinth.com/v2/version/RNyYl9M3",
+      "version_id": "RNyYl9M3"
+    },
+    "sha256": "6e97bf8c2a66df484e8c100a1fc1b615b8beac70ec44f4c3bc07bb672dcd54c6",
+    "side": "both"
+  },
+  "bagus_lib": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "95nSN4Rd",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "2691acbdbc62d750472fc63518129b2a190c430e4f1fc59df8b000b33e650d5061f2050bdb3b9f655434d6b25fcdf60079bcb3b30374233d9c43c100d03c7db3",
+      "url": "https://api.modrinth.com/v2/version/VPif9tbA",
+      "version_id": "VPif9tbA"
+    },
+    "sha256": "0aab93450060fdd6fe2f9da8fae60b5b9ceb72b70bd071528b7afc3e547bd4c8",
+    "side": "both"
+  },
+  "balm": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server",
+      "note": "Works on either; retain both profile memberships without requiring both at runtime.",
+      "project_id": "MBAkmtvl",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "0262d51c0e931d10c3dccefb3b5426a1622edecab243d4b15dce07a23309641370184776739765067d292d808242d088c6fbf249762689824eff9ba42c2d1e63",
+      "url": "https://api.modrinth.com/v2/version/CquiaiDj",
+      "version_id": "CquiaiDj"
+    },
+    "sha256": "6be660e1f6d169553bf44f66d4f78bb9e96a1d66ce108d9608819e3ce6bfba34",
+    "side": "both"
+  },
+  "bcc": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "KJhXPbHQ",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "43f8817abd4c48f2cf2087332a84e9840bde232bc62f838badb241f31bbabaa68ebb0b6403875ea66338cf76c0e394f13fafdee3804a37462c04f0acc7dfcd81",
+      "url": "https://api.modrinth.com/v2/version/NYkU1ldY",
+      "version_id": "NYkU1ldY"
+    },
+    "sha256": "1ed1373aa54a486f19a0c68c7446fe39c227628e7f5048bff97917189307e7e8",
+    "side": "both"
+  },
+  "betteradvancedtooltips": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "iHLDc0eo",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "05b5cdad948d1735eab7a67a16aaf32814678c392014ec2ada61b8341c0ed1c1ac181cab1de9da3f2c4632592f4a1a5db254bd0543e6778897c8ccd260894142",
+      "url": "https://api.modrinth.com/v2/version/uPFbnD32",
+      "version_id": "uPFbnD32"
+    },
+    "sha256": "0f76d46f2f18eb67e67c7974170d7b27deb66473396461c8dc50d6949de1449b",
+    "side": "both"
+  },
+  "betteranimationscollection": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "OoOVj3J3",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "a5621c338526fe31d89688b2d05059f7ffd6881304f2db6254cb9c0cb8b30eeb01e8c2c48b1ec7f4e43150ab992531689d48a0f2e6e2465a1b2aa32e0fe5cd9e",
+      "url": "https://api.modrinth.com/v2/version/3sJ71XQz",
+      "version_id": "3sJ71XQz"
+    },
+    "sha256": "24098c81fb0e94d0bab9c4b33b6f776eb7da8320d7647d2c1a6429699a453154",
+    "side": "client"
+  },
+  "betterarcheology": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "zCh7omyG",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "c539aac7eee3ec51d55e9c053d4ad29ee467c9ef6d1206a33a15b7ad5c7937f684453f856ed304b657e6baa8bcc63c6fd56090c46d2d6ff1dcefd0f854a943c2",
+      "url": "https://api.modrinth.com/v2/version/zTMR6t3J",
+      "version_id": "zTMR6t3J"
+    },
+    "sha256": "b972bf4f95bfc48103a0f8e2112d565703cff2bd9cdb0f016caf159febb6986c",
+    "side": "both"
+  },
+  "betterbiomereblend": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "Xh8hkQmD",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "dbd8caa967f2537a61e4a8d199e6a55f27418db521d8a11f1aa77e1dcc02ea340f5077b12c4053114db886fa3b0f8168e36231c22bde292d388952f34202391e",
+      "url": "https://api.modrinth.com/v2/version/HZlLCOct",
+      "version_id": "HZlLCOct"
+    },
+    "sha256": "5f632bf837b9b3c28eeaa4182fef6b24634a492e793ca98e7ba1ec0ffbb11083",
+    "side": "client"
+  },
+  "betterdeserttemples": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "XNlO7sBv",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "6454c955f75f66104810e967a59ae032ddf1ccc5a854346af6bfba6e44cd456e755cd8feb1e0968be4e9132ea6c5d1cb2126fe5e85d3eb18c8d3ea3c81ffdf9a",
+      "url": "https://api.modrinth.com/v2/version/GQ9iNWkI",
+      "version_id": "GQ9iNWkI"
+    },
+    "sha256": "2c3191ad447092cc7873a06e92f16bd3e2ff9dc31e93268b8893d06dd89e1fd6",
+    "side": "both"
+  },
+  "betterworldloadingnf21": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "bmOyRapU",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "0ac39c0d03964d2414db161afd5cdcf6e7afa58095b83f4c40cf6fed2c3de060cb0bdf771901cf9cd6d0719951ecca6930ce17823f6632a059a454b840ca0cc3",
+      "url": "https://api.modrinth.com/v2/version/9Nm7qDaq",
+      "version_id": "9Nm7qDaq"
+    },
+    "sha256": "1f03ee49b48fbb9c138b0426437040408d26b64bc178c4fbac44dbaf90959bb3",
+    "side": "client"
+  },
+  "biolith": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "iGEl6Crx",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "49d225425627eca3b52514752ad297d39c571853a72f4e539c6e233a1289126fbb50593b01af2a782369e1aca55654e225ae25d494c3885baf6ed9fe212887ad",
+      "url": "https://api.modrinth.com/v2/version/EAjbdreT",
+      "version_id": "EAjbdreT"
+    },
+    "sha256": "ded9169efb903198046cf44cf91a290ec836ed83a28e29179087eb860e0e6ce9",
+    "side": "both"
+  },
+  "biomemusic": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client",
+      "file_id": 8318257,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 840873,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/biome-music"
+    },
+    "sha256": "ecdc9066ae9800ed2da0373fef73b4f24f0db664e357b05bdbbb8ec63e3af368",
+    "side": "client"
+  },
+  "biomeswevegone": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "NTi7d3Xc",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "6b6ec749feb595e8d01b2328a0f630a1e4280bdb804dc1e3bcb29c2ca3fd60911eb27a64cdda7ee0a4719192f154677f07bd261c605791c759ffb73799eeef02",
+      "url": "https://api.modrinth.com/v2/version/gAxM0bHs",
+      "version_id": "gAxM0bHs"
+    },
+    "sha256": "3195f394741510c3b51617f48d0fa9461284b5975e2f976857241f7f07792f11",
+    "side": "both"
+  },
+  "bluechunks": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Server",
+      "file_id": 9038854,
+      "note": "Author labels this a server add-on. Its required BlueMap dependency is dedicated_server_only for the exact installed hash, so BlueChunks follows that dependency into the dedicated-server distribution; no live-profile file is changed.",
+      "project_id": 1279218,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/bluechunks"
+    },
+    "sha256": "eade744f94fd59c1e17a37c00fbcf19b7af922cc0d8126ae9efe96d20ad08144",
+    "side": "server"
+  },
+  "bluemap": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "dedicated_server_only",
+      "note": "Dedicated server only; exclude from physical client.",
+      "project_id": "swbUV1cr",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "7332afbcd2389f846e2142a0937a85aec1a7c90b02876d396c701bdaccae529ef918adadca7c5e472b2f0fce2e7a614f1832f1579f310de8a4ba9b0a97114335",
+      "url": "https://api.modrinth.com/v2/version/8iJcPOHJ",
+      "version_id": "8iJcPOHJ"
+    },
+    "sha256": "827ac3921986d0d5e9c24ef2280f47c110d22dc14d284efb65330010d2e9517d",
+    "side": "server"
+  },
+  "blueprint": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "VsM5EDoI",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "0b523c2d53a56676286ddd13adbe65b1a24f5af6040dbec6af9a38cc535b7ba2531a1879afb7a496c407683eacbfbed22701053861a5fd12271b08ac93239db4",
+      "url": "https://api.modrinth.com/v2/version/FHOjk8Ez",
+      "version_id": "FHOjk8Ez"
+    },
+    "sha256": "698b2e901e371202a583c1057fa50bb7b2415a359263b37dc8e62d3b73ea8a74",
+    "side": "both"
+  },
+  "bookshelf": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "uy4Cnpcm",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "78d4577a8e8fbb241216968475dd73f5b9e5efeb7da802b18a4e6c290e49af6cb4a5676e9855d0d8ff3613f967812e4bd363bbb9196c17c954d19454f84b2214",
+      "url": "https://api.modrinth.com/v2/version/1sdJl7J1",
+      "version_id": "1sdJl7J1"
+    },
+    "sha256": "19e88d40da2b6a114c2b808f7fb469d96e66a5379df0a8a43fcb7834498b3e76",
+    "side": "both"
+  },
+  "burnt_coldsweat_compat": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "g3qxBQ0D",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "3f5b609bc3be7db5e4105e4306d1b90689a8329e1b4355f2ff3918ffac7e463204c4d6fc4dcfdd610c11714b41b4e9d9de90ecfc66d0539c03439b2166596d60",
+      "url": "https://api.modrinth.com/v2/version/oAm5ulIO",
+      "version_id": "oAm5ulIO"
+    },
+    "sha256": "97c85e7a642ac5ad84f5456889778621ef827149a15f920ddc3a47851a395ca0",
+    "side": "both"
+  },
+  "burnt_combined": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8994537,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 998916,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/burnt"
+    },
+    "sha256": "b7d78fc3398f6d2c143b3b9811ff39435be488d20ce6bc4f93e141682cf9de98",
+    "side": "both"
+  },
+  "butchery": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "6YfOmC9t",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "1857f86114ea5de368425a863d44b2803504bee06104beb8bd832c4e77199d8e9f72fb1da7e00b9da2dbc5e3ccf742d59f26aa960a80a4707e9caa7e3f3db1f1",
+      "url": "https://api.modrinth.com/v2/version/ln41xz3j",
+      "version_id": "ln41xz3j"
+    },
+    "sha256": "4a92a2c90e8ad47b030cf76908ce32e8531a8b42418036c66221312f77339a6e",
+    "side": "both"
+  },
+  "c2me": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only_client_optional",
+      "note": "Server required, client optional; preserve installed optional client functionality.",
+      "project_id": "COlSi5iR",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "c7c485d856fa0118694ae8484e85a714db92ce7886195dbc355257d59d4254da2ce537ac18da8e05c9786c3a98f70cc5ffdfd089ad23b6822f854d72f3caa62d",
+      "url": "https://api.modrinth.com/v2/version/avwWYPbG",
+      "version_id": "avwWYPbG"
+    },
+    "sha256": "ba33f46c615192494ad1c1ede8a85a1a884736eb4ac5b8bb24b357deb0692809",
+    "side": "both"
+  },
+  "cameramonitoring": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 9192994,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1686878,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/camera-monitoring-fully-customizable"
+    },
+    "sha256": "61a13b63b430428708077f0a27b05cb1f6efd5d52f5ad166cdf246951be185d7",
+    "side": "both"
+  },
+  "camping": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 9205308,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1072398,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/lets-do-camping"
+    },
+    "sha256": "70de024c061cc97f6076f672f5666da2adfe84a9f51e717dd2218ca76ed8237d",
+    "side": "both"
+  },
+  "catalogue": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client",
+      "file_id": 6926815,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 459701,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/catalogue"
+    },
+    "sha256": "b3c958772c61354fccf04b52264f2e398c8bf9a28d192d675bf82359b647ef43",
+    "side": "client"
+  },
+  "cbcaeronauticsmissiles": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8746555,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1654531,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/create-simulated-missiles-create-aeronautics"
+    },
+    "sha256": "5e401ca48cec71341a1121092132a7720b908ccad945f286a7b8347de76de4e5",
+    "side": "both"
+  },
+  "cf-1689768": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "7tEfOcA7",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "ed5ff5acf441ae2a9d2ba7ccc59e9394f4cf1e0f14802dd2ea01e9cd60c3cd412039d12f68297b3726eef63a8a85e6f4340bd969dbd1ab7e1ddc7aef88992e6b",
+      "url": "https://api.modrinth.com/v2/version/idpM3DKC",
+      "version_id": "idpM3DKC"
+    },
+    "sha256": "182ad8ad757175b49d573512c8fac624ee526e8138e24b36f677b0f6466e20cb",
+    "side": "both"
+  },
+  "cf-351264": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8335665,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 351264,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/kotlin-for-forge"
+    },
+    "sha256": "095aed94f21b4e55895b21ea957750ae3ab829fbcfc6d3c66a3489f5f1128d46",
+    "side": "both"
+  },
+  "chalk": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "YWGP4Y1d",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "dac534f0af3ee587e7b9f010284f387ebe871e0c7c7dc8ce5b3d235e5fa00e245eaeb9533bb6109f02f7eb90d4de9510d34fabe014ad0dd6c873ea94c6786e74",
+      "url": "https://api.modrinth.com/v2/version/c9La5ZxO",
+      "version_id": "c9La5ZxO"
+    },
+    "sha256": "8a2772c5df0947ae96a543cd492a0308c53814d0522a9dd213e52d73ca2e1a66",
+    "side": "both"
+  },
+  "chatanimation": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "DnNYdJsx",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "b7076df8c26414d2d564b5bd0d1447e5b1b83e120f5bb807b0deebe9fe2c9a7a08c10a45bd7db5bba2f10fc73ac5fd06456d94702ca0c113246164ebd271d896",
+      "url": "https://api.modrinth.com/v2/version/ObpFSVJe",
+      "version_id": "ObpFSVJe"
+    },
+    "sha256": "94cdd57cdd4d64d60b51e31eb80d9f56e1fe841e21bb75e7f67d76fb5694694a",
+    "side": "client"
+  },
+  "cherishedworlds": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "3azQ6p0W",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "b8872d92472417c15ebf91bc9772223653b5d2f5b1f4b9a5d43f4a400cd711204e5a7c07d06721c10d0f527f937e9a8f36684dd986af4a6d6dcc9fda76b3ade7",
+      "url": "https://api.modrinth.com/v2/version/o5lwJaRU",
+      "version_id": "o5lwJaRU"
+    },
+    "sha256": "73a352263e4d21dc4eaa9d52b31f949b896c507aec373e4218b0942fff8f73a3",
+    "side": "client"
+  },
+  "chimes": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "mjGOuygR",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "d4b689f2e3e3f2ff1fb94de5a672c9d06a8198f589ba18b847094fb78cc9236ee3da501b607ea1bbf227cbca80a1e34feb08dc242ccef9313613d9b093b48042",
+      "url": "https://api.modrinth.com/v2/version/KIYfGvje",
+      "version_id": "KIYfGvje"
+    },
+    "sha256": "83b83b60bb40f34b2422d785ca40e287eacb31a1fc3a4f9564ee9e7c3dcc283b",
+    "side": "both"
+  },
+  "chloride": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "yD9qW65f",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "dbe315d2e86275b503c71673440f7da97676f6c68893673ac6a9df6bd6cc51567b775fb5cf1bf78adb7aaeb850617821b639256d8abbb1084ed6bf7be654e0ef",
+      "url": "https://api.modrinth.com/v2/version/IgWRdE2d",
+      "version_id": "IgWRdE2d"
+    },
+    "sha256": "d0b0a80a241078f917afb96e53821d7c70c38faebaca9adee0c86a9a8cb482c1",
+    "side": "client"
+  },
+  "cinematic_respawn": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "CFJWaa89",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "75702593284a45d291e88eae0e86bb0f3ba604bb58346ab7817cc4db3553c4bbe23a57b4cfb342fee13e15abd3af4a808b3af04fa63b72509a5b87f7a2373a47",
+      "url": "https://api.modrinth.com/v2/version/M5j8LrcQ",
+      "version_id": "M5j8LrcQ"
+    },
+    "sha256": "2ffd8c8653836f01561ba23fe29555c6b945e434612ba952cf21f69b0737ca7f",
+    "side": "client"
+  },
+  "citadel": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "XjY0RcQj",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "81fd425d8910da30d9ce130213e518ed3acf6d6b63c98396668126e17f99f4d8e17348de7f6147ed3639ca59a3d3d79e1f0d78937972732fda04b7ac8a886547",
+      "url": "https://api.modrinth.com/v2/version/mIylVpkN",
+      "version_id": "mIylVpkN"
+    },
+    "sha256": "9e12468c49e5a95b7adbf22b3b4d05bc55565989b89c40b985cd73bdfe63c3c2",
+    "side": "both"
+  },
+  "clockwork": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "h3OPQqBm",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "44c1c9c388836410a72be7a658dfb0ef7130ec5bb0dd726db75a0e2e3704f58c327d0b9d642fc87afd6a672e5c72ee27b70d4edb1304c098e5e8f79e37a21dce",
+      "url": "https://api.modrinth.com/v2/version/DxUqeFE6",
+      "version_id": "DxUqeFE6"
+    },
+    "sha256": "015f2f9b210f41db9ec0d0bb868a3dbdfd51567e0c1904a7ce85d96341a99848",
+    "side": "both"
+  },
+  "cloth_config": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "9s6osm5g",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "aaf9b010955b8cd294e5a92f069985b18729fd5e2cf22d351f1dff9680f15488688803ec41e77e941cbde130ceb535014ca4c868047d80ab69c2d508e216654d",
+      "url": "https://api.modrinth.com/v2/version/izKINKFg",
+      "version_id": "izKINKFg"
+    },
+    "sha256": "65e722e0d98431a07c45f8bdd8d529a217cc8c175fde1740248bd5c1b4f3c0d4",
+    "side": "both"
+  },
+  "clumps": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "Wnxd13zP",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "314d8d8e640d73041f27e0f3f2cad7aad8b4c77dbd7fb31700ef7760362261f77085eed5289555c725d99c3f47a114e7290cd608f39c9f0f12ef74958463bdcc",
+      "url": "https://api.modrinth.com/v2/version/jo7lDoK4",
+      "version_id": "jo7lDoK4"
+    },
+    "sha256": "b524ccdace2ef8fd19f5b2074f7de1103ac5065c52553f064c00e098346c293e",
+    "side": "both"
+  },
+  "cold_sweat": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "uXhSmPjd",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "0c15037a29301651d644554e55bcba5ce90d71f76d15addd1769e3a823069682ef1efa92338ff880a40d476cd0d7502b9df5743530dc87793949b0a0d62c50ca",
+      "url": "https://api.modrinth.com/v2/version/UGoodVYD",
+      "version_id": "UGoodVYD"
+    },
+    "sha256": "d61bb1bb92f81a64834decb69d655265a94af5cf656da41426ce1b486ddb33c8",
+    "side": "both"
+  },
+  "coldsweat_altitude": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "uicjJQyO",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "9843d94db706f8fc076185ec560c2a491e929901b91ac98eb7e0168cf8c7051c3c5493448b89b6cd679da885667998d0d1958ac7746f59ae933295dd46096ef5",
+      "url": "https://api.modrinth.com/v2/version/fLWjJt6n",
+      "version_id": "fLWjJt6n"
+    },
+    "sha256": "98e73aece61d474470b1900a111d9f6e66f1d23a05081232ab6b6aa394262dbe",
+    "side": "both"
+  },
+  "colorwheel": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "BzHgFoGz",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "1d2088d41f57cef08b8b9692a5f95427c34cf218e0e0fe20bc335e7a5cab9e37cea414b786070cc29947fbbe9e9dba1a4134f722c35b9ccbef60e2a075e352aa",
+      "url": "https://api.modrinth.com/v2/version/8rq5KP4U",
+      "version_id": "8rq5KP4U"
+    },
+    "sha256": "3c7c1f91b1add47053f40a58375de492b87ce83309be378527f100cb842c07c0",
+    "side": "client"
+  },
+  "common_storage_lib": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "RgLrNK7l",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "e4e2a7bc066c9032c0172428b1012fdd3b0dfcb75ee11bf044db61318906b61d3dbd0ff84a4f4b50403da5fdad4b349d65e02d4be48c55551f0da7ed993e27ff",
+      "url": "https://api.modrinth.com/v2/version/SCkdlli6",
+      "version_id": "SCkdlli6"
+    },
+    "sha256": "921bd8d255a65b5e21a5c74aa661d1ea4ed034febcfbb5939da054ce08f9d109",
+    "side": "both"
+  },
+  "connectivity": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 9008904,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 470193,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/connectivity"
+    },
+    "sha256": "d2f7cecb93199139c4ff783161c4b9ec106589f72bb3febe85349178e7547cf3",
+    "side": "both"
+  },
+  "coolrain": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "IgftU6Mn",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "bd463f60ac2ab9f22bc7b7c35656e3e174b2db5bde95f3c7d404b07f085bdbd550774e9bf7ff81310a0f4eea5348398d2a8f617a1d1644db6e38c8eb83245328",
+      "url": "https://api.modrinth.com/v2/version/SwSSfJQQ",
+      "version_id": "SwSSfJQQ"
+    },
+    "sha256": "8c2c6070b41509b68a5b32fe0881a9d21393bd737d58aa6b45c7d96e2ae66fec",
+    "side": "both"
+  },
+  "corgilib": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "ziOp6EO8",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "38107fc4823b54dee5107abb916231f2a9b18a1ae2947ed4c4d9e1af68e70cfa6d8a84019633074bcba478541b9723a9ed26abfb2e14b28b716180cf70efbca2",
+      "url": "https://api.modrinth.com/v2/version/Za7PInLk",
+      "version_id": "Za7PInLk"
+    },
+    "sha256": "ae720bcc5bdff1483b0bfc7502ff885b5f27e4aaef920ba23c0f6d012c390f82",
+    "side": "both"
+  },
+  "crash_assistant": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "ix1qq8Ux",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "43d4f453e346df095e494eac6b2a3adbdaf6c679e32ab88c88294db1414e3d747c0667543a0c9be57f45837504dfeeb2af15fe57ffdf3d0f1c968482ed6b6820",
+      "url": "https://api.modrinth.com/v2/version/18SR4EJw",
+      "version_id": "18SR4EJw"
+    },
+    "sha256": "42f582333ffe61366e68a9320d3c205153f2fdc5b53ad715b01543f85828e6b0",
+    "side": "client"
+  },
+  "create": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "LNytGWDc",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "11cc8fc049d2f67f6548c7abfada6b82a3adb5c7ca410a742de04bbca76e03862c518721b88d806f6e6d768a4d68531fdb903a85859b25d1484d550cc7bafd4b",
+      "url": "https://api.modrinth.com/v2/version/UjX6dr61",
+      "version_id": "UjX6dr61"
+    },
+    "sha256": "ef87fe5709f1ba1f5b8bb20a2925b5afb4669e178fd6d8bf10c167759eefe37a",
+    "side": "both"
+  },
+  "create_bluemap": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "W9e7rf1y",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "b860dcbdab791c4bd2c8c6ef118e17eb2be422c0251b1c6ca0f2edebcb7d327edd894fc54f5fc9072fc7b8cb936c5d0d1fe844b6d24491043180e3a4363d00d8",
+      "url": "https://api.modrinth.com/v2/version/B1EqQDIC",
+      "version_id": "B1EqQDIC"
+    },
+    "sha256": "1dc287271f7db558146e4473954f204f526f368259a274d5df0a67e953b66050",
+    "side": "both"
+  },
+  "create_cold_sweat": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "Arx7g8V4",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "738b939c9bceae91282b00e029f702ca3486ab433a1b69754a74784b10526d3c28db263f7ade947152c0c129ff321169e1ed32fb422572308567ab83860bc418",
+      "url": "https://api.modrinth.com/v2/version/4B4BwhGn",
+      "version_id": "4B4BwhGn"
+    },
+    "sha256": "7b9260cef82a343e68c7fdbbfd8a955c1cf3bdf1f52b09989ca7971e3cce1224",
+    "side": "both"
+  },
+  "create_ltab": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "fUa6OtBG",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "05d2c6df728fbfe8d3522ffd88be492be5dfa6f06c806dc1f6d948afff39455f695add1edbb38fee2ed7f197668d13b5d72909bc60192c40d94df3ff0048d138",
+      "url": "https://api.modrinth.com/v2/version/dQQazoxf",
+      "version_id": "dQQazoxf"
+    },
+    "sha256": "d19e9de5496ba79dc8de7688adaab901af98c3b9281aae723d29ec97a2cf4d11",
+    "side": "both"
+  },
+  "create_pillagers_arise": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "VT2rW2wr",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "81405f806b400c11b6052e35212923935f5e1052c8b0068f33794ea754c6b50ff658c8ec99b8eab7bd26c517b5f8572c07c8429e6391fc01066ea065c7adbee8",
+      "url": "https://api.modrinth.com/v2/version/dSpuz2DS",
+      "version_id": "dSpuz2DS"
+    },
+    "sha256": "11eb7465055bd389618a5965ad588daa08f765fbfc33f3a6e8ad1f42a0e6251e",
+    "side": "both"
+  },
+  "create_radar": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "BLu2Yqfq",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "9ce111ea7e39fe979a6d423766820bbdd8c7e61ecf72db35b94539330aadc0cd45b5eed469ef4bbfeb36b1c558209e048019f5a4a253b43f3b6b3bd4fbc8ac63",
+      "url": "https://api.modrinth.com/v2/version/AntNFNAx",
+      "version_id": "AntNFNAx"
+    },
+    "sha256": "4554359fee389b1c255b4cef23ac41e978b2a371cec9e952185f4ec0a90ee930",
+    "side": "both"
+  },
+  "createbigcannons": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "GWp4jCJj",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "24f414dfbb973a0f4d9c9b2aa059edc7bed4d23b4f39eb1f7d23a1d6b437e3b5d64cca6e4b85ff7eb2815743fa711d54ad652bffe96d1eb1234544716006440d",
+      "url": "https://api.modrinth.com/v2/version/bOiDu0LS",
+      "version_id": "bOiDu0LS"
+    },
+    "sha256": "ea017ab94637032d039899d88404838d173fa0e6286657cae6a6c3af459e87ca",
+    "side": "both"
+  },
+  "creatingspace": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8882869,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 858897,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/create-creating-space"
+    },
+    "sha256": "b80103cb546fc83aae2669e1906356ea87b587f59c437d8515e1cddd125f9be5",
+    "side": "both"
+  },
+  "cristellib": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only_client_optional",
+      "note": "Server required, client optional; preserve installed optional client functionality.",
+      "project_id": "cl223EMc",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "6d21ceb6cd91e63a248251ded3812208ed5ea4f36abb11e8c6e16aa119a95b0e714f59ec7689ae1b1248c9831e5e3e63aa681aa7dfa9b220d93741118466cbd6",
+      "url": "https://api.modrinth.com/v2/version/Sduz0AWP",
+      "version_id": "Sduz0AWP"
+    },
+    "sha256": "11e05dbc97bd3fe1790bd6361747240e314c1dbf40b590ea20cc691dc8396c38",
+    "side": "both"
+  },
+  "crittersandcompanions": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "Yd4wb5wZ",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "f93bb48b07122d1c93cd931169752814c46f2ed964da987ab5ce654e8f70242c57265c3853bbb357f5fd95c412e775bf7b9a2abeb2a2a0858eae95c8d8ba451d",
+      "url": "https://api.modrinth.com/v2/version/aeDUpTJS",
+      "version_id": "aeDUpTJS"
+    },
+    "sha256": "bc09d4e9996fae2c17092b3f58e2cc6ffe49d176e7cdf06495eeb4ac9a85b5dd",
+    "side": "both"
+  },
+  "ctov": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "fgmhI8kH",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "174125e619f935ca016efaf7d6794edc57fae39ca02295ce63618ae2b286535e4da2084fd7f0ff9506c32c0ea35ceb68659bd646f65e6fbadfdb8fda299dc832",
+      "url": "https://api.modrinth.com/v2/version/ztzRUnQ7",
+      "version_id": "ztzRUnQ7"
+    },
+    "sha256": "4815b19b83541f09cba556e222612bc5ddcc31f7c4ba2198f4b4d6376cca8b2e",
+    "side": "both"
+  },
+  "cupboard": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8889050,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 326652,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/cupboard"
+    },
+    "sha256": "5162922647fe07c7b9f446870915b57ddd0ae9dcf56b243611130fea30f2f77a",
+    "side": "both"
+  },
+  "curios": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "vvuO3ImH",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "5981a267686b744e7e3c227f78cbcd5267c14ac6979a28e814695f4589273998563147207fef4a5cdb7cdbdc39797cd95d9e4abadb55869f18e02a38d0654ae5",
+      "url": "https://api.modrinth.com/v2/version/yohfFbgD",
+      "version_id": "yohfFbgD"
+    },
+    "sha256": "a45df2125c26219974aba7507ffc9afe7b83acc941a386af3faacb1cc0056fde",
+    "side": "both"
+  },
+  "deleteworldstotrash": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "7diJQfvM",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "09c172c0ba06e1f1af494293a77fc1eb8ad34a7e6a23d853ac9565bc3f6da4949405c6b6569416ee06c0d83dc25659b358942115ac20d128d63997217c855ed1",
+      "url": "https://api.modrinth.com/v2/version/vJUUjK3C",
+      "version_id": "vJUUjK3C"
+    },
+    "sha256": "4f1cec74c509f6fb2146797fa6300a297d6796674499883157927c67a4e6e550",
+    "side": "client"
+  },
+  "deuf": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8197124,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 296646,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/deuf-duplicate-entity-uuid-fix"
+    },
+    "sha256": "96fd494a4ee0f89c63b49ec8b7ca2ed615b08374d7854d08ef3ce85febc8f291",
+    "side": "both"
+  },
+  "distanthorizons": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "uCdwusMi",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "d14b32d3fd143a06514d6ad388eee11e9d657c84e1a937aaf8d033b1137fb43ef8b05cff1011a994cc42f3106823c51234f8bc18d72bb05bc317a20ea83c50ed",
+      "url": "https://api.modrinth.com/v2/version/9w34y8ai",
+      "version_id": "9w34y8ai"
+    },
+    "sha256": "864e70def5b0d54d619b940b66bb2784e91d3f3fc253064fdc1b3fc5786cbfab",
+    "side": "both"
+  },
+  "diversity": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "31qnTHav",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "2a06651bb58197cb647c6e0a35668c9e78127fd3a5cf8dcc37ef6e4395d855136248b269408b34aebfb414fe5bd5d72af90ba3acbb4978dad50ade4ff49f102f",
+      "url": "https://api.modrinth.com/v2/version/5Z0d6gj0",
+      "version_id": "5Z0d6gj0"
+    },
+    "sha256": "39da87a4c78b8ca3c4dc64c263d3889bf3cf36ecb74dccb426e35024043784c2",
+    "side": "both"
+  },
+  "doespotatotick": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8405504,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 825355,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/doespotatotick"
+    },
+    "sha256": "86ef49be076782fa70bef9a2984da11e4e7f6238a840d4f29c09aa945777bf55",
+    "side": "both"
+  },
+  "doggytalents": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8726874,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 694492,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/doggy-talents-next"
+    },
+    "sha256": "9ab4d538634aab3c65e3ea3ade1aa2ce7b8cf1fa726c117029a4c0f12c787f97",
+    "side": "both"
+  },
+  "duplicationless": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8646414,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1380105,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/duplicationless"
+    },
+    "sha256": "ca0ca19a49fe49e53bdd6a034ace47c1c99440bd2b5e5736ae53401708625487",
+    "side": "both"
+  },
+  "dynamic_fps": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "LQ3K71Q1",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "8eb18a280b265e598540306275b51a165836f4b14c6c703b6ced11fcac50bfab439e4deb69e222f62614a9f15fa0ef58e5bd84e20e37ae57755d9c2f8b134057",
+      "url": "https://api.modrinth.com/v2/version/T238FZpQ",
+      "version_id": "T238FZpQ"
+    },
+    "sha256": "78cb67c9faeff5d1cb4da48d41e48ecc47baddaaec0f792e6edc8207aee0ab8e",
+    "side": "client"
+  },
+  "dynamictrees": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "vdjF5PL5",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "1faa5f292078fbae45fd8ee9873d22e13522a883f6650e71d1f4755ccfe5c363f606e0d4dc422384553483043883002136921ce5efb544c70d412affb2da076f",
+      "url": "https://api.modrinth.com/v2/version/G4uJ0UA0",
+      "version_id": "G4uJ0UA0"
+    },
+    "sha256": "ef94737b99e68a0b489b56f901fcc71a3ac8e7a16e3a22ac8413c5f66df566f0",
+    "side": "both"
+  },
+  "dynamictreesplus": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "qaO9Dqpu",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "e5ccd43fb43c6d1417fcc070f87a15a606ed062415bd00e72a8fb8ea30b195f5a23f5629e17844e232368653f0cd2bfd48d77b71aedd46fe64a92e7e7c731a76",
+      "url": "https://api.modrinth.com/v2/version/LX5fWOvU",
+      "version_id": "LX5fWOvU"
+    },
+    "sha256": "90d0404b3d312bdac8b1133b2ea296e1204d4660937dd37227083ce8ebb91bbf",
+    "side": "both"
+  },
+  "earthmobsmod": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "XXnAl6q1",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "0d7f4c0db79d033c1a498906cd665e753352833c6d153311400a619b2728484c8e7d70ed4a64fe86c149c289b9a4546ea1c02aaa1392367b2277e90ec5bfc0f7",
+      "url": "https://api.modrinth.com/v2/version/QXrDOYiN",
+      "version_id": "QXrDOYiN"
+    },
+    "sha256": "ff65593922c56dfc982737483022f46606f09cf0d23c5c096dac8fcc64734605",
+    "side": "both"
+  },
+  "eclipticseasons": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "ofdM7yJE",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "5814ccc7832020a51198aa32ff1ef25008e258390e28be6125726ce35ef08e9be10e7767c0e0886ddf593ef5716d12362e19e413c6e528614ffc8bcfb4130836",
+      "url": "https://api.modrinth.com/v2/version/VbM6gfHE",
+      "version_id": "VbM6gfHE"
+    },
+    "sha256": "c8e0f2119bb272efa1a281dbcfe32929ca85a0f6ea4337cec4de17c21b8a57f4",
+    "side": "both"
+  },
+  "eclipticseasons_bundles": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8980702,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1449802,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/ecliptic-seasons-bundles"
+    },
+    "sha256": "2aa474f78321fe6c89dc71e4fbf76cbe58705c6c0a5299b41338d6f2aabe2d17",
+    "side": "both"
+  },
+  "eclipticseasons_multimodpatch": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8813347,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1316748,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/ecliptic-seasons-multimod-patch"
+    },
+    "sha256": "45f7b189544562bf4bce0a65f30b8172630313f4b9d180b93189b53c9eb7ac87",
+    "side": "both"
+  },
+  "ecologics": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "NCKpPR0Z",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "eb62eb7e7838259c6494d3ee64854f4bd78029dcc39eec434f1e7be3521f73223a8a3bd994623512477132d6c54045576231fd7772161b94602f72bba3003599",
+      "url": "https://api.modrinth.com/v2/version/ihEiqSv4",
+      "version_id": "ihEiqSv4"
+    },
+    "sha256": "1fb3ce04b425018154a63d8719bfcf1418734ea7e36b71bd10e7aa0c773cbeae",
+    "side": "both"
+  },
+  "entity_model_features": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "4I1XuqiY",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "b18bde755c6719c62579d65c96e6e768c99b25fba9f987dc843b2a64ce4d713ba2f8151da4a98efe76d854550f40356ac4fdfa952568cf1fb11771353dfc70e8",
+      "url": "https://api.modrinth.com/v2/version/197m3VoU",
+      "version_id": "197m3VoU"
+    },
+    "sha256": "3ba0bf7b487660920d12cc0ff6cb5de1763f024a080fe0cd7d64e1c8e0f7f190",
+    "side": "client"
+  },
+  "entity_sound_features": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "IMuO8COj",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "da1c5fbe0217b05cff471bcb5220b31de09f8f5e5259ce0a8493c4af470a29e4e2a6b560c5b50f1bf2d7009f30e411d84faf00e6607c597b6cba4bcd293199d4",
+      "url": "https://api.modrinth.com/v2/version/eafVUs7O",
+      "version_id": "eafVUs7O"
+    },
+    "sha256": "d139dc128d1aa0c234b6b19b26e9f04f7545af5d6b41e4faaac00d806ebab8cf",
+    "side": "client"
+  },
+  "entity_texture_features": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "BVzZfTc1",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "0e349c235b509de605ef4175a60e87ee78eab208b554ebc1dfa756b18ab2b531ce4641bfdc1c4542cb3c24d45b81698ca1413fcd001d589d82cbad6cea346f46",
+      "url": "https://api.modrinth.com/v2/version/lwNx1nD1",
+      "version_id": "lwNx1nD1"
+    },
+    "sha256": "b47173468febc21bb565af19a82bcd2f851e34ecb333660cdc48a8c37c27c1cd",
+    "side": "client"
+  },
+  "entityculling": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "NNAgCjsB",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "93e83dd690b91d610be29451b34836c9daa7e08bd952f88ffa07c62d8774bbaac2ff0c6768d2cbf1b14f47d0b86f98cef9fd341e0d29bd37207eaf4aa2abea63",
+      "url": "https://api.modrinth.com/v2/version/eieYbWYb",
+      "version_id": "eieYbWYb"
+    },
+    "sha256": "fa73ac70a3766568203b730a1573b4b54d88fb48dff4a33d8c4a80be9b8d17d5",
+    "side": "client"
+  },
+  "environmental": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "OqtiAZcV",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "49916902409b58fd2866d5a142259a2e49b2d6199292e8c91df3f7b8aeaf51326a731a04c1e7330295409f32a1410d917ff6c34dc1d759e40a78ca8d05dfcfa3",
+      "url": "https://api.modrinth.com/v2/version/NdDV1AM8",
+      "version_id": "NdDV1AM8"
+    },
+    "sha256": "d0578ab961461bc25ee59d86c44f3b90565e4782cab431dfd897f50080d5988b",
+    "side": "both"
+  },
+  "es_x_bwg": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 6999824,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1347591,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/ecliptic-seasons-oh-the-biomes-weve-gone"
+    },
+    "sha256": "ab75f655737e28943049f604db8cf5c44e07b239971e775c93c42aada52f493a",
+    "side": "both"
+  },
+  "es_x_letsdo": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 7047367,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1356039,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/ecliptic-seasons-lets-do"
+    },
+    "sha256": "b945cfe15061015641e76a3a1c5eafaf4ac6adbf4c26a3e5e9957727fc4c05b3",
+    "side": "both"
+  },
+  "es_x_ru": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 7031081,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1353228,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/ecliptic-seasons-regions-unexplored"
+    },
+    "sha256": "7807d7d521d6e09b49b00028576d510dd3adb1e54d4db20fc76c210ffc68434d",
+    "side": "both"
+  },
+  "euphoria_patcher": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "4H6sumDB",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "19e5528f6284f68d28e9e8b17a9531bb0f8e0ab862e3ab93a1b53fe3f18765cfa38cc512e66c2d4b308e6783307d132e8b5c337db4a39b016d75e6830376070a",
+      "url": "https://api.modrinth.com/v2/version/QMsRXtSJ",
+      "version_id": "QMsRXtSJ"
+    },
+    "sha256": "fe64a1fad6b6f39a95f22ea6ba9506b712e36b96c46b80f1cf38fe144900a4b2",
+    "side": "client"
+  },
+  "expanded_ecosphere": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only_client_optional",
+      "note": "Server required, client optional; preserve installed optional client functionality.",
+      "project_id": "O1XGs7ps",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "082878bc17391f48bb0243261904f9d6c2699766766c8ca3352b1b0f1498824efd25d1123abb1dc44b7f602d496ec4691eb2af5b54f5cdc6ec84ca43b9d6e7a8",
+      "url": "https://api.modrinth.com/v2/version/IWfNhdRG",
+      "version_id": "IWfNhdRG"
+    },
+    "sha256": "025ef57f3035fb60e43aa78024bf70514a5d1ef5df47874b31ea983275c3e60c",
+    "side": "both"
+  },
+  "explorations": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "pcGnjJ39",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "d724521755fc5d69bbf1e79da67d1b2db4c0aaa521dcf3775d77367187919c8492d5886e8ee87dc3723b6dd55e9e662247dd69cd067038c88bd4f5820007f7c1",
+      "url": "https://api.modrinth.com/v2/version/80TuK1jb",
+      "version_id": "80TuK1jb"
+    },
+    "sha256": "0765ca3d3beab2cad003c32be7a5d41e64e53af357c7d43c807d6786e9ff41f1",
+    "side": "both"
+  },
+  "exposure": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "hB899VmG",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "b6b18638d61196c3b579dcb5cd977b125586c848822ffa3bb247b3d34dc019e3ca53629303cbb57c0875f7e29be30ae036e81d90dd8feb5dd87090b2b81c08b7",
+      "url": "https://api.modrinth.com/v2/version/iBvaR6AK",
+      "version_id": "iBvaR6AK"
+    },
+    "sha256": "c3579a314f77a9368c8312a1ace1dc8d510590869f7589b8ab3df24c42adca2f",
+    "side": "both"
+  },
+  "exposure_expanded": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "61XQmq6p",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "93d8a04ae248afc61b7da6efa512dafeb530d43bb4676cefe6bfd084feb9eb8164e81c13d09894f7247349b5618ffa050ead5b52019f79f3f9bcce670a6aa464",
+      "url": "https://api.modrinth.com/v2/version/jXl8swWT",
+      "version_id": "jXl8swWT"
+    },
+    "sha256": "e56f4e93fe48e97cd37c0e63c82622b8fe75c1f272ac033ec2f3e3cbb8ba391d",
+    "side": "both"
+  },
+  "faewulf_lib": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "q4N9H96q",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "3f2c5adbd926719e6dd0e11e5dbfaff5fb87cf21e2af9e8963b354431c673742dee5eb3cd68858d640e2bc91f84e87ea93f02df00199a23d1ea3c9a7422549da",
+      "url": "https://api.modrinth.com/v2/version/GMRYipxG",
+      "version_id": "GMRYipxG"
+    },
+    "sha256": "c333a8f91acc5b4db6658e1de40b5039689f0dd5a46588ebae32b638705637eb",
+    "side": "both"
+  },
+  "fancymenu": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only_server_optional",
+      "note": "Client required, server optional; preserve installed client and optional server functionality.",
+      "project_id": "Wq5SjeWM",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "57ea23ab4424217770025a9447f3990fa39befdb51ac99d7e6bcde4bf7d926b125ceed824f38e7cf504e389bc0d30edb3a7592b47d4763516c9cb0ef4ab2a9c3",
+      "url": "https://api.modrinth.com/v2/version/P9dDosz2",
+      "version_id": "P9dDosz2"
+    },
+    "sha256": "92f74ef89381ea1f74e1145feab6db4ce4638804b1fb43622302d0a647fc0a66",
+    "side": "both"
+  },
+  "farmersdelight": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "R2OftAxM",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "1f6f8796469f747cff36f477b4f589a3d69613882399f9ee7f86db36c7bca9aa4828731f43db15dc6c7f5a4c1bbe3d4092a232e8cef010b09cec0581848fda90",
+      "url": "https://api.modrinth.com/v2/version/XTVZDOol",
+      "version_id": "XTVZDOol"
+    },
+    "sha256": "139ad7696462c89c03eea463f805abffa552526c5dadaadae221dd9624cb197c",
+    "side": "both"
+  },
+  "fastsuite": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 7527945,
+      "note": "Author's linked source is Shadows-of-Fire/FastSuite; both legacy sides required; project environment client_and_server or server_only.",
+      "project_id": 475117,
+      "provider": "modrinth_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://api.modrinth.com/v2/project/fastsuite"
+    },
+    "sha256": "3e274cd01bdc27dff8e2514213f1c45306c86fe38e4271a4209bc1471de6c70d",
+    "side": "both"
+  },
+  "ferritecore": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server",
+      "note": "Works on either; retain both profile memberships without requiring both at runtime.",
+      "project_id": "uXXizFIs",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "19af89a2075bb10a63884fa853ebf84b02c79dc3242430ecdad056fd764fdcde367a7303276b329df01b0736e2ef264c5d80c7dc92c6aebd244f556a230bb417",
+      "url": "https://api.modrinth.com/v2/version/x7kQWVju",
+      "version_id": "x7kQWVju"
+    },
+    "sha256": "d87ea28262715ebff45b8a82d493e6b468e7a4521bc021df5d88302196d030a8",
+    "side": "both"
+  },
+  "feur_extension_desert": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "qRG5vR8U",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "b1bf4c6763ee4c7be2c94190cdaebb07ec663e36618f1a4dbbdd9b37f534790d0f63fd915e6f64b928d972258560e2e952ebb620edb3afd368829f66245d0f41",
+      "url": "https://api.modrinth.com/v2/version/oBjuO3Ki",
+      "version_id": "oBjuO3Ki"
+    },
+    "sha256": "7f336fffa9517a6d22b90ca2b8b23cbf2d1e4a529de5980622172324ee2b40e1",
+    "side": "both"
+  },
+  "feur_extension_fossil": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "yGr5XHdT",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "a8ef847ea26de7aa0075c02d3d538ca3b0fb170779b9722f3554393a6b05ae745d66657486f6e5768779173de954e0955831ec4a552c91589fcee9f844ff0de3",
+      "url": "https://api.modrinth.com/v2/version/HT1lGvPB",
+      "version_id": "HT1lGvPB"
+    },
+    "sha256": "264de9449985ac49484e4c11e231c68de2ac472e920c89e2fe00b1a069c5d8a0",
+    "side": "both"
+  },
+  "fish_n_ships": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "dBB5hLnG",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "ac2f4f6448af3d840e8237cba833fa2e07e503bef4904d8169473051ce7cfd4b042ac9154fc08f21218ab93681fbbf523bd5d7214252a076125435b6283051ae",
+      "url": "https://api.modrinth.com/v2/version/CkfvA2lq",
+      "version_id": "CkfvA2lq"
+    },
+    "sha256": "933d9edadfc53f29887aa057cf2d82cb6bed3e8a1abd72fabef986c1bdd8926a",
+    "side": "both"
+  },
+  "forest_ruins": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "HgZn3gGU",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "ea25766b38b8ed6f580c7738e466c8ac34953f578ab42e6ad1e9bd6a11ef1ab7de7f65c5b015e1460628ab5975b712df4ac23a3d54d503d4f4ac8932caca5e7d",
+      "url": "https://api.modrinth.com/v2/version/QmCe1Fcg",
+      "version_id": "QmCe1Fcg"
+    },
+    "sha256": "4484f12949bef6c03c9a045c62b4b7f333b386b95f888ebe3eb0e522ed764495",
+    "side": "both"
+  },
+  "fragmentum": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "49C5QgTK",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "426b3a7f2085266ae231d7ef81092baabb0409bbf222b9220472dd3ba482840a0850047aabc4b59d20fd65170ec9920559d29df6527d8119ecf02c69cfa78e53",
+      "url": "https://api.modrinth.com/v2/version/kCXNhuIV",
+      "version_id": "kCXNhuIV"
+    },
+    "sha256": "fb7e1b28d54fda52c62df2a7c050e772030d7c75663d1679371deb0a860d3c1f",
+    "side": "both"
+  },
+  "ftbchunks": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8791113,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 314906,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/ftb-chunks-forge"
+    },
+    "sha256": "4ba1b3352184fa7f6e2aa4bca76edd074867697d62344dfa50dcccdb4dab5217",
+    "side": "both"
+  },
+  "ftblibrary": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 9008089,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 404465,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/ftb-library-forge"
+    },
+    "sha256": "624c2d2d1cbadb946d967e17757bd5b2d129d4d3ed71f2da0c70607d04476ac2",
+    "side": "both"
+  },
+  "ftbteams": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8724782,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 404468,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/ftb-teams-forge"
+    },
+    "sha256": "e6bcd670493624e6906df872a9c6af4a33fe6405cac57a32c59cd4cd5838c655",
+    "side": "both"
+  },
+  "fusion": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "p19vrgc2",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "0b65c3a78db5785c76a222639a56da0cd09fc8445e02cdfb84e4bb7c88dc2c5622ccb468291a12df30440205a881db2023d9857fdb7252e7d21238876fcc8608",
+      "url": "https://api.modrinth.com/v2/version/AYDaLPK8",
+      "version_id": "AYDaLPK8"
+    },
+    "sha256": "29920a6838f4f942947d208349480d7f5737f9fac6411c6eac5f3e824a438048",
+    "side": "client"
+  },
+  "fzzy_config": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "hYykXjDp",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "ef03b411b0e1b241a9952e1a8fdac61979665953eb5f28116aac06530964e7378eb20a78594a47ba4d942c74dfa20d550c292014b5de8e63c42b882a33aef5a5",
+      "url": "https://api.modrinth.com/v2/version/uG7oHgw6",
+      "version_id": "uG7oHgw6"
+    },
+    "sha256": "26af871cacd134ce52610384bbdd362a018707444eb2d498e4833063f378cf85",
+    "side": "both"
+  },
+  "galosphere": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "Kn7xyQ1v",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "2ac38a71cae2adbad3f9891c2ec038b626c384e750f83c535810f1b234e3b78f80863b6089de9fbb92e3ba479a130d9e3d7f64cf6a4f11bd9cb4e01ce5d7e97d",
+      "url": "https://api.modrinth.com/v2/version/IgULrnXA",
+      "version_id": "IgULrnXA"
+    },
+    "sha256": "4e6f7084110c78180b327e134ce3f43420abe58b0719e6963b2e9e26a99bab5f",
+    "side": "both"
+  },
+  "geckolib": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only_server_optional",
+      "note": "Client required, server optional; preserve installed client and optional server functionality.",
+      "project_id": "8BmcQJ2H",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "8dfa5f8c57224a5e34e5098367ea9819ca6dc9c11357cd3062c16da3455c8bd1a483098af7383debc4b9ce8e4d7ab3fdc799b415644eb829da83eb72a7335dfd",
+      "url": "https://api.modrinth.com/v2/version/Grwn5rUB",
+      "version_id": "Grwn5rUB"
+    },
+    "sha256": "20a1995e4074f387ff549e2c57ea79dd7d41ee83c6afb9dd6a6e840e592d1c47",
+    "side": "both"
+  },
+  "geckos": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "pu01XHCl",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "6f7e5eb9c808da61bfda67ab5612fe6fea230f14a3888bcf9be14db202997dfd54530e9644041207b0d7def0c9dbe6e6c422313a0740ab7852bfc29daba11987",
+      "url": "https://api.modrinth.com/v2/version/29of6tp3",
+      "version_id": "29of6tp3"
+    },
+    "sha256": "20eca8cba5a9e575e0f874bcd32887e5ed061bab642ae4b2933d85b803982d28",
+    "side": "both"
+  },
+  "geophilic": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "hl5OLM95",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "7731d6d7f85af0dc9eb232138b1dc1096f083d13a9f3e592b84f6c89a97cca0c642c68d5943e0e63bd35e93002708b945554991f519b754a04c6eec058305c19",
+      "url": "https://api.modrinth.com/v2/version/5kFV8CEz",
+      "version_id": "5kFV8CEz"
+    },
+    "sha256": "9e6a98b438e078f2e4f5b79f71bfc715a730369f8cf42fd287c6e43c7441cfae",
+    "side": "both"
+  },
+  "glitchcore": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8109792,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 955399,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/glitchcore"
+    },
+    "sha256": "d9ea421e7449a35cf3adc41c9f740156342b7b17a08b1be843660608af7b60f9",
+    "side": "both"
+  },
+  "globalpacks": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "NRLPy2mk",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "5590a9066d84265a53e756fdb5b8872c383ffe069745756f1ff0fe54a315cefb5cc90ee3d0233a95f1dc2a7d68396b1102b9002d8b1aaf3ec476b52c7286c6b8",
+      "url": "https://api.modrinth.com/v2/version/FPcUOp35",
+      "version_id": "FPcUOp35"
+    },
+    "sha256": "598781933726c596ac95a4dc960861af0746d5713a12fb8a05d4b8cef45ec48d",
+    "side": "both"
+  },
+  "gnetum": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "7MoE34WK",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "4a5efde1d9525cad773a5d1aa32a3d6734d2aee8c8e6894012b8244bb305eee823024b75eb6d3e140f075f3a254efc26efc4c5eb6f2ac390be96877686019f68",
+      "url": "https://api.modrinth.com/v2/version/zJLIzmi7",
+      "version_id": "zJLIzmi7"
+    },
+    "sha256": "19471108f3c2d799831ee52bc9d04d99cf745f0c1699b992ee981508befb583b",
+    "side": "client"
+  },
+  "goingnuclear": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 9199233,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1732437,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/going-nuclear"
+    },
+    "sha256": "3d802d9462e8f501b41c7cf8b0f764925472134b5f1497b02e454c96c6aad309",
+    "side": "both"
+  },
+  "gpumemleakfix": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client",
+      "file_id": 5513549,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 882495,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/fix-gpu-memory-leak"
+    },
+    "sha256": "4bd0682e26b8d4ba78442ce8d969fc7fa3cac2c21fc600de34a54b2ff7814931",
+    "side": "client"
+  },
+  "hapi": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "yv9f5EAG",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "d9690b24649b543571202334155e40677d32aa4900f779e537bd3106d526472366b1694c97a309ba87dad6be521828ea341020ed2a5d8909b1ef294e9cf3aac1",
+      "url": "https://api.modrinth.com/v2/version/4HsWNhJz",
+      "version_id": "4HsWNhJz"
+    },
+    "sha256": "c134b74c8d9b9a449fda88d3ef4ad652a2ed394b5693a7e440a008bd1a33c937",
+    "side": "both"
+  },
+  "horsescanswim": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "ZrqMJA7K",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "4ac0e9586d38fb8ea2baa338bead0039d0cb5572b2db79816a4bedd3b8928f84d47271c59f01635dd89a3f797fe656431d4b336c7e09e0185b54a6b1e43e7f5e",
+      "url": "https://api.modrinth.com/v2/version/DXn0HRAX",
+      "version_id": "DXn0HRAX"
+    },
+    "sha256": "c617edc7afae10aee495ea8557b1bfeac7fc18cdaa265f45e5c4eb6a21d04b8a",
+    "side": "both"
+  },
+  "hybrid_aquatic": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "HH4FjUqN",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "c71f952db5416b019007c71175c151c443a1724acce20e1a0ed7be9e4c88a68061b5cf18d57625414941928e5a21ac1f141ca922cc45ff627ecad9039e5f2a2b",
+      "url": "https://api.modrinth.com/v2/version/jdOU7Pzu",
+      "version_id": "jdOU7Pzu"
+    },
+    "sha256": "5403d0e643c8aae3e7db08de41ebf28e0ef538f252a0f0ef5b6b4f74d9b1b80e",
+    "side": "both"
+  },
+  "hybrid_birds": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "txgXquyE",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "599cd7a1ab1cd484d9104edd00745f3de9470bb0df3706cff9c28a41e58e6c619776372116691865c8d81ce281281edc220d132c56ec477ffa2c0a6f6623f960",
+      "url": "https://api.modrinth.com/v2/version/JjW0y3WF",
+      "version_id": "JjW0y3WF"
+    },
+    "sha256": "600dd7bae76f2c6ab2ac6a2a0811dc42c21d88cf3867394c07a7483209154a75",
+    "side": "both"
+  },
+  "idas": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "Z8OZShAU",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "916b60a5843e38316f12f5f1c6a4e737364f12ad2afb642e0f43f4e98135858f82af87ce0f262cdbc97dcbc1e0a31822a54af73278747f417fc33ae35cfed18c",
+      "url": "https://api.modrinth.com/v2/version/bpMwZSKf",
+      "version_id": "bpMwZSKf"
+    },
+    "sha256": "7f5031dd90ae0b32d7fe5c6c47c877cac1eb95a178bc78d196cb24c17ce82522",
+    "side": "both"
+  },
+  "illagerwarship": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "tUpIHo95",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "b36be32e595b671abeeb454d555fab1f06cf3d5b67f79c758303aa41308c8329a1fa9350310486aaf81c94b303a41c84a64459d2b3553299a1d105156c598b88",
+      "url": "https://api.modrinth.com/v2/version/hT0OWFS2",
+      "version_id": "hT0OWFS2"
+    },
+    "sha256": "e4c132c07d1aa04edc55b6e405657992c3d36da6f9f25ec8f460db405c5a7b32",
+    "side": "both"
+  },
+  "immediatelyfast": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "5ZwdcRci",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "c115cad7b060373fc597aae08c685e2d56f173b88b792a4a2c229e222f8da293b99865e9553cf716483d3c3d6a18f31c51c5dd55be22d4625ed2c962d7b94fd0",
+      "url": "https://api.modrinth.com/v2/version/EJzmEPZV",
+      "version_id": "EJzmEPZV"
+    },
+    "sha256": "7d7b1d7b9f71d5303e42b2fa45f222a5ab06e0ef5982abb6da5dd9cc449b3702",
+    "side": "client"
+  },
+  "incubation": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "A4Xrv60A",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "0074a8895768239a9552806df6f97c471d2de66d2a8d1d1ea90aba3c9cabd003d5e277384b1a69c8e586b1b6d0b3fefa9aff54f300e4d2031f569c6121e49524",
+      "url": "https://api.modrinth.com/v2/version/4iwA7bGH",
+      "version_id": "4iwA7bGH"
+    },
+    "sha256": "df9b85af42d00b965557890a91a2234c94e008b5432e0678b85d699acbe95130",
+    "side": "both"
+  },
+  "integrated_api": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "V6fKbpBN",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "272c007e99ab82798dbc4fc86eeedd6e16668ca976138725983a955006e4a318a63029ed4436745e21932f7527bf872f633032de402366c1b23203514ee87e22",
+      "url": "https://api.modrinth.com/v2/version/oddRiz2I",
+      "version_id": "oddRiz2I"
+    },
+    "sha256": "3621edbd54dec28b704e03b792cc392f6d37a2cecf832d7b11c485a1765d4a3d",
+    "side": "both"
+  },
+  "integrated_stronghold": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "KUJdfPQz",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "e6101af3cf1eb58232ad30a9f9b936ebe728cbef681653b298edad696952d008e9a8ade03a23a9b6dab3d15e8903430aebca1b0eafa7c13d9da060e1952c6e64",
+      "url": "https://api.modrinth.com/v2/version/GkHH2Wqj",
+      "version_id": "GkHH2Wqj"
+    },
+    "sha256": "c6ac6ad68de806524615238f8a7efe511c417b8cd56ffceb7dd62aad9c8b821b",
+    "side": "both"
+  },
+  "integrated_villages": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "o1qh5qIF",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "50d119a972c8813b7c6d54db828a5130f342ff8ec2728bf3c73057d46b1d575d00f37ed76a20c5dbcc84cb74970961ebf31065818f16f49b6c7a297605fba161",
+      "url": "https://api.modrinth.com/v2/version/B5BcNY1z",
+      "version_id": "B5BcNY1z"
+    },
+    "sha256": "b53a485828da352b1a6a24cd2796aacf5d8360632b98c7dfba295f235d41ec00",
+    "side": "both"
+  },
+  "iris": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "YL57xq9U",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "33fddb430e16222902eac75b8b3d57c381b0f3cc729f3b56c4628df12ca108f23a0b11e2feb167923d6d14d1fc7e8ee1a977ec421b19d1951bdca74c4092b9c5",
+      "url": "https://api.modrinth.com/v2/version/KduFYu4t",
+      "version_id": "KduFYu4t"
+    },
+    "sha256": "60d5f8bf52f25e9986440f4a4270a6bd986d9cff994510e1108ac1547063b314",
+    "side": "client"
+  },
+  "iris_shader_folder": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "yv6sGJzN",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "c22560f1e81e3ab3e1a1aceff39cb1cc6fc9a200f0dbf0f91aaf40c110bfd8428ddae58d2c77187162459611eafc82696cb7f779a8aa6ed926b4bb208949b278",
+      "url": "https://api.modrinth.com/v2/version/WvgTEMyF",
+      "version_id": "WvgTEMyF"
+    },
+    "sha256": "6bfa6a4562ee848d7681e2826fef5e40a643fa66c61f2eda43f0a7407d8dbc8c",
+    "side": "client"
+  },
+  "item_descriptions": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "UaizcMKP",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "395b5b1fdde9b0c2b02322118aae01f901dca624014db64c093e7d6fcada351a73d8c5039af202db3baf3e334a7d997991dad5acede8f30c26c8533aa68461b9",
+      "url": "https://api.modrinth.com/v2/version/OrkSfQ0u",
+      "version_id": "OrkSfQ0u"
+    },
+    "sha256": "29773325b0aaac251471b7d9fc15ed3b6712c68b429a5354c6097637e053bfab",
+    "side": "client"
+  },
+  "ixeris_dummy": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "p8RJPJIC",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "f2e72d5b5877b5557ec852f93efae5d86cda8d0b234516282ae753c397bb4d47a5863e89b1368114909b091f6a37946d905e593b77528f3f0956d63c01c64e3b",
+      "url": "https://api.modrinth.com/v2/version/18x8vikP",
+      "version_id": "18x8vikP"
+    },
+    "sha256": "b4a8b0fe70089cf99e8a561bc138fba49fb02d6e3db437095b56cdf777263f7a",
+    "side": "client"
+  },
+  "jade": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "nvQzSEkH",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "dad9755dce8d85d914fc4df2baa0211f13e5839a71c1925fdd01f69081a95e30a2934e6273f8b01f0169adebe7a9dae57a8d904de0c4cb36dc17369bb474f0f2",
+      "url": "https://api.modrinth.com/v2/version/eYz2YBGT",
+      "version_id": "eYz2YBGT"
+    },
+    "sha256": "276f1f65a20d04f536989c4f311949d770b52c440c23c2b904a08860f3c93810",
+    "side": "both"
+  },
+  "jadeaddons": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "xuDOzCLy",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "7fc0f413a73e11af6463cc246d9390e0cbe14ff46d0778d9893be59bb1dbbf300a745cc50731412ab4a940f7fe06e5433fa61a423a38ff64b6c6742c5ee62c7b",
+      "url": "https://api.modrinth.com/v2/version/O3F6Dkle",
+      "version_id": "O3F6Dkle"
+    },
+    "sha256": "1e7ce561f66c90446797e57f836c4459bb0dbc408b6bd551e5e18038774641ae",
+    "side": "both"
+  },
+  "jei": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "u6dRKJwZ",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "fdd02e57ce4dcf20b69860a5ace1b97d9a771486241179cf9edfe71e30c69bb4003b046d0cce8d8c4913b9689f1d8b04cf0542b0b04a6cf0b3b0465f3bb11702",
+      "url": "https://api.modrinth.com/v2/version/iv3KiVkE",
+      "version_id": "iv3KiVkE"
+    },
+    "sha256": "f7a9de3d7ee07eed8d293a1a1a0f6afaac556eb43c103523457bd07ebb551e7b",
+    "side": "both"
+  },
+  "jumpoverfences": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "4HeIHvIP",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "71e3f9c490dfd50c7bd8ebabd40d237371068e65d14ad62e7a1f78362b632fa14b57088299b7306210ca7be7a4a53b4b4b642f6c16272bbaaf822029b7fd4554",
+      "url": "https://api.modrinth.com/v2/version/g065XzyS",
+      "version_id": "g065XzyS"
+    },
+    "sha256": "a3d840a5bbc5dc117d991b929962d78ae1ad0ac427cf4c7f5ca9de33bea854cf",
+    "side": "client"
+  },
+  "kerria": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "f0ruQTF7",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "2c7f5711d4c19882a0db8b0ffdb030ca83d45998972a28dfd8f2689062a53797f07c315edf58af6129b20fc27879fd881a7d58b7c0461c3b4573cfce05f551f1",
+      "url": "https://api.modrinth.com/v2/version/MsiyjxjP",
+      "version_id": "MsiyjxjP"
+    },
+    "sha256": "b36fd0225f3bbad8abe7e410ee7c77c726c3642d1815ce0892aeca2bc9136330",
+    "side": "client"
+  },
+  "keybindatlas": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "fokFjwwh",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "7ff490f071c6f9befe6a6a79f198e89056ffe76cfac56db5b6f17fcfb76b10aa80ee89225ff54df35c24d85ea5aacec462b458f3258525ff6af972ddce03ef13",
+      "url": "https://api.modrinth.com/v2/version/UbE4gXrR",
+      "version_id": "UbE4gXrR"
+    },
+    "sha256": "d14e872d8201d474d05d2f0b5b513c791c048c43b5412536e9aa79015423c985",
+    "side": "client"
+  },
+  "kiwi": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "ufdDoWPd",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "d01c347febcb3d77bbfd2f44f38a80afbf4cf0b72a2aaa5d1875a38cbcd78be5a263fae4f63685256ea29c5f5f5d0f1c46892e2c78c4c1204863415dec9f4151",
+      "url": "https://api.modrinth.com/v2/version/tfwJWC8g",
+      "version_id": "tfwJWC8g"
+    },
+    "sha256": "f1222ac3773b2814d40ee6e77129bb27a29d82ec76d7a878ba23d3f5f9f8a392",
+    "side": "both"
+  },
+  "knightlib": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "hAnl9nbm",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "1ef8b486a19fd293d049ba76b58fd00b0dbf2ff8531b77b02cb9d2e33198a9ca1f689138ab4f0709c15c636d51ab04cc9dfaeca3b2ca3223ae726bd05edd2f71",
+      "url": "https://api.modrinth.com/v2/version/S2thfur8",
+      "version_id": "S2thfur8"
+    },
+    "sha256": "1f54ebeb4f90e36fdbe4f85e391f06d0a4c1fbf3e1ed55abcb93c062bd045939",
+    "side": "both"
+  },
+  "konkrete": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "J81TRJWm",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "378bd12e3c32329abbae5cd514e1d1cc2a3cc3a45979fedb1d4e4c0a6732bdcf4b7d1bf7f7a112074bf288957edf86152c9c090a27d1d5de84a9a7825d3d6511",
+      "url": "https://api.modrinth.com/v2/version/stJDU839",
+      "version_id": "stJDU839"
+    },
+    "sha256": "791c5538751dd3015ef3a2ce92d98719e1a28a48ebbd817b78506771256654cd",
+    "side": "both"
+  },
+  "krypton_fnp": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server",
+      "note": "Works on either; retain both profile memberships without requiring both at runtime.",
+      "project_id": "JkxWVYwU",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "72892ac3bee596d30ee5e5d64d78c3da237c3e30c913c58cfadc3fad555c0140e4d04db5ce537805d991e111deeb03c23eea0d10e385ad1b7502b674102cac74",
+      "url": "https://api.modrinth.com/v2/version/SUeOFygw",
+      "version_id": "SUeOFygw"
+    },
+    "sha256": "05ebe849611daafe533fc57ed9b5156edfa9157ced04d38a7860b1e2075984b9",
+    "side": "both"
+  },
+  "ksyxis": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "2ecVyZ49",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "1571cd9b15b6733002dd164beab4ad1022fab2c904414b39db6fb609a41c48cca394f1751e5634ebc555795d9bd9dba48c2c280c152d9e0f570795d47a91c1d5",
+      "url": "https://api.modrinth.com/v2/version/kzLBJQLn",
+      "version_id": "kzLBJQLn"
+    },
+    "sha256": "e044b1b25227ceb49e3fa592543af602034a0a6a85b57edfeb41668f3bedf111",
+    "side": "both"
+  },
+  "kubejs": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8843626,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 238086,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/kubejs"
+    },
+    "sha256": "43b656bc2d4ce867141abb828c9481f080a38585b99bcfa07e54732a4976a601",
+    "side": "both"
+  },
+  "kubejstweaks": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 7516288,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1306367,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/kubejs-tweaks"
+    },
+    "sha256": "2a444fb6e0931f30acc4d5880b164cc7bc8fe24801973a75bde384996c827e8f",
+    "side": "both"
+  },
+  "leaky": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8763884,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 856906,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/leaky"
+    },
+    "sha256": "a139f49435c7f57a76b47fa6c5138200186f9b96fe3a0ed4be75be0bf0065334",
+    "side": "both"
+  },
+  "lithium": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "gvQqBUqZ",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "2735da2088b88a8bdcd4ad02a2b6fffbfd3925557cefd4fa54b5477dfb9e582ea7f521300c060f57dff1325dd21bff276b7333363ad3371ed6893e3de9eca9cd",
+      "url": "https://api.modrinth.com/v2/version/DDUrRVCA",
+      "version_id": "DDUrRVCA"
+    },
+    "sha256": "488f33216030c1cb0baa33e59de3d657d08d5795a6c2080c8c8bbbc133fc8757",
+    "side": "both"
+  },
+  "lithostitched": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "XaDC71GB",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "6c02b8b269269d5aa84cb03bf824a1b5d52838e806c2fec8727eb4049925592dac9bb65c996858751fbb722f22ac59c4be09860e1f01e8f7b97c95be3faf7a57",
+      "url": "https://api.modrinth.com/v2/version/cZu4cHY3",
+      "version_id": "cZu4cHY3"
+    },
+    "sha256": "e0da669fa5facc61a09b9b7bae21b322993de1fcd1eb05787adffb7309598cca",
+    "side": "both"
+  },
+  "locatefixer": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only_client_optional",
+      "note": "Server required, client optional; preserve installed optional client functionality.",
+      "project_id": "JdvOuRuL",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "76e73a5de12a17e3b4a3c228f01c671cecd75305f6c2fb8dd5a660c77ddd8922178598d0e228f66ce9e2168430b1cf2a93b7d993f2d8fd520392f59f00dce10c",
+      "url": "https://api.modrinth.com/v2/version/AHtD1XJB",
+      "version_id": "AHtD1XJB"
+    },
+    "sha256": "af9ce13dfc4ceb5dd10191d5c928212db5c76c16b893e343a1977f7c8721b7a8",
+    "side": "both"
+  },
+  "lootr": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "EltpO5cN",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "7496051c1ba98f8801b8eb81773d1baec16166c3d2c5682476bd6f9433f794095099cea609fd5610525edb7c450b1bacd0011a31763e91c77c9a0034c8245ca3",
+      "url": "https://api.modrinth.com/v2/version/SPOrIzX8",
+      "version_id": "SPOrIzX8"
+    },
+    "sha256": "5c74de4709d1c13b25880fdd241a89d5d9f331346d20edc76f80ccd4d99dc66c",
+    "side": "both"
+  },
+  "map_atlases": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "4hwXMFif",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "28146573e0c274c1188d17150c6197a9f432a6375ee8e7c34aeab8c5f023766eee863f86187bd0b133c046465b1f0edf108b13f607493132a87dc1da5b87861b",
+      "url": "https://api.modrinth.com/v2/version/ecuMnNO4",
+      "version_id": "ecuMnNO4"
+    },
+    "sha256": "df61ef92809ce4627a5e4bd395d930997e0d3b4a0b9fa91d0beed5c23d127d6f",
+    "side": "both"
+  },
+  "meadow": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "ra7o6Sl7",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "d2964067e4e515c99f230d0c318497ae75c939f058eaaf686a3517f5b5277ffa431d3e9fd048715be965d2bc47bd28bea4f6b6fa880ce9ebbe2a38a989a8c783",
+      "url": "https://api.modrinth.com/v2/version/SdTfMLxH",
+      "version_id": "SdTfMLxH"
+    },
+    "sha256": "ff300d3f3b19c7a7abc16ac08bbba3fb870e89c0cfb9422b3dc2e13e0bae337d",
+    "side": "both"
+  },
+  "melody": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client",
+      "file_id": 5453382,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 938643,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/melody"
+    },
+    "sha256": "6b973a4564703c531fc0eae09db08b07a38091e0a743c687b8d2049457e84871",
+    "side": "client"
+  },
+  "memguard": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server",
+      "note": "Works on either; retain both profile memberships without requiring both at runtime.",
+      "project_id": "4pERD9rc",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "8909578d329ae1ff71f8e4cf76becb497a241036eb1ae7534bfad6b6c3434976199f0ab4f71253736561458cf4f39ef8cd4d66da522a4f5a28cac086a2ed2fa8",
+      "url": "https://api.modrinth.com/v2/version/x9wt6S1w",
+      "version_id": "x9wt6S1w"
+    },
+    "sha256": "61ce83e152f5fba22236a85114af401edd6c346cb9ec2f985391f1849b8c42bd",
+    "side": "both"
+  },
+  "memorysettings": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 7934534,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 526901,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/memory-settings"
+    },
+    "sha256": "83721e70a8702b4389ca5d83daa5b30f55797561ee30d788cec2987b7ce3e042",
+    "side": "both"
+  },
+  "midnightlib": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server",
+      "note": "Works on either; retain both profile memberships without requiring both at runtime.",
+      "project_id": "codAaoxh",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "9586940ec144452577455b61fd7c9f7ee123044a47255f9425be1bfcd4e842d5902b66c7f5546540281cad8c12e30d38fc29e8fb3aa3cb592ed13ff430316e68",
+      "url": "https://api.modrinth.com/v2/version/vcVnfiCM",
+      "version_id": "vcVnfiCM"
+    },
+    "sha256": "16ddfdcccd3cb6b18bb20e50b3ccf1c93e1b43098ac0b547af8ff3dc42cc05a4",
+    "side": "both"
+  },
+  "mmv": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "spZb29SD",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "ed8d62e153d1ff7fd20956f0580c0669f42b8ded897944c02587058953670467d15cfa59cd2c4f5f33f32e96b99bc4e5dd680a8920d2c5fbe227b8eb4ff7adbf",
+      "url": "https://api.modrinth.com/v2/version/fjpmujqZ",
+      "version_id": "fjpmujqZ"
+    },
+    "sha256": "d6db0d2151aa87f4487a944b1162d3a72aec89fe09fd6e387ffef48c3b6b3764",
+    "side": "both"
+  },
+  "modernfix": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "nmDcB62a",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "37c76fc5bc72cfc1035260f891ffeb45b4f32651d2e490c5eb8c60f3b5686deca3145b32d4fab9036f65f5277b0ac66f4ad3855e52cd973e791b09e9c4b896d8",
+      "url": "https://api.modrinth.com/v2/version/7Jy58lnT",
+      "version_id": "7Jy58lnT"
+    },
+    "sha256": "09f6842c63d14b3f1707f1f4a6f4602052f237f7efa9be135e41d3d97acf2a13",
+    "side": "both"
+  },
+  "moogs_structures": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "1oUDhxuy",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "378d5da579e65e8c37d81aee510302f99b3097f0c6a4245f3621478f741fac3b55a3715227d9408153a66c98624f8fcb5f93e98027212e0f0a82b768315d0651",
+      "url": "https://api.modrinth.com/v2/version/wcg4mE4e",
+      "version_id": "wcg4mE4e"
+    },
+    "sha256": "753337838224c43dfd8070e54b587219847cbcfc3ffcd06128802fa34fb92214",
+    "side": "both"
+  },
+  "moonlight": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "twkfQtEc",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "b4e8efba91e5f46729928335cce8952ad70af3e33b851e8cf4887a24346f7bbdfe3609f8cc482f76a715aa050bf39e7048ee97b33183e5c358f149bc3678183c",
+      "url": "https://api.modrinth.com/v2/version/fAIfWX6M",
+      "version_id": "fAIfWX6M"
+    },
+    "sha256": "4a9f15108607cc70273f8a0b6eb24e1e99af8eef44bc3ae8681767ca7ce21b0f",
+    "side": "both"
+  },
+  "moreculling": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "51shyZVL",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "64b6d1c71b7251915a35d93ddfb2a0a44851c9962b081fc8a7bb9458a19cb1ce6efb8eeef447bb7217c67010ed7e903d2bed8ed6d166053cacc3f8fb6d2df3d4",
+      "url": "https://api.modrinth.com/v2/version/5M4T2FfG",
+      "version_id": "5M4T2FfG"
+    },
+    "sha256": "008068af65deec86382b4fdde61e7f495e54861cc28d5a5b000c32b435213ed3",
+    "side": "client"
+  },
+  "morepropulsion": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8746527,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1603705,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/create-simulated-jet-engines-aero-propulsion"
+    },
+    "sha256": "5d1cbab5c00d6b2c8e6bf57aae18b540722b3e8548b9174d91bce0ad6e8ef742",
+    "side": "both"
+  },
+  "mr_dungeons_andtaverns": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "client_side": "optional",
+      "environment": "unknown",
+      "note": "Exact file ties to project; both legacy sides support installation. Preserve current client membership and server functionality.",
+      "project_id": "tpehi7ww",
+      "project_url": "https://api.modrinth.com/v2/project/tpehi7ww",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_file_project_legacy_sides",
+      "server_side": "required",
+      "sha512": "83069dc336bcc212059f753923373d9522aa5953bf4b4fe2a8cfa666b4e28d2d017daa66c4b35e315c3be8d1ad60c2872879dd47cc1f47665ebbfd102da76976",
+      "url": "https://api.modrinth.com/v2/version/BYUUUeZA",
+      "version_id": "BYUUUeZA"
+    },
+    "sha256": "1db28e89e0cb76aebe9e40955d1866e8ac1779575d15c2a1e250ac804a762d05",
+    "side": "both"
+  },
+  "mr_lukis_ancientcities": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "client_side": "optional",
+      "environment": "unknown",
+      "note": "Exact file ties to project; both legacy sides support installation. Preserve current client membership and server functionality.",
+      "project_id": "13uF4XO7",
+      "project_url": "https://api.modrinth.com/v2/project/13uF4XO7",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_file_project_legacy_sides",
+      "server_side": "required",
+      "sha512": "b0d78aa27e31045f65ac0bc426ec7cba207918a921ce046e2d078695bf0d9253e7ba7210f4b7d4b91b334288c933d4f46e16905b12fdbb7bc6080de49a71fac9",
+      "url": "https://api.modrinth.com/v2/version/8jJSPQok",
+      "version_id": "8jJSPQok"
+    },
+    "sha256": "b7ac57ef8f18a46ba2fbac4458450145153a77a28dd2071aba2959dff81ec574",
+    "side": "both"
+  },
+  "mr_lukis_grandcapitals": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "8Lw09aLb",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "1f0ae12b245294a664a875bfbf1bf32d0af5814ea600d31059bccdcd747d1fab8ccef53c49e688d860592483cf464de7fa701bb40761d9941559e8da2b79e0e4",
+      "url": "https://api.modrinth.com/v2/version/RBwKCOh4",
+      "version_id": "RBwKCOh4"
+    },
+    "sha256": "58182dc8d306afd944e708e0480d939a9adc3fcdab75c0bebd122a32c63d3851",
+    "side": "both"
+  },
+  "mru": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "SNVQ2c0g",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "463127834c3c0e6f4a849849640be66e5ba666bd9e00121dbd390dc368b55efc9bfd2155ba58817cc88ce0138687970e3ef2ab84273566890b15b4b4a70c6199",
+      "url": "https://api.modrinth.com/v2/version/Kpai1paZ",
+      "version_id": "Kpai1paZ"
+    },
+    "sha256": "245ebec0b410fb1a7456bb0cd970ea015fb7c243a0f45a4d79d655dc01bb6d89",
+    "side": "both"
+  },
+  "mss": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "RJCLIx7k",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "1460cbb932e8f39c00bc7f980322696107c965094e00b9a05aa6b4ce6bc9babff5c3444b2135b8a6e7b88285dabbe3426cc4780fd1e3a8b64cc1b2cd8adb9dca",
+      "url": "https://api.modrinth.com/v2/version/O20bIWkj",
+      "version_id": "O20bIWkj"
+    },
+    "sha256": "2caca5b2dab3ea4541eb3207bab9d5efcc034e3bf7d89788fd95d7b582d24ed2",
+    "side": "both"
+  },
+  "naturalist": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "F8BQNPWX",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "7c5f1ce90a097a0e097ef60049b3ae1597295286b2e485d89c960504c150d62fd711b7286a90512f3b8bf27953a4f9d816a9c6a58700b888f59d05d5a7cb03e1",
+      "url": "https://api.modrinth.com/v2/version/ETgOvHHS",
+      "version_id": "ETgOvHHS"
+    },
+    "sha256": "8a35e7effd69323e7e03d43fc116ddc846f2ca72744d80f52ac75bd251e36ab6",
+    "side": "both"
+  },
+  "naturalsizes": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "aGGh86tA",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "ea4713ad06e78518918d7fffe963b4f57aed6caf98abb5e37375e8cba072280b837a2b2f51826b299481436d2a4778756fc036029233287e4f37769b81a25726",
+      "url": "https://api.modrinth.com/v2/version/wLfKAQM6",
+      "version_id": "wLfKAQM6"
+    },
+    "sha256": "5705be92aadf89e8b21bea0f333bdbe33a7ce67b6a2f48cc74f704cbff8f13f7",
+    "side": "both"
+  },
+  "natures_spirit": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "WBvnqHfV",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "b9617b4be67d7ee1c929bbb5afb1d3229d27b55ca1f32551b595d4264c3b9eacfd9b3d97f7c9a8c4e960cdb88483d7a98b42086d8025fdb68aa6a4978f7c6349",
+      "url": "https://api.modrinth.com/v2/version/9tpL59jN",
+      "version_id": "9tpL59jN"
+    },
+    "sha256": "dd716653b32a28a9909cda14fcc4cfd4aebcb20faa30770475cf6be33f9c8f59",
+    "side": "both"
+  },
+  "naturescompass": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "fPetb5Kh",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "5314b536bcb9a594a9cf2bbd46c82468d17e1559bd6c00da9d91e96c0814f50416799a011705f0d184bd731dac3f03dec009c76fea3d02b3556a6013f9649014",
+      "url": "https://api.modrinth.com/v2/version/nFniEtJV",
+      "version_id": "nFniEtJV"
+    },
+    "sha256": "0e249ac11b2f916c5570d9679e188da652fa5664ba9cdb7be5dc9ff69497539c",
+    "side": "both"
+  },
+  "neapolitan": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "InYMuiQt",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "512a36a62d51028a4b39abfe6e6f4d847c54e0cf6013de4094d66f4f27c962bf47306f4ea6ce2466f99199a573c3e7d00e335c514bdeb31d8d8243d358a963c8",
+      "url": "https://api.modrinth.com/v2/version/RQ5qgaUC",
+      "version_id": "RQ5qgaUC"
+    },
+    "sha256": "82e104afc49887134fb0f74e6b3d3bc827fe1f88ea3d14836c2701218a1071d9",
+    "side": "both"
+  },
+  "neo_auth": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client",
+      "file_id": 7069504,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1140741,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/neoauth"
+    },
+    "sha256": "cd945b64ba805e42ca0b039ba0df69eb087182988ebc35d0bde8e7df400eda72",
+    "side": "client"
+  },
+  "netherportalfix": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Server",
+      "file_id": 5623547,
+      "note": "Retain the installed client candidate; author confirms dedicated-server support.",
+      "project_id": 241160,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/netherportalfix"
+    },
+    "sha256": "c1077de0c7f1ff5289d1852e0674d9c477247d4318c9809b21c60e56a31ae31a",
+    "side": "both"
+  },
+  "nomansland": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "kjZCvAn6",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "2d4f4bb2937787ab7e5ccbb9d0d9a458a22bf6ea1b44fbe80d3c1e9ccdb157726ac1c253db027bf0e3d4761b069dcb3738d34605e31c992b98903d0c5af59ecf",
+      "url": "https://api.modrinth.com/v2/version/Ekx60B7F",
+      "version_id": "Ekx60B7F"
+    },
+    "sha256": "7555dba9f768438b35b34436acf0650c5aebe974f7a36859371073f656c87f0a",
+    "side": "both"
+  },
+  "notenoughanimations": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "MPCX6s5C",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "2b392f770cac669abcc796e836fc86579e29c1c70174f773fadbb747d8a49763fefd938835aeef8681a384aee9a7b6a8fa4684aaa1961159ccddea680e936acd",
+      "url": "https://api.modrinth.com/v2/version/VCuMsK45",
+      "version_id": "VCuMsK45"
+    },
+    "sha256": "e70609c5638d9f02edfb2c8ec448a7d567345323d7386937c174526aac56cb8f",
+    "side": "client"
+  },
+  "octolib": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "RH2KUdKJ",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "c33faa056c9d5403f06b7aa883290c86c33dcea3502f99720df98eccbd819cd3050fb2ffecf048f2dbee1b69a14e9dc6c23245f35ba3a78e46b056859666a60a",
+      "url": "https://api.modrinth.com/v2/version/yVCCi6TK",
+      "version_id": "yVCCi6TK"
+    },
+    "sha256": "92ba07d9d9e55a65421f3c3f203c72fe5149cb024d5277267e81d812e11a7f38",
+    "side": "both"
+  },
+  "ohthetreesyoullgrow": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "g8NOG5OR",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "412fd13201280c1b1fed8195a9ba1d07467c912c4d480c0d35b866307e9d6ab35d4f4bf35927ccc3eb775bef67fc214b7df30ca05308fcb0bdbb3ee763776bed",
+      "url": "https://api.modrinth.com/v2/version/ZTJAJGUE",
+      "version_id": "ZTJAJGUE"
+    },
+    "sha256": "12b918a09e4786de0045d7f29d336881234a533259c10d1327051df9ba318c4f",
+    "side": "both"
+  },
+  "packetfixer": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "c7m1mi73",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "d0acfaa6ef394fc7d9e677022bda06a6c8be7851ba8860897999775b657b5e10878578fe626505b0c9dbc01d26f559dbb1214aabb081d076824648047094e2e1",
+      "url": "https://api.modrinth.com/v2/version/2C41Q8WX",
+      "version_id": "2C41Q8WX"
+    },
+    "sha256": "2979a8a3f44e5d5df4f9f6315d18c220f3debf736bb8a2c2740acdfb13bd820f",
+    "side": "both"
+  },
+  "particlerain": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "nrikgvxm",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "dc5fd6224dbd58079d9c82ef318ba2b945e5aa58f3476daea371ca86bb9ce976db5f4893a7093a990c0c1a8ddb7716089b24cced176f30cb253c2696b0cfd5b2",
+      "url": "https://api.modrinth.com/v2/version/RxfaR4ud",
+      "version_id": "RxfaR4ud"
+    },
+    "sha256": "b867cdd76eda04909fd71ba5a32a55a682611451b8b6d26f55ed483246c97640",
+    "side": "both"
+  },
+  "particular": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "pYFUU6cq",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "11b73aa3782159950d09fcf7ffaabb97cb4697ba645a5b8c6c82a0c8f07bc0bba7e43a43c927c0d00ac1bebac70a92433177d592649518c22899a23f78b14f9b",
+      "url": "https://api.modrinth.com/v2/version/WyRBAcBf",
+      "version_id": "WyRBAcBf"
+    },
+    "sha256": "42c5ba95472c233a455da440e08a74be69cba616493292c0830cf47a47a9498e",
+    "side": "client"
+  },
+  "patchouli": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "nU0bVIaL",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "0b5c172db9a6eeecb5ca44b359a83548c3a60be7ff313959acdfc1e5b8039736c18e57e947d435b52d06da31159d2d02ea36e5742668dbc826308a4c99e4039f",
+      "url": "https://api.modrinth.com/v2/version/BIogJv2D",
+      "version_id": "BIogJv2D"
+    },
+    "sha256": "959af52ed6640c316c3a8469203420be4aeea11ad6603890ba83bf48f5d9f993",
+    "side": "both"
+  },
+  "pet_cemetery": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "M6tSWZ4N",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "9494f693e70756258f0a6652ac2442adcf984d5835b645f7a0fc2abf83db5063843759c301a82443e6a80d579eb8fda917368989a0e1ec573ad85077485de398",
+      "url": "https://api.modrinth.com/v2/version/t9fzt3Pl",
+      "version_id": "t9fzt3Pl"
+    },
+    "sha256": "3e18b16db9f939e159c1f50d76b1351f9cceb507328f90feeba10bda7bb555d6",
+    "side": "both"
+  },
+  "philipsruins": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "KdJhOYVV",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "e18119706fe065ccf571abc5d3f0e2badc95e26cee0ba5641aa88a67c2238ce2fd589459969a7691ae246658c601d7d35cc87562cc7b40b345965cbdd23fe2c6",
+      "url": "https://api.modrinth.com/v2/version/EQHGxQAv",
+      "version_id": "EQHGxQAv"
+    },
+    "sha256": "8a0aaee82b287c22abf4a7ea79e88fdbbe717418a0fbd8e44d4bd86146db9a1a",
+    "side": "both"
+  },
+  "placebo": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "tCkE8p2N",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "4f3a9c5974132f3638c262c56b0c2886df2bc58027c961aa11d06d0ae2e608b63f24f949b2f8c240989e2a1bfe303fd237c5f2d49269453ad6c2ff1f85f2c648",
+      "url": "https://api.modrinth.com/v2/version/B5zbSVlT",
+      "version_id": "B5zbSVlT"
+    },
+    "sha256": "d8952c019d6e54befe37155bc9876985ec57bf73dd33872115c7a65ac6bceba0",
+    "side": "both"
+  },
+  "platform": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "i6fiqm5y",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "1ab1dcf3583237dd30c3443a1fac3ee8271add25aae84af2933fa9eb13def3840d7a8cca53523d1dd3c5a77eb23059099285d218509d02d001034fca42f5f64d",
+      "url": "https://api.modrinth.com/v2/version/v7P0nBi2",
+      "version_id": "v7P0nBi2"
+    },
+    "sha256": "2d7175e43943d22cbb4f8d4533f0ad620f87a3ac12c77a4f15c3a35d965c4f18",
+    "side": "both"
+  },
+  "pointblank": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "og4KPYmA",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "84d8adbb956be7d99d9b2688272b5ec2be76a1a133b2ba0f02e7951ef110df94b94b9445b29022d7150cd485b1f3ab8c8d894667cee7a9ff1be5c5b5c272f3fc",
+      "url": "https://api.modrinth.com/v2/version/7jPye7PA",
+      "version_id": "7jPye7PA"
+    },
+    "sha256": "203131e58706c623477bd6ccab91ff75e7b5389d33efa1339243cee26e7fe170",
+    "side": "both"
+  },
+  "presencefootsteps": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "JIEwmDVI",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "a3726621e16dc4724ac62e60c329490025df54c5f545ae26fb867b5ac5daa19cba7620d06fcbb451528b1d9368481f8e410545cd4730f73b7a2f6f21b1b589bf",
+      "url": "https://api.modrinth.com/v2/version/f3SxKzof",
+      "version_id": "f3SxKzof"
+    },
+    "sha256": "ded9ea8677f407cbf280b0ee33866ae70859a7c476ef0f60fd35a9be2ee9b91a",
+    "side": "client"
+  },
+  "prickle": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "aaRl8GiW",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "154d42795ccf1f3e07714775cdb82fd5db17574319286ced13d86b0456b64e4cf5bb89ffbcbfcefce67b73ed0b83e4e2944e493d79d9a385ff9de23006ee7bf5",
+      "url": "https://api.modrinth.com/v2/version/EE1FHDyD",
+      "version_id": "EE1FHDyD"
+    },
+    "sha256": "ccf46c442ed3c7fe41ad056f0940560829ec4dd88360985dfacd78f4614eb167",
+    "side": "both"
+  },
+  "primal": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "41B2buzz",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "aa1cb5ba4e4043493f0fe573b08adba314aa03be1e9373ff962b1e27d0847a22711dc88a093cc3908fc4a5fb7057ffcc6b42279e000b7483f912bbcd044166dc",
+      "url": "https://api.modrinth.com/v2/version/bjAno6mP",
+      "version_id": "bjAno6mP"
+    },
+    "sha256": "477de6a9e39f2b508e7fc0d2f1cf8978df11c7d21ebf3baf79818d325e44a88c",
+    "side": "both"
+  },
+  "projectexplosive": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "3rXU9gz8",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "211377ff0d9d868a3c27f7ce9e350ff77d4c736f08224740d882f2ad450cb54da4c9855ecd04b0825a30f79e193e0daaec855e76b6eab4957df42cb60e76768f",
+      "url": "https://api.modrinth.com/v2/version/ZLwuD5gm",
+      "version_id": "ZLwuD5gm"
+    },
+    "sha256": "3cbf5a76d8b6123a489df54f0165c31df6c5f6993dd07e9506232fcb3f3cebb2",
+    "side": "both"
+  },
+  "punchy": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "8aoMKplv",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "4d3cef9894ac57a46455c8c32a9313651a48bb2e10c0e79c3f14bd27ab05a4332da24eb1cf97b2def0e13ed7cbe8e6031065244cd3b1bbd40016f26ef114952e",
+      "url": "https://api.modrinth.com/v2/version/vNMBHZKV",
+      "version_id": "vNMBHZKV"
+    },
+    "sha256": "da1b35797ae52ab607c9ffdd6c334bd678600a6af814a411d6882deb82a4e305",
+    "side": "client"
+  },
+  "puzzleslib": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "QAGBst4M",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "f60ecfc9fedf9c6967891024711391abdc6ffb45c09030f221e9bf061a5a99323a612cecf19af4b0d86b7a3dd4c49f273e2a9b2d2b61bbc867f85d9f3034f5b7",
+      "url": "https://api.modrinth.com/v2/version/lATqZwtV",
+      "version_id": "lATqZwtV"
+    },
+    "sha256": "8f0694456687614dea3861515ce04e2a0d0bf9d87aa48ea2edc4972b0ba4e88b",
+    "side": "both"
+  },
+  "quark": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "qnQsVE2z",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "0d1869d5d912e4f36d5e7c62acb9720cdb8c163911f09dad8f9eb3592bde4e1b25d664a8ed24d9002cb77ae6fd2f37768d3a97b779e7f9d84c567de83c9599f2",
+      "url": "https://api.modrinth.com/v2/version/18h0L19k",
+      "version_id": "18h0L19k"
+    },
+    "sha256": "2a43e4fa6254aaaf755f4ece5230708a2a6d587d8092d4db3aa53626c7bb67ab",
+    "side": "both"
+  },
+  "quick_pack": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server",
+      "note": "Works on either; retain both profile memberships without requiring both at runtime.",
+      "project_id": "pSISfJ4O",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "0021daad4ffd4ff9d7ac29316ef6b8f3fecbdc1b08f793f9333304a5b07a5da48ba0eb60d529404e313258009f76dd56cc0789f5865a32fe440ca1db9ba5db16",
+      "url": "https://api.modrinth.com/v2/version/yXZgoajP",
+      "version_id": "yXZgoajP"
+    },
+    "sha256": "1c3e963bdbf829bee1fe6dee29fdc5792890c09e67134849d54cf87b9ce3d431",
+    "side": "both"
+  },
+  "reanimal": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "4Q5qctHv",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "10e00f0f70d71b175df09fcd163599fcf17aca083eea629aa2639792ede2bfc0ec1f769c352d02d73172b2f1b410b28a941eed064b200a655ecf7baa8796c7d9",
+      "url": "https://api.modrinth.com/v2/version/yOEHRyHw",
+      "version_id": "yOEHRyHw"
+    },
+    "sha256": "36a7ac3783aa4451d271dbf65386027ceccfe5a583f47be35086e6d76008f575",
+    "side": "both"
+  },
+  "reeses_sodium_options": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "Bh37bMuy",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "a99d41a41ca83376c4fa29ed22a99e98288a7e9a4749fbf6d3724b9804b8e66648e267c6851a53d040069fdc2d889f8205cbb444bee10a35be840d13fc9ed477",
+      "url": "https://api.modrinth.com/v2/version/XjF2IkL8",
+      "version_id": "XjF2IkL8"
+    },
+    "sha256": "e4c86cad7c86c3601261441c0282571dc6b1ebeb41b694c11eb58b2becb90b51",
+    "side": "client"
+  },
+  "regions_unexplored": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "Tkikq67H",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "b6475d26f22a5a3ed957b76b85f3d51d3422c0fbef16f777b74bfe9d70fd1673d75cb0c4e2a2a56121f0d0d6780a9e92fdcd7023b4f1d0d2d746d54c64c12f3c",
+      "url": "https://api.modrinth.com/v2/version/5A8LFnXX",
+      "version_id": "5A8LFnXX"
+    },
+    "sha256": "ccf32ed714f2724f54406b9e02a8d6f94d87dc5c72397bc39b3d6ed8f32412ea",
+    "side": "both"
+  },
+  "repurposed_structures": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "QDNS5oAT",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "cb6d22bc8d426aefda37ba63dcd0346db342157500e86782ebf142d09cc81970d4745b81b760a639e5734f91d9f3275d6430d4a8c54dfd8256e732ea682e8bd2",
+      "url": "https://api.modrinth.com/v2/version/8duZuWci",
+      "version_id": "8duZuWci"
+    },
+    "sha256": "64e64109acf7673b969aca9b3cca0bb555777cd7038aa16aa32a1548d753f257",
+    "side": "both"
+  },
+  "resourcefulconfig": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "M1953qlQ",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "8e4ccc37732b3f5190e7e98df34dbc1339fe614494fcabf1aeaeab9ad8e5993522964b51be31882000c08c48a6d0096b5458364415bb81f2b2b775a7daf2eb87",
+      "url": "https://api.modrinth.com/v2/version/lSbyRD6v",
+      "version_id": "lSbyRD6v"
+    },
+    "sha256": "25b4f3502d25c535004acd4a9420272fff01d2f1e2df352239fec93fdab005d4",
+    "side": "both"
+  },
+  "resourcefullib": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "G1hIVOrD",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "a9d20e345faa9bcb297bd95ac9524205834804d1bb13518397dd4f7f62b352b08c3339ee7f7870d3669078ceeb33d5c31ea527aecce4b31d62ec1ff7d8b562c8",
+      "url": "https://api.modrinth.com/v2/version/x99nCLTm",
+      "version_id": "x99nCLTm"
+    },
+    "sha256": "5e36f2c69de008dc5795f730c84ab767688f15c810944b585485349a0c911261",
+    "side": "both"
+  },
+  "resourcify": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "RLzHAoZe",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "7549767df4e4824ff089d83fa94d9106fc36f06ddcd8659301c9eadd83675e6e315b51d529e39a68b19e7c5b7597541b63e6c7b6e6abc1696ded675b99297338",
+      "url": "https://api.modrinth.com/v2/version/5KyUPNjh",
+      "version_id": "5KyUPNjh"
+    },
+    "sha256": "e36e59e9d4d389809d2ac2701104d64140fdcb7aedf09189b94b9596b8669894",
+    "side": "client"
+  },
+  "rhino": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "sk9knFPE",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "e3d92f663bc07872a83b0a6474b30a75230e9f92a2844fd98da1842ec9a79712bcb7d8e76574cc11ae3aeceb47f2933c60ddd6cf41f3ad7027bd573623730945",
+      "url": "https://api.modrinth.com/v2/version/SqkDvOLG",
+      "version_id": "SqkDvOLG"
+    },
+    "sha256": "1d53d962aa4dac54bcbb4f998c1845980cf194318f1d6b1580ea6ac15cce5ef3",
+    "side": "both"
+  },
+  "ritchiesprojectilelib": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "B3pb093D",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "6d64c84505a5a8fbb96d106603065465c5a2314ec09636900c5c1a31014c12fa68f1a41e758313cbf0d6f95d9a1f53bd67339020f7d8db0e184c23f66aee0330",
+      "url": "https://api.modrinth.com/v2/version/hZ6B2Z0x",
+      "version_id": "hZ6B2Z0x"
+    },
+    "sha256": "cc509060833736fb650aa4c36b1ce33a7eeeb9ca6e9f8e80a7c951c9e7487b24",
+    "side": "both"
+  },
+  "rocks": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 5460165,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 558126,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/this-rocks-forge"
+    },
+    "sha256": "816050b099f58db7cdeed0afba5ca7810398fba648c706f91909b297e3e0573b",
+    "side": "both"
+  },
+  "rpc": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "d4phKsx2",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "4d503ab2c4596f5f006a50d3125f336de2b5c7ea1851b8e02e52d5456ba60a4284681d19ea9ada0ffd11fb8418e582d5521b3ed9dfec132d80155bdd2d7928c0",
+      "url": "https://api.modrinth.com/v2/version/CXXq3WeQ",
+      "version_id": "CXXq3WeQ"
+    },
+    "sha256": "20e989ec0830a34419bafaab80f2548e128bc5ac0ecc6962e442a995c1222c34",
+    "side": "client"
+  },
+  "sable": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "T9PomCSv",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "76d293ce751a01cb9c095a3659b0a41e03e005480bc9d76dfdc73ec7c2eabf7923740c7b077921d42616673c496cd5143569f2085ddcebe174fd91d81e2a04b8",
+      "url": "https://api.modrinth.com/v2/version/fg9dTRz9",
+      "version_id": "fg9dTRz9"
+    },
+    "sha256": "9c199157843bf953a47dff625fc5bb41c01a90538d35ad18e6996bbcb8a617c2",
+    "side": "both"
+  },
+  "sculkrelics": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 9093591,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1727282,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/sculk-relics"
+    },
+    "sha256": "7f1c54751906e19b8cead30891d7c9fc548c16f97ab833ba59510648f405a56d",
+    "side": "both"
+  },
+  "sereneseasons": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8828410,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1476693,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/serene-seasons-api-stub-ecliptic-seasons-bridge"
+    },
+    "sha256": "c7e3ff9d2627e08a1b3926117be276a33a4ff8db5e53d647a246e45f28bce73e",
+    "side": "both"
+  },
+  "servercore": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "4WWQxlQP",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "55b97df4cc46f52db85b96487188d73c62d511229d98859991c115414c5f1ab37f2f40a0f2edb5692220aa94d6c48b392b0a2d8593b3c3381b1fcbde2a728c8f",
+      "url": "https://api.modrinth.com/v2/version/6N9hXiRa",
+      "version_id": "6N9hXiRa"
+    },
+    "sha256": "a5706aa0bb3a47c5f1adab44306685736688ec03414f60beb4fcbe05b99f5a82",
+    "side": "both"
+  },
+  "shooting_star_demo": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 9171007,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1719195,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/the-shooting-star-demo"
+    },
+    "sha256": "51b99160741a3c77aea50ec6983b6af45e5620d5bedac91aa9b06f0843e758ec",
+    "side": "both"
+  },
+  "shouldersurfing": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "kepjj2sy",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "4497d2f8a992d6d8985b1a6fa7018158a877521052302682866f89171d14eafa7c6b75d92c6e08531003476bc292f71c67c7e4f34b8c1a6864074a3b0dcd7e75",
+      "url": "https://api.modrinth.com/v2/version/woekHsje",
+      "version_id": "woekHsje"
+    },
+    "sha256": "c5be270deba5168999fda26d71d28393dd1421397dd2708ad222f6d4e5f501c7",
+    "side": "client"
+  },
+  "skinlayers3d": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "zV5r3pPn",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "7bf3064d6cd43b2991d7e51d9dd2a3f27c74cab6bbde80c7aa1fffe06a7935ef0b407b0514d789519f64e825ded71953e08c14f0b6aa530c5223d126d9b03912",
+      "url": "https://api.modrinth.com/v2/version/5s6lxsQW",
+      "version_id": "5s6lxsQW"
+    },
+    "sha256": "af7dcd6c6a40793adc0f7e57dd8fcc04c9e9bdf9c8ffa4efeb36e22d8b1f79db",
+    "side": "client"
+  },
+  "sleep_tight": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "tNai0h2Y",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "3da009bba2281a733d0cfb4d718496a1cec448eedb9b6d6fb1da7db413865a83c56d2ae57450edd702a79debaaa6e51c91d4985eaaacee62d342bf85e28f003b",
+      "url": "https://api.modrinth.com/v2/version/wZf65KFu",
+      "version_id": "wZf65KFu"
+    },
+    "sha256": "f347030ab1324378a09cdac4f16e5164569d92f9d4bdb57e19c4e4d25a102d9f",
+    "side": "both"
+  },
+  "snowrealmagic": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "iJNje1E8",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "3091d34ff887f70b13f4aafe575b27970225a155ba96375b134d35f2418b77acf93e87b9601c2b7d26b7a1e7a38fc4b55729b6eac007281678a79df00158d7f4",
+      "url": "https://api.modrinth.com/v2/version/XXjs6tNa",
+      "version_id": "XXjs6tNa"
+    },
+    "sha256": "7077cd92e2e6402bedaea25350d077cf77107b00917151eb65cb25ffa994ad72",
+    "side": "both"
+  },
+  "sodium": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "AANobbMI",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "4f537696af95411e9daf15795fb5fcbc49913d488a96fa912fa8f1d7db408710995e8a1461190f3cd0f8217bf9e35e9539176592428ed587ca2d7aa84450a390",
+      "url": "https://api.modrinth.com/v2/version/uMOpc5uV",
+      "version_id": "uMOpc5uV"
+    },
+    "sha256": "575d187b15328d7bddd8a9b1bee64333c22c14735f5780ec49eac0cd5503c08d",
+    "side": "client"
+  },
+  "sound_physics_remastered": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 7032247,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 535489,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/sound-physics-remastered"
+    },
+    "sha256": "65372ad64422a20f03ad6e39aabaa827c191abbe9be5c35631acc3a8105fe177",
+    "side": "both"
+  },
+  "sounds": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "ZouiUX7t",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "0dbfe1cd74be45241c5e95354e6466af10cb50ce780d87672337bd4de03fa708dc56eb013040bb2a02a941cf19b2b282385c6a5305695a4de3534627c645f053",
+      "url": "https://api.modrinth.com/v2/version/kti7i9SG",
+      "version_id": "kti7i9SG"
+    },
+    "sha256": "d3bda0a7a5b1f267747da182e788139da380f625eaf96a5c2a8fa5bcb8d908b7",
+    "side": "client"
+  },
+  "spark": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server",
+      "note": "Works on either; retain both profile memberships without requiring both at runtime.",
+      "project_id": "l6YH9Als",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "f86ce34f2759c69df82578c397ff55b666c84626229a98f598458b960c21b38c95d6bfef4772af7f963c4f4868e5e2d9aef6b99c1d51bab55bf45e0e6e6b5ed4",
+      "url": "https://api.modrinth.com/v2/version/v5qtqRQi",
+      "version_id": "v5qtqRQi"
+    },
+    "sha256": "647e8a81afbe414dba1df4ba15fd06c5d32d4cb544e68828405e8e074c2e16db",
+    "side": "both"
+  },
+  "sparsestructures": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "qwvI41y9",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "adef915104fe7a010b7e3305f3bb85c3336cc764fb2b8c6dfec3b749e08d0d0b7d36b6ca470699ec85ba2474d6c726d96a2bb9c1952668202d9dfe0382fbdae9",
+      "url": "https://api.modrinth.com/v2/version/MoJZpi20",
+      "version_id": "MoJZpi20"
+    },
+    "sha256": "5aca0b33c0c83154810bbdd8ddc0d3e6a3e4591577274e2d27c10de0b45f2a45",
+    "side": "both"
+  },
+  "spawn": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "rex9wwpz",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "f6db8f8a11d90d973ad4e7041816793a70e298949c4d378cb08a2b78937327c8f2d5c75d1f938a0493adad1a5a1c6fda67949867b7c7b1c56c5d58eda8ae8204",
+      "url": "https://api.modrinth.com/v2/version/OgmUYgeL",
+      "version_id": "OgmUYgeL"
+    },
+    "sha256": "705dabdfb29b163500334a08c095b51ea8800db08b6c96ec430c52b30d6d9842",
+    "side": "both"
+  },
+  "structory": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "aKCwCJlY",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "4178a15f32f6ed3d59a7eb2222a8e3f539efd7b54d8ffb790cbf1dfe5c54c6ce6ec33220e148424109c6360c4c6f081b9fbebfe74745fe3c8f05619a06ccb9ec",
+      "url": "https://api.modrinth.com/v2/version/TUbwu7eG",
+      "version_id": "TUbwu7eG"
+    },
+    "sha256": "e9079b2bb9bc2efb9b0f1244376488e41f8b50f25415094d8f03dc753cdfb131",
+    "side": "both"
+  },
+  "structure_layout_optimizer": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "ayPU0OHc",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "8c38ebd0e221f5bfe887a40ab21caede40cadc90bfc3b8dbbc79888c07faee44d58f12a974f1c5af324c9feceaa2ed04ea62724c6453650c77e1910582914153",
+      "url": "https://api.modrinth.com/v2/version/eTz03Gfd",
+      "version_id": "eTz03Gfd"
+    },
+    "sha256": "ef8eb29c5c4f111c74a49d379843e4c2f51d11b28c8116a49be13636c83f4385",
+    "side": "both"
+  },
+  "structures": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "6lxFhM2b",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "fece145e58ff148b7e1c765363fbb6935964f98443caac35b3abc733720087543a3979f0301980e14bc8d091d18a114d4c22417474222e3c7aafa17a54a26857",
+      "url": "https://api.modrinth.com/v2/version/MHIwjvRH",
+      "version_id": "MHIwjvRH"
+    },
+    "sha256": "f72581a992393725192c427376c480eff2214e995dcde7473a621c9b890fdbf3",
+    "side": "both"
+  },
+  "structuresplus": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "6WwYmxGF",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "49315151950b80963da144fa5eaa1515f850b3396ee38f5fa8760f5fc30202a9276547924150826c379f7a763140a3910cf32e5967d3071fa0d3bdd2566dd8a0",
+      "url": "https://api.modrinth.com/v2/version/NEnQjeqZ",
+      "version_id": "NEnQjeqZ"
+    },
+    "sha256": "63da48788442d0e998f03ef01e3445c3cf86be49dcf0b7afeb749b41daf472de",
+    "side": "both"
+  },
+  "structurify": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "yz7AM2zx",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "2a7ee8d9776c9d9557b0de931d9680e3b99b79b0648799f0314a97e2a10067e05fe0ae8a7059cb53a68e1786e057d2d37dcd6bbaaca6f688f22ebb31b057d2e5",
+      "url": "https://api.modrinth.com/v2/version/KDqZzIc2",
+      "version_id": "KDqZzIc2"
+    },
+    "sha256": "0ba60a53952b1ab413311cd1238ce46dd5ca2fd38a49e380c7a73e14609b1536",
+    "side": "both"
+  },
+  "stylisheffects": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "onDuQF5e",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "5dbf9be82e7da514b84b0b984789d272b5e0ccf2d667dd3d669e504ed512c3b7de1eb59be6ef4895ccd1fd88c4d6aee23ae28748b36b84528d64e94ebfad6282",
+      "url": "https://api.modrinth.com/v2/version/MT3yeDds",
+      "version_id": "MT3yeDds"
+    },
+    "sha256": "ee312720bf882c688f15b156d33b2194faf8b5e1b94ba112b2c841ac1d9f0501",
+    "side": "client"
+  },
+  "subtle_effects": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only_server_optional",
+      "note": "Client required, server optional; preserve installed client and optional server functionality.",
+      "project_id": "4q8UOK1d",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "4bc61c3cb3df0d774f623eb9177c0ec3d74617c044d3a80a5b564094d2b14c9ebc98b79893a01bb5461d92141787bb814dd869101a293a840dade027bd0a56a1",
+      "url": "https://api.modrinth.com/v2/version/ReUDmzrA",
+      "version_id": "ReUDmzrA"
+    },
+    "sha256": "c4faf74fa63848b8ca3c48109499008b50e8519c63cda3d0dff4d1fca176202d",
+    "side": "both"
+  },
+  "supplementaries": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "fFEIiSDQ",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "092034ac007c327c9dd58c68ae585df59fa523a5ca40da88b34ad8f1c6347523d302e490acc1650eae6837f46979442ea8a8c151802074de2da99c396ec28894",
+      "url": "https://api.modrinth.com/v2/version/rWq0ko29",
+      "version_id": "rWq0ko29"
+    },
+    "sha256": "2c2e0c98e0cc21874d8b2130bc773a2a5a6cadd854b9c8163d0e1f32e2ddffb0",
+    "side": "both"
+  },
+  "sushigocrafting": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "G9WbcGQ2",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "ee91efc2463e3ac7aafd5a3992699fff8cc2950ffa9a891e56637a7c69c9402956358f240bfef24cff6c61af67f4f357ed590cc8ff76df2c049ed98b244b91a2",
+      "url": "https://api.modrinth.com/v2/version/Z7kito0S",
+      "version_id": "Z7kito0S"
+    },
+    "sha256": "676339578ce74c17e4f4ce21db50556c699d2a9a74a093b5d977af468ead81e9",
+    "side": "both"
+  },
+  "t_and_t": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only_client_optional",
+      "note": "Server required, client optional; preserve installed optional client functionality.",
+      "project_id": "DjLobEOy",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "7464b1556250ceee25b4b531e07f65568c98a9d26f97232c1f6016be63ff243891de8283e072981deb968ea7d8b83bdc1579ee842b6b792446f4c26a43af4b62",
+      "url": "https://api.modrinth.com/v2/version/DZxwgj6V",
+      "version_id": "DZxwgj6V"
+    },
+    "sha256": "270fc0d1c99e54bc15f43d64bdaac60a90cb896efc357af624988e677136440f",
+    "side": "both"
+  },
+  "takesapillage": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "QOJOg1gE",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "cc0d566d80f6da915795382561f0c57d611f0c1a28f82520b6606850cb282dc7168becfdea485076a0d45631bfbaaa7287ebc27a2824a94b50ab619a51aefeab",
+      "url": "https://api.modrinth.com/v2/version/m8qvxZIS",
+      "version_id": "m8qvxZIS"
+    },
+    "sha256": "9856f3ec50a9182cdd768f12f1a0477f4cebe78bb1adb5422588f1f742f94b10",
+    "side": "both"
+  },
+  "teallib": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "rLJ1qF79",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "11060adb8aae151879e8e4db4ad5409df1044784fe9e6d6a5f4750ea778317bd37ca9129f39d23e18988b912ab036a9fb3a128761726f927ac23797dd02ed381",
+      "url": "https://api.modrinth.com/v2/version/lZTBRemW",
+      "version_id": "lZTBRemW"
+    },
+    "sha256": "297004b131df16839a09f97ecd703ea20e89937289e5613d3711e385f9377218",
+    "side": "both"
+  },
+  "tectonic": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only_client_optional",
+      "note": "Server required, client optional; preserve installed optional client functionality.",
+      "project_id": "lWDHr9jE",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "e07b9cb54f078b7bf74c925c5cebd6643f0b4c210b8f94474e68659b69468ece7d61432f70eafe7abaa1dfa798e4638aad297987c121dc127588c2623b7f7a81",
+      "url": "https://api.modrinth.com/v2/version/n4iyW7aB",
+      "version_id": "n4iyW7aB"
+    },
+    "sha256": "cf188c70e7dd94f6e3a81cef9fe99f1151f13217809f7576aaedb0c3e6547ae1",
+    "side": "both"
+  },
+  "terrablender": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 6054947,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 940057,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/terrablender-neoforge"
+    },
+    "sha256": "edb34c388fe17ea88d0a7fd11174bbf8ae8f28a4c8ce886f1bf9a5cf0ebc36b8",
+    "side": "both"
+  },
+  "terrain_slabs": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "SJu6sklj",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "56d52bd9864423d8d8e2b6cf88d3533824b2ab64e3947e039d3d90bcc4d69e43b2dc56046f4f9e7c7cb9baa384bb3757d7ff18d70690888f54c3755bfbb7b593",
+      "url": "https://api.modrinth.com/v2/version/1dYKrrP8",
+      "version_id": "1dYKrrP8"
+    },
+    "sha256": "6f439e78d40d46ba36966ea230f595d36c5bd2b6008f673117caca13a5827df3",
+    "side": "both"
+  },
+  "terralith": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "8oi3bsk5",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "35298f1682567f63dc16658b04cee5498b30819f1c05f9712b4480d7f5eb17059db3b13ab14f81a05fe257149d11ced2cce2030d3727c1747edd8657c53e2a85",
+      "url": "https://api.modrinth.com/v2/version/IY93YaEe",
+      "version_id": "IY93YaEe"
+    },
+    "sha256": "d38bd304897731b42f6c013cdc07e082e74411e80c74aabcee385251beb3b546",
+    "side": "both"
+  },
+  "the_sift": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "j0IfTxBq",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "79eeed64d446f968c35e3cf506a1342e46d7ef4284e5b7845e70218e5d9614d321eadd77c4087a1761d51270cdf3b1583193c21be873d91214d017f48675b8ca",
+      "url": "https://api.modrinth.com/v2/version/UbyC91UB",
+      "version_id": "UbyC91UB"
+    },
+    "sha256": "d3850f08efb7eade3d1f6847de4ee164bf6d37e207e33be25dbaf14251ec8abe",
+    "side": "both"
+  },
+  "thirst": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "iUheEnjm",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "8f6fb11312cb057bcdf018baf9b99ca66523ef4a34576856e3af9d06fbf14749257399aabfe44ff8f8b490799ba89b9b03157e85145465a3f710393964127ef5",
+      "url": "https://api.modrinth.com/v2/version/YqPoqXIx",
+      "version_id": "YqPoqXIx"
+    },
+    "sha256": "f9442733b66b112ea5503caba31e321e8ca8767e2c5a9a4aea8976eea0eba87e",
+    "side": "both"
+  },
+  "ticktoklib": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8685795,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1298954,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/tick-tok-lib"
+    },
+    "sha256": "93b8a6246c3ea74de7a1a9ad3dd13ce540a6ac286e8ccebd7afee7c0d240c46e",
+    "side": "both"
+  },
+  "tide": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "die1AF7i",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "a6ee50e7b1a31e3d12641827ada1816da08c6185ca6447a23c7f90bf4964c022c8dafd8d9df865b4c2368365b21114d326bd5eabde1c76392123d3e9b4b6111f",
+      "url": "https://api.modrinth.com/v2/version/1ki6UyqV",
+      "version_id": "1ki6UyqV"
+    },
+    "sha256": "f7c4592c593901cf14de8fc24e9252fd1a959e6559964ce128bc8e2c8660c8ca",
+    "side": "both"
+  },
+  "timber_tales": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "file_id": 8967432,
+      "note": "Author declares installation scope; not a gameplay compatibility claim.",
+      "project_id": 1614748,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/timber-tales-dynamic-tree-system"
+    },
+    "sha256": "328f92fef0b9cd5b3a841cc9473eb521029481dd27f505e960c705a8ccd4cbe6",
+    "side": "both"
+  },
+  "timm": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "EgBj3Bnf",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "6635a5e316d0e84c59c472a98cf02248c81484fbe34397f5da03f0e1d4c336ae098474c46272499f924c745c4fb4f89d5810ffc2944ce98a909ea796b23e7e90",
+      "url": "https://api.modrinth.com/v2/version/AoFYLDWr",
+      "version_id": "AoFYLDWr"
+    },
+    "sha256": "2566a6f86d5420a01723f54a3e3147daba0838253b40fb002a20cfdc39d5beb0",
+    "side": "client"
+  },
+  "titanium": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "1Ro7m06l",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "59a1470b5b3e103f52fa9c0f2f334bb3b28cdbaba74c95234528a40a558596d598227968e5812502a41a9ee24993b00c748cee913abae8fbb4ab7df79d04ab29",
+      "url": "https://api.modrinth.com/v2/version/vbCgpf68",
+      "version_id": "vbCgpf68"
+    },
+    "sha256": "b227aca8447c79d4789f77a896231c5a403f747ccd4d133165aaaf177c40c2d6",
+    "side": "both"
+  },
+  "toofast": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Server",
+      "file_id": 6819714,
+      "note": "Retain the installed client candidate; author confirms dedicated-server support.",
+      "project_id": 550678,
+      "provider": "curseforge_project",
+      "scope": "Author project declaration; exact local bytes identified by provider file hashes; runtime unverified.",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/too-fast"
+    },
+    "sha256": "54852c9d395b4dc870d1c8a587e4fade9fb05474540ae4d3dd196663dd6a6114",
+    "side": "both"
+  },
+  "treephysics": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "AlVH5pr8",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "5afefda3cc910f02b099b32360bc742f12ef3816c14e264671c8077bf67159c5239f66b0aadf2c9e53b916390a9b8baf791aa76668ce416513257f50a9a43479",
+      "url": "https://api.modrinth.com/v2/version/nRQrvQIW",
+      "version_id": "nRQrvQIW"
+    },
+    "sha256": "d53b43e65e4a22070ea630c313284fe4857340b14c182adda8d44bc9946807e7",
+    "side": "both"
+  },
+  "tropicraft": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "20zpzIT1",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "b3c8ed1b2988718016d4a99610824a45d5df536ec0b4f697d44672f2898e15150997950df06fe2dac6cc11d5c99aa9c2e0b1a56c0a37c5360b2448e9a28fdb6c",
+      "url": "https://api.modrinth.com/v2/version/20oDt9Q4",
+      "version_id": "20oDt9Q4"
+    },
+    "sha256": "9e61847fcd7bc6b26ebb7a723c3af4bc4f847897aefad9f400d0093984a389f5",
+    "side": "both"
+  },
+  "twoplayersonehorse": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "c89BhsB1",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "5d8edd34316cf5326eb852abc3e279376a3ab8cc93d756af469e4f03fde0f1e685f54d9df30fc38f0462386cce4f5219dfcf55eaff7916fa0e0c7e1dab31b573",
+      "url": "https://api.modrinth.com/v2/version/cTpecyBB",
+      "version_id": "cTpecyBB"
+    },
+    "sha256": "581e578379e918eb13abeec6948d58ec3bbbf36901ec8fe537b2d302b97f3531",
+    "side": "both"
+  },
+  "txnilib": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "vBbPDuOs",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "656cd5746fe1b3a2cc7c516619d9f88556f37387e672bb0f362c8aecefc6f1d06705d3a84564c8779856fbbf69fee67b6038a24ffcf46f36f2c478a1aff43a57",
+      "url": "https://api.modrinth.com/v2/version/M1CyD3Uu",
+      "version_id": "M1CyD3Uu"
+    },
+    "sha256": "411e811a6a53a63c2716dbf71cd1167e3a98d000b884458759d6192720be3e18",
+    "side": "both"
+  },
+  "u_desert": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "ThFWvdF1",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "026e2b85018c5216df62a858de4ece7672152e3d7c6261e1c5831c01504285a417f284cde966903a7b6592a5012e6c837d5be09b9075f9ef2df29bfe036fd21d",
+      "url": "https://api.modrinth.com/v2/version/Gw6acQkk",
+      "version_id": "Gw6acQkk"
+    },
+    "sha256": "4dad266af14834216cf71a76c19f63853db575e9ac2c39e29d378292a1970e6c",
+    "side": "both"
+  },
+  "u_sea": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "2a8fg8M6",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "737f90071ce9d47187557f9215037d078f07fde9d02f5e0293f8abefc94224d89c7a21d060d72a9aefe0d46eebf54d1ac27a191d0b44189e4ed24b98f347178b",
+      "url": "https://api.modrinth.com/v2/version/vEr4Tzbr",
+      "version_id": "vEr4Tzbr"
+    },
+    "sha256": "4388981774f844f7f42e712ae34406d90b2b2e2119e76c36dbff8a2e3a5ee923",
+    "side": "both"
+  },
+  "unusualfishmod": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "vYSi4UOX",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "014c30e7597f80d1bcc2c2bf2efa018c3070b3780a104524ab1435530d039dde9e1feb2fdc359a446f68e894ba3415ed906f2522e7bbaedf824415d21537f173",
+      "url": "https://api.modrinth.com/v2/version/zyAcoKq7",
+      "version_id": "zyAcoKq7"
+    },
+    "sha256": "997fc3e6f4be629a06f06126aa504dd6e8788423fd71f4c4a6125b095e717ace",
+    "side": "both"
+  },
+  "vanillabackport": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "6xwxDTgf",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "be0622afd2f7d216e4d83aed9190dec6f6f6a2919cffcebe8f334989b91f148638efa1b3e1d4bb8aa6c83ffa5f775951d6b3bc75c0d45b70b5b389b4f3476b4f",
+      "url": "https://api.modrinth.com/v2/version/rUSWdBok",
+      "version_id": "rUSWdBok"
+    },
+    "sha256": "ecd807ac358e243ede17819455788c7b7a0ce5e0af4aecee82c1c62c586d818d",
+    "side": "both"
+  },
+  "villagesandpillages": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "klXONLDA",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "5454fa7d35cc24cd45dd149cd9ea3667bdeef7c0b44bf0bbd0686c97aa514be7c9aa89e63ea6727f64357eba7d2eff6340f481e87843089228a3fb329cfb6f6a",
+      "url": "https://api.modrinth.com/v2/version/4wFzeVeV",
+      "version_id": "4wFzeVeV"
+    },
+    "sha256": "61cbcd1cf57cdb38eba89393c8f18ce9839d17d6e1cf5f7aa2616a82a2268e98",
+    "side": "both"
+  },
+  "vinery": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "1DWmBJVA",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "51c31c756de0f54a91f28c4d072925e0793ae70aefde2d23ea7ca3c5b7050ce04cc1885531ea459d1ea6adefb05d7c37616e3c9102f0fea50234f04043f6b970",
+      "url": "https://api.modrinth.com/v2/version/NmoLFrhq",
+      "version_id": "NmoLFrhq"
+    },
+    "sha256": "7e5e4e901a599a499bd510490ec12e72e8547e53b61790778fa7848852c451ec",
+    "side": "both"
+  },
+  "visuality": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "z13R7Et1",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "f90754b93efff9fc466351446e916b1aac314e8834985f97725fff9a4978bc5519e3497303c7136a2e8b0aedda36ae674858ddfe3f01b63d1886fa906440e373",
+      "url": "https://api.modrinth.com/v2/version/kOdevgPm",
+      "version_id": "kOdevgPm"
+    },
+    "sha256": "d9d25b3d89d24034ba8dd0d0d4d8c6e596728427f02b8248a6e429d6e585b579",
+    "side": "client"
+  },
+  "waterdripsound": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "T8MMXTpr",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "b0e36ae5590203f680da467891d133d0690955d2ce9cac18465e71c2cf002060da6734ed94e5798119cb67c3dda2b2d1713f35b99072f05b81c3c79493c92f57",
+      "url": "https://api.modrinth.com/v2/version/wA7GjiYi",
+      "version_id": "wA7GjiYi"
+    },
+    "sha256": "d5ad3eceefda8791fc02041614164c5b639c6fae199926711cd41e7dc9838f12",
+    "side": "client"
+  },
+  "wetland_whimsy": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "PsS0ZPEe",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "7a5f944d43bd8317522b27d1972ce11e0ab830e22f9c65c21103f30a4e1ebf76720be8802a40fe4c0466f0512814b31da6dbb94d65223923db01fa211c96c59d",
+      "url": "https://api.modrinth.com/v2/version/nJipj2lk",
+      "version_id": "nJipj2lk"
+    },
+    "sha256": "abf8f7652a9c8f14b24c89293e6fef342ed5d58eb9eeeb48980a69748fa34093",
+    "side": "both"
+  },
+  "wildernature": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "AAiRU4aQ",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "f66976e2d7d971dead821384d686f2a6fac0765400a8ea60a226f25bfccc3460d32356b79bb1c8fc4b39f48d768ceb2212019f77bc344d9f9b023277a1cdde80",
+      "url": "https://api.modrinth.com/v2/version/iwC56pNh",
+      "version_id": "iwC56pNh"
+    },
+    "sha256": "06451eef2632618566a0a4886ef0d4e8d34187479611410e2e06dbfb949b02e9",
+    "side": "both"
+  },
+  "wildernessodysseyapi": {
+    "essential": true,
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "Client & Server",
+      "provider": "author_project",
+      "scope": "Project declares Client & Server; exact installed 5.0.0 stays manual, not a claim it is a published CurseForge file.",
+      "source_url": "https://github.com/Thunderrock424242/Wilderness-Odyssey-API",
+      "url": "https://www.curseforge.com/minecraft/mc-mods/wilderness-odyssey-api"
+    },
+    "sha256": "bcf0a134b9c29ac088f4952846ec173350ac309bb9a549433db8e146589e5a01",
+    "side": "both"
+  },
+  "wits": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "AVo2esap",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "8bf6da87a6fc62d74b77c78a2e261d078109fb9faf1da55efd89ab0e559d5b8d6fe12670e2622ba73e510c7d90f711005f5d48f88a8af21b211fd0e314117ba1",
+      "url": "https://api.modrinth.com/v2/version/XbM2TRNR",
+      "version_id": "XbM2TRNR"
+    },
+    "sha256": "1ac1297df094f4019589093f5a4a5e1ddbef2bdaf494a7c83aa049ed225e0698",
+    "side": "both"
+  },
+  "worldedit": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "server_only",
+      "note": "Server functionality, also works in singleplayer; preserve the installed physical client artifact.",
+      "project_id": "1u6JkXh5",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "e039492df0b486e7ce76d0eaf8cb11eadad2e78220600b8498ab8eef4642a29e310a6bcb4378257553b3639c6d0bc1ebf0f73df3a7a677c6af6baf86716b0bc7",
+      "url": "https://api.modrinth.com/v2/version/WTAFvuRx",
+      "version_id": "WTAFvuRx"
+    },
+    "sha256": "5e7752c97876d87411e3760bcc573cc431f43c453722e6959fa7fe54db1b01ca",
+    "side": "both"
+  },
+  "xercamusic": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "qQpWCN75",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "197bb1afdc684ab949ff00ee012783f6fd7a20a5fbebdd37c84ae4884afa4a7392e6e132ebebbd02c6f25f335032b0c8dacf53e377e839acd54b6d92eb10f8df",
+      "url": "https://api.modrinth.com/v2/version/SuWiRk2o",
+      "version_id": "SuWiRk2o"
+    },
+    "sha256": "ad73febf4c93fa968bd4d691813d33c4109fd0ac5604452565359a9c375204c6",
+    "side": "both"
+  },
+  "yeetusexperimentus": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_only",
+      "note": "Client functionality only; exclude from dedicated server.",
+      "project_id": "HaaH232J",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "cc2dc46dcaa0424c820cb7931fd2ceb3826669934189c011fd1ebd5692cdf7652c725034abec2828bfea2238c9615d6f9c36e3e01e21fc9eb44551eb51e06fe3",
+      "url": "https://api.modrinth.com/v2/version/Pp0TjcvD",
+      "version_id": "Pp0TjcvD"
+    },
+    "sha256": "9117db8b5905abf18f64fdf8f8d8ca5a91c23abd0a7fa2c9986c21aa17d74e75",
+    "side": "client"
+  },
+  "yet_another_config_lib_v3": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server",
+      "note": "Works on either; retain both profile memberships without requiring both at runtime.",
+      "project_id": "1eAoo2KR",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "583de19b927ce8050c2b7d5e60b75accc69e325e5aac85c27994c82a9dec2e4e078343fa1d4c3a10d4bd7e0e524e0b3b246a18cf03db01e363a1e6f865adcf48",
+      "url": "https://api.modrinth.com/v2/version/7TVdVtxF",
+      "version_id": "7TVdVtxF"
+    },
+    "sha256": "b5c30321b46cfaa521645a04aff89d2804d8167a25bb23ad4b1ae8da73093a2f",
+    "side": "both"
+  },
+  "yungsapi": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "Ua7DFN59",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "7e3cf0b429e8a1c51dca094c2d8eabf12245bb42cbcd8b6e3e54959f931bef93201b81a08d200b417059aaa438e8eb445c3978a09568597bfb588199b7775967",
+      "url": "https://api.modrinth.com/v2/version/2prKITKh",
+      "version_id": "2prKITKh"
+    },
+    "sha256": "375e0b2f988ab4f5bde182166c0f0b102377adc8f823660c24ade08b0b3cde56",
+    "side": "both"
+  },
+  "yungscavebiomes": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "cs7iGVq1",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "9e88b5109e06c791f27c23df16ebd2c535b5b27cf9b748ee6a439dccf3e560d32110b81ace5ea7dcca2992394b439223c20e4f2688e80e263efa103e2b154024",
+      "url": "https://api.modrinth.com/v2/version/HYGqXWqQ",
+      "version_id": "HYGqXWqQ"
+    },
+    "sha256": "7585587e5cb7859e26189c6ec0a5b829c5c228f095e4e843fa3add61f817dd20",
+    "side": "both"
+  },
+  "zeta": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_and_server",
+      "note": "Required on both logical sides.",
+      "project_id": "MVARlG2f",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "a81dcf44f2bfd0fc1a52f00d9ca47a84ad2baf067adedb35eec859f6b9cec7b61ca432e549a3342b10902f84e76d70224cd54400285c8b13a0926835a62c667c",
+      "url": "https://api.modrinth.com/v2/version/9GjNW2Gf",
+      "version_id": "9GjNW2Gf"
+    },
+    "sha256": "4f17d1a2b9fd6d18ddb7697aa451db7fb154053b8648f79de279ae0d7e68a2fa",
+    "side": "both"
+  },
+  "zfastnoise": {
+    "evidence": {
+      "checked_on": "2026-10-17",
+      "environment": "client_or_server_prefers_both",
+      "note": "Works on either and enhanced on both.",
+      "project_id": "OnlVIpq5",
+      "provider": "modrinth",
+      "scope": "modrinth_exact_version_environment",
+      "sha512": "23c50dc3d75da96d87b065381e32a979528017f872d056bf1cb012e085122734ab218ea8af7b5570403d83c88ebfb53296969af47198fdb637058753d3974278",
+      "url": "https://api.modrinth.com/v2/version/9vSFkDAr",
+      "version_id": "9vSFkDAr"
+    },
+    "sha256": "36ee58475c46c56e76c199eebe48dc95aacaa1133512617dcc46053339c2fb5d",
+    "side": "both"
+  }
+}

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "morepropulsion"
+filename = "morepropulsion-1.4.0.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "5d1cbab5c00d6b2c8e6bf57aae18b540722b3e8548b9174d91bce0ad6e8ef742"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1603705
+file-id = 8746527

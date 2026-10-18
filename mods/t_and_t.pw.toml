@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "t_and_t"
+filename = "t_and_t-fabric-neoforge-1.13.11.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "270fc0d1c99e54bc15f43d64bdaac60a90cb896efc357af624988e677136440f"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 626761
+file-id = 8657120

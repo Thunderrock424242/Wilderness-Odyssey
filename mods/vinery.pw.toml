@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "vinery"
+filename = "letsdo-vinery-neoforge-1.5.6.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "7e5e4e901a599a499bd510490ec12e72e8547e53b61790778fa7848852c451ec"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 704465
+file-id = 9203990

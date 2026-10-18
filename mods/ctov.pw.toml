@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "ctov"
+filename = "[Neoforge]ctov-3.6.3.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "4815b19b83541f09cba556e222612bc5ddcc31f7c4ba2198f4b4d6376cca8b2e"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 623908
+file-id = 7788733

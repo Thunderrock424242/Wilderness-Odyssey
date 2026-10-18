@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "betterbiomereblend"
+filename = "betterbiomeblend-1.5.2.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "5f632bf837b9b3c28eeaa4182fef6b24634a492e793ca98e7ba1ec0ffbb11083"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1018276
+file-id = 6386138

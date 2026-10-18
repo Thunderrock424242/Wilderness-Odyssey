@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "immediatelyfast"
+filename = "ImmediatelyFast-NeoForge-1.6.15+1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "7d7b1d7b9f71d5303e42b2fa45f222a5ab06e0ef5982abb6da5dd9cc449b3702"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 686911
+file-id = 9165518

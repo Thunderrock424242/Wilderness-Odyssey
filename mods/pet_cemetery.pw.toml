@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "pet_cemetery"
+filename = "pet_cemetery-1.21.1-3.0.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "3e18b16db9f939e159c1f50d76b1351f9cceb507328f90feeba10bda7bb555d6"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 565160
+file-id = 7118299

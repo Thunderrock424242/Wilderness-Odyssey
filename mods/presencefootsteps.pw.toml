@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "presencefootsteps"
+filename = "PresenceFootsteps-1.21.1-1.12.0-beta.1-1.21NeoForge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "ded9ea8677f407cbf280b0ee33866ae70859a7c476ef0f60fd35a9be2ee9b91a"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1390302
+file-id = 7252696

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "jadeaddons"
+filename = "JadeAddons-1.21.1-NeoForge-6.1.2.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "1e7ce561f66c90446797e57f836c4459bb0dbc408b6bd551e5e18038774641ae"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 583345
+file-id = 9056575

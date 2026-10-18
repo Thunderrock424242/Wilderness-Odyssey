@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "entity_model_features"
+filename = "entity_model_features-3.3.12-1.21-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "3ba0bf7b487660920d12cc0ff6cb5de1763f024a080fe0cd7d64e1c8e0f7f190"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 844662
+file-id = 9188526

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "bagus_lib"
+filename = "bagus_lib-1.21.1-13.27.0.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "0aab93450060fdd6fe2f9da8fae60b5b9ceb72b70bd071528b7afc3e547bd4c8"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 866533
+file-id = 8883079

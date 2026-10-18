@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "ritchiesprojectilelib"
+filename = "ritchiesprojectilelib-2.1.2-mc.1.21.1-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "cc509060833736fb650aa4c36b1ce33a7eeeb9ca6e9f8e80a7c951c9e7487b24"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1279407
+file-id = 7587771

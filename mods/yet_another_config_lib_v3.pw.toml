@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "yet_another_config_lib_v3"
+filename = "yet_another_config_lib_v3-3.8.2+1.21.1-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "b5c30321b46cfaa521645a04aff89d2804d8167a25bb23ad4b1ae8da73093a2f"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 667299
+file-id = 7437845

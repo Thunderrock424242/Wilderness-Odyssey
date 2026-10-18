@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "aquamirae"
+filename = "aquamirae-neoforge-1.21.1-7.2.12.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "7e3fc759c2f801c4f2686ebd47efd9bf8d28130187e53667ab72d26f6d7998b3"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 536254
+file-id = 9131368

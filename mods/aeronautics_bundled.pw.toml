@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "aeronautics_bundled"
+filename = "create-aeronautics-bundled-1.21.1-1.3.2.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "a3f330d4757640f8715d991a43eedb826e4d0e51558d859c843ae6693bd35f1e"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 676721
+file-id = 8763471

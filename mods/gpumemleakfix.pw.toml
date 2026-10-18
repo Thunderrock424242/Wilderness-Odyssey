@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "gpumemleakfix"
+filename = "gpumemleakfix-1.21-1.8.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "4bd0682e26b8d4ba78442ce8d969fc7fa3cac2c21fc600de34a54b2ff7814931"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 882495
+file-id = 5513549

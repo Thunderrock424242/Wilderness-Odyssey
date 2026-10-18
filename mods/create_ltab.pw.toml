@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "create_ltab"
+filename = "create_ltab-4.1.0.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d19e9de5496ba79dc8de7688adaab901af98c3b9281aae723d29ec97a2cf4d11"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1007872
+file-id = 8608393

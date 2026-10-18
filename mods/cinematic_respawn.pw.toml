@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "cinematic_respawn"
+filename = "cinematic_respawn-1.21.1-neoforge-1.4.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "2ffd8c8653836f01561ba23fe29555c6b945e434612ba952cf21f69b0737ca7f"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1579853
+file-id = 8949514

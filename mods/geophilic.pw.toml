@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "geophilic"
+filename = "Geophilic v3.7.mod.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "9e6a98b438e078f2e4f5b79f71bfc715a730369f8cf42fd287c6e43c7441cfae"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 711216
+file-id = 8966202

@@ -1,0 +1,236 @@
+# Cold Sweat: Altitude server config
+# Temperature values are applied through Cold Sweat's WORLD temperature modifiers.
+# Band id is a user-defined stable name used by commands, logs, messages, and runtime state.
+# Leave maxY unset to make a band open-ended upward.
+# These defaults are intended for a mostly vanilla-style overworld height range.
+
+# Enable extra diagnostic log entries for altitude and shelter transitions.
+debugLogging = false
+
+# When true, Altitude disables only Cold Sweat's built-in elevation modifier while a band matches.
+suppressColdSweatElevation = true
+
+# Controls how temperature changes between altitude bands.
+# NONE=abrupt; LINEAR=across the whole band; BOUNDARY=only near each band edge.
+bandGradientMode = "BOUNDARY"
+
+# Aeronautics heat-source tuning applies to both normal world blocks and Sable ship interiors.
+# Heat added by an Aeronautics burner.
+aeronauticsBurnerHeat = 0.14
+# Maximum block distance at which a burner contributes heat.
+aeronauticsBurnerRange = 7.0
+# Heat added by an Aeronautics steam vent.
+aeronauticsSteamVentHeat = 0.12
+# Maximum block distance at which a steam vent contributes heat.
+aeronauticsSteamVentRange = 8.0
+
+# Altitude band definition.
+[[bands]]
+# Unique name used by commands, messages, and saved player state.
+id = "deep_caves"
+# Turn this altitude band on or off.
+enabled = true
+# Dimensions this band applies to.
+dimensions = ["minecraft:overworld"]
+# WHITELIST applies only to listed dimensions; BLACKLIST excludes them.
+dimensionMode = "WHITELIST"
+# Inclusive lower Y level for this band.
+minY = -64
+# Inclusive upper Y level; omit it for an open-ended band.
+maxY = 0
+# Value at this band's minY.
+temperatureModifier = 0.10
+# ADD adds temperature; MULTIPLY scales it (1.0 = unchanged).
+modifierMode = "ADD"
+# Whether wind increases this band's temperature severity when the player is exposed.
+enableWindExposure = false
+# Wind severity at full exposure, from 0.0 (none) to 1.0 (strong).
+windStrength = 0.0
+# Higher priority wins when multiple bands match.
+priority = 10
+# Message displayed when entering this band; leave blank to disable it.
+actionbarMessage = "The cave air feels warmer here."
+# How long this band's action-bar message remains visible, in ticks.
+actionbarDisplayTicks = 100
+# Whether enclosed cover reduces this band's temperature effect.
+enableShelterCheck = true
+# Block radius used when checking nearby cover.
+shelterCheckRadius = 4
+# Maximum effect reduction granted by full shelter.
+shelterReduction = 0.20
+
+# Altitude band definition.
+[[bands]]
+# Unique name used by commands, messages, and saved player state.
+id = "underground"
+# Turn this altitude band on or off.
+enabled = true
+# Dimensions this band applies to.
+dimensions = ["minecraft:overworld"]
+# WHITELIST applies only to listed dimensions; BLACKLIST excludes them.
+dimensionMode = "WHITELIST"
+# Inclusive lower Y level for this band.
+minY = 1
+# Inclusive upper Y level; omit it for an open-ended band.
+maxY = 62
+# Value at this band's minY.
+temperatureModifier = 0.04
+# ADD adds temperature; MULTIPLY scales it (1.0 = unchanged).
+modifierMode = "ADD"
+# Whether wind increases this band's temperature severity when the player is exposed.
+enableWindExposure = false
+# Wind severity at full exposure, from 0.0 (none) to 1.0 (strong).
+windStrength = 0.0
+# Higher priority wins when multiple bands match.
+priority = 5
+# Message displayed when entering this band; leave blank to disable it.
+actionbarMessage = "The underground air is calm."
+# How long this band's action-bar message remains visible, in ticks.
+actionbarDisplayTicks = 100
+# Whether enclosed cover reduces this band's temperature effect.
+enableShelterCheck = true
+# Block radius used when checking nearby cover.
+shelterCheckRadius = 4
+# Maximum effect reduction granted by full shelter.
+shelterReduction = 0.25
+
+# Altitude band definition.
+[[bands]]
+# Unique name used by commands, messages, and saved player state.
+id = "surface"
+# Turn this altitude band on or off.
+enabled = true
+# Dimensions this band applies to.
+dimensions = ["minecraft:overworld"]
+# WHITELIST applies only to listed dimensions; BLACKLIST excludes them.
+dimensionMode = "WHITELIST"
+# Inclusive lower Y level for this band.
+minY = 63
+# Inclusive upper Y level; omit it for an open-ended band.
+maxY = 127
+# Value at this band's minY.
+temperatureModifier = 0.0
+# ADD adds temperature; MULTIPLY scales it (1.0 = unchanged).
+modifierMode = "ADD"
+# Whether wind increases this band's temperature severity when the player is exposed.
+enableWindExposure = false
+# Wind severity at full exposure, from 0.0 (none) to 1.0 (strong).
+windStrength = 0.0
+# Higher priority wins when multiple bands match.
+priority = 0
+# Message displayed when entering this band; leave blank to disable it.
+actionbarMessage = "You return to the surface."
+# How long this band's action-bar message remains visible, in ticks.
+actionbarDisplayTicks = 100
+# Whether enclosed cover reduces this band's temperature effect.
+enableShelterCheck = true
+# Block radius used when checking nearby cover.
+shelterCheckRadius = 4
+# Maximum effect reduction granted by full shelter.
+shelterReduction = 0.20
+
+# Altitude band definition.
+[[bands]]
+# Unique name used by commands, messages, and saved player state.
+id = "high_peaks"
+# Turn this altitude band on or off.
+enabled = true
+# Dimensions this band applies to.
+dimensions = ["minecraft:overworld"]
+# WHITELIST applies only to listed dimensions; BLACKLIST excludes them.
+dimensionMode = "WHITELIST"
+# Inclusive lower Y level for this band.
+minY = 128
+# Inclusive upper Y level; omit it for an open-ended band.
+maxY = 191
+# Value at this band's minY.
+temperatureModifier = -0.30
+# ADD adds temperature; MULTIPLY scales it (1.0 = unchanged).
+modifierMode = "ADD"
+# Whether wind increases this band's temperature severity when the player is exposed.
+enableWindExposure = true
+# Wind severity at full exposure, from 0.0 (none) to 1.0 (strong).
+windStrength = 0.40
+# Higher priority wins when multiple bands match.
+priority = 15
+# Message displayed when entering this band; leave blank to disable it.
+actionbarMessage = "The mountain air grows colder."
+# How long this band's action-bar message remains visible, in ticks.
+actionbarDisplayTicks = 100
+# Whether enclosed cover reduces this band's temperature effect.
+enableShelterCheck = true
+# Block radius used when checking nearby cover.
+shelterCheckRadius = 4
+# Maximum effect reduction granted by full shelter.
+shelterReduction = 0.35
+
+# Altitude band definition.
+[[bands]]
+# Unique name used by commands, messages, and saved player state.
+id = "low_sky"
+# Turn this altitude band on or off.
+enabled = true
+# Dimensions this band applies to.
+dimensions = ["minecraft:overworld"]
+# WHITELIST applies only to listed dimensions; BLACKLIST excludes them.
+dimensionMode = "WHITELIST"
+# Inclusive lower Y level for this band.
+minY = 192
+# Inclusive upper Y level; omit it for an open-ended band.
+maxY = 255
+# Value at this band's minY.
+temperatureModifier = -0.78
+# ADD adds temperature; MULTIPLY scales it (1.0 = unchanged).
+modifierMode = "ADD"
+# Whether wind increases this band's temperature severity when the player is exposed.
+enableWindExposure = true
+# Wind severity at full exposure, from 0.0 (none) to 1.0 (strong).
+windStrength = 0.65
+# Higher priority wins when multiple bands match.
+priority = 20
+# Message displayed when entering this band; leave blank to disable it.
+actionbarMessage = "The air grows colder at this altitude."
+# How long this band's action-bar message remains visible, in ticks.
+actionbarDisplayTicks = 100
+# Whether enclosed cover reduces this band's temperature effect.
+enableShelterCheck = true
+# Block radius used when checking nearby cover.
+shelterCheckRadius = 4
+# Maximum effect reduction granted by full shelter.
+shelterReduction = 0.50
+
+# Altitude band definition.
+[[bands]]
+# Unique name used by commands, messages, and saved player state.
+id = "extreme_sky"
+# Turn this altitude band on or off.
+enabled = true
+# Dimensions this band applies to.
+dimensions = ["minecraft:overworld"]
+# WHITELIST applies only to listed dimensions; BLACKLIST excludes them.
+dimensionMode = "WHITELIST"
+# Inclusive lower Y level for this band.
+minY = 256
+# Inclusive upper Y level; omit it for an open-ended band.
+maxY = 4096
+# Value at this band's minY.
+temperatureModifier = -0.90
+# ADD adds temperature; MULTIPLY scales it (1.0 = unchanged).
+modifierMode = "ADD"
+# Whether wind increases this band's temperature severity when the player is exposed.
+enableWindExposure = true
+# Wind severity at full exposure, from 0.0 (none) to 1.0 (strong).
+windStrength = 0.90
+# Higher priority wins when multiple bands match.
+priority = 30
+# Message displayed when entering this band; leave blank to disable it.
+actionbarMessage = "The air grows thin and bitter."
+# How long this band's action-bar message remains visible, in ticks.
+actionbarDisplayTicks = 100
+# Whether enclosed cover reduces this band's temperature effect.
+enableShelterCheck = true
+# Block radius used when checking nearby cover.
+shelterCheckRadius = 4
+# Maximum effect reduction granted by full shelter.
+shelterReduction = 0.75
+

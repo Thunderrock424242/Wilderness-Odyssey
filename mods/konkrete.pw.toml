@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "konkrete"
+filename = "konkrete_neoforge_1.9.9_MC_1.21.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "791c5538751dd3015ef3a2ce92d98719e1a28a48ebbd817b78506771256654cd"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 410295
+file-id = 5453385

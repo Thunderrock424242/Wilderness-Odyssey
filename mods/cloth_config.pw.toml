@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "cloth_config"
+filename = "cloth-config-15.0.140-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "65e722e0d98431a07c45f8bdd8d529a217cc8c175fde1740248bd5c1b4f3c0d4"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 348521
+file-id = 5729127

@@ -1,0 +1,19 @@
+# Hashes use canonical LF for text; existing binary assets stay byte-exact.
+/pack.toml text eol=lf
+/index.toml text eol=lf
+/mods/*.pw.toml text eol=lf
+/modpack/*.json text eol=lf
+/qa/*.json text eol=lf
+/tools/**/*.py text eol=lf
+/tests/**/*.py text eol=lf
+/config/** text=auto eol=lf
+/defaultconfigs/** text=auto eol=lf
+/kubejs/** text=auto eol=lf
+/scripts/** text=auto eol=lf
+/datapacks/** text=auto eol=lf
+/resourcepacks/** text=auto eol=lf
+/shaderpacks/** text=auto eol=lf
+*.zip binary
+*.png binary
+*.ogg binary
+*.nbt binary

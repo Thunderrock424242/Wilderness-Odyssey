@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "jumpoverfences"
+filename = "jumpoverfences-neoforge-1.21.1-1.6.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "a3d840a5bbc5dc117d991b929962d78ae1ad0ac427cf4c7f5ca9de33bea854cf"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 423421
+file-id = 6897510

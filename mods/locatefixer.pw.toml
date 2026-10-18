@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "locatefixer"
+filename = "locatefixer-1.21.1-neoforge-4.0.0.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "af9ce13dfc4ceb5dd10191d5c928212db5c76c16b893e343a1977f7c8721b7a8"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1301683
+file-id = 9125829

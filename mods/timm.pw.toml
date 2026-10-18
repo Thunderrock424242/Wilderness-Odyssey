@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "timm"
+filename = "timm-1.1-neoforge-1.21.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "2566a6f86d5420a01723f54a3e3147daba0838253b40fb002a20cfdc39d5beb0"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1066903
+file-id = 7266606

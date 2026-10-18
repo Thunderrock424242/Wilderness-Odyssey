@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "particlerain"
+filename = "particlerain-4.0.2+1.21.1-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "b867cdd76eda04909fd71ba5a32a55a682611451b8b6d26f55ed483246c97640"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 421897
+file-id = 9113934

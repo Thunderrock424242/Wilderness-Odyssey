@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "ticktoklib"
+filename = "ticktoklib-1.4.3.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "93b8a6246c3ea74de7a1a9ad3dd13ce540a6ac286e8ccebd7afee7c0d240c46e"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1298954
+file-id = 8685795

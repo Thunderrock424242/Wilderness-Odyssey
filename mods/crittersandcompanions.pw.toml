@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "crittersandcompanions"
+filename = "crittersandcompanions-neoforge-1.21.1-2.7.0.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "bc09d4e9996fae2c17092b3f58e2cc6ffe49d176e7cdf06495eeb4ac9a85b5dd"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 574913
+file-id = 8646976

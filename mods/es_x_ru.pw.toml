@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "es_x_ru"
+filename = "EclipticSeasonsRU-1.0.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "7807d7d521d6e09b49b00028576d510dd3adb1e54d4db20fc76c210ffc68434d"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1353228
+file-id = 7031081

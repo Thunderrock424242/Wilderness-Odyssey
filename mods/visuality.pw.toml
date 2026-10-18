@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "visuality"
+filename = "visuality-forge-3.0.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d9d25b3d89d24034ba8dd0d0d4d8c6e596728427f02b8248a6e429d6e585b579"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 704256
+file-id = 8559477

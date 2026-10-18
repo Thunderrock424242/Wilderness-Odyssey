@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "hybrid_aquatic"
+filename = "hybrid_aquatic-neoforge-1.21.1-1.7.4.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "5403d0e643c8aae3e7db08de41ebf28e0ef538f252a0f0ef5b6b4f74d9b1b80e"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 834427
+file-id = 9063977

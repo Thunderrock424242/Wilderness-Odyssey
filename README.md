@@ -4,7 +4,7 @@
 ### *A CurseForge-style NeoForge Modpack Page*
 
 ![Minecraft](https://img.shields.io/badge/Minecraft-1.21.1-3C8527?style=for-the-badge&logo=minecraft&logoColor=white)
-![Loader](https://img.shields.io/badge/Loader-NeoForge%2021.1.176-2E7D32?style=for-the-badge)
+![Loader](https://img.shields.io/badge/Loader-NeoForge%2021.1.262-2E7D32?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Alpha%20%E2%86%92%20Beta-orange?style=for-the-badge)
 ![Focus](https://img.shields.io/badge/Theme-Exploration%20%7C%20Adventure-7B5CFF?style=for-the-badge)
 
@@ -34,7 +34,7 @@
 | Category | Details |
 |---|---|
 | **Minecraft Version** | `1.21.1` |
-| **Mod Loader** | `NeoForge 21.1.176` |
+| **Mod Loader** | `NeoForge 21.1.262` (stable Git target for Minecraft 1.21.1; imported profile remains 21.1.256) |
 | **Pack Stage** | `Alpha (approaching Beta)` |
 | **Core Vibe** | `Adventure • Exploration • Survival Atmosphere` |
 | **Known Pillars** | Worldgen, structures, mobs, immersion, optimization |
@@ -123,6 +123,13 @@ and dangerous exploration loops over automation-heavy progression.
 ---
 
 ## ⚙️ Installation
+
+Maintainers: use the [Git-managed pack and Windows setup guide](docs/modpack/README.md)
+for local profile synchronization, validation, disposable diagnostics, and release
+artifacts. The old `mods/list` remains historical reference. No installed mod JARs
+or full profile ZIPs belong in Git. Importing metadata does not prove runtime
+compatibility; see [current verification and blockers](docs/modpack/verification.md).
+
 1. Install the **CurseForge App** (or Prism Launcher with NeoForge support).
 2. Import/download **Wilderness Odyssey**.
 3. Allocate RAM based on your system (commonly 6–8 GB for large packs).

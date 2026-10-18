@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "rocks"
+filename = "ThisRocks-1.21-1.8.0.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "816050b099f58db7cdeed0afba5ca7810398fba648c706f91909b297e3e0573b"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 558126
+file-id = 5460165

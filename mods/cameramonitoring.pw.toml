@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "cameramonitoring"
+filename = "cameramonitoring-neoforge-1.21.1-1.4.5.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "61a13b63b430428708077f0a27b05cb1f6efd5d52f5ad166cdf246951be185d7"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1686878
+file-id = 9192994

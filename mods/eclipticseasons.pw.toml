@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "eclipticseasons"
+filename = "EclipticSeasons-1.21.1-neoforge-0.15.4.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "c8e0f2119bb272efa1a281dbcfe32929ca85a0f6ea4337cec4de17c21b8a57f4"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1118306
+file-id = 9205581
