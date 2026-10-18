@@ -77,3 +77,18 @@ class ExportTests(unittest.TestCase):
         with patch.object(Path,'open',denied),self.assertRaises(PermissionError):
             export_reports(self.reports,self.base/'out')
 
+    def test_rendered_credentials_and_personal_paths_are_redacted(self):
+        from tools.modpack.diagnostics import render_report
+        from tools.modpack.export import export_reports
+        text=render_report({'category':'timeout','evidence':[
+            'API_KEY=synthetic-sensitive-value','"password": "synthetic-password"',
+            r'C:\Users\private-person\instance\mods',
+            '/home/private-person/instance/mods',
+            'https://user:synthetic-userinfo@host.invalid/path?key=synthetic-query']})
+        (self.reports/'report.md').write_text(text)
+        export_reports(self.reports,self.base/'rendered')
+        shared=(self.base/'rendered/report.md').read_text()
+        for secret in ('synthetic-sensitive-value','synthetic-password','private-person','synthetic-userinfo','synthetic-query'):
+            self.assertNotIn(secret,html.unescape(shared))
+        self.assertIn('**timeout**',shared)
+

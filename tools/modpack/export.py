@@ -1,5 +1,6 @@
 """New, bounded, sanitized text bundles. Private originals are never modified."""
 import hashlib
+import html
 from itertools import islice
 import json
 import os
@@ -15,7 +16,7 @@ _NAMES={'report.md','report.json','samples.json','resources.json','incidents.jso
 _PATTERN=re.compile(r'(?:jcmd-\d+-(?:heap|threads|native)\.log|qa-gc\.log(?:\.\d+)?|hs_err_pid\d+\.log|crash-[\w.-]+\.txt)\Z')
 
 
-def sanitize(text):
+def _redact(text):
     # Read bounded complete strings before redaction so chunk boundaries cannot
     # split a credential. A partial last line still consumes its whole suffix.
     text=re.sub(r'(?im)^.*(?:\bauthorization\s*:|\b[\w.-]{0,80}(?:token|password|secret|api[_-]?key)[\"\']?\s*[:=]).*$', '[credential line removed]',text)
@@ -24,6 +25,24 @@ def sanitize(text):
     text=re.sub(r'(?i)\b[A-Z]:[\\/][^\r\n"<>|]*','[private path]',text)
     text=re.sub(r'/(?:home|Users)/[^\s"<>]+','[private path]',text)
     return text
+
+
+def sanitize(text):
+    from .diagnostics import _safe
+    lines=[]
+    for original in text.splitlines():
+        decoded=original
+        for _ in range(4):
+            plain=html.unescape(decoded)
+            if plain==decoded: break
+            decoded=plain
+        if html.unescape(decoded)!=decoded:
+            lines.append('[Encoded line omitted]'); continue
+        redacted=_redact(decoded)
+        # Match the displayed text, including renderer-generated entities, but
+        # preserve escaping on untouched lines and re-escape every changed one.
+        lines.append(original if redacted==decoded else _safe(redacted,max(500,len(redacted)*12)))
+    return '\n'.join(lines)
 
 
 def _encoded(value):
