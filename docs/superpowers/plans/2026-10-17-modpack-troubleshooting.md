@@ -10,8 +10,7 @@
 
 **Spec:** [Approved troubleshooting design](../specs/2026-10-17-modpack-troubleshooting-design.md).
 
-**Status:** Approved for inline execution in this chat. Tasks 1-8 implemented;
-whole-branch review and fresh disposable runtime acceptance are in progress.
+**Status:** Approved inline execution completed, including fresh review and disposable runtime acceptance. See docs/modpack/verification.md for evidence and remaining boundaries.
 
 ## Global Constraints
 
@@ -238,7 +237,7 @@ self.assertIn("github.ref == 'refs/heads/1.21-neoforge'", workflow)
 
 **Files:** Update `docs/modpack/verification.md`; fixes remain in the owning modules/tests from Tasks 1–8.
 
-- [ ] **Step 1:** Run `py -3.13 -m unittest discover -s tests/modpack -v` and the bundled Python 3.12 executable with the same arguments. Then run `validate` for client/server and `audit-repository`, each writing a new external report directory. Run actionlint and `git diff --check`. Expect successful tool/static checks; explicit runtime/schema warnings are not gameplay proof.
+- [x] **Step 1:** Run `py -3.13 -m unittest discover -s tests/modpack -v` and the bundled Python 3.12 executable with the same arguments. Then run `validate` for client/server and `audit-repository`, each writing a new external report directory. Run actionlint and `git diff --check`. Expect successful tool/static checks; explicit runtime/schema warnings are not gameplay proof.
 
 Use this PowerShell setup and these exact additional commands; retain the generated tag for all reports from this acceptance batch:
 
@@ -252,19 +251,19 @@ py -3.13 -m tools.modpack validate --side server --reports "${woDiagnosticReport
 py -3.13 -m tools.modpack audit-repository --reports "${woDiagnosticReports}-audit"
 git diff --check
 ```
-- [ ] **Step 2:** Obtain a fresh whole-branch code review, focusing on the five Review Focus classes and ownership/deadline/export guarantees. Fix substantive findings with a failing regression first; repeat only affected checks, then the required final suite.
-- [ ] **Step 3:** From a committed reviewed checkout, run one fresh external save-flush trial against the original pinned local files using existing EULA consent, Java `C:/Users/mason/.jdks/corretto-21.0.12.1-1/bin/java.exe`, 6144 MiB heap, four JVM active processors, startup 600 seconds, soak 120 seconds and basic profiling. Use new destination/report directories and the existing verified installer cache. Never require a provider key.
+- [x] **Step 2:** Obtain a fresh whole-branch code review, focusing on the five Review Focus classes and ownership/deadline/export guarantees. Fix substantive findings with a failing regression first; repeat only affected checks, then the required final suite.
+- [x] **Step 3:** From a committed reviewed checkout, run one fresh external save-flush trial against the original pinned local files using existing EULA consent, Java `C:/Users/mason/.jdks/corretto-21.0.12.1-1/bin/java.exe`, 6144 MiB heap, four JVM active processors, startup 600 seconds, soak 120 seconds and basic profiling. Use new destination/report directories and the existing verified installer cache. Never require a provider key.
 
 ```powershell
 py -3.13 -m tools.modpack qa --scenario save-flush --destination "${woDiagnosticRun}-original" --reports "${woDiagnosticReports}-original" --local-mods 'C:/Users/mason/curseforge/minecraft/Instances/Wilderness Odyssey (1)/mods' --cache C:/Users/mason/.codex/modpack-cache --offline --accept-eula --java C:/Users/mason/.jdks/corretto-21.0.12.1-1/bin/java.exe --memory-mb 6144 --startup-seconds 600 --soak-seconds 120 --profiling basic
 ```
-- [ ] **Step 4:** Run the external published-API candidate in a separate new startup-soak trial, with the same execution settings and explicit candidate provenance. Check that an early callback stall stays in startup and captures bounded evidence. A nonreproducing run is reported as such; do not fabricate the previous failure, blame a mod, change pins or disable the watchdog.
+- [x] **Step 4:** Run the external published-API candidate in a separate new startup-soak trial, with the same execution settings and explicit candidate provenance. Check that an early callback stall stays in startup and captures bounded evidence. A nonreproducing run is reported as such; do not fabricate the previous failure, blame a mod, change pins or disable the watchdog.
 
 ```powershell
 py -3.13 -m tools.modpack --root C:/Users/mason/.codex/modpack-candidates/github-package-2538361-api5 qa --scenario startup-soak --destination "${woDiagnosticRun}-candidate" --reports "${woDiagnosticReports}-candidate" --local-mods 'C:/Users/mason/curseforge/minecraft/Instances/Wilderness Odyssey (1)/mods' --cache C:/Users/mason/.codex/modpack-cache --offline --accept-eula --java C:/Users/mason/.jdks/corretto-21.0.12.1-1/bin/java.exe --memory-mb 6144 --startup-seconds 600 --soak-seconds 120 --profiling basic
 ```
-- [ ] **Step 5:** Record actual commands, source/byte fingerprints, every phase, sample/capture availability, limits, cleanup and remaining warnings. Verify source files stayed unchanged. Do not promote a baseline or publish the local candidate. Hosted CI must separately verify Python 3.11 Windows/Linux checks; local acceptance does not establish hosted Minecraft or client behavior.
-- [ ] **Step 6:** Update PR #37 around the implemented scope and evidence, push the focused commits, and report remaining source/workload/client/retention gaps explicitly. No merge or publication is part of this plan.
+- [x] **Step 5:** Record actual commands, source/byte fingerprints, every phase, sample/capture availability, limits, cleanup and remaining warnings. Verify source files stayed unchanged. Do not promote a baseline or publish the local candidate. Hosted CI must separately verify Python 3.11 Windows/Linux checks; local acceptance does not establish hosted Minecraft or client behavior.
+- [x] **Step 6:** Update PR #37 around the implemented scope and evidence, push the focused commits, and report remaining source/workload/client/retention gaps explicitly. No merge or publication is part of this plan.
 
 ## Self-review and handoff
 

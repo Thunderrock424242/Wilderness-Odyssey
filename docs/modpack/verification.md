@@ -280,3 +280,106 @@ See [the setup and operations guide](README.md) for Windows commands, workflow
 names, protected-environment settings, private Windows QA boundaries and manual
 release steps. The architectural decisions and scoped plan are in
 [design.md](design.md) and [implementation-plan.md](implementation-plan.md).
+
+## Fresh troubleshooting acceptance — 2026-10-18
+
+Final local Windows tool suites on Python 3.13 and bundled Python 3.12 each ran
+180 tests: 179 passed, one host symlink-creation skip, zero failures. Client/server
+static validation had zero errors (151/116 explicit warnings); repository audit,
+actionlint for all three workflows and `git diff --check` passed. The fresh
+whole-branch review's buffered-reply race, late acknowledgements, artifact-error
+masking and export-escaping findings were reproduced and fixed with regressions.
+The full-suite stdin/exit race and final provenance-log collision were also fixed.
+These are tool/static checks; hosted Python 3.11 and Minecraft are separate proof.
+
+Two new disposable trials used collection/analysis code commit
+`2a6c4e7d22c685fc87b47deedab951ea410cb408`, Java at
+`C:/Users/mason/.jdks/corretto-21.0.12.1-1/bin/java.exe`, Minecraft 1.21.1,
+NeoForge 21.1.262, 6144 MiB maximum heap, four JVM active processors, seed 424242,
+600-second startup, 120-second soak and basic profiling. The original checkout
+was clean. The candidate remains an external content snapshot with no Git source
+commit and cannot become a baseline. Full Java build/OS/CPU context is recorded
+in each report. No mod/loader pin changed.
+
+The commands are Task 9 in the approved
+[troubleshooting plan](../superpowers/plans/2026-10-17-modpack-troubleshooting.md),
+with `$woDiagnosticTag = '20261018-000211'`. Private report directories are
+`C:/Users/mason/.codex/modpack-reports/troubleshooting-20261018-000211-original`
+and the corresponding `-candidate`; installations use the matching
+`C:/Users/mason/.codex/modpack-runs/troubleshooting-20261018-000211-*` paths.
+Both used exact local/cached mod bytes with `--offline` and existing explicit
+EULA consent, without a provider API key.
+
+| Phase / measurement | Original pin, save-flush | Published API candidate, startup-soak |
+| --- | ---: | ---: |
+| Validation | succeeded, 18.14 s | succeeded, 20.59 s |
+| Setup | succeeded, 0.04 s | succeeded, 0.01 s |
+| Official installer | succeeded, 23.52 s | succeeded, 21.94 s |
+| Done log milestone | 174.58 s | 129.11 s |
+| Verified console reply | 234.75 s | 192.87 s |
+| Startup phase | succeeded, 234.80 s | succeeded, 192.88 s |
+| Soak | succeeded, 120.00 s | succeeded, 120.00 s |
+| Workload phase | succeeded, 0.65 s | not run |
+| Save acknowledgement | 0.608 s | not measured |
+| Shutdown | succeeded, 7.90 s | succeeded, 7.45 s |
+| Process resources / thread dumps | 71 / 5 | 62 / 5 |
+| GC pauses / maximum pause | 169 / 2618.68 ms | 193 / 2357.47 ms |
+| GC pause fraction of observed window | 13.28% | 15.26% |
+
+Both trials initially left the owned console request unanswered after `Done`.
+The monitor kept this in **startup**, captured at the 10/20/40-second incident
+thresholds, and recorded recovery before beginning the soak. Original snapshots
+included runnable block/fluid-state and NBT-copy work. These observations do not
+establish a responsible mod, deadlock or causal performance regression. The older
+candidate watchdog failure above did **not** reproduce in this fresh trial; its
+failed evidence remains valid and is not relabeled. One new pass does not prove
+that the earlier failure has been fixed.
+
+Both reports identify GC pressure. Complete full-GC end observations did not show
+sustained retained growth in these windows (original 17 points, candidate 24);
+there is no confirmed leak verdict. MSPT, internal chunk queues, gameplay and
+client/GPU performance remain unmeasured. Windows CPU, RSS, process I/O and disk
+counters were available; the handle-based Windows thread counter is explicitly
+unavailable, with separate thread counts/snapshots obtained through owned-JVM
+`jcmd`. No optional collector failure was recorded. No forced GC or JFR was used.
+
+Exact API SHA-256 values remained
+`bcf0a134b9c29ac088f4952846ec173350ac309bb9a549433db8e146589e5a01`
+for the original and
+`1036f42ca054e480fed380e44fc02bb018a0532a371a9f80e7f9a016ae20e238`
+for the external candidate. Canonical inventory fingerprints were respectively
+`5e8ff5ec57a6eaa5c4f825a70cccf5363b9699745cc6bba9de045c066b1b1b0c`
+and `4b97381a0b0dd9d3abf817a8de5366b0849210fe93cab893d243a8a34163cfd1`;
+both indexed-asset fingerprints were
+`27506be1a5f19edc41cafd86299b7ec50bc11008a8ee195c41f24fde38b42f74`.
+The scenario difference and single-run noise prevent a causal speed comparison.
+
+SHA-256 snapshots of 1,216 selected source paths (all source JARs, instance
+metadata and indexed custom assets) matched before/after. Both disposable `mods`
+and `qa-world` directories, private JVM temporary directories and owned JVM
+creation identities were gone. A recycled original PID belonged to a different
+process with a different creation identity; it was left alone. No live save was
+opened or modified.
+
+Offline analysis preserved the original lifecycle/GC results. Allowlisted raw
+text exports were 5,189,385 and 5,164,483 bytes, including manifests, below the
+32 MiB cap; exclusions are explicit. Private raw evidence remains local.
+Acceptance also found that configuration noise could hide the GC warning from
+the short Markdown list; a focused follow-up prioritizes memory/hang findings
+and reports how many findings are displayed. This presentation change does not
+change the runtime collection tested at `2a6c4e7d`.
+
+Execution decisions and their limits: workflow checks combine real export tests
+with actionlint rather than relying solely on text assertions; hosted Minecraft
+still needs separate proof. A baseline thread snapshot uses only a nonzero soak
+and counts against the six-dump cap, so zero-soak runs have no such snapshot.
+Client behavior and save/reopen persistence remain separate acceptance work.
+Hosted Python/platform tool checks are distinct from hosted Minecraft execution.
+Existing imported assets are preserved, with exhaustive asset/gameplay review
+still outstanding. Bounded attach/cleanup fixtures and a deterministic
+stdin-exit race test cover the identified paths; unusual JDK/OS failures can
+still need affected-instance evidence. No minor review findings were deferred.
+
+The permanent exact-API distribution source and private hosted pack-input path
+remain separate blockers. No baseline, schedule, candidate release, API pin,
+publication or merge was promoted by this acceptance.
