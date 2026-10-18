@@ -22,6 +22,11 @@ on:
         description: 'Confirm and isolate only an uncertain reproducible startup/soak crash (bounded)'
         type: boolean
         default: false
+      scenario:
+        description: 'Disposable server workload'
+        type: choice
+        options: [startup-soak, save-flush]
+        default: startup-soak
   schedule:
     - cron: '17 8 * * 1'
 
@@ -68,22 +73,35 @@ jobs:
           HEAP_MB: ${{ inputs.memory_mb || '4096' }}
           PROFILE_MODE: ${{ inputs.profiling || 'basic' }}
           ISOLATE_CRASH: ${{ inputs.isolate || false }}
+          SCENARIO: ${{ inputs.scenario || 'startup-soak' }}
         shell: bash
         run: |
           flags=()
           if [ "$ISOLATE_CRASH" = 'true' ]; then flags+=(--isolate); fi
           python -m tools.modpack qa --destination "$QA_INSTANCE" --reports "$QA_REPORTS" \
             --cache "$RUNNER_TEMP/pack-cache" --accept-eula --memory-mb "$HEAP_MB" \
-            --profiling "$PROFILE_MODE" --startup-seconds 600 --soak-seconds 120 \
+            --profiling "$PROFILE_MODE" --scenario "$SCENARIO" --startup-seconds 600 --soak-seconds 120 \
             --max-tests 12 "${flags[@]}"
-      - name: Diagnostic summary
+      - name: Export sanitized text diagnostics
         if: always()
         env:
           QA_REPORTS: ${{ runner.temp }}/pack-qa-reports
+          QA_EXPORT: ${{ runner.temp }}/pack-qa-export
         shell: bash
         run: |
-          if [ -f "$QA_REPORTS/report.md" ]; then
-            cat "$QA_REPORTS/report.md" >> "$GITHUB_STEP_SUMMARY"
+          if ! python -m tools.modpack export --input "$QA_REPORTS" --destination "$QA_EXPORT"; then
+            mkdir -p "$QA_EXPORT"
+            echo 'Sanitized diagnostic export was unavailable. Inspect the earlier runtime/setup step for its result; Minecraft readiness is unverified here.' > "$QA_EXPORT/export-unavailable.txt"
+            exit 1
+          fi
+      - name: Diagnostic summary
+        if: always()
+        env:
+          QA_EXPORT: ${{ runner.temp }}/pack-qa-export
+        shell: bash
+        run: |
+          if [ -f "$QA_EXPORT/report.md" ]; then
+            cat "$QA_EXPORT/report.md" >> "$GITHUB_STEP_SUMMARY"
           else
             echo 'QA failed before a server report was available. Minecraft readiness is unverified; inspect the failed setup step.' >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -92,6 +110,6 @@ jobs:
         if: always()
         with:
           name: minecraft-server-diagnostics
-          path: ${{ runner.temp }}/pack-qa-reports/
+          path: ${{ runner.temp }}/pack-qa-export/
           retention-days: 7
           if-no-files-found: warn

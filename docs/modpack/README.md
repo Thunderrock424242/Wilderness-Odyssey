@@ -242,8 +242,9 @@ client-only memory problems require separate client tests.
   before adding it to the tracked content list.
 
 Actions are pinned to verified commit SHAs, use `contents: read`, persist no Git
-credentials, and retain diagnostics for seven days. Workflows upload report
-directories, not test worlds or entire installations. No workflow files duplicate
+credentials, and retain diagnostics for seven days. Server QA uploads a separate
+sanitized text export capped at 32 MiB, including its manifest. Raw JFR recordings,
+heap binaries, worlds, installations and account files are excluded. No workflow files duplicate
 issues or automatically change a baseline. Automatic cancellation can terminate a
 hosted VM without graceful Minecraft shutdown; no production world is involved.
 
@@ -253,6 +254,62 @@ personal data. Restrict runner access to that private repository/runner group,
 disable fork/PR execution, require environment approval for an exact reviewed pack
 commit, and destroy the VM after the run. Keep that runner unavailable to the
 public modpack repository. No personal-machine runner is configured by this PR.
+
+## Troubleshooting performance, hangs and saves
+
+Run from the reviewed tooling checkout with new external output directories.
+Use your exact installed mod files read-only, Java 21 and the verified installer
+cache; this local path requires no provider API key. For example:
+
+```powershell
+$woTrial = Get-Date -Format 'yyyyMMdd-HHmmss'
+py -3 -m tools.modpack qa --scenario save-flush --destination "$env:TEMP/wo-run-$woTrial" --reports "$env:TEMP/wo-report-$woTrial" --local-mods 'C:/Users/mason/curseforge/minecraft/Instances/Wilderness Odyssey (1)/mods' --cache C:/Users/mason/.codex/modpack-cache --offline --accept-eula --java C:/Users/mason/.jdks/corretto-21.0.12.1-1/bin/java.exe --memory-mb 6144 --startup-seconds 600 --soak-seconds 120 --profiling basic
+py -3 -m tools.modpack analyze --input "$env:TEMP/wo-report-$woTrial" --reports "$env:TEMP/wo-analysis-$woTrial"
+py -3 -m tools.modpack export --input "$env:TEMP/wo-report-$woTrial" --destination "$env:TEMP/wo-share-$woTrial"
+```
+
+`--accept-eula` records your acceptance of the Minecraft EULA for the disposable
+server. The default `startup-soak` scenario verifies a fresh console `list` reply
+after the `Done` log marker before beginning the soak. `save-flush` then measures
+one acknowledged `save-all flush` operation, with a separate workload phase and a
+120-second limit. This is save acknowledgement timing; persistence after reopening
+the world has not been tested. Shutdown retains its own result.
+
+Basic profiling samples owned-process CPU, working set/RSS, I/O and free disk
+every five seconds and heap every thirty seconds. CPU 100% means one logical CPU;
+the JVM's four active processors are guidance, not an OS quota. I/O counters are
+transferred bytes, not storage latency. RSS includes memory outside the heap.
+Unsupported fields are null with availability reasons. Attach commands have a
+five-second limit inside the active phase deadline. Startup checkpoints and
+unanswered console requests can collect up to six thread snapshots per trial.
+Quiet logs alone are not hang evidence. Profiling adds overhead; use matching
+settings for comparisons. `off` keeps readiness checks but disables collectors;
+`jfr` and `native` explicitly enable additional JVM diagnostics.
+
+Offline `analyze` accepts an explicit log file or a report directory and needs
+neither inventory nor Java/network access. Bounded findings cover supported G1 GC
+pauses, suspected post-full-GC growth, repeated chunk-flush waits, JVM crash
+markers, and grouped registry/config/data errors. Missing, partial and unsupported
+evidence remains visible. Young-GC heap values, an OOM, repeated frames or a mod
+name in a stack establish neither a retained-object leak nor a culprit. MSPT,
+internal chunk queues and loaded mod count stay unmeasured without verified
+telemetry. Repeatable gameplay, client/GPU checks and retained-object investigation
+remain later scopes.
+
+Private local reports retain originals. Share only the new export directory;
+it redacts credential lines, URL credentials/query values and personal paths,
+and records partial files and omissions in `manifest.json`. JSON evidence is
+exported with a `.txt` suffix because sanitization may remove entire lines.
+Hosted QA uses this same export path. A source reconstruction failure still means
+Minecraft never launched; diagnostic expansion does not supply the missing private
+pack-input path or a permanent download source for the exact API bytes.
+
+Schema-2 comparisons require matching readiness protocol, scenario, Java build,
+OS/CPU context, heap and monitor/profiling settings. Exact inventory/config/mod
+fingerprints are shown separately, allowing an updated pack to be compared while
+retaining the changed bytes. Legacy `Done` timings remain readable through
+analysis but cannot become verified-readiness baselines. Promotion also requires
+a known clean source commit and all required phases, including save workload.
 
 ## Baselines, release ZIPs and the large-file push error
 

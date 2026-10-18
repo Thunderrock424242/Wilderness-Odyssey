@@ -7,6 +7,15 @@ from tools.modpack.repository import audit_repository
 
 
 class RepositoryTests(unittest.TestCase):
+    def test_qa_upload_boundary_and_trusted_runtime_contract(self):
+        workflow=(Path(__file__).resolve().parents[2]/'.github/workflows/modpack-qa.yml').read_text()
+        self.assertIn('path: ${{ runner.temp }}/pack-qa-export/',workflow)
+        self.assertNotIn('path: ${{ runner.temp }}/pack-qa-reports/',workflow)
+        for boundary in ("github.ref == 'refs/heads/1.21-neoforge'",'inputs.accept_eula','environment: modpack-qa',
+                         'MODPACK_QA_BASELINE_VALIDATED','retention-days: 7','--scenario "$SCENARIO"',
+                         'SCENARIO: ${{ inputs.scenario', 'tools.modpack export'):
+            self.assertIn(boundary,workflow)
+
     def test_tracked_secret_and_jar_are_rejected_without_values(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

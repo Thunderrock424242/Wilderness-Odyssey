@@ -249,11 +249,15 @@ shader, GPU or live production compatibility. No CurseForge/provider integration
 download was exercised with a real API key. The official NeoForge installer was
 actually executed successfully in the disposable copy.
 
-The implemented live runner is startup plus idle soak. Repeatable player-driven
+The original acceptance above exercised the earlier startup/idle-soak runner.
+The troubleshooting expansion adds console-verified readiness, owned-process
+sampling, incident capture, a controlled save-flush workload, offline analysis,
+exact context/content comparisons and sanitized text exports. Its fresh runtime
+acceptance is recorded separately below. Repeatable player-driven
 chunk generation/unloading, teleports, entity workloads, warmup comparisons,
 MSPT/mod-count instrumentation, subsystem workload coverage, object retention
 paths and client scenarios remain future work. GC/JFR/thread/native evidence is
-optional and retention/MSPT/CPU measurements remain unmeasured when unavailable.
+optional and retention/MSPT/resource measurements remain unmeasured when unavailable.
 Temporary heap growth is never labeled a confirmed leak. The process-budget
 limits and active-processor setting are not an OS-level CPU percentage quota.
 
