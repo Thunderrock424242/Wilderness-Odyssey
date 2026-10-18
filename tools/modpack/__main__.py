@@ -6,7 +6,7 @@ from pathlib import Path
 import shutil
 import sys
 
-from .common import PackError, digest, outside_repo, read_json, safe_path, write_json, write_text
+from .common import PackError, digest, no_links, outside_repo, read_json, safe_path, write_json, write_text
 from .pack import asset_paths, generate, validate
 from .sync import changes, config_changes, scan_profile
 
@@ -83,14 +83,34 @@ def main(argv=None):
     baseline = sub.add_parser('baseline',help='Deliberately record a successful report summary; never called by CI.')
     baseline.add_argument('--candidate',type=Path,required=True)
     baseline.add_argument('--name',required=True,help='New baseline name using lowercase letters/digits/hyphens.')
+    analyze=sub.add_parser('analyze',help='Interpret bounded saved evidence offline; no inventory, Java or network required.')
+    analyze.add_argument('--input',type=Path,required=True)
+    analyze.add_argument('--reports',type=Path,required=True)
+    export=sub.add_parser('export',help='Create a new sanitized text bundle for sharing; private originals stay local.')
+    export.add_argument('--input',type=Path,required=True)
+    export.add_argument('--destination',type=Path,required=True)
     args = parser.parse_args(argv)
     root = args.root.resolve()
     try:
         lock_path = safe_path(root,'modpack/lock.json')
-        lock = read_json(lock_path) if lock_path.exists() else None
+        lock = read_json(lock_path) if args.command not in ('analyze','export') and lock_path.exists() else None
         if hasattr(args,'reports') and args.command != 'qa':
             args.reports = outside_repo(root,args.reports)
-        if args.command == 'compare':
+        if args.command=='export':
+            from .export import export_reports
+            print(json.dumps(export_reports(args.input,outside_repo(root,args.destination)),indent=2))
+        elif args.command=='analyze':
+            from .evidence import read_evidence,analyze_evidence
+            from .diagnostics import render_report
+            source=no_links(args.input).resolve()
+            if args.reports.exists() or args.reports.is_relative_to(source) or source.is_relative_to(args.reports):
+                raise PackError('Analysis requires a new output directory disjoint from the evidence input.')
+            data=analyze_evidence(read_evidence(source)); data['schema']=2
+            args.reports.mkdir(parents=True,exist_ok=False)
+            write_json(safe_path(args.reports,'report.json'),data)
+            write_text(safe_path(args.reports,'report.md'),render_report(data))
+            print(json.dumps({'category':data['category'],'findings':len(data['findings'])}))
+        elif args.command == 'compare':
             from .regression import compare
             data=compare(read_json(args.current),read_json(args.baseline))
             _report(args.reports,'comparison',data)

@@ -13,6 +13,21 @@ from test_management import make_jar
 
 
 class SyncCliTests(unittest.TestCase):
+    def test_offline_analysis_without_inventory_never_launches_or_fetches(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base=Path(tmp); repo=base/'repo'; repo.mkdir(); evidence=base/'evidence'; evidence.mkdir()
+            (evidence/'server.log').write_text('java.lang.OutOfMemoryError: Java heap space\n')
+            args=['--root',str(repo),'analyze','--input',str(evidence),'--reports',str(base/'analysis')]
+            with patch('subprocess.Popen',side_effect=AssertionError('No processes')),patch('tools.modpack.providers.fetch',side_effect=AssertionError('No downloads')),contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(0,main(args))
+            result=read_json(base/'analysis/report.json')
+            self.assertEqual(2,result['schema']); self.assertEqual('out_of_memory',result['category'])
+            self.assertFalse(result['crashed'])
+            self.assertTrue((base/'analysis/report.md').exists())
+            with contextlib.redirect_stderr(io.StringIO()):
+                self.assertEqual(2,main(args))
+                self.assertEqual(2,main(['--root',str(repo),'analyze','--input',str(evidence),'--reports',str(evidence/'nested')]))
+
     def test_qa_scenario_reaches_runner_and_unknown_scenario_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             base=Path(tmp); repo=base/'repo'; (repo/'modpack').mkdir(parents=True)

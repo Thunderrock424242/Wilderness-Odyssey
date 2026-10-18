@@ -614,7 +614,6 @@ class _Observation:
         self.timeline=EventTimeline(safe_path(reports,'timeline.jsonl'))
         self.timeline_failed=False
         self.child=self.sampler=None
-        self.last_verified=False
 
     def observe(self,line,sequence,now):
         with self.guard:
@@ -637,6 +636,7 @@ class _Observation:
         end=time.monotonic()+seconds
         if phase=='startup': end=min(end,self.start+self.args.startup_seconds)
         if deadline is not None: end=min(end,deadline)
+        self.record({'event':'phase_begin','phase':phase,'elapsed_seconds':time.monotonic()-self.start})
         with self.guard:
             if phase=='soak': self.monitor.begin_soak(time.monotonic(),end)
             elif phase=='workload': self.monitor.begin_save(time.monotonic(),end)
@@ -885,6 +885,8 @@ def _isolation_graph(lock):
 def _save_report(reports, result):
     result['artifacts'].update(report_json=str(reports / 'report.json'), report_markdown=str(reports / 'report.md'))
     write_json(safe_path(reports, 'samples.json'), result.get('samples', []))
+    write_json(safe_path(reports, 'resources.json'), result.get('resources', []))
+    write_json(safe_path(reports, 'incidents.json'), result.get('incidents', []))
     result['artifacts']['samples'] = str(reports / 'samples.json')
     write_json(safe_path(reports, 'report.json'), result)
     write_text(safe_path(reports, 'report.md'), render_report(result))

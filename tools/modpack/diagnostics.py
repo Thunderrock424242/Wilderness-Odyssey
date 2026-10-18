@@ -361,7 +361,7 @@ def render_report(result: dict) -> str:
     ]
     phases = result.get("phases", {})
     phases = phases if isinstance(phases, Mapping) else {}
-    for name in ("validation", "setup", "installer", "startup", "soak", "shutdown"):
+    for name in ("validation", "setup", "installer", "startup", "soak", "workload", "shutdown"):
         phase = phases.get(name, {})
         phase = phase if isinstance(phase, Mapping) else {"status": phase}
         status = str(phase.get("status", "not_measured")).replace("_", " ")
@@ -369,6 +369,20 @@ def render_report(result: dict) -> str:
         duration = f"{seconds:.2f}" if _number(seconds) is not None else "not measured"
         evidence = " / ".join(_safe(x, 250) for x in _items(phase.get("evidence"), 3)) or "—"
         lines.append(f"| {name.title()} | {_safe(status, 80)} | {duration} | {evidence} |")
+    readiness=result.get('readiness')
+    if isinstance(readiness,Mapping):
+        lines.extend(['',f"Console readiness: {'verified' if readiness.get('verified') is True else 'unverified'}. "
+            f"Log marker seconds: {_safe(readiness.get('log_observed_seconds'))}; "
+            f"verified seconds: {_safe(readiness.get('verified_seconds'))}."])
+    lines.extend(['','## Findings',''])
+    findings=_items(result.get('findings'),16)
+    for item in findings:
+        if not isinstance(item,Mapping): continue
+        lines.append(f"- **{_safe(item.get('code'),100)}** ({_safe(item.get('confidence'),40)} confidence; phase {_safe(item.get('phase'),40)}): "+
+            ' / '.join(_safe(value,300) for value in _items(item.get('evidence'),3)))
+        lines.append('  Next: '+_safe(item.get('next_step'),400))
+        lines.extend('  Limit: '+_safe(value,250) for value in _items(item.get('limitations'),2))
+    if not findings: lines.append('No additional issue pattern established in the available evidence.')
     lines.extend(["", "## Evidence", ""])
     evidence = _items(result.get("evidence"))
     lines.extend(f"- {_safe(value, 600)}" for value in evidence)
@@ -379,11 +393,20 @@ def render_report(result: dict) -> str:
     lines.extend(["", f"Next step: {_safe(result.get('next_step', 'Review the phase logs.'), 1200)}", "", "## Measurements", ""])
     metrics = result.get("metrics", {})
     metrics = metrics if isinstance(metrics, Mapping) else {}
-    for key, label in (("startup_seconds", "Startup seconds"), ("loaded_mods", "Loaded mods"),
+    for key, label in (("startup_seconds", "Startup seconds"), ('save_flush_seconds','Save flush acknowledgement seconds'), ("loaded_mods", "Loaded mods"),
                        ("avg_mspt", "Average MSPT"), ("worst_mspt", "Worst MSPT")):
         value = metrics.get(key)
         lines.append(f"- {label}: {_safe(value, 100) if _number(value) is not None else 'not measured'}")
     lines.append("- Player gameplay, multiplayer, client rendering and GPU performance: not measured by the startup/soak scenario.")
+    gc=result.get('gc')
+    if isinstance(gc,Mapping):
+        lines.append('- GC observations: '+', '.join(_safe(key)+': '+_safe(gc.get(key),100)
+            for key in ('count','pause_total_ms','pause_max_ms','pause_p95_ms','window_seconds','pause_fraction')))
+    resources=_items(result.get('resources'),1500)
+    lines.append(f'- Owned-process resource samples: {len(resources)}. CPU 100% means one logical CPU; RSS includes memory outside the Java heap.')
+    for item in resources[:1]:
+        if isinstance(item,Mapping) and isinstance(item.get('unavailable'),Mapping):
+            lines.append('- Resource availability: '+_safe(item['unavailable'],500))
     memory = result.get("memory")
     if isinstance(memory, Mapping):
         lines.extend(["", "## Memory sampling", "", f"Status: {_safe(memory.get('status', 'unmeasured'), 80)}"])
@@ -400,7 +423,7 @@ def render_report(result: dict) -> str:
         for key in ("warnings", "limitations"):
             lines.extend(f"- {_safe(value, 600)}" for value in _items(memory.get(key), 8))
     else:
-        lines.extend(["", "Memory, post-GC heap, CPU, threads and GC pauses: not measured."])
+        lines.extend(["", "Memory and post-GC heap sampling: not measured."])
     isolation = result.get("isolation")
     if isinstance(isolation, Mapping):
         lines.extend(["", "## Isolation", "", f"Status: {_safe(isolation.get('status', 'inconclusive'), 80)}"])
@@ -408,6 +431,11 @@ def render_report(result: dict) -> str:
         lines.append("Remaining tested candidates: " + (", ".join(_safe(x, 100) for x in suspects) or "none established"))
         lines.extend(f"- {_safe(value, 600)}" for value in _items(isolation.get("limitations"), 8))
         lines.append("A candidate group is not individual mod attribution or proof of a cause.")
+    lines.extend(['','## Coverage and limitations',''])
+    analysis=result.get('analysis',{})
+    analysis=analysis if isinstance(analysis,Mapping) else {}
+    for values in (result.get('coverage'),result.get('diagnostic_limitations'),analysis.get('limitations')):
+        lines.extend('- '+_safe(value,400) for value in _items(values,12))
     lines.extend(["", "## Artifacts", ""])
     artifacts = result.get("artifacts", {})
     if isinstance(artifacts, Mapping):
