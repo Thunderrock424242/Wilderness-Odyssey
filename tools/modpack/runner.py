@@ -449,7 +449,7 @@ def _installer(root, lock, cache, offline):
     return candidate
 
 
-def _source_state(root, reports):
+def _source_state(root, reports, prefix=''):
     """Record provenance without optional index locks, hooks or user commands."""
     git = shutil.which('git')
     if not git:
@@ -459,14 +459,14 @@ def _source_state(root, reports):
             '-c', 'core.untrackedCache=false', '-C', str(root)]
     artifacts = {}
     try:
-        revision_log = safe_path(reports, 'source-revision.log')
+        revision_log = safe_path(reports, prefix+'source-revision.log')
         revision = _command([*base, 'rev-parse', '--verify', 'HEAD'], reports,
                             environment, revision_log, 5)
         artifacts['source_revision_log'] = str(revision_log)
         commit = revision['logs'].strip()
         if revision['exit_code'] or revision['timed_out'] or not re.fullmatch(r'[0-9a-f]{40,64}', commit):
             return None, None, artifacts
-        status_log = safe_path(reports, 'source-status.log')
+        status_log = safe_path(reports, prefix+'source-status.log')
         status = _command([*base, 'status', '--porcelain=v1', '--untracked-files=normal', '--ignore-submodules=none'],
                           reports, environment, status_log, 5)
         artifacts['source_status_log'] = str(status_log)
@@ -1006,7 +1006,7 @@ def run_qa(root, lock, args) -> dict:
                 result.update(dirty=True,content_changed_during_trial=True)
                 result['diagnostic_limitations'].append('Indexed content changed during the trial; baseline promotion is blocked.')
             if source_commit is not None:
-                final_commit,final_dirty,_=_source_state(root,reports)
+                final_commit,final_dirty,_=_source_state(root,reports,prefix='final-')
                 if final_commit!=source_commit or final_dirty is not False:
                     result['dirty']=True
         except (OSError,ValueError,KeyError,TypeError):
