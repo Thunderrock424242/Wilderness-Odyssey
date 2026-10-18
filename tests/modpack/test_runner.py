@@ -113,6 +113,8 @@ class RunnerTests(unittest.TestCase):
         elif self.server_mode == 'crash':
             script = 'print(' + repr(READY + '\n' + CRASH) + ',flush=True)\nraise SystemExit(1)'
         else:
+            if self.server_mode=='mutate_content':
+                (self.root/'config/example.toml').write_text('changed=true\n')
             script='import sys, time, subprocess\n'
             if self.server_mode=='flood': script+='print("x"*20000)\n'
             if self.server_mode=='stale_reply': script+='print('+repr(REPLY)+',flush=True)\n'
@@ -178,9 +180,13 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual('unmeasured', result['memory']['status'])
         self.assertIsNone(result['metrics']['avg_mspt'])
         self.assertIsNone(result['metrics']['worst_mspt'])
-        self.assertEqual({'scenario': 'startup-soak-v1', 'seed': 424242, 'minecraft': '1.21.1',
+        expected={'scenario': 'startup-soak', 'seed': 424242, 'minecraft': '1.21.1',
                           'neoforge': '21.1.256', 'java_major': 21, 'heap_mb': 512, 'profiling': 'off',
-                          'startup_timeout_seconds': 1, 'soak_seconds': 0, 'active_processors':4}, result['context'])
+                          'startup_timeout_seconds': 1, 'soak_seconds': 0, 'active_processors':4}
+        self.assertEqual(expected,{k:result['context'][k] for k in expected})
+        self.assertEqual(2,result['context']['readiness_protocol'])
+        self.assertIn('21.0.8',result['context']['java_build'])
+        self.assertEqual(self.lock['mods'][0]['sha256'],result['content']['mods']['example.jar'])
         self.assertIsNone(result['source_commit'])
         self.assertIsNone(result['dirty'])
         self.assertFalse((self.args.destination / 'mods').exists())
@@ -223,6 +229,17 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual('succeeded',result['phases']['workload']['status'])
         self.assertGreaterEqual(result['metrics']['save_flush_seconds'],.07)
         self.assertEqual('succeeded',result['phases']['shutdown']['status'])
+
+    def test_content_changed_during_run_is_not_clean_baseline_evidence(self):
+        (self.root/'config').mkdir()
+        asset=self.root/'config/example.toml'; asset.write_text('changed=false\n')
+        generate(self.root,self.lock,['config/example.toml'])
+        expected=hashlib.sha256(asset.read_bytes().replace(b'\r\n',b'\n')).hexdigest()
+        self.server_mode='mutate_content'
+        result=self.run_qa()
+        self.assertEqual(expected,result['content']['assets']['config/example.toml'])
+        self.assertIs(True,result['dirty'])
+        self.assertTrue(result['content_changed_during_trial'])
 
     def test_unacknowledged_or_exited_save_cannot_pass_or_isolate(self):
         self.args.scenario='save-flush'; self.args.isolate=True

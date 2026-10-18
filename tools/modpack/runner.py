@@ -8,6 +8,8 @@ Only the subprocess boundary is replaced by the lifecycle tests.
 from __future__ import annotations
 
 from collections import deque
+import hashlib
+import json
 import os
 from pathlib import Path
 import re
@@ -21,7 +23,7 @@ import time
 from .common import PackError, digest, empty_destination, junction, outside_repo, read_json, safe_path, write_json, write_text
 from .diagnostics import analyze_memory, classify, render_report
 from .install import install
-from .pack import validate, dependency_satisfies
+from .pack import validate, dependency_satisfies, asset_bytes, included
 from .providers import fetch
 from .monitor import TrialMonitor, EventTimeline
 from .resources import ResourceSampler
@@ -892,11 +894,20 @@ def _save_report(reports, result):
     write_text(safe_path(reports, 'report.md'), render_report(result))
 
 
+def _content_state(root,lock):
+    assets=read_json(safe_path(root,'modpack/assets.json'))
+    hashes={name:hashlib.sha256(asset_bytes(safe_path(root,name))).hexdigest() for name in assets}
+    canonical=lambda value:hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    return {'inventory_sha256':canonical(lock),'assets_sha256':canonical(hashes),
+        'mods':{m['filename']:m['sha256'] for m in lock['mods'] if included(m,'server')},'assets':hashes}
+
+
 def run_qa(root, lock, args) -> dict:
     """Return a diagnostic and persist artifacts for every attempted QA run."""
     root = Path(root).resolve()
     result = _base_result()
     source_commit, dirty, source_artifacts = None, None, {}
+    java_build=None; content=None
     setup_temp=None
     reports, report_error = _report_directory(root, args)
     try:
@@ -920,9 +931,11 @@ def run_qa(root, lock, args) -> dict:
         version = _command([java, *_jvm_environment_flags(environment), '-version'], reports, environment, version_log, 15)
         result['artifacts']['java_version_log'] = str(version_log)
         match = re.search(r'\b(?:openjdk|java) version "(\d+)(?:\.|\")', version['logs'])
+        java_build=version['logs'].strip()[:4096]
         if version['timed_out'] or version['exit_code'] != 0 or not match or match[1] != '21':
             raise _StageError('setup_failure', 'The selected runtime must report Java major version 21 exactly; inspect java-version.log.')
         _phase(result, 'setup', 'succeeded', started)
+        content=_content_state(root,lock)
         result = _run_trial(root, lock, args, destination, reports, java, environment, cache)
         result['artifacts']['java_version_log'] = str(version_log)
         if args.isolate:
@@ -977,10 +990,27 @@ def run_qa(root, lock, args) -> dict:
                 _problem(result,'harness_failure','Private setup temporary-directory cleanup failed; no temporary files were included in artifacts.')
         result.update(source_commit=source_commit, dirty=dirty)
         result['artifacts'].update(source_artifacts)
-        result['context'] = {'scenario': 'startup-soak-v1', 'seed': 424242,
+        result['context'] = {'scenario': getattr(args,'scenario','startup-soak'), 'seed': 424242,
             'minecraft': lock.get('minecraft'), 'neoforge': lock.get('neoforge'), 'java_major': 21,
             'heap_mb': args.memory_mb, 'profiling': args.profiling, 'active_processors':4,
-            'startup_timeout_seconds': args.startup_seconds, 'soak_seconds': args.soak_seconds}
+            'startup_timeout_seconds': args.startup_seconds, 'soak_seconds': args.soak_seconds,
+            'report_schema':2,'readiness_protocol':2,'java_build':java_build,
+            'os_cpu':result.get('resource_context'),
+            'monitor':{'resources_seconds':5,'heap_seconds':30,'heartbeat_seconds':10,
+                       'startup_checkpoints':[60,120,240],'incident_offsets':[10,20,40],
+                       'thread_dump_limit':6,'attach_timeout_seconds':5,'save_timeout_seconds':120}}
+        try:
+            final_content=_content_state(root,lock)
+            result['content']=content or final_content
+            if content and content!=final_content:
+                result.update(dirty=True,content_changed_during_trial=True)
+                result['diagnostic_limitations'].append('Indexed content changed during the trial; baseline promotion is blocked.')
+            if source_commit is not None:
+                final_commit,final_dirty,_=_source_state(root,reports)
+                if final_commit!=source_commit or final_dirty is not False:
+                    result['dirty']=True
+        except (OSError,ValueError,KeyError,TypeError):
+            result['diagnostic_limitations'].append('Content fingerprint unavailable; baseline promotion is blocked.')
         result.setdefault('memory', analyze_memory(result.get('samples', [])))
         try:
             _save_report(reports, result)

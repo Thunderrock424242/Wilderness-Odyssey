@@ -6,7 +6,11 @@ from tools.modpack.common import PackError
 
 class RegressionTests(unittest.TestCase):
     def report(self):
-        return {'category':'success','context':{'scenario':'startup-soak-v1','seed':424242,'java_major':21,'heap_mb':4096,
+        return {'schema':2,'category':'success','dirty':False,'source_commit':'a'*40,'readiness':{'protocol':2,'verified':True},
+            'content':{'inventory_sha256':'b'*64,'assets_sha256':'c'*64,'mods':{'example.jar':'d'*64},'assets':{}},
+            'context':{'scenario':'startup-soak','seed':424242,'java_major':21,'java_build':'21.0.12+1','heap_mb':4096,
+            'report_schema':2,'readiness_protocol':2,'os_cpu':{'os':'Windows','logical_cpus':16,'cpu_quota':'unmeasured'},
+            'monitor':{'resource_seconds':5},'startup_timeout_seconds':600,
             'minecraft':'1.21.1','neoforge':'21.1.256','profiling':'basic','soak_seconds':120,'active_processors':4},
             'phases':{s:{'status':'passed'} for s in ('startup','soak','shutdown')},
             'metrics':{'startup_seconds':100,'avg_mspt':None,'worst_mspt':None},'private_logs':'do not copy'}
@@ -42,6 +46,27 @@ class RegressionTests(unittest.TestCase):
         report=self.report()
         report['metrics']={}
         self.assertEqual(compare(report,baseline)['status'],'inconclusive')
+
+    def test_execution_semantics_must_match_and_content_updates_are_visible(self):
+        good=self.report(); baseline=baseline_from(good,'a'*40)
+        for field in ('readiness_protocol','java_build','os_cpu','monitor'):
+            report=copy.deepcopy(good); report['context'][field]='changed'
+            self.assertEqual('inconclusive',compare(report,baseline)['status'])
+        old=copy.deepcopy(baseline); old['context'].pop('readiness_protocol')
+        self.assertEqual('inconclusive',compare(good,old)['status'])
+        updated=copy.deepcopy(good); updated['content']['mods']['example.jar']='e'*64
+        result=compare(updated,baseline)
+        self.assertEqual('within_thresholds',result['status'])
+        self.assertEqual(['example.jar'],result['content_changes']['mods']['changed'])
+        self.assertNotIn('avg_mspt',[i['metric'] for i in result['indicators']])
+
+    def test_legacy_unverified_unknown_source_and_incomplete_save_cannot_promote(self):
+        for mutate in (lambda r:r.pop('schema'),lambda r:r['context'].pop('readiness_protocol'),
+                       lambda r:r.update(dirty=None),lambda r:r.update(source_commit=None),
+                       lambda r:r['readiness'].update(verified=False),
+                       lambda r:r['context'].update(scenario='save-flush')):
+            report=self.report(); mutate(report)
+            with self.assertRaises(PackError): baseline_from(report,'a'*40)
 
 
 if __name__ == '__main__':
