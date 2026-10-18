@@ -19,6 +19,7 @@ from tools.modpack.pack import generate
 MODULE_PATH = Path(__file__).resolve().parents[2] / 'tools/modpack/runner.py'
 READY = '[12:00:00] [Server thread/INFO] [minecraft/DedicatedServer]: Done (1.234s)! For help, type "help"'
 REPLY = '[12:00:01] [Server thread/INFO] [minecraft/MinecraftServer]: There are 0 of a max of 20 players online: '
+SAVED = '[12:00:02] [Server thread/INFO] [minecraft/MinecraftServer]: Saved the game'
 CRASH = ('[12:00:01] [Server thread/ERROR]: Encountered an unexpected exception\n'
          'java.lang.RuntimeException: fixture crash\n'
          '    at example.Encounter.build(Encounter.java:41)\n')
@@ -125,6 +126,11 @@ class RunnerTests(unittest.TestCase):
             else:
                 if self.server_mode=='slow_list': script+='  time.sleep(0.2)\n'
                 script+='  print('+repr(REPLY)+',flush=True)\n'
+            script+=' elif line.strip()=="save-all flush":\n'
+            if self.server_mode=='save_exit': script+='  raise SystemExit(0)\n'
+            elif self.server_mode=='save_blocked': script+='  continue\n'
+            elif self.server_mode=='save_wrong': script+='  print("Saved the game",flush=True)\n'
+            else: script+='  time.sleep(.08)\n  print('+repr(SAVED)+',flush=True)\n'
             script+=' elif line.strip()=="stop":\n'
             if self.server_mode=='shutdown_crash':
                 script+='  print('+repr(CRASH)+',flush=True)\n  raise SystemExit(1)\n'
@@ -209,6 +215,33 @@ class RunnerTests(unittest.TestCase):
         result=self.run_qa()
         self.assertNotEqual('succeeded',result['phases']['startup']['status'])
         self.assertEqual('not_run',result['phases']['soak']['status'])
+
+    def test_save_flush_has_measured_ack_and_separate_phase(self):
+        self.args.scenario='save-flush'
+        result=self.run_qa()
+        self.assertEqual('success',result['category'])
+        self.assertEqual('succeeded',result['phases']['workload']['status'])
+        self.assertGreaterEqual(result['metrics']['save_flush_seconds'],.07)
+        self.assertEqual('succeeded',result['phases']['shutdown']['status'])
+
+    def test_unacknowledged_or_exited_save_cannot_pass_or_isolate(self):
+        self.args.scenario='save-flush'; self.args.isolate=True
+        for mode in ('save_blocked','save_wrong','save_exit'):
+            with self.subTest(mode=mode):
+                self.server_mode=mode
+                self.args.reports=self.base/(mode+'-reports')
+                self.args.destination=self.base/(mode+'-server')
+                with patch.object(self.runner,'_SAVE_SECONDS',.25,create=True): result=self.run_qa()
+                self.assertNotEqual('success',result['category'])
+                self.assertNotEqual('succeeded',result['phases']['workload']['status'])
+                self.assertIsNone(result['metrics'].get('save_flush_seconds'))
+                self.assertFalse(result['isolation_eligible'])
+                self.assertEqual(0,result['isolation']['test_count'])
+
+    def test_startup_failure_skips_save_workload(self):
+        self.args.scenario='save-flush'; self.server_mode='no_ready'
+        result=self.run_qa()
+        self.assertEqual('not_run',result['phases']['workload']['status'])
 
     def test_stale_console_reply_does_not_complete_readiness(self):
         self.server_mode='stale_reply'

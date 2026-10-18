@@ -66,6 +66,7 @@ def main(argv=None):
             cmd.add_argument('--startup-seconds',type=int,default=600)
             cmd.add_argument('--soak-seconds',type=int,default=120)
             cmd.add_argument('--profiling',choices=['off','basic','jfr','native'],default='basic')
+            cmd.add_argument('--scenario',choices=['startup-soak','save-flush'],default='startup-soak')
             cmd.add_argument('--isolate',action='store_true')
             cmd.add_argument('--max-tests',type=int,default=12)
             cmd.add_argument('--reports',type=Path,required=True)

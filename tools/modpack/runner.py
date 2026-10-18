@@ -47,7 +47,7 @@ class _StageError(PackError):
 def _base_result():
     result = classify('', None)
     result.update(schema=2,phases={name: {'status': 'not_run', 'seconds': None, 'evidence': []}
-                         for name in ('validation', 'setup', 'installer', 'startup', 'soak', 'shutdown')},
+                         for name in ('validation', 'setup', 'installer', 'startup', 'soak', 'workload', 'shutdown')},
                   metrics={'avg_mspt': None, 'worst_mspt': None}, artifacts={}, samples=[], coverage=[
                       'Java 21 dedicated server startup and idle soak only.',
                       'Loaded mod count, MSPT, player gameplay, multiplayer, client rendering and GPU performance are not measured.',
@@ -104,6 +104,8 @@ def _report_directory(root, args):
 
 
 def _validate_options(root, args, reports):
+    if getattr(args,'scenario','startup-soak') not in ('startup-soak','save-flush'):
+        raise PackError('Unsupported QA scenario.')
     limits = (('memory_mb', 512, 16384), ('startup_seconds', 1, 1800),
               ('soak_seconds', 0, 3600), ('max_tests', 1, 30))
     for name, lower, upper in limits:
@@ -488,7 +490,7 @@ def _java_flags(args):
     if args.profiling != 'off':
         flags.append('-Xlog:gc*:file=qa-gc.log:time,uptime,level,tags:filecount=3,filesize=8M')
     if args.profiling == 'jfr':
-        duration = args.startup_seconds + args.soak_seconds + int(_SHUTDOWN_SECONDS) + 1
+        duration = args.startup_seconds + args.soak_seconds + int(_SHUTDOWN_SECONDS) + 121
         flags.append('-XX:StartFlightRecording=filename=qa-recording.jfr,settings=profile,'
                      f'dumponexit=true,duration={duration}s,maxsize=64m')
     if args.profiling == 'native':
@@ -597,6 +599,9 @@ def _cleanup_trial(destination):
             if not target.is_dir() or not target.resolve().is_relative_to(destination.resolve()):
                 raise PackError('Disposable trial cleanup target is not an owned directory.')
             shutil.rmtree(target)
+
+
+_SAVE_SECONDS = 120
 
 
 class _Observation:
@@ -747,6 +752,14 @@ def _run_trial(root, lock, args, destination, reports, java, environment, cache,
             exhausted = deadline is not None and time.monotonic() >= deadline
             _phase(result, active, 'succeeded' if survived and not exhausted else 'timed_out' if exhausted else 'failed', active_start)
             timed_out |= exhausted
+            if survived and not exhausted and getattr(args,'scenario','startup-soak')=='save-flush':
+                active,active_start='workload',time.monotonic()
+                outcome=observation.drive(_remaining(_SAVE_SECONDS,deadline),deadline,'workload')
+                acknowledged=outcome=='acknowledged'
+                _phase(result,active,'succeeded' if acknowledged else 'timed_out' if outcome=='timed_out' else 'failed',active_start)
+                if acknowledged:
+                    result['metrics']['save_flush_seconds']=observation.monitor.snapshot()['save']['seconds']
+                timed_out |= outcome=='timed_out'
         active, active_start = 'shutdown', time.monotonic()
         _shutdown(child, result, environment)
         timed_out |= result['phases']['shutdown']['status'] == 'forced'
@@ -758,6 +771,13 @@ def _run_trial(root, lock, args, destination, reports, java, environment, cache,
         if diagnostic['category'] == 'success' and result['phases']['soak']['status'] != 'succeeded':
             diagnostic.update(category='inconclusive', message='The server exited before completing the requested idle soak.',
                               next_step='Inspect the soak log and repeat the same bounded workload.')
+        workload_failed=(getattr(args,'scenario','startup-soak')=='save-flush'
+                         and result['phases']['workload']['status']!='succeeded')
+        if workload_failed:
+            diagnostic['isolation_eligible']=False
+            if diagnostic['category']=='success':
+                diagnostic.update(category='inconclusive',message='The controlled save did not acknowledge completion.',
+                                  next_step='Inspect workload captures and repeat the same disposable save scenario.')
         shutdown_failed = (result['phases']['soak']['status'] == 'succeeded'
                            and result['phases']['shutdown']['status'] in ('failed', 'forced'))
         if timed_out or shutdown_failed:
@@ -765,7 +785,7 @@ def _run_trial(root, lock, args, destination, reports, java, environment, cache,
         if shutdown_failed:
             result['coverage'].append('The failure was observed during shutdown; startup/soak subset isolation is unavailable for that phase.')
         result.update(diagnostic)
-        result['outcome'] = 'timeout' if timed_out else 'shutdown_failure' if shutdown_failed else 'startup_soak'
+        result['outcome'] = 'timeout' if timed_out else 'workload_failure' if workload_failed else 'shutdown_failure' if shutdown_failed else getattr(args,'scenario','startup-soak')
         normal_outcome = True
     except KeyboardInterrupt:
         _phase(result, active, 'cancelled', active_start)

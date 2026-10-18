@@ -6,12 +6,26 @@ import subprocess
 import tempfile
 import unittest
 import os
+from unittest.mock import patch
 from tools.modpack.__main__ import main
 from tools.modpack.common import read_json
 from test_management import make_jar
 
 
 class SyncCliTests(unittest.TestCase):
+    def test_qa_scenario_reaches_runner_and_unknown_scenario_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base=Path(tmp); repo=base/'repo'; (repo/'modpack').mkdir(parents=True)
+            (repo/'modpack/lock.json').write_text('{}')
+            args=['--root',str(repo),'qa','--destination',str(base/'run'),'--reports',str(base/'reports')]
+            with patch('tools.modpack.runner.run_qa',return_value={'category':'success'}) as run, contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(0,main(args+['--scenario','save-flush']))
+                self.assertEqual('save-flush',run.call_args.args[2].scenario)
+                self.assertEqual(0,main(args))
+                self.assertEqual('startup-soak',run.call_args.args[2].scenario)
+            with contextlib.redirect_stderr(io.StringIO()),self.assertRaises(SystemExit):
+                main(args+['--scenario','arbitrary-command'])
+
     def test_repeated_sync_keeps_new_custom_files_without_overwriting_existing(self):
         with tempfile.TemporaryDirectory() as tmp:
             base=Path(tmp)
