@@ -1,0 +1,33 @@
+
+version: 2
+
+updates:
+  # WEBSITE BRANCH
+  - package-ecosystem: "npm"
+    directory: "/"
+    target-branch: "website"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 20
+
+  # BOT BRANCH
+  - package-ecosystem: "npm"
+    directory: "/"
+    target-branch: "bot"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 20
+
+  # WEBSITE GITHUB ACTIONS
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    target-branch: "website"
+    schedule:
+      interval: "daily"
+
+  # BOT GITHUB ACTIONS
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    target-branch: "bot"
+    schedule:
+      interval: "daily"
