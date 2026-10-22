@@ -1,0 +1,138 @@
+name: Manual Security Scan
+
+on:
+  workflow_dispatch:
+    inputs:
+      branches:
+        description: 'Comma-separated branches; blank = selected branch'
+        required: false
+        default: ''
+        type: string
+      fail_on_high:
+        description: 'Fail the scan if HIGH or CRITICAL issues are found'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      branches: ${{ steps.resolve.outputs.branches }}
+    steps:
+      - name: Resolve branches
+        id: resolve
+        env:
+          REQUESTED_BRANCHES: ${{ inputs.branches }}
+          SELECTED_BRANCH: ${{ github.ref_name }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+
+          raw = os.environ['REQUESTED_BRANCHES'].strip()
+          branches = [x.strip() for x in raw.split(',') if x.strip()] if raw else [os.environ['SELECTED_BRANCH']]
+          branches = list(dict.fromkeys(branches))
+          if not 1 <= len(branches) <= 20:
+              raise SystemExit('Choose between 1 and 20 branches.')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('branches=' + json.dumps(branches) + '\n')
+          print('Scanning branches:', ', '.join(branches))
+          PY
+
+  scan:
+    needs: prepare
+    runs-on: ubuntu-latest
+    name: Scan ${{ matrix.branch }}
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        branch: ${{ fromJSON(needs.prepare.outputs.branches) }}
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+          persist-credentials: false
+
+      - name: Make safe report name
+        id: report
+        env:
+          BRANCH: ${{ matrix.branch }}
+        run: |
+          safe=$(printf '%s' "$BRANCH" | tr -c '[:alnum:]._-' '_' | cut -c1-40)
+          hash=$(printf '%s' "$BRANCH" | sha256sum | cut -c1-8)
+          echo "name=security-${safe}-${hash}" >> "$GITHUB_OUTPUT"
+
+      - name: Scan dependencies, secrets, and configuration
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          format: json
+          output: trivy-results.json
+          exit-code: '0'
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.report.outputs.name }}
+          path: trivy-results.json
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Summarize and optionally fail on HIGH/CRITICAL
+        env:
+          BRANCH: ${{ matrix.branch }}
+          FAIL_ON_HIGH: ${{ inputs.fail_on_high }}
+        run: |
+          python3 - <<'PY'
+          import collections
+          import json
+          import os
+          import sys
+
+          with open('trivy-results.json', encoding='utf-8') as file:
+              report = json.load(file)
+          counts = collections.Counter()
+          important = []
+          for result in report.get('Results', []):
+              target = result.get('Target', '')
+              for field, category in (('Vulnerabilities', 'Vulnerabilities'),
+                                      ('Secrets', 'Secrets'),
+                                      ('Misconfigurations', 'Misconfigurations')):
+                  for issue in result.get(field) or []:
+                      severity = (issue.get('Severity') or 'UNKNOWN').upper()
+                      counts[category] += 1
+                      counts[severity] += 1
+                      if severity in ('HIGH', 'CRITICAL'):
+                          identifier = issue.get('VulnerabilityID') or issue.get('ID') or 'See JSON report'
+                          important.append((severity, category, target, identifier))
+
+          def clean(value):
+              return str(value).replace('|', '\\|').replace('\n', ' ')[:130]
+
+          lines = [
+              f"## Security scan: {clean(os.environ['BRANCH'])}", '',
+              f"Vulnerabilities: {counts['Vulnerabilities']} | Secrets: {counts['Secrets']} | Misconfigurations: {counts['Misconfigurations']}",
+              f"HIGH: {counts['HIGH']} | CRITICAL: {counts['CRITICAL']}", '',
+              'Download the JSON artifact for all findings.'
+          ]
+          if important:
+              lines += ['', '### HIGH / CRITICAL findings', '',
+                        '| Severity | Category | File / target | Finding |',
+                        '|---|---|---|---|']
+              lines += [f'| {clean(sev)} | {clean(cat)} | {clean(target)} | {clean(ident)} |'
+                        for sev, cat, target, ident in important[:30]]
+              if len(important) > 30:
+                  lines.append(f'...plus {len(important) - 30} more in the report.')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as file:
+              file.write('\n'.join(lines) + '\n')
+          print('\n'.join(lines))
+          if important and os.environ['FAIL_ON_HIGH'].lower() == 'true':
+              sys.exit('HIGH or CRITICAL findings detected.')
+          PY
