@@ -15,6 +15,8 @@ on:
 
 permissions:
   contents: read
+  security-events: write
+  actions: read
 
 jobs:
   prepare:
@@ -67,72 +69,28 @@ jobs:
           hash=$(printf '%s' "$BRANCH" | sha256sum | cut -c1-8)
           echo "name=security-${safe}-${hash}" >> "$GITHUB_OUTPUT"
 
-      - name: Scan dependencies, secrets, and configuration
+      - name: Record the checked-out branch commit
+        id: target
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Scan for GitHub code scanning alerts (SARIF)
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: fs
           scan-ref: .
           scanners: vuln,secret,misconfig
-          format: json
-          output: trivy-results.json
+          format: sarif
+          output: trivy-results.sarif
           exit-code: '0'
 
-      - name: Upload report
-        uses: actions/upload-artifact@v4
+      - name: Send findings to GitHub Security > Code scanning
+        uses: github/codeql-action/upload-sarif@v4
         with:
-          name: ${{ steps.report.outputs.name }}
-          path: trivy-results.json
-          if-no-files-found: error
-          retention-days: 14
+          sarif_file: trivy-results.sarif
+          category: trivy-manual-${{ matrix.branch }}
+          ref: refs/heads/${{ matrix.branch }}
+          sha: ${{ steps.target.outputs.sha }}
 
-      - name: Summarize and optionally fail on HIGH/CRITICAL
-        env:
-          BRANCH: ${{ matrix.branch }}
-          FAIL_ON_HIGH: ${{ inputs.fail_on_high }}
-        run: |
-          python3 - <<'PY'
-          import collections
-          import json
-          import os
-          import sys
-
-          with open('trivy-results.json', encoding='utf-8') as file:
-              report = json.load(file)
-          counts = collections.Counter()
-          important = []
-          for result in report.get('Results', []):
-              target = result.get('Target', '')
-              for field, category in (('Vulnerabilities', 'Vulnerabilities'),
-                                      ('Secrets', 'Secrets'),
-                                      ('Misconfigurations', 'Misconfigurations')):
-                  for issue in result.get(field) or []:
-                      severity = (issue.get('Severity') or 'UNKNOWN').upper()
-                      counts[category] += 1
-                      counts[severity] += 1
-                      if severity in ('HIGH', 'CRITICAL'):
-                          identifier = issue.get('VulnerabilityID') or issue.get('ID') or 'See JSON report'
-                          important.append((severity, category, target, identifier))
-
-          def clean(value):
-              return str(value).replace('|', '\\|').replace('\n', ' ')[:130]
-
-          lines = [
-              f"## Security scan: {clean(os.environ['BRANCH'])}", '',
-              f"Vulnerabilities: {counts['Vulnerabilities']} | Secrets: {counts['Secrets']} | Misconfigurations: {counts['Misconfigurations']}",
-              f"HIGH: {counts['HIGH']} | CRITICAL: {counts['CRITICAL']}", '',
-              'Download the JSON artifact for all findings.'
-          ]
-          if important:
-              lines += ['', '### HIGH / CRITICAL findings', '',
-                        '| Severity | Category | File / target | Finding |',
-                        '|---|---|---|---|']
-              lines += [f'| {clean(sev)} | {clean(cat)} | {clean(target)} | {clean(ident)} |'
-                        for sev, cat, target, ident in important[:30]]
-              if len(important) > 30:
-                  lines.append(f'...plus {len(important) - 30} more in the report.')
-          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as file:
-              file.write('\n'.join(lines) + '\n')
-          print('\n'.join(lines))
-          if important and os.environ['FAIL_ON_HIGH'].lower() == 'true':
-              sys.exit('HIGH or CRITICAL findings detected.')
-          PY
+      - name: Scan dependencies, secrets, and configuration (JSON backup)
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
