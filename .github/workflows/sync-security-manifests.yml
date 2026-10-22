@@ -1,0 +1,67 @@
+name: Sync dependency snapshots to default branch
+
+on:
+  push:
+    branches:
+      - website
+      - bot
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wilderness-odyssey-dependency-snapshot-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Update website and bot dependency snapshots
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout default modpack branch
+        uses: actions/checkout@v4
+        with:
+          ref: 1.21-neoforge
+          path: main
+
+      - name: Checkout website branch
+        uses: actions/checkout@v4
+        with:
+          ref: website
+          path: website
+          persist-credentials: false
+
+      - name: Checkout bot branch
+        uses: actions/checkout@v4
+        with:
+          ref: bot
+          path: bot
+          persist-credentials: false
+
+      - name: Copy only dependency manifests
+        shell: bash
+        run: |
+          set -euo pipefail
+          for project in website bot; do
+            test -f "$project/package.json"
+            test -f "$project/package-lock.json"
+            mkdir -p "main/security-manifests/$project"
+            cp "$project/package.json" "$project/package-lock.json" "main/security-manifests/$project/"
+          done
+
+      - name: Commit snapshot changes to default branch
+        shell: bash
+        working-directory: main
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- security-manifests/website/package.json security-manifests/website/package-lock.json security-manifests/bot/package.json security-manifests/bot/package-lock.json
+          if git diff --cached --quiet; then
+            echo "No dependency changes to synchronize."
+          else
+            git commit -m "chore: synchronize website and bot dependency snapshots"
+            git push origin HEAD:1.21-neoforge
+          fi
