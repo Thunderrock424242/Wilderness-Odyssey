@@ -33,7 +33,7 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.9",
+    "@astrojs/check": "^0.9.10",
     "@axe-core/playwright": "^4.13.0",
     "@cloudflare/workers-types": "^5.20260922.1",
     "@playwright/test": "^1.63.0",
