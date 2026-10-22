@@ -486,4 +486,4 @@ The parser looks for common Minecraft modpack crash causes:
 - GitHub issue sync.
 - Web dashboard.
 - Explicit opt-in anonymous telemetry.
-- Automatic crash signature grouping.
+- Automatic crash signature grouping. php don't use
