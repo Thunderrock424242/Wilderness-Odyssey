@@ -1,3 +1,67 @@
+name: Manual GitHub Vulnerability Scan
+
+# Runs only when you select "Run workflow" in the GitHub Actions tab.
+on:
+  workflow_dispatch:
+    inputs:
+      branches:
+        description: 'Branches to scan, separated by commas (blank = selected branch)'
+        type: string
+        required: false
+        default: ''
+      fail_on_high:
+        description: 'Fail the workflow when HIGH or CRITICAL issues are found'
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  select-branches:
+    name: Prepare branch list
+    runs-on: ubuntu-latest
+    outputs:
+      branches: ${{ steps.branches.outputs.json }}
+    steps:
+      - name: Parse requested branches
+        id: branches
+        shell: bash
+        env:
+          BRANCH_INPUT: ${{ inputs.branches }}
+          SELECTED_REF: ${{ github.ref_name }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+
+          value = os.environ['BRANCH_INPUT'].strip()
+          names = [part.strip() for part in value.split(',') if part.strip()] if value else [os.environ['SELECTED_REF']]
+          names = list(dict.fromkeys(names))
+          if not 1 <= len(names) <= 20:
+              raise SystemExit('Enter 1 to 20 branch names.')
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
+              out.write('json=' + json.dumps(names) + '\n')
+          print('Branches:', ', '.join(names))
+          PY
+
+  security-scan:
+    name: Scan ${{ matrix.branch }}
+    needs: select-branches
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        branch: ${{ fromJSON(needs.select-branches.outputs.branches) }}
+
+    steps:
+      - name: Check out branch being scanned
+        uses: actions/checkout@v4
+        with:
           ref: ${{ matrix.branch }}
           persist-credentials: false
 
