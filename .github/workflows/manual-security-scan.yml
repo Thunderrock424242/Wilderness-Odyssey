@@ -116,7 +116,7 @@ jobs:
 
       - name: Save downloadable reports (even if GitHub upload fails)
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.metadata.outputs.artifact || format('trivy-run-{0}', strategy.job-index) }}
           path: |
