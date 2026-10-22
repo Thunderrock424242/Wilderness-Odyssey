@@ -1,79 +1,19 @@
-name: Manual Security Scan
-
-on:
-  workflow_dispatch:
-    inputs:
-      branches:
-        description: 'Comma-separated branches; blank = selected branch'
-        required: false
-        default: ''
-        type: string
-      fail_on_high:
-        description: 'Fail the scan if HIGH or CRITICAL issues are found'
-        type: boolean
-        default: false
-
-permissions:
-  contents: read
-  security-events: write
-  actions: read
-
-jobs:
-  prepare:
-    runs-on: ubuntu-latest
-    outputs:
-      branches: ${{ steps.resolve.outputs.branches }}
-    steps:
-      - name: Resolve branches
-        id: resolve
-        env:
-          REQUESTED_BRANCHES: ${{ inputs.branches }}
-          SELECTED_BRANCH: ${{ github.ref_name }}
-        run: |
-          python3 - <<'PY'
-          import json
-          import os
-
-          raw = os.environ['REQUESTED_BRANCHES'].strip()
-          branches = [x.strip() for x in raw.split(',') if x.strip()] if raw else [os.environ['SELECTED_BRANCH']]
-          branches = list(dict.fromkeys(branches))
-          if not 1 <= len(branches) <= 20:
-              raise SystemExit('Choose between 1 and 20 branches.')
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
-              output.write('branches=' + json.dumps(branches) + '\n')
-          print('Scanning branches:', ', '.join(branches))
-          PY
-
-  scan:
-    needs: prepare
-    runs-on: ubuntu-latest
-    name: Scan ${{ matrix.branch }}
-    strategy:
-      fail-fast: false
-      max-parallel: 3
-      matrix:
-        branch: ${{ fromJSON(needs.prepare.outputs.branches) }}
-    steps:
-      - name: Check out branch
-        uses: actions/checkout@v4
-        with:
           ref: ${{ matrix.branch }}
           persist-credentials: false
 
-      - name: Make safe report name
-        id: report
+      - name: Save branch commit and safe artifact name
+        id: metadata
+        shell: bash
         env:
-          BRANCH: ${{ matrix.branch }}
+          BRANCH_NAME: ${{ matrix.branch }}
         run: |
-          safe=$(printf '%s' "$BRANCH" | tr -c '[:alnum:]._-' '_' | cut -c1-40)
-          hash=$(printf '%s' "$BRANCH" | sha256sum | cut -c1-8)
-          echo "name=security-${safe}-${hash}" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          safe=$(printf '%s' "$BRANCH_NAME" | tr -c '[:alnum:]._-' '_' | cut -c1-40)
+          hash=$(printf '%s' "$BRANCH_NAME" | sha256sum | cut -c1-8)
+          echo "artifact=trivy-${safe}-${hash}" >> "$GITHUB_OUTPUT"
 
-      - name: Record the checked-out branch commit
-        id: target
-        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-
-      - name: Scan for GitHub code scanning alerts (SARIF)
+      - name: Scan vulnerabilities, secrets, and misconfigurations (SARIF)
+        id: sarif_scan
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: fs
@@ -83,14 +23,85 @@ jobs:
           output: trivy-results.sarif
           exit-code: '0'
 
-      - name: Send findings to GitHub Security > Code scanning
+      # Send each branch's findings to Security > Code scanning alerts.
+      # The explicit ref + SHA are important for scans of branches other
+      # than the branch selected in the "Run workflow" dialog.
+      - name: Publish alerts to GitHub Code scanning
+        id: upload_sarif
+        if: ${{ steps.sarif_scan.outcome == 'success' }}
+        continue-on-error: true
         uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: trivy-results.sarif
-          category: trivy-manual-${{ matrix.branch }}
+          category: trivy-manual
           ref: refs/heads/${{ matrix.branch }}
-          sha: ${{ steps.target.outputs.sha }}
+          sha: ${{ steps.metadata.outputs.sha }}
 
-      - name: Scan dependencies, secrets, and configuration (JSON backup)
+      - name: Generate a full JSON report
+        id: json_scan
+        if: ${{ steps.sarif_scan.outcome == 'success' }}
         uses: aquasecurity/trivy-action@v0.36.0
         with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          format: json
+          output: trivy-results.json
+          exit-code: '0'
+          skip-setup-trivy: 'true'
+
+      - name: Save downloadable reports (even if GitHub upload fails)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.metadata.outputs.artifact || format('trivy-run-{0}', strategy.job-index) }}
+          path: |
+            trivy-results.sarif
+            trivy-results.json
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Show summary and check for HIGH or CRITICAL findings
+        if: ${{ steps.json_scan.outcome == 'success' }}
+        shell: bash
+        env:
+          SCANNED_BRANCH: ${{ matrix.branch }}
+          FAIL_ON_HIGH: ${{ inputs.fail_on_high }}
+        run: |
+          python3 - <<'PY'
+          import collections
+          import json
+          import os
+          import sys
+
+          with open('trivy-results.json', encoding='utf-8') as f:
+              results = json.load(f).get('Results') or []
+          levels = collections.Counter()
+          kinds = collections.Counter()
+          for target in results:
+              for key in ('Vulnerabilities', 'Secrets', 'Misconfigurations'):
+                  for finding in target.get(key) or []:
+                      kinds[key] += 1
+                      levels[(finding.get('Severity') or 'UNKNOWN').upper()] += 1
+          high_count = levels['HIGH'] + levels['CRITICAL']
+          summary = (
+              f"## Trivy scan: {os.environ['SCANNED_BRANCH']}\n\n"
+              f"- Vulnerabilities: {kinds['Vulnerabilities']}\n"
+              f"- Exposed secrets: {kinds['Secrets']}\n"
+              f"- Misconfigurations: {kinds['Misconfigurations']}\n"
+              f"- High severity: {levels['HIGH']}\n"
+              f"- Critical severity: {levels['CRITICAL']}\n\n"
+              "See **Security → Code scanning** for uploaded alerts and **Artifacts** for the reports.\n"
+          )
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as f:
+              f.write(summary)
+          print(summary)
+          if high_count and os.environ['FAIL_ON_HIGH'].lower() == 'true':
+              sys.exit(f'Found {high_count} HIGH/CRITICAL issue(s).')
+          PY
+
+      - name: Fail if GitHub Code scanning upload was unsuccessful
+        if: ${{ always() && steps.sarif_scan.outcome == 'success' && steps.upload_sarif.outcome != 'success' }}
+        run: |
+          echo 'SARIF upload failed. Check that GitHub Code Security / Code scanning is enabled and permissions allow uploading.'
+          exit 1
