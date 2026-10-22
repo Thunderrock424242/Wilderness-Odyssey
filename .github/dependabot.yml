@@ -8,7 +8,7 @@ updates:
     target-branch: "website"
     schedule:
       interval: "daily"
-    open-pull-requests-limit: 20
+    open-pull-requests-limit: 0
 
   # BOT BRANCH
   - package-ecosystem: "npm"
@@ -16,7 +16,7 @@ updates:
     target-branch: "bot"
     schedule:
       interval: "daily"
-    open-pull-requests-limit: 20
+    open-pull-requests-limit: 0
 
   # WEBSITE GITHUB ACTIONS
   - package-ecosystem: "github-actions"
@@ -24,6 +24,7 @@ updates:
     target-branch: "website"
     schedule:
       interval: "daily"
+    open-pull-requests-limit: 0
 
   # BOT GITHUB ACTIONS
   - package-ecosystem: "github-actions"
@@ -31,3 +32,4 @@ updates:
     target-branch: "bot"
     schedule:
       interval: "daily"
+    open-pull-requests-limit: 0
