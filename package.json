@@ -29,7 +29,7 @@
     "jose": "^6.2.12",
     "marked": "^16.4.2",
     "turndown": "^7.2.4",
-    "yaml": "^2.9.0",
+    "yaml": "^2.9.1",
     "zod": "^4.6.5"
   },
   "devDependencies": {
