@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "servercore"
+filename = "servercore-neoforge-1.5.19+1.21.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "a5706aa0bb3a47c5f1adab44306685736688ec03414f60beb4fcbe05b99f5a82"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 550579
+file-id = 8312220

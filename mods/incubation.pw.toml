@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "incubation"
+filename = "incubation-1.21.1-5.0.2.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "df9b85af42d00b965557890a91a2234c94e008b5432e0678b85d699acbe95130"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 361718
+file-id = 7710269

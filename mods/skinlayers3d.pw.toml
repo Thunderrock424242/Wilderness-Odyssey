@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "skinlayers3d"
+filename = "skinlayers3d-neoforge-1.11.3-mc1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "af7dcd6c6a40793adc0f7e57dd8fcc04c9e9bdf9c8ffa4efeb36e22d8b1f79db"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 521480
+file-id = 8906440

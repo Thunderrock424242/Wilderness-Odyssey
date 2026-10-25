@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "deuf"
+filename = "deuf-1.21.1-1.3.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "96fd494a4ee0f89c63b49ec8b7ca2ed615b08374d7854d08ef3ce85febc8f291"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 296646
+file-id = 8197124

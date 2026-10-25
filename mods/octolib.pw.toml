@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "octolib"
+filename = "OctoLib-NEOFORGE-0.6.2+1.21.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "92ba07d9d9e55a65421f3c3f203c72fe5149cb024d5277267e81d812e11a7f38"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 916747
+file-id = 8040848

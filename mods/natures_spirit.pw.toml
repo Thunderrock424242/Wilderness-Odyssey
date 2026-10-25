@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "natures_spirit"
+filename = "natures_spirit-2.3.0-1.21.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "dd716653b32a28a9909cda14fcc4cfd4aebcb20faa30770475cf6be33f9c8f59"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1044992
+file-id = 9217734

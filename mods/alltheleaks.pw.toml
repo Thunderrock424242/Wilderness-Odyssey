@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "alltheleaks"
+filename = "alltheleaks-1.1.13+1.21.1-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "c9b76623003dd05dda452d9ed42cb23623b09383fe9ac1efb41c46a3b69ff601"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1091339
+file-id = 8943912

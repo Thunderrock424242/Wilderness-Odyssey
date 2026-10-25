@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "integrated_stronghold"
+filename = "integrated_stronghold-1.1.4+1.21.1-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "c6ac6ad68de806524615238f8a7efe511c417b8cd56ffceb7dd62aad9c8b821b"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 815548
+file-id = 7802495

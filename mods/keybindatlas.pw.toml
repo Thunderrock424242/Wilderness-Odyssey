@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "keybindatlas"
+filename = "KeybindAtlas-v1.4.0-mc1.21.1-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d14e872d8201d474d05d2f0b5b513c791c048c43b5412536e9aa79015423c985"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1513576
+file-id = 8071521

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "ohthetreesyoullgrow"
+filename = "Oh-The-Trees-Youll-Grow-neoforge-1.21.1-5.3.5.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "12b918a09e4786de0045d7f29d336881234a533259c10d1327051df9ba318c4f"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 962544
+file-id = 9113653

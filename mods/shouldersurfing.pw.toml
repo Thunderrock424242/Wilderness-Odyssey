@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "shouldersurfing"
+filename = "ShoulderSurfing-NeoForge-1.21.1-5.2.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "c5be270deba5168999fda26d71d28393dd1421397dd2708ad222f6d4e5f501c7"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 243190
+file-id = 9013811

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "primal"
+filename = "primal-1.1.6+1.21.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "477de6a9e39f2b508e7fc0d2f1cf8978df11c7d21ebf3baf79818d325e44a88c"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1351626
+file-id = 8023311

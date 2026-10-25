@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "create_radar"
+filename = "create_radar-0.4.9.4-1.21.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "4554359fee389b1c255b4cef23ac41e978b2a371cec9e952185f4ec0a90ee930"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1152836
+file-id = 8227753

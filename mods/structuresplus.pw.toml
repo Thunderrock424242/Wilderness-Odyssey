@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "structuresplus"
+filename = "Structures+ v3.0.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "63da48788442d0e998f03ef01e3445c3cf86be49dcf0b7afeb749b41daf472de"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1437556
+file-id = 9174889

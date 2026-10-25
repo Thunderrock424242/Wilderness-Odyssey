@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "waterdripsound"
+filename = "Drip Sounds-0.6.3+1.21.8-NeoForge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d5ad3eceefda8791fc02041614164c5b639c6fae199926711cd41e7dc9838f12"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 448311
+file-id = 9142530

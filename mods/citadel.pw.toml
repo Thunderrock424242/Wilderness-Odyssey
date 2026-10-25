@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "citadel"
+filename = "citadel-1.21.1-2.7.6.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "9e12468c49e5a95b7adbf22b3b4d05bc55565989b89c40b985cd73bdfe63c3c2"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1415723
+file-id = 7982052

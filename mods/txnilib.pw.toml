@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "txnilib"
+filename = "txnilib-neoforge-1.0.24-1.21.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "411e811a6a53a63c2716dbf71cd1167e3a98d000b884458759d6192720be3e18"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1104882
+file-id = 6533725

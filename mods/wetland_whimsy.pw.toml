@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "wetland_whimsy"
+filename = "wetland_whimsy-2.0.4-1.21.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "abf8f7652a9c8f14b24c89293e6fef342ed5d58eb9eeeb48980a69748fa34093"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1164728
+file-id = 8527977

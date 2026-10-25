@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "connectivity"
+filename = "connectivity-1.21.1-7.7.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d2f7cecb93199139c4ff783161c4b9ec106589f72bb3febe85349178e7547cf3"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 470193
+file-id = 9008904

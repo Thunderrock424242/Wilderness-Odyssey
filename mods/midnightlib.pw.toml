@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "midnightlib"
+filename = "midnightlib-neoforge-1.10.0+1.21.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "16ddfdcccd3cb6b18bb20e50b3ccf1c93e1b43098ac0b547af8ff3dc42cc05a4"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 488090
+file-id = 9184487

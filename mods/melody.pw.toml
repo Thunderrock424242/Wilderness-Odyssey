@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "melody"
+filename = "melody_neoforge_1.0.10_MC_1.21.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "6b973a4564703c531fc0eae09db08b07a38091e0a743c687b8d2049457e84871"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 938643
+file-id = 5453382

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "yungsapi"
+filename = "YungsApi-1.21.1-NeoForge-5.1.9.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "375e0b2f988ab4f5bde182166c0f0b102377adc8f823660c24ade08b0b3cde56"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1015100
+file-id = 8894736

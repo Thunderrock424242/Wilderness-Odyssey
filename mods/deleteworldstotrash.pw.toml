@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "deleteworldstotrash"
+filename = "DeleteWorldsToTrash-v21.1.0-1.21.1-NeoForge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "4f1cec74c509f6fb2146797fa6300a297d6796674499883157927c67a4e6e550"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 571076
+file-id = 5735514

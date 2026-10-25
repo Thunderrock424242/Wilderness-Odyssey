@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "amendments"
+filename = "amendments-1.21-2.1.11-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "7bc18ef0554ab305c4af7d1bdb60b0a45edec2a5d9aabf307dd7b26cf2ad2447"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 896746
+file-id = 9122440

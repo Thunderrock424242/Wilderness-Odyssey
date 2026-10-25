@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "expanded_ecosphere"
+filename = "expanded_ecosphere-neoforge-3.4.7.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "025ef57f3035fb60e43aa78024bf70514a5d1ef5df47874b31ea983275c3e60c"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 490686
+file-id = 8370710

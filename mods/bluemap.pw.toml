@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "bluemap"
+filename = "bluemap-5.7-neoforge.jar"
+side = "server"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "827ac3921986d0d5e9c24ef2280f47c110d22dc14d284efb65330010d2e9517d"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 406463
+file-id = 6239407

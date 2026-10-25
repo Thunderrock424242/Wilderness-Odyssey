@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "biomeswevegone"
+filename = "Oh-The-Biomes-Weve-Gone-NeoForge-2.6.3.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "3195f394741510c3b51617f48d0fa9461284b5975e2f976857241f7f07792f11"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1070751
+file-id = 9114631

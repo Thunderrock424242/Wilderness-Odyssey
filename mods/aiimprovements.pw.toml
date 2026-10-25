@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "aiimprovements"
+filename = "AI-Improvements-1.21-0.5.3.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "795618769ff1ac782750be9e8faaf3e3d212f1687c3baab98c1282a98a63a41e"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 233019
+file-id = 5426792

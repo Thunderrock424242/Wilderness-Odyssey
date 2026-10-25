@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "earthmobsmod"
+filename = "earthmobsmod-1.21.1-19.3.0.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "ff65593922c56dfc982737483022f46606f09cf0d23c5c096dac8fcc64734605"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 913527
+file-id = 7492481

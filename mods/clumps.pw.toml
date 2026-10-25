@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "clumps"
+filename = "Clumps-neoforge-1.21.1-19.0.0.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "b524ccdace2ef8fd19f5b2074f7de1103ac5065c52553f064c00e098346c293e"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 256717
+file-id = 5623731

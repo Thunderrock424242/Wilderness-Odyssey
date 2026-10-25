@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "memguard"
+filename = "memguard-1.0.4.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "61ce83e152f5fba22236a85114af401edd6c346cb9ec2f985391f1849b8c42bd"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1468440
+file-id = 8192435

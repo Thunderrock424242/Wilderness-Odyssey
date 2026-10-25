@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "sable"
+filename = "sable-neoforge-1.21.1-2.0.6.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "9c199157843bf953a47dff625fc5bb41c01a90538d35ad18e6996bbcb8a617c2"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1312371
+file-id = 9043865

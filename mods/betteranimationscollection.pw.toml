@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "betteranimationscollection"
+filename = "BetterAnimationsCollection-v21.1.1-1.21.1-NeoForge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "24098c81fb0e94d0bab9c4b33b6f776eb7da8320d7647d2c1a6429699a453154"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 323976
+file-id = 7041300

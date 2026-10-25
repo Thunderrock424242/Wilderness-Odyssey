@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "betterworldloadingnf21"
+filename = "betterworldloadingnf21-1.0.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "1f03ee49b48fbb9c138b0426437040408d26b64bc178c4fbac44dbaf90959bb3"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1286032
+file-id = 6647966

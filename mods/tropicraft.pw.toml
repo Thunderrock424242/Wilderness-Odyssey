@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "tropicraft"
+filename = "Tropicraft-9.8.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "9e61847fcd7bc6b26ebb7a723c3af4bc4f847897aefad9f400d0093984a389f5"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 254794
+file-id = 6600109

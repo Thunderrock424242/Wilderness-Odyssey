@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "zeta"
+filename = "Zeta-1.1-40.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "4f17d1a2b9fd6d18ddb7697aa451db7fb154053b8648f79de279ae0d7e68a2fa"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 968868
+file-id = 7980010

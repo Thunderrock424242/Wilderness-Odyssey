@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "neapolitan"
+filename = "neapolitan-1.21.1-6.0.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "82e104afc49887134fb0f74e6b3d3bc827fe1f88ea3d14836c2701218a1071d9"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 382016
+file-id = 7119475

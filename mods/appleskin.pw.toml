@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "appleskin"
+filename = "appleskin-neoforge-mc1.21-3.0.9.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "38b48dd6231341c9f964ce6e42c57ec866c6cc8f72bec938390a59bafb3922df"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 248787
+file-id = 7854442

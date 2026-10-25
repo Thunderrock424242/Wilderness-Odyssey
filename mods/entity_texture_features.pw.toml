@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "entity_texture_features"
+filename = "entity_texture_features-7.2.6-1.21-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "b47173468febc21bb565af19a82bcd2f851e34ecb333660cdc48a8c37c27c1cd"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 568563
+file-id = 9188408

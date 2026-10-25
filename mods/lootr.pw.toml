@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "lootr"
+filename = "lootr-neoforge-1.21.1-1.11.38.127.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "5c74de4709d1c13b25880fdd241a89d5d9f331346d20edc76f80ccd4d99dc66c"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 361276
+file-id = 8968561

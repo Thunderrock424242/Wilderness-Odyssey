@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "feur_extension_desert"
+filename = "feur_extension_desert-1.21.1-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "7f336fffa9517a6d22b90ca2b8b23cbf2d1e4a529de5980622172324ee2b40e1"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1117054
+file-id = 7232473

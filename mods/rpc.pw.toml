@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "rpc"
+filename = "rpc-1.2.5+1.20.5-1.21.4-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "20e989ec0830a34419bafaab80f2548e128bc5ac0ecc6962e442a995c1222c34"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1125284
+file-id = 7602181

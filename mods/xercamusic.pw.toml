@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "xercamusic"
+filename = "xercamusic-neoforge-1.21.1-1.2.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "ad73febf4c93fa968bd4d691813d33c4109fd0ac5604452565359a9c375204c6"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 341448
+file-id = 8519624

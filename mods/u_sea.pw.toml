@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "u_sea"
+filename = "u_sea-1.2.5+mc1.19-1.21.11.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "4388981774f844f7f42e712ae34406d90b2b2e2119e76c36dbff8a2e3a5ee923"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1113228
+file-id = 7560192

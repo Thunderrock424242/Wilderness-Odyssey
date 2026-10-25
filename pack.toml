@@ -1,0 +1,16 @@
+# Generated pinned client projection. Use tools.modpack for guarded reconstruction.
+# INCOMPLETE standalone packwiz installation: manual files are not in the packwiz index.
+# Required manual files: wildernessodysseyapi
+name = "Wilderness Odyssey"
+author = "Thunderrock424242"
+version = "0.1.0"
+pack-format = "packwiz:1.1.0"
+
+[index]
+file = "index.toml"
+hash-format = "sha256"
+hash = "d0e7a76084604caca58ecb7db7b0e59d0d5f49f709ec6b9db40de65fb8e8cb8e"
+
+[versions]
+minecraft = "1.21.1"
+neoforge = "21.1.262"

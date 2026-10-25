@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "integrated_villages"
+filename = "integrated_villages-1.3.3+1.21.1-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "b53a485828da352b1a6a24cd2796aacf5d8360632b98c7dfba295f235d41ec00"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 661376
+file-id = 8161672

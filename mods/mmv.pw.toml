@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "mmv"
+filename = "MoogsMissingVillages-universal-1.21-2.2.0.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d6db0d2151aa87f4487a944b1162d3a72aec89fe09fd6e387ffef48c3b6b3764"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1153951
+file-id = 8939031

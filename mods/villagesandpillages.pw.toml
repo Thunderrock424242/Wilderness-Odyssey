@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "villagesandpillages"
+filename = "villagesandpillages-neoforge-2.0.0+mc1.21.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "61cbcd1cf57cdb38eba89393c8f18ce9839d17d6e1cf5f7aa2616a82a2268e98"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 915531
+file-id = 9028199

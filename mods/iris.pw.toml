@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "iris"
+filename = "iris-neoforge-1.8.14-beta.1+mc1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "60d5f8bf52f25e9986440f4a4270a6bd986d9cff994510e1108ac1547063b314"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 455508
+file-id = 8242804

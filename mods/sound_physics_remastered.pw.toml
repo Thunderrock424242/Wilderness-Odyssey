@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "sound_physics_remastered"
+filename = "sound-physics-remastered-neoforge-1.21.1-1.5.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "65372ad64422a20f03ad6e39aabaa827c191abbe9be5c35631acc3a8105fe177"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 535489
+file-id = 7032247

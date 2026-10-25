@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "leaky"
+filename = "leaky-1.21-3.4.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "a139f49435c7f57a76b47fa6c5138200186f9b96fe3a0ed4be75be0bf0065334"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 856906
+file-id = 8763884

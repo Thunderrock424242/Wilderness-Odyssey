@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "cold_sweat"
+filename = "ColdSweat-2.4.4.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "d61bb1bb92f81a64834decb69d655265a94af5cf656da41426ce1b486ddb33c8"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 506194
+file-id = 9215368

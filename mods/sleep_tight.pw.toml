@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "sleep_tight"
+filename = "sleep_tight-1.21-1.6.3-neoforge.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "f347030ab1324378a09cdac4f16e5164569d92f9d4bdb57e19c4e4d25a102d9f"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 817564
+file-id = 9201738

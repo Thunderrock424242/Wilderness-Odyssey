@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "ixeris_dummy"
+filename = "Ixeris-4.6.8+1.21.1-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "b4a8b0fe70089cf99e8a561bc138fba49fb02d6e3db437095b56cdf777263f7a"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1285307
+file-id = 8939532

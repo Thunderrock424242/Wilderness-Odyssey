@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "terrain_slabs"
+filename = "terrain_slabs-neoforge-3.1.2.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "6f439e78d40d46ba36966ea230f595d36c5bd2b6008f673117caca13a5827df3"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1125437
+file-id = 8216091

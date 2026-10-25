@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "bluechunks"
+filename = "bluechunks-neoforge-1.21.1-1.2.0.jar"
+side = "server"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "eade744f94fd59c1e17a37c00fbcf19b7af922cc0d8126ae9efe96d20ad08144"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1279218
+file-id = 9038854

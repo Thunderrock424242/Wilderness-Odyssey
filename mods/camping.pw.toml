@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "camping"
+filename = "letsdo-camping-neoforge-2.1.6.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "70de024c061cc97f6076f672f5666da2adfe84a9f51e717dd2218ca76ed8237d"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1072398
+file-id = 9205308

@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "twoplayersonehorse"
+filename = "twoplayersonehorse-neoforge-1.21.1-1.0.2.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "581e578379e918eb13abeec6948d58ec3bbbf36901ec8fe537b2d302b97f3531"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 432444
+file-id = 6620900

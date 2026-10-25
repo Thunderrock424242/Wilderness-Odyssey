@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "bookshelf"
+filename = "bookshelf-neoforge-1.21.1-21.1.81.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "19e88d40da2b6a114c2b808f7fb469d96e66a5379df0a8a43fcb7834498b3e76"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 228525
+file-id = 7606240

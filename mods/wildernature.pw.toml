@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "wildernature"
+filename = "letsdo-wildernature-neoforge-1.1.8.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "06451eef2632618566a0a4886ef0d4e8d34187479611410e2e06dbfb949b02e9"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 1071657
+file-id = 9176454

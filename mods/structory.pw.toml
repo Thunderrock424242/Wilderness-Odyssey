@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "structory"
+filename = "Structory_26.2_v1.3.7.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "e9079b2bb9bc2efb9b0f1244376488e41f8b50f25415094d8f03dc753cdfb131"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 636540
+file-id = 8396883

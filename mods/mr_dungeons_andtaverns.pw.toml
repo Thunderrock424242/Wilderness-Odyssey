@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "mr_dungeons_andtaverns"
+filename = "dungeons-and-taverns-v4.4.4 [NeoForge].jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "1db28e89e0cb76aebe9e40955d1866e8ac1779575d15c2a1e250ac804a762d05"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 853794
+file-id = 5768823

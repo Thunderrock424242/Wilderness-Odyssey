@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "createbigcannons"
+filename = "createbigcannons-5.11.7+mc.1.21.1.jar"
+side = "both"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "ea017ab94637032d039899d88404838d173fa0e6286657cae6a6c3af459e87ca"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 646668
+file-id = 8303106

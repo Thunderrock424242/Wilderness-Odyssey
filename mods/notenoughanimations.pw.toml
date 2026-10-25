@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "notenoughanimations"
+filename = "notenoughanimations-neoforge-1.12.6-mc1.21.1.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "e70609c5638d9f02edfb2c8ec448a7d567345323d7386937c174526aac56cb8f"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 433760
+file-id = 8925075

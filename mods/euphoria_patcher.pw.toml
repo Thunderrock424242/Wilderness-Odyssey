@@ -1,0 +1,14 @@
+# Generated: server eligibility is unreviewed when inventory side=unknown.
+name = "euphoria_patcher"
+filename = "EuphoriaPatcher-1.10.5-r5.9.3-neoforge.jar"
+side = "client"
+pin = true
+
+[download]
+hash-format = "sha256"
+hash = "fe64a1fad6b6f39a95f22ea6ba9506b712e36b96c46b80f1cf38fe144900a4b2"
+mode = "metadata:curseforge"
+
+[update.curseforge]
+project-id = 915902
+file-id = 8884680
