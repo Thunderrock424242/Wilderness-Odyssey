@@ -691,7 +691,9 @@ class _Observation:
                 elif kind=='sample_resources':
                     row=self.sampler.sample(time.monotonic()-self.start)
                     self.result['resources'].append(row)
-                    self.result['samples'].append({key:row.get(key) for key in ('elapsed_seconds','cpu_percent','threads')})
+                    # Native process threads and Thread.print's Java thread
+                    # entries have different meanings; never combine the series.
+                    self.result['samples'].append({key:row.get(key) for key in ('elapsed_seconds','cpu_percent')})
                 elif kind in ('sample_heap','capture_threads'):
                     labels=('heap',) if kind=='sample_heap' else ('threads',)
                     _sample(self.child,self.java,self.environment,self.reports,self.result,self.start,

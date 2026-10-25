@@ -650,7 +650,13 @@ class RunnerTests(unittest.TestCase):
         self.args.java = str(java)
         self.args.profiling = 'basic'
         self.args.soak_seconds = 1
-        result = self.run_qa()
+        original_sample=self.runner.ResourceSampler.sample
+        def native_thread(observation,elapsed):
+            row=original_sample(observation,elapsed)
+            row['threads']=1  # Linux OS count is distinct from Thread.print's Java count.
+            return row
+        with patch.object(self.runner.ResourceSampler,'sample',native_thread): result = self.run_qa()
+        self.assertTrue(any(row['threads']==1 for row in result['resources']))
         self.assertEqual('success', result['category'])
         self.assertEqual('measured', result['memory']['status'])
         self.assertEqual(16777216, result['memory']['metrics']['heap_used_bytes']['first'])

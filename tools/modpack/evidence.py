@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 
 from .common import PackError, no_links, safe_path
-from .diagnostics import analyze_memory, classify
+from .diagnostics import analyze_memory, classify, _number
 
 
 MIB=1024**2
@@ -161,7 +161,8 @@ def read_evidence(input_path):
         name=file.name
         category=None; limit=0
         if name=='report.json': category='report'; limit=4*MIB
-        elif name in ('samples.json','resources.json'): category='samples'; limit=2*MIB
+        elif name=='samples.json': category='samples'; limit=2*MIB
+        elif name=='resources.json': category='resources'; limit=2*MIB
         elif name in ('server.log','latest.log','installer.log'): category='logs'; limit=8*MIB
         elif re.fullmatch(r'qa-gc\.log(?:\.\d+)?',name): category='gc'; limit=8*MIB
         elif re.fullmatch(r'jcmd-\d+-threads\.log',name): category='threads'; limit=2*MIB
@@ -169,7 +170,7 @@ def read_evidence(input_path):
         elif name.startswith('crash-') and name.endswith('.txt'): category='crash'; limit=MIB
         elif path.is_file() and file.suffix.lower() in ('.log','.txt'): category='logs'; limit=8*MIB
         if category is None: continue
-        maximum={'report':1,'samples':2,'logs':3,'gc':4,'threads':6,'crash':4}[category]
+        maximum={'report':1,'samples':1,'resources':1,'logs':3,'gc':4,'threads':6,'crash':4}[category]
         if counts.get(category,0)>=maximum:
             result['limitations'].append(category+' file count limit reached.'); continue
         counts[category]=counts.get(category,0)+1
@@ -184,14 +185,14 @@ def read_evidence(input_path):
         result['files'].append({'source':relative,**{k:v for k,v in record.items() if k!='text'}})
         if record['partial']: result['limitations'].append(relative+': partial or concurrently changed input.')
         text=record['text']
-        if category in ('report','samples'):
+        if category in ('report','samples','resources'):
             try:
                 data=json.loads(text)
                 if category=='report':
                     if not isinstance(data,dict) or type(data.get('schema',1)) is not int or data.get('schema',1) not in (1,2):
                         raise ValueError('Unknown report schema')
                     result['report']=data
-                elif isinstance(data,list): result.setdefault('samples',[]).extend(data[:1500])
+                elif isinstance(data,list): result.setdefault(category,[]).extend(data[:1500])
             except (ValueError,RecursionError):
                 result['limitations'].append(relative+': unknown schema or malformed JSON.')
         elif category=='gc': result['gc_logs'].append({'source':relative,'text':text})
@@ -234,6 +235,20 @@ def analyze_evidence(evidence):
         limitations.append('Malformed memory samples omitted.')
         supplied_samples=[]
     samples=supplied_samples[:1500]
+    resources=evidence.get('resources',result.get('resources',[]))
+    if not isinstance(resources,list):
+        limitations.append('Malformed process resource samples omitted.'); resources=[]
+    result['resources']=resources[:1500]
+    native_times={row.get('elapsed_seconds') for row in resources[:1500]
+                  if isinstance(row,dict) and _number(row.get('elapsed_seconds')) is not None}
+    for index,row in enumerate(samples):
+        if (isinstance(row,dict) and 'cpu_percent' in row and 'threads' in row
+            and _number(row.get('elapsed_seconds')) is not None and row['elapsed_seconds'] in native_times):
+            samples[index]={key:value for key,value in row.items() if key!='threads'}
+            if 'Legacy native-thread samples normalized separately from Java thread counts.' not in limitations:
+                limitations.append('Legacy native-thread samples normalized separately from Java thread counts.')
+    samples.extend({'elapsed_seconds':row.get('elapsed_seconds'),'cpu_percent':row.get('cpu_percent')}
+                   for row in resources[:1500] if isinstance(row,dict))
     for event in ordered:
         sample={'elapsed_seconds':event['elapsed_seconds'],'heap_used_bytes':event['heap_after_bytes']}
         if event['collection']=='full': sample['post_gc_heap_bytes']=event['heap_after_bytes']

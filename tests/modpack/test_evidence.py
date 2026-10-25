@@ -25,6 +25,18 @@ class EvidenceTests(unittest.TestCase):
         self.assertEqual(2,result['gc']['count'])
         self.assertEqual(50,result['gc']['pause_total_ms'])
 
+    def test_native_threads_are_separate_from_jvm_threads_when_reanalyzing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            (root/'resources.json').write_text(json.dumps([{'elapsed_seconds':0,'threads':1,'cpu_percent':10}]))
+            (root/'samples.json').write_text(json.dumps([
+                {'elapsed_seconds':0,'threads':1,'cpu_percent':10},  # Earlier schema-2 merged OS row.
+                {'elapsed_seconds':1,'threads':2}]))
+            result=self.e.analyze_evidence(self.e.read_evidence(root))
+            self.assertEqual(2,result['memory']['metrics']['threads']['first'])
+            self.assertEqual(1,result['resources'][0]['threads'])
+            self.assertEqual(10,result['memory']['metrics']['cpu_percent']['first'])
+
     def test_young_gc_is_not_retained_live_set(self):
         result=self.e.parse_gc(GC,'gc.log')
         self.assertEqual('young',result['events'][0]['collection'])

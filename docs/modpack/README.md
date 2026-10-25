@@ -280,7 +280,9 @@ Basic profiling samples owned-process CPU, working set/RSS, I/O and free disk
 every five seconds and heap every thirty seconds. CPU 100% means one logical CPU;
 the JVM's four active processors are guidance, not an OS quota. I/O counters are
 transferred bytes, not storage latency. RSS includes memory outside the heap.
-Unsupported fields are null with availability reasons. Attach commands have a
+Unsupported fields are null with availability reasons. Java thread counts have a
+separate series; native process thread counts stay in resource samples, including
+when reanalyzing earlier schema-2 reports. Each attach command has a
 five-second limit inside the active phase deadline. Startup checkpoints and
 unanswered console requests can collect up to six thread snapshots per trial.
 Quiet logs alone are not hang evidence. Profiling adds overhead; use matching

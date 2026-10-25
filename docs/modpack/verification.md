@@ -283,13 +283,17 @@ release steps. The architectural decisions and scoped plan are in
 
 ## Fresh troubleshooting acceptance — 2026-10-18
 
-Final local Windows tool suites on Python 3.13 and bundled Python 3.12 each ran
-180 tests: 179 passed, one host symlink-creation skip, zero failures. Client/server
+Final tool checks were repeated on 2026-10-25; the Minecraft collection trials
+below occurred on 2026-10-18. Local Windows suites on Python 3.13 and bundled
+Python 3.12 each ran 181 tests: 180 passed, one host symlink-creation skip, zero failures. Client/server
 static validation had zero errors (151/116 explicit warnings); repository audit,
 actionlint for all three workflows and `git diff --check` passed. The fresh
 whole-branch review's buffered-reply race, late acknowledgements, artifact-error
 masking and export-escaping findings were reproduced and fixed with regressions.
 The full-suite stdin/exit race and final provenance-log collision were also fixed.
+Native OS thread counts remain separate from Java thread-dump counts, including
+when normalizing older schema-2 evidence. A hosted Ubuntu check exposed the
+original mixed-series error; deterministic live/offline regressions cover it.
 These are tool/static checks; hosted Python 3.11 and Minecraft are separate proof.
 
 Two new disposable trials used collection/analysis code commit

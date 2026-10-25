@@ -409,6 +409,7 @@ def render_report(result: dict) -> str:
             for key in ('count','pause_total_ms','pause_max_ms','pause_p95_ms','window_seconds','pause_fraction')))
     resources=_items(result.get('resources'),1500)
     lines.append(f'- Owned-process resource samples: {len(resources)}. CPU 100% means one logical CPU; RSS includes memory outside the Java heap.')
+    lines.append('- Native process thread counts remain in resource samples; the memory thread series uses Java Thread.print entries.')
     for item in resources[:1]:
         if isinstance(item,Mapping) and isinstance(item.get('unavailable'),Mapping):
             lines.append('- Resource availability: '+_safe(item['unavailable'],500))
