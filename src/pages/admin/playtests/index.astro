@@ -1,0 +1,27 @@
+---
+import AuthoringLayout from '../../../layouts/AuthoringLayout.astro';
+import '../../../styles/playtests.css';
+---
+<AuthoringLayout title="Playtests and tester histories" capability="playtests:read">
+  <p>Private diagnostics for invited testers. Collection needs the tester’s local consent. Minecraft names reported by a client are unverified labels.</p>
+  <p>Switching off rejects new uploads immediately at the backend and ends client authorization within 60 seconds. Already stored reports remain until their retention deadline or explicit deletion. A hard crash may leave no final report or Spark recording.</p>
+  <p><a href="/support/troubleshooting/">Help when the game cannot launch</a> · <a href="/playtest/">Tester enrollment and local stop instructions</a></p>
+  <p data-snapshot-time></p>
+  <section><h2>Create a playtest</h2><form data-create-playtest data-requires-write>
+    <div class="authoring-grid"><label>Playtest name<input name="title" maxlength="120" required /></label><label>Build label<input name="build" maxlength="120" required /></label><label>Keep reports for (days)<input name="retentionDays" type="number" min="1" max="90" value="30" required /></label></div>
+    <button type="submit">Create playtest</button><p>Collection starts off. Creating a playtest does not publish a build or gate existing downloads and launches.</p>
+  </form></section>
+  <section><h2>Playtests</h2><div class="staff-list" data-playtest-list></div><button type="button" data-campaign-next hidden>More playtests</button></section>
+  <section data-playtest-detail hidden>
+    <h2 data-playtest-title></h2><p data-playtest-build></p>
+    <label class="authoring-check"><input type="checkbox" role="switch" data-collection-switch data-requires-write />Collect playtest diagnostics</label>
+    <p data-collection-desired></p>
+    <h3>Invite a tester</h3><form data-invitation-form data-requires-write><div class="authoring-grid"><label>Existing tester (optional)<select name="testerId" data-existing-tester><option value="">New tester</option></select></label><label>Tester name<input name="testerLabel" maxlength="100" required /></label><label>Invitation expires in (hours)<input type="number" name="expiresInHours" min="1" max="168" value="24" required /></label></div><button type="submit">Create private invitation</button></form>
+    <p>To keep a returning tester’s history together, choose their existing profile. This list includes testers from playtests you have opened during this visit. Matching names alone never links profiles.</p>
+    <div data-invitation hidden></div>
+    <p>Share each private invitation with its intended tester. No Minecraft ownership verification is required. Acceptance and installation enrollment happen in the diagnostics-enabled client. Routine uploads do not depend on Discord.</p>
+    <h3>Testers</h3><div class="staff-list" data-tester-list></div><button type="button" data-tester-next hidden>More testers</button>
+  </section>
+  <section aria-label="Selected tester history" data-tester-history></section>
+</AuthoringLayout>
+<script src="../../../scripts/adminPlaytests.ts"></script>

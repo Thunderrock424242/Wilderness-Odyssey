@@ -6,6 +6,7 @@ import { adminRoutes } from '../contracts/v1/routes';
 import { staffSession } from './staff-session';
 import { handleDiscordAuth } from './discord-auth';
 import { handleAuthoring, isAuthoringPath } from './authoring-gateway';
+import { handlePlaytests, isPlaytestPath } from './playtest-gateway';
 import { createCsrf, verifyCsrf } from './csrf';
 import type { GatewayEnv } from './env';
 import { failure, GatewayError, httpsUrl, json, readJson } from './http';
@@ -16,6 +17,7 @@ export async function handleGateway(request: Request, env: GatewayEnv, dependenc
   const upstream = dependencies.fetch ?? fetch;
   try {
     const url = new URL(request.url);
+    if (isPlaytestPath(url.pathname)) return await handlePlaytests(request, env, dependencies);
     if (isAuthoringPath(url.pathname)) return await handleAuthoring(request, env, dependencies);
     if (url.pathname.startsWith('/api/auth/')) return await handleDiscordAuth(request, env, upstream);
     if (url.pathname === '/api/public/v1/status') {

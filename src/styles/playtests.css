@@ -1,0 +1,7 @@
+.staff [data-playtest-detail], .staff [data-history-group] { border-top: 1px solid #514432; margin-top: 1.5rem; padding-top: 1rem; }
+.staff [data-tester-history], .staff [data-tester-list], .staff [data-playtest-list] { overflow-wrap: anywhere; }
+.staff [data-log-text] { white-space: pre-wrap; overflow-wrap: anywhere; background: #17131a; padding: 1rem; max-height: 28rem; overflow: auto; font: 14px/1.6 ui-monospace, monospace; }
+.staff [data-session-card] { border: 1px solid #514432; padding: 1rem; margin-block: 1rem; min-width: 0; }
+.staff [data-session-card] h4 { font-size: 1.1rem; margin: 1rem 0 .4rem; }
+.staff [data-session-card] a { display: inline-block; padding-block: .7rem; margin-right: 1rem; }
+.staff [data-invitation] { border: 1px solid #e8a020; padding: 1rem; margin-block: 1rem; overflow-wrap: anywhere; }

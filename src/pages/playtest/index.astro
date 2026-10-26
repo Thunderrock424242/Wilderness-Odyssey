@@ -1,0 +1,24 @@
+---
+import '../../styles/operations.css';
+import { SITE } from '../../data/site';
+---
+<!doctype html><html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="robots" content="noindex,nofollow" /><meta name="referrer" content="no-referrer" /><meta name="color-scheme" content="dark" /><title>Invited playtesting | Wilderness Odyssey</title></head>
+<body class="staff"><a class="skip-link" href="#playtest-main">Skip to instructions</a><main id="playtest-main" class="staff-login">
+  <a href="/">Wilderness Odyssey</a><h1>Join an invited playtest</h1>
+  <p>An invitation lets you enroll this installation for a specific playtest and build. No Minecraft ownership verification is required. Names reported by your game are unverified labels.</p>
+  <p>{SITE.downloadStatus}. You can download and start available builds without enrolling. If your invited build is not available, wait for staff to provide it; enrollment must not block normal startup.</p>
+  <section class="ops-card"><h2>Your private invitation</h2><p data-invite-message role="status">Open the private link staff gave you to see your invitation. Do not post it publicly.</p>
+    <div data-invite-values hidden><label>API address from your invitation<input data-invite-origin type="text" readonly autocomplete="off" /></label><label>Private invitation code<input data-invite-code type="text" readonly autocomplete="off" /></label><button type="button" data-clear-invite>Clear invitation from this page</button></div>
+  </section>
+  <section class="ops-card"><h2>Enroll in your game</h2><ol>
+    <li>Use the diagnostics-enabled client provided by staff. Open <strong>Playtest</strong> on the title or pause screen.</li>
+    <li>Read the collection notice. If you agree, copy the API address and private invitation code into the matching fields, then choose <strong>I agree - enroll this game</strong>.</li>
+    <li>Play normally. Staff requests collection, and your game reports whether it is recording. Routine uploads do not need Discord, session IDs or profiler commands.</li>
+  </ol><p>The website does not enroll your installation. Expired, used or uncertain invitations need staff recovery. Do not keep retrying with a different installation.</p></section>
+  <section class="ops-card"><h2>Collection notice and local stop</h2><p>After you agree and staff enables collection, your game can privately send redacted game logs, crash information, session details and available Spark recordings to staff. Spark may be unavailable or busy. A hard crash may leave no final report.</p><p>Choose <strong>Stop and leave</strong> in Playtest at any time to withdraw consent, discard queued diagnostics and clear the installation’s local authorization. Enrolling again needs an explicit action and a fresh invitation. When staff switches collection off, new uploads are rejected immediately and local authorization ends within 60 seconds.</p><p>Stopping collection does not delete reports already stored. Ask staff to delete retained data; staff can use the explicit delete action in your tester history. Staff sets a retention period of up to 90 days for client reports.</p></section>
+  <section class="ops-card"><h2>If the game cannot launch</h2><p><a href="/support/troubleshooting/">Open launch troubleshooting</a> or <a href="/support/">get manual support</a>. You can report a launch failure without enrolling or starting a diagnostic session. Share only the files staff requests, after removing credentials and personal details.</p></section>
+  <noscript><p>JavaScript is needed to display invitation details from a private link. Ask staff for the code and API address directly if needed.</p></noscript>
+</main><script>
+  // A dynamic entry keeps this small script external under Pages' script-src 'self'.
+  void import('../../scripts/playtestInvitation');
+</script></body></html>

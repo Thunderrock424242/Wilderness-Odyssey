@@ -2,7 +2,7 @@
 import '../styles/operations.css';
 type Props = { title: string; section: string };
 const { title, section } = Astro.props;
-const sections = [{ id: 'server', title: 'Server Management', href: '/admin/' }, { id: 'players', title: 'Player Moderation', href: '/admin/players/' }, { id: 'reports', title: 'AI Conversation Moderation', href: '/admin/reports/' }, { id: 'models', title: 'AI Model Management', href: '/admin/models/' }];
+const sections = [{ id: 'server', title: 'Server Management', href: '/admin/' }, { id: 'players', title: 'Player Moderation', href: '/admin/players/' }, { id: 'reports', title: 'AI Conversation Moderation', href: '/admin/reports/' }, { id: 'models', title: 'AI Model Management', href: '/admin/models/' }, { id: 'playtests', title: 'Playtests', href: '/admin/playtests/' }];
 ---
 <!doctype html><html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="robots" content="noindex,nofollow" /><meta name="color-scheme" content="dark" /><title>{title} | Wilderness Odyssey Staff</title><link rel="icon" href="/images/logo.png" /></head>
 <body class="staff"><a class="skip-link" href="#staff-main">Skip to dashboard</a>

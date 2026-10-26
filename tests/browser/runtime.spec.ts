@@ -13,7 +13,7 @@ test('unconfigured staff access shows a readable protected error page', async ({
 
 test('compiled Pages middleware serves public pages and fails closed for staff', async ({ request }) => {
   expect((await request.get('/')).status()).toBe(200);
-  for (const path of ['/admin', '/admin/', '/admin/models/', '/admin/content/', '/%61dmin/', '/%2561dmin/', '//admin/', '/api/admin/v1/session']) {
+  for (const path of ['/admin', '/admin/', '/admin/models/', '/admin/content/', '/admin/playtests/', '/%61dmin/', '/%2561dmin/', '//admin/', '/api/admin/v1/session', '/api/admin/v1/playtests']) {
     const response = await request.get('http://127.0.0.1:8788' + path, { maxRedirects: 0 });
     expect(response.status(), path).toBe(503);
     expect(response.headers()['cache-control']).toBe('no-store');
@@ -24,9 +24,21 @@ test('compiled Pages middleware serves public pages and fails closed for staff',
   expect(await status.json()).toMatchObject({ code: 'NOT_CONFIGURED' });
 });
 
+test('Pages invitation handling works under its deployed CSP and never sends the code', async ({ page }) => {
+  const errors: string[] = [], urls: string[] = [];
+  page.on('pageerror', error => errors.push(error.message)); page.on('request', request => urls.push(request.url()));
+  const response = await page.goto('/playtest/#invitation=private_invitation_code_12345678901234567890&api=https%3A%2F%2Fdiagnostics.example.com');
+  expect(response?.headers()['content-security-policy']).toContain("script-src 'self'");
+  await expect(page.getByLabel('Private invitation code')).toHaveValue('private_invitation_code_12345678901234567890');
+  await expect(page).toHaveURL(/\/playtest\/$/);
+  expect(urls.some(url => url.includes('private_invitation_code'))).toBe(false); expect(errors).toEqual([]);
+});
+
 test('runtime preserves old URLs and does not publish its compiled worker', async ({ request }) => {
   const legacy = await request.get('/Wilderness-Odyssey/roadmap/', { maxRedirects: 0 });
   expect(legacy.status()).toBe(301);
   expect(new URL(legacy.headers().location, 'http://127.0.0.1:8788').pathname).toBe('/roadmap/');
+  const playtest = await request.get('/Wilderness-Odyssey/playtest/', { maxRedirects: 0 });
+  expect(playtest.status()).toBe(301); expect(new URL(playtest.headers().location, 'http://127.0.0.1:8788').pathname).toBe('/playtest/');
   expect((await request.get('/_worker.js')).status()).toBe(404);
 });

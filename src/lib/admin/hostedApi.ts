@@ -13,7 +13,7 @@ export class HostedAdminApi {
     const generation = this.generation;
     const headers = new Headers(init.headers);
     if (init.method && init.method !== 'GET') {
-      headers.set('X-CSRF-Token', this.session?.csrfToken ?? ''); headers.set('Idempotency-Key', crypto.randomUUID());
+      headers.set('X-CSRF-Token', this.session?.csrfToken ?? ''); if (!headers.has('Idempotency-Key')) headers.set('Idempotency-Key', crypto.randomUUID());
       if (init.body && !(init.body instanceof FormData)) headers.set('Content-Type', 'application/json');
     }
     let response: Response;

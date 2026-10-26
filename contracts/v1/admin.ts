@@ -6,7 +6,7 @@ export const uuid = z.uuid();
 export const revision = z.string().min(1).max(120);
 export const reason = z.string().trim().min(10).max(1000);
 export const roleSchema = z.enum(['viewer', 'moderator', 'administrator']);
-export const capabilitySchema = z.enum(['status:read', 'server:write', 'players:read', 'players:write', 'reports:read', 'reports:write', 'models:read', 'models:write', 'content:read', 'content:write', 'content:publish', 'configuration:read', 'configuration:write', 'configuration:credentials']);
+export const capabilitySchema = z.enum(['status:read', 'server:write', 'players:read', 'players:write', 'reports:read', 'reports:write', 'models:read', 'models:write', 'content:read', 'content:write', 'content:publish', 'configuration:read', 'configuration:write', 'configuration:credentials', 'playtests:read', 'playtests:write']);
 export type Capability = z.infer<typeof capabilitySchema>;
 export const roleCapabilities: Record<z.infer<typeof roleSchema>, readonly Capability[]> = {
   viewer: ['status:read', 'models:read'],
