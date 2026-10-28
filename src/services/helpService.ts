@@ -119,18 +119,21 @@ function helpTopicEmbed(topic: HelpTopic): EmbedBuilder {
           { name: 'Useful details', value: 'FPS average, RAM allocated/used, CPU/GPU if you want to share it, Java version, pack version, shaders, render distance, and whether lag happens near structures, rifts, anomalies, entities, or dimensions.' }
         );
     case 'spark':
-      return baseEmbed('Spark Playtesting', 'The bot organizes Spark links; it does not run Minecraft commands for players.')
+      return baseEmbed('Spark Playtesting', 'Invited diagnostics save private client .sparkprofile files when available. Missing or busy Spark is reported honestly.')
         .addFields(
-          { name: 'Start a session', value: 'Use `/playtest start`, then run Minecraft and reproduce the lag period.' },
+          { name: 'Start a session', value: 'Redeem your private staff invitation and explicitly accept collection in the client. Sessions are associated automatically. For manual support, use `/playtest start`.' },
           { name: 'Profiler commands', value: 'For servers, use `/spark profiler start --timeout 120`. On Forge/Fabric clients, Spark may use `/sparkc` instead of `/spark`.' },
-          { name: 'Archive the result', value: 'Copy the public Spark viewer link and submit it with `/sparkreport`.' }
+          { name: 'Manual fallback', value: 'If automatic diagnostics are unavailable, submit your own Spark viewer link with `/sparkreport`. Client profiles and trusted server profiles stay separate.' }
         );
     case 'knownissues':
       return baseEmbed('Known Issues', 'Use `/knownissues` to see the staff-maintained list.')
         .addFields({ name: 'Staff tools', value: 'Staff can add, update, and remove known issues with `/staff issue ...`.' });
     case 'playtesting':
-      return baseEmbed('Playtesting', 'Use `/playtest` for the singleplayer stability checklist.')
-        .addFields({ name: 'Goal', value: 'Try core pack flows for 30 minutes and report bugs, crashes, and performance trouble with the matching commands.' });
+      return baseEmbed('Playtesting', 'Ask staff for a private expiring invitation; Minecraft ownership linking is optional.')
+        .addFields(
+          { name: 'Automatic diagnostics', value: 'Redeem the invitation and explicitly accept collection in the client. Sessions associate automatically. Collection follows the staff switch; missing uploads or interrupted sessions are not proof of successful recording.' },
+          { name: 'Manual support', value: 'Use `/playtest start` and `/playtest checklist`, then `/bugreport`, `/crash`, `/feedback`, `/perfreport`, or `/sparkreport`. Never post your invitation or installation credential.' }
+        );
     case 'privacy':
       return privacyEmbed();
     default:

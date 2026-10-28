@@ -102,3 +102,23 @@ test('OAuth attempts, callbacks and staff requests have bounded rate limits', as
     assert.equal((await f.call('/session', undefined, session.sessionToken)).status, 429);
   } finally { await f.close(); }
 });
+
+test('playtest administration and downloads require signed machine identity and current dashboard authority', async () => {
+  const f = await fixture();
+  try {
+    const body = { id: 'campaign-test', title: 'Private test', reason: 'Create approved test campaign' };
+    assert.equal((await f.call('/playtest/campaigns', body, undefined, { 'x-wo-user-id': user, 'x-wo-user-role': 'administrator' })).status, 401);
+    await f.auth.enroll(user, guild, true);
+    const { sessionToken } = await (await f.login()).json() as { sessionToken: string };
+    assert.equal((await f.call('/playtest/campaigns', body, sessionToken, { 'idempotency-key': 'playtest-signed-create', 'cf-access-jwt-assertion': 'forged' })).status, 401);
+    assert.equal((await f.call('/playtest/campaigns', body, sessionToken, { 'idempotency-key': 'playtest-signed-create' })).status, 200);
+    assert.equal((await f.call('/playtest/campaigns', undefined, sessionToken)).status, 200);
+    f.outage(true);
+    assert.equal((await f.call('/playtest/campaigns', undefined, sessionToken)).status, 503);
+    f.outage(false);
+    f.permission(false);
+    assert.equal((await f.call('/playtest/artifacts/12345678-1234-4234-8234-123456789012/download', undefined, sessionToken)).status, 403);
+    assert.equal((await f.call('/playtest/campaigns', undefined, sessionToken)).status, 401);
+    assert.equal(f.store.records('pt_campaign').length, 1);
+  } finally { await f.close(); }
+});

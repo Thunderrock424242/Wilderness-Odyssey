@@ -5,15 +5,18 @@ import { adminRoutes } from '../contracts/v1/routes';
 import { ConnectedStore, authorize, sameStaffIdentity, ServiceError, type Actor } from './store';
 import { ServiceMonitor, type Maintenance } from './monitor';
 import { ModerationService } from './moderation';
+import { PlaytestAdmin } from './playtestAdmin';
 export type Capabilities = { actions: string[]; models: z.infer<typeof s.modelsSchema>; aiRequestsRevision: string };
 export interface RemoteControl { capabilities(): Promise<Capabilities> }
 export type StaffRecheck = (actor: Actor, capability: s.Capability) => Promise<Actor>;
 type Revisioned = { id: string; revision: string; revokedAt?: string | null; state?: string };
 function changed(expected: string, actual: string): void { if (expected !== actual) throw new ServiceError(409, 'REVISION_CONFLICT', 'This record changed. Refresh it before trying again.'); }
 export class AdminService {
-  constructor(readonly store: ConnectedStore, readonly monitor: ServiceMonitor, readonly moderation: ModerationService, readonly remote?: RemoteControl, readonly recheck?: StaffRecheck) {}
+  readonly playtest: PlaytestAdmin;
+  constructor(readonly store: ConnectedStore, readonly monitor: ServiceMonitor, readonly moderation: ModerationService, readonly remote?: RemoteControl, readonly recheck?: StaffRecheck) { this.playtest = new PlaytestAdmin(store); }
   async handle(actor: Actor, method: string, path: string, body: unknown, query: unknown = {}, key = ''): Promise<unknown> {
     if (this.recheck) actor = await this.recheck(actor, 'status:read');
+    if (path.startsWith('/playtest/')) return this.playtest.handle(actor, method, path.slice('/playtest'.length), body, query, key);
     const accountLookup = /^\/players\/([0-9a-fA-F-]{36})\/account$/.exec(path);
     if (method === 'GET' && accountLookup) {
       authorize(actor, 'players:read');

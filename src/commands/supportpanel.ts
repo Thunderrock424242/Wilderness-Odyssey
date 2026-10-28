@@ -688,9 +688,9 @@ function playtestPanelPayload() {
     'Use this panel during test builds so sessions, reports, and Spark links stay organized.'
   )
     .addFields(
-      { name: 'Start session', value: 'Create a tester session before you begin. Requires Minecraft verification.', inline: true },
+      { name: 'Start session', value: 'Invited client diagnostics associate sessions automatically after explicit consent. Use this form for manual support; Minecraft linking is optional.', inline: true },
       { name: 'Checklist', value: 'Use a repeatable stability route.', inline: true },
-      { name: 'Spark help', value: 'Profile lag and submit viewer links.', inline: true },
+      { name: 'Spark help', value: 'Invited diagnostics save private profile files when available. Manual Spark viewer links remain a support fallback.', inline: true },
       { name: 'Report while testing', value: 'Send bugs, feedback, performance notes, and crash logs.', inline: false }
     );
 
@@ -699,7 +699,7 @@ function playtestPanelPayload() {
     .setPlaceholder('Select a playtest action')
     .addOptions(
       { label: 'Start tester session', value: 'start', description: 'Open a session form for WO-TEST tracking.' },
-      { label: 'Verify Minecraft account', value: 'verify', description: 'Link Discord to Minecraft with a one-time code.' },
+      { label: 'Verify Minecraft account', value: 'verify', description: 'Optional ownership link for features that need it.' },
       { label: 'Playtest checklist', value: 'checklist', description: 'Show the stability route.' },
       { label: 'Playtest ZIP help', value: 'zip', description: 'CurseForge import and acceptance guidance.' },
       { label: 'Spark profiling help', value: 'spark', description: 'How to profile and submit Spark links.' },

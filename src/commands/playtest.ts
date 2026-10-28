@@ -32,7 +32,6 @@ import {
   listLinkedReports,
   listRecentPlaytestSessions
 } from '../services/playtestSessionService';
-import { getMinecraftLinkByUserId } from '../services/minecraftVerificationService';
 import { sendToConfiguredChannel } from '../services/reportService';
 import { postStaffLog } from '../services/staffLogService';
 import { requireStaff } from '../utils/permissions';
@@ -51,12 +50,6 @@ const acceptReleasePrefix = 'playtest-release:accept:';
 const termsReleasePrefix = 'playtest-release:terms:';
 const privacyReleasePrefix = 'playtest-release:privacy:';
 const playtestPanelStartPrefix = 'playtest-panel:start';
-
-type PlaytestGateInteraction =
-  | ButtonInteraction
-  | ChatInputCommandInteraction
-  | ModalSubmitInteraction
-  | StringSelectMenuInteraction;
 
 const yesNoChoices = [
   { name: 'Yes', value: 'Yes' },
@@ -299,10 +292,6 @@ export const playtestCommand: SlashCommand = {
     const subcommand = interaction.options.getSubcommand(true);
 
     if (subcommand === 'start') {
-      if (!(await requireMinecraftVerification(interaction))) {
-        return;
-      }
-
       const session = createPlaytestSession({
         userId: interaction.user.id,
         username: interaction.user.tag,
@@ -321,6 +310,7 @@ export const playtestCommand: SlashCommand = {
         content: [
           `All set. Your playtest session is **${session.publicId}**.`,
           '',
+          'This is a manual support session. Invited client diagnostics associate sessions automatically after explicit collection consent.',
           'Start Minecraft and load into the test world.',
           'If testing server TPS or world lag, run Spark profiler during the lag period.',
           'For servers, use `/spark profiler start --timeout 120`.',
@@ -605,10 +595,6 @@ export const playtestCommand: SlashCommand = {
 };
 
 export async function beginPlaytestSessionFromPanel(interaction: StringSelectMenuInteraction): Promise<void> {
-  if (!(await requireMinecraftVerification(interaction))) {
-    return;
-  }
-
   const modal = new ModalBuilder()
     .setCustomId(playtestPanelStartPrefix)
     .setTitle('Start Playtest Session')
@@ -628,10 +614,6 @@ export async function handlePlaytestPanelModal(interaction: ModalSubmitInteracti
     return false;
   }
 
-  if (!(await requireMinecraftVerification(interaction))) {
-    return true;
-  }
-
   const session = createPlaytestSession({
     userId: interaction.user.id,
     username: interaction.user.tag,
@@ -649,6 +631,7 @@ export async function handlePlaytestPanelModal(interaction: ModalSubmitInteracti
   await interaction.reply({
     content: [
       `All set. Your playtest session is **${session.publicId}**.`,
+      'This is a manual support session. For automatic association, redeem your private staff invitation and accept collection in the client.',
       'Use this session ID when submitting bugs, feedback, crashes, performance reports, or Spark links.',
       'If testing lag, run Spark during the lag period and submit the viewer link from the playtest panel or `/sparkreport`.'
     ].join('\n'),
@@ -708,10 +691,6 @@ export async function handlePlaytestReleaseButton(interaction: ButtonInteraction
     return true;
   }
 
-  if (!(await requireMinecraftVerification(interaction))) {
-    return true;
-  }
-
   recordPlaytestReleaseAcceptance({
     releasePublicId: release.publicId,
     userId: interaction.user.id,
@@ -757,46 +736,6 @@ async function removePlaytestGateButtons(
     embeds: [playtestReleaseEmbed(release)],
     components: []
   }).catch(() => undefined);
-}
-
-async function requireMinecraftVerification(interaction: PlaytestGateInteraction): Promise<boolean> {
-  const link = getMinecraftLinkByUserId(interaction.user.id);
-  if (link) {
-    return true;
-  }
-
-  await interaction.reply({
-    content: [
-      'Minecraft verification is required before joining a playtest.',
-      '',
-      minecraftVerificationGateInstruction(),
-      'After it links successfully, come back and try this playtest action again.',
-      minecraftVerificationGateSetupNote()
-    ].filter(Boolean).join('\n'),
-    flags: 'Ephemeral'
-  });
-
-  return false;
-}
-
-function minecraftVerificationGateInstruction(): string {
-  return config.minecraftVerification.relayChannelId
-    ? 'Run `/minecraft link` in Discord to get a one-time code, then join the playtest server and run `/wo link CODE` there.'
-    : 'Run `/minecraft link` in Discord to get a one-time code, then run `/wo link CODE` in the playtest client.';
-}
-
-function minecraftVerificationGateSetupNote(): string | null {
-  if (config.minecraftVerification.relayChannelId) {
-    return null;
-  }
-
-  if (config.minecraftVerification.apiEnabled) {
-    return config.minecraftVerification.publicBaseUrl
-      ? null
-      : 'Staff note: the verification API is enabled, but `MINECRAFT_VERIFY_PUBLIC_URL` is not configured yet.';
-  }
-
-  return 'Staff note: Minecraft verification is not configured yet. Staff can enable the server relay or the client API path.';
 }
 
 function playtestReleaseAction(customId: string): { type: 'accept' | 'terms' | 'privacy'; publicId: string } | null {
@@ -873,7 +812,8 @@ function playtestDownloadInstructions(release: {
     '5. Launch that imported profile and follow the playtest instructions in the channel.',
     '',
     '**During the test**',
-    'Use `/playtest start` to create your tester session, then report issues with `/bugreport`, `/crash`, `/feedback`, `/perfreport`, or `/sparkreport`.',
+    'For automatic diagnostics, request your private expiring invitation from staff and explicitly accept collection in the client. Sessions are associated automatically; the ZIP contains no shared credential. Minecraft linking is optional.',
+    'If automatic collection is unavailable, use `/playtest start` for a manual support session and report issues with `/bugreport`, `/crash`, `/feedback`, `/perfreport`, or `/sparkreport`. Keep your invitation private.',
     release.instructions ? `\n**Staff notes**\n${release.instructions}` : null,
     policy.length > 0 ? `\n${policy.join('\n')}` : null
   ].filter(Boolean).join('\n');

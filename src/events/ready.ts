@@ -65,7 +65,7 @@ function startupWarnings(): string[] {
       warnings.push('- Minecraft verification server relay is enabled, but `MINECRAFT_VERIFY_RELAY_WEBHOOK_ID` is not set; keep the relay channel private.');
     }
   } else if (!config.minecraftVerification.apiEnabled) {
-    warnings.push('- Minecraft verification is not configured; enable the server relay or client API path before requiring verified playtesters.');
+    warnings.push('- Optional Minecraft ownership verification is not configured; enable its server relay or client API path for features that need verified ownership. Playtesting uses invitations.');
   } else if (!config.minecraftVerification.publicBaseUrl) {
     warnings.push('- Minecraft verification API is enabled, but `MINECRAFT_VERIFY_PUBLIC_URL` is not configured.');
   }

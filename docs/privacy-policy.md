@@ -13,7 +13,7 @@ We collect only what is needed to run support, bug reporting, crash review, sugg
 
 We do not sell personal information.
 
-We do not collect Discord tokens, passwords, private files, payment details, or background Minecraft telemetry.
+We do not intentionally collect Discord tokens, passwords, unrelated private files or payment details. Automatic Minecraft diagnostics require a private staff invitation and explicit client collection consent.
 
 ## 2. Who this is for
 
@@ -37,6 +37,7 @@ The bot may collect and store:
 - Suggestion votes.
 - Playtest session details, checklist answers, final notes, and linked report IDs.
 - Playtest release acceptance records showing that you accepted the terms/privacy gate.
+- For invited diagnostics: campaign/tester/installation identifiers, collection consent version, enrollment and heartbeat timestamps, session state/build/game metadata, redacted current-session logs, crash evidence and available private `.sparkprofile` files. These artifact kinds are stored separately; a missing upload is not treated as a successful recording.
 - Minecraft verification link codes, Minecraft UUID, and Minecraft account name when you choose to link your account.
 - Aether preferences, optional lore-discovery keys, and diagnostic-history references when Aether Core is enabled.
 - Short Aether conversation summaries only after you explicitly enable conversation memory. Full private conversations are not stored by default.
@@ -53,7 +54,7 @@ The bot does not intentionally collect:
 - Private Discord direct messages.
 - General server chat outside configured support/report/Q&A workflows.
 - Whole-computer files or folders.
-- Background gameplay telemetry.
+- Gameplay diagnostics outside explicitly consented invited collection.
 - Full Aether conversations by default.
 - IP addresses, except where a third-party service used by the project may process them separately.
 
@@ -66,7 +67,7 @@ We use this information to:
 - Run the support hub.
 - Create and track bug, crash, feedback, suggestion, performance, and Spark reports.
 - Diagnose crashes and modpack issues.
-- Verify that playtesters linked their Minecraft account.
+- Support optional Minecraft ownership verification for features that need it; playtesting itself does not require linking.
 - Gate playtest ZIP delivery behind terms/privacy acceptance.
 - Prevent duplicate reports and maintain known issues/upcoming fixes.
 - Let staff follow up with users.
@@ -81,6 +82,7 @@ Visibility depends on where the information is submitted:
 - Private support tickets are visible to the user, the bot, and configured staff/support roles. When closed, the ticket owner receives a transcript copy.
 - Staff-only channels, ticket transcripts, bot logs, database records, and moderation notes are visible to authorized staff.
 - A submitted Spark link may be viewable through Spark's own website.
+- Invited diagnostic artifacts and profile files are private staff data, not public report forum posts or public Spark viewer links.
 - Discord attachment links may be handled by Discord.
 
 Do not submit information you are not comfortable sharing with staff or, for public report flows, the relevant Discord forum audience.
@@ -101,6 +103,8 @@ Those services have their own terms and privacy practices.
 ## 8. Data retention
 
 We keep report and playtest records as long as they are useful for support, debugging, moderation, known issues, changelogs, or project history.
+
+Stopping invited collection or revoking enrollment rejects further uploads and preserves previously submitted reports. Authorized staff can explicitly delete an artifact file through protected controls. A small identifier tombstone remains to prevent retries restoring deleted files. Database backups have their own private operator retention lifecycle.
 
 Temporary Minecraft link codes expire after the configured time limit. A completed Minecraft account link stays stored until it is replaced, removed, or staff deletes it.
 
@@ -124,7 +128,7 @@ The Minecraft playtest client must never contain the Discord bot token. Minecraf
 
 You can choose not to submit optional reports, logs, screenshots, Spark links, suggestions, or feedback.
 
-You can choose not to link your Minecraft account, but some playtests may require Minecraft verification before access.
+Minecraft linking is optional for playtest access. Automatic diagnostics require a private invitation and a separate explicit collection acknowledgement; accepting build terms alone does not enable them. You can stop collection locally or ask staff to revoke enrollment. Manual crash, feedback and other support commands remain available.
 
 You can keep Aether conversation memory and Minecraft notifications disabled, and you can change those preferences with `/aether settings` when Aether is enabled.
 

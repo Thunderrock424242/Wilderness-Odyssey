@@ -109,11 +109,11 @@ export function privacyEmbed(): EmbedBuilder {
       },
       {
         name: 'Spark reports',
-        value: 'The bot stores Spark viewer links that testers submit. It does not run Minecraft commands or scrape private Spark data.'
+        value: 'Manual reports store submitted Spark viewer links. Invited, consented diagnostics store actual private .sparkprofile files when available; missing or busy Spark does not imply a saved profile.'
       },
       {
         name: 'Playtest access',
-        value: 'For closed playtests, the bot can record that you accepted the playtest terms/privacy notice before it sends the test package link.'
+        value: 'Build acceptance is recorded separately from diagnostics. Automatic collection needs a private staff invitation and explicit client consent. Minecraft ownership linking is optional.'
       },
       {
         name: 'Aether accounts and private reports',
@@ -131,7 +131,7 @@ export function playtestTermsEmbeds(): EmbedBuilder[] {
       .addFields(
         {
           name: 'Who can participate',
-          value: 'You must be allowed to use Discord and Minecraft, be at least 13, have parent/guardian permission if required where you live, follow server rules, and complete Minecraft verification when required.'
+          value: 'You must be allowed to use Discord and Minecraft, be at least 13, have parent/guardian permission if required where you live, and follow server rules. Minecraft ownership linking is optional for playtesting.'
         },
         {
           name: 'What the playtest is',
@@ -154,7 +154,7 @@ export function playtestTermsEmbeds(): EmbedBuilder[] {
         },
         {
           name: 'Privacy and logs',
-          value: 'The bot may record that you accepted the playtest gate. Do not upload passwords, tokens, private files, or personal information. Log redaction is best-effort and may not catch everything.'
+          value: 'Build acceptance does not enable diagnostics. Invited collection needs explicit client consent and stores private session, redacted log, crash and available Spark files. Stop locally or ask staff to revoke access. Prior reports remain until explicit deletion; redaction is best-effort.'
         },
         {
           name: 'No warranty',
@@ -193,14 +193,14 @@ export function playtestPrivacyPolicyEmbeds(): EmbedBuilder[] {
         },
         {
           name: 'What the bot does not intentionally collect',
-          value: 'Discord tokens, passwords, Minecraft/Microsoft credentials, payment details, private Discord DMs, whole-computer files, or background gameplay telemetry.'
+          value: 'Discord tokens, passwords, Minecraft/Microsoft credentials, payment details, private Discord DMs, whole-computer files, or gameplay diagnostics without explicit invited collection consent.'
         }
       ),
     baseEmbed('Privacy Policy Continued')
       .addFields(
         {
           name: 'Why this is collected',
-          value: 'To run support, diagnose crashes, verify playtesters, gate ZIP delivery, prevent duplicate reports, track known issues/upcoming fixes, let staff follow up, and improve Wilderness Odyssey.'
+          value: 'To run support, diagnose crashes, authorize invited diagnostics, support optional Minecraft linking, gate ZIP delivery, prevent duplicate reports, track known issues/upcoming fixes, let staff follow up, and improve Wilderness Odyssey.'
         },
         {
           name: 'Who can see it',
@@ -212,7 +212,7 @@ export function playtestPrivacyPolicyEmbeds(): EmbedBuilder[] {
         },
         {
           name: 'Retention and deletion',
-          value: 'Reports and playtest records are kept while useful for support, debugging, moderation, known issues, changelogs, or project history. Use `/minecraft unlink` to remove your Minecraft link. Ask staff about deletion or anonymization requests.'
+          value: 'Reports remain until explicit deletion; stopping collection does not delete prior data. Invited artifacts are private staff information. Use `/minecraft unlink` for your optional Minecraft link. Ask staff about deletion or anonymization requests.'
         },
         {
           name: 'Security',
@@ -454,7 +454,7 @@ export function playtestReleaseEmbed(release: PlaytestReleaseRecord): EmbedBuild
       {
         name: 'Before you download',
         value: [
-          'Verify your Minecraft account with `/minecraft link` before accepting.',
+          'Minecraft ownership linking is optional. Automatic diagnostics require a private staff invitation and explicit client collection consent.',
           'Use the View Terms and View Privacy buttons below before accepting.',
           'Click the acceptance button only if you agree to test the unreleased build and report issues through the support commands.',
           'After acceptance, the bot will privately send the ZIP link and CurseForge import steps.'

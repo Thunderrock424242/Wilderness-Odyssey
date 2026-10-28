@@ -9,15 +9,19 @@ import { ServiceMonitor } from './monitor';
 import { ModerationService } from './moderation';
 import { AdminService } from './admin';
 import { DashboardAuth, tokenDigest } from './dashboardAuth';
+import { PlaytestService } from './playtest';
+import { PrivateArtifactDownload } from './playtestAdmin';
 const idempotency = z.string().regex(/^[a-zA-Z0-9_-]{16,100}$/);
-export async function readJson(request: IncomingMessage): Promise<unknown> {
+export async function readJson(request: IncomingMessage, limit = 65536): Promise<unknown> {
   if (!/^application\/json(?:\s*;.*)?$/i.test(request.headers['content-type'] ?? '')) throw new ServiceError(415, 'JSON_REQUIRED', 'Send a JSON request.');
   let size = 0;
+  const declared = request.headers['content-length'];
+  if (declared && (!/^\d+$/.test(declared) || Number(declared) > limit)) throw new ServiceError(413, 'TOO_LARGE', 'Request is too large.');
   const chunks: Buffer[] = [];
   for await (const chunk of request) {
     const part = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
     size += part.length;
-    if (size > 65536) throw new ServiceError(413, 'TOO_LARGE', 'Request is too large.');
+    if (size > limit) throw new ServiceError(413, 'TOO_LARGE', 'Request is too large.');
     chunks.push(part);
   }
   try { return JSON.parse(Buffer.concat(chunks).toString('utf8')) as unknown; }
@@ -29,16 +33,18 @@ export function json(response: ServerResponse, status: number, value: unknown): 
   response.end(JSON.stringify(value));
 }
 export class ConnectedHttp {
+  readonly playtest: PlaytestService;
   readonly staffAuth: AccessAuthenticator;
   readonly accountAuth: AccessAuthenticator;
   private readonly buckets = new Map<string, { start: number; count: number }>();
   constructor(readonly config: ConnectedConfig, readonly store: ConnectedStore, readonly monitor: ServiceMonitor, readonly identity: IdentityService, readonly moderation: ModerationService, readonly admin: AdminService, readonly dashboard?: DashboardAuth) {
     this.staffAuth = new AccessAuthenticator(store, config.trust);
     this.accountAuth = new AccessAuthenticator(store, { ...config.trust, staffAudience: config.accountAudience ?? '' });
+    this.playtest = new PlaytestService(store);
   }
   async handle(request: IncomingMessage, response: ServerResponse): Promise<boolean> {
     const raw = request.url ?? '';
-    if (!raw.startsWith('/v1/') && !raw.startsWith('/v2/') && !raw.startsWith('/api/public/')) return false;
+    if (!raw.startsWith('/v1/') && !raw.startsWith('/v2/') && !raw.startsWith('/api/public/') && !raw.startsWith('/api/playtest/')) return false;
     if (!this.config.enabled) { json(response, 404, { error: { code: 'NOT_FOUND', message: 'Route not found.' } }); return true; }
     try {
       this.rate('ip:' + (request.socket.remoteAddress ?? 'unknown'), 1200);
@@ -52,6 +58,23 @@ export class ConnectedHttp {
       const url = new URL(raw, 'http://localhost');
       if (url.pathname !== raw.split('?')[0] || url.hash) throw new ServiceError(400, 'INVALID_PATH', 'Invalid request path.');
       const path = url.pathname, method = request.method ?? '';
+      if (path.startsWith('/api/playtest/')) {
+        if (url.search || request.headers['content-encoding']) throw new ServiceError(400, 'INVALID_INPUT', 'Query parameters and encoded bodies are not supported.');
+        const credential = bearer(request.headers) ?? '';
+        if (method === 'POST' && path === '/api/playtest/v1/enroll') {
+          this.rate('playtest-enroll:' + (request.socket.remoteAddress ?? 'unknown'), 30);
+          const result = this.playtest.enroll(await readJson(request));
+          json(response, 201, result);
+        } else if (method === 'GET' && path === '/api/playtest/v1/policy') {
+          this.rate('playtest:' + tokenDigest(credential), 120);
+          json(response, 200, this.playtest.policy(credential));
+        } else if (method === 'POST' && path === '/api/playtest/v1/artifacts') {
+          this.playtest.authenticate(credential);
+          this.rate('playtest:' + tokenDigest(credential), 120);
+          json(response, 200, this.playtest.accept(credential, await readJson(request, 1536 * 1024)));
+        } else throw new ServiceError(404, 'NOT_FOUND', 'Route not found.');
+        return true;
+      }
       if ((path === '/api/public/v2/status' || path === '/v2/public/status') && method === 'GET') { json(response, 200, this.monitor.publicStatus()); return true; }
       if ((path === '/api/public/v1/status' || path === '/v1/public/status') && method === 'GET') { json(response, 200, this.monitor.legacyStatus()); return true; }
       if (path.startsWith('/v1/service/')) {
@@ -120,7 +143,10 @@ export class ConnectedHttp {
           if (error instanceof ServiceError && error.status === 403) this.store.audit(actor.id, 'admin.denied', path, 'forbidden');
           throw error;
         }
-        json(response, 200, result);
+        if (result instanceof PrivateArtifactDownload) {
+          response.writeHead(200, { 'Content-Type': result.contentType, 'Content-Disposition': 'attachment; filename="' + result.filename + '"', 'Content-Length': result.bytes.length, 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer', 'Content-Security-Policy': "default-src 'none'; sandbox" });
+          response.end(result.bytes);
+        } else json(response, 200, result);
         return true;
       }
       if (path.startsWith('/v1/account/')) {

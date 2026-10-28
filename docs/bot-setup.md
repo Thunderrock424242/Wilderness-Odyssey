@@ -70,7 +70,7 @@ Run `/supportpanel` to post the player support hub. `panel_type:all` also posts 
 ## Optional features
 
 - **Q&A:** Set `QA_FORUM_CHANNEL_ID` and `QA_ALERT_CHANNEL_ID`. The bot needs to send replies and embeds in Q&A, as well as read questions.
-- **Playtests:** Configure the playtest session channel, category, and Spark channel. Set up Minecraft verification before requiring verified testers.
+- **Playtests:** Configure the playtest session channel, category, and Spark channel. Minecraft ownership linking is optional. Invited client diagnostics use approved testers, private expiring invitations and explicit collection consent; see `docs/playtest-staff-api.md` for protected campaign controls and storage requirements.
 - **Verification relay:** Configure the private relay channel, exact trusted webhook ID, and `GUILD_ID`. The relay reads trusted server messages and sends confirmation cards.
 - **Trusted verification API:** Follow the authenticated server setup in [connected services](connected-services.md). Never place service credentials in a player client.
 - **Server status, Aether, and website access:** Follow [connected services](connected-services.md), [Aether Core](aether-core.md), and [Discord admin authentication](discord-admin-auth.md). These are separately configured integrations.

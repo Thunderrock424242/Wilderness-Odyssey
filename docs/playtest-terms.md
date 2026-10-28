@@ -15,7 +15,7 @@ To participate in a playtest, you must:
 - Be at least 13 years old.
 - Have permission from a parent or guardian if you are under the age of majority where you live.
 - Follow the Wilderness Odyssey Discord rules and staff instructions.
-- Complete Minecraft verification if the playtest requires it.
+- Minecraft ownership linking is optional for playtesting; use it only for features that require verified ownership.
 
 Do not join the playtest if you cannot agree to these terms.
 
@@ -65,6 +65,8 @@ Use private staff tickets or staff instructions for:
 ## 6. Privacy
 
 Playtesting uses the Wilderness Odyssey privacy policy. The bot may record that you accepted these terms and the privacy policy before sending the playtest package link.
+
+Accepting the build terms does not enable automatic diagnostics. Automatic client collection requires a private, expiring staff invitation and one explicit collection-consent acknowledgement in the client. Sessions, redacted current-session logs, crash evidence and available Spark profile files are stored privately for authorized staff. You can stop collection locally; staff can stop the campaign or revoke enrollment. Stopping collection does not delete previously submitted reports; ask staff about explicit deletion.
 
 Do not upload secrets, passwords, tokens, private files, or personal information in crash logs or support tickets. Logs are redacted on a best-effort basis, but you are still responsible for checking what you submit.
 
