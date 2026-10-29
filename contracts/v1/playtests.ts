@@ -1,21 +1,22 @@
 import { z } from 'zod';
-import { id, revision } from './admin';
+import { revision } from './admin';
 import { timestamp } from './status';
 
 const version = z.literal('1.0');
 const cursor = z.string().max(200).nullable();
 const count = z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER);
 const collectionId = z.string().regex(/^[A-Za-z0-9_-]{1,100}$/);
+const id = z.string().regex(/^[A-Za-z0-9_-]{1,100}$/);
 export const campaignSchema = z.object({
   id, title: z.string().trim().min(1).max(120), build: z.string().trim().min(1).max(120),
   collect: z.boolean(), collectionId: collectionId.nullable(), changedAt: timestamp, createdAt: timestamp, revision,
   retentionDays: z.number().int().min(1).max(90),
 }).refine(value => value.collect === (value.collectionId !== null));
 export const testerSchema = z.object({
-  id, label: z.string().min(1).max(100), permission: z.enum(['allowed', 'paused', 'revoked']), revision, changedAt: timestamp,
+  id, label: z.string().min(1).max(100), permission: z.enum(['allowed', 'paused', 'revoked']), collectionId: collectionId.nullable(), revision, changedAt: timestamp,
   reportedName: z.string().max(100).nullable(), lastSeenAt: timestamp.nullable(), lastUploadAt: timestamp.nullable(),
   acknowledgement: z.object({ collectionId, state: z.enum(['recording', 'ended', 'interrupted']), observedAt: timestamp }).nullable(),
-  uploadErrorAt: timestamp.nullable(), droppedArtifacts: count,
+  uploadErrorAt: timestamp.nullable(), droppedArtifacts: count.nullable(),
 });
 export const artifactSummarySchema = z.object({
   id, kind: z.enum(['session', 'log', 'crash', 'spark']), scope: z.literal('client'), capturedAt: timestamp,
@@ -23,9 +24,9 @@ export const artifactSummarySchema = z.object({
 }).refine(value => !['log', 'crash', 'session'].includes(value.kind) || value.redacted);
 export const serverProfileSchema = z.object({ id, scope: z.literal('server'), capturedAt: timestamp, durationSeconds: count.nullable(), bytes: count.max(1024 * 1024) });
 export const playtestSessionSchema = z.object({
-  id, campaignId: id, testerId: id, build: z.string().min(1).max(120), startedAt: timestamp, endedAt: timestamp.nullable(),
+  id, campaignId: id, testerId: id, build: z.string().min(1).max(120), reportedModVersion: z.string().max(120).nullable().optional(), startedAt: timestamp, endedAt: timestamp.nullable(),
   durationSeconds: count.nullable(), mode: z.enum(['singleplayer', 'multiplayer', 'unknown']), state: z.enum(['recording', 'ended', 'interrupted']),
-  sparkStatus: z.enum(['recording', 'unavailable', 'busy', 'saved', 'failed', 'idle']), droppedArtifacts: count, uploadErrors: count,
+  sparkStatus: z.enum(['recording', 'unavailable', 'busy', 'saved', 'failed', 'idle']), droppedArtifacts: count.nullable(), uploadErrors: count.nullable(),
   notes: z.string().max(4000), revision, artifacts: z.array(artifactSummarySchema).max(100), sharedServerProfiles: z.array(serverProfileSchema).max(20),
 }).refine(value => value.sparkStatus !== 'saved' || value.artifacts.some(artifact => artifact.kind === 'spark'));
 export const campaignEnvelope = z.object({ schemaVersion: version, campaign: campaignSchema });

@@ -10,7 +10,7 @@ export function button(label: string, action: () => void) {
 export function stateView(campaign: Campaign, tester: Tester) {
   const node = element('p'); const state = element('strong', observedState(campaign, tester)); state.dataset.observedState = '';
   const update = () => { state.textContent = observedState(campaign, tester); };
-  node.append(state, document.createTextNode(' · Last seen: ' + dateLabel(tester.lastSeenAt) + ' · Last upload: ' + dateLabel(tester.lastUploadAt) + ' · Dropped uploads: ' + tester.droppedArtifacts));
+  node.append(state, document.createTextNode(' · Last seen: ' + dateLabel(tester.lastSeenAt) + ' · Last upload: ' + dateLabel(tester.lastUploadAt) + ' · Dropped uploads: ' + (tester.droppedArtifacts ?? 'Not reported')));
   return { node, update };
 }
 export function profilePath(campaignId: string, testerId: string) { return '/playtests/' + campaignId + '/testers/' + testerId; }
@@ -48,7 +48,7 @@ export function historyView(group: HistoryGroup, actions: Actions) {
 function sessionView(session: PlaytestSession, actions: Actions) {
   const root = element('article'); root.dataset.sessionCard = '';
   root.append(element('h4', 'Session · ' + dateLabel(session.startedAt)));
-  const details = element('section'); details.append(element('h5', 'Session details'), element('p', 'Build: ' + session.build + ' · ' + ({ singleplayer: 'Single-player', multiplayer: 'Multiplayer', unknown: 'Mode not reported' })[session.mode] + ' · Observed session: ' + session.state), element('p', 'Started: ' + dateLabel(session.startedAt) + ' · Ended: ' + dateLabel(session.endedAt) + ' · Duration: ' + durationLabel(session.durationSeconds)), element('p', 'Upload errors: ' + session.uploadErrors + ' · Dropped uploads: ' + session.droppedArtifacts)); root.append(details);
+  const details = element('section'); details.append(element('h5', 'Session details'), element('p', 'Build: ' + session.build + ' · ' + ({ singleplayer: 'Single-player', multiplayer: 'Multiplayer', unknown: 'Mode not reported' })[session.mode] + ' · Observed session: ' + session.state), element('p', 'Reported mod version: ' + (session.reportedModVersion ?? 'Not reported')), element('p', 'Started: ' + dateLabel(session.startedAt) + ' · Ended: ' + dateLabel(session.endedAt) + ' · Duration: ' + durationLabel(session.durationSeconds)), element('p', 'Upload errors: ' + (session.uploadErrors ?? 'Not reported') + ' · Dropped uploads: ' + (session.droppedArtifacts ?? 'Not reported'))); root.append(details);
   for (const [kind, heading, empty] of [['log', 'Logs', 'No log segments were uploaded.'], ['crash', 'Crash reports', 'No crash report was uploaded.'], ['spark', 'Spark recordings', 'No client Spark recording was uploaded.']] as const) {
     const section = element('section'); section.append(element('h5', heading));
     if (kind === 'spark') section.append(element('p', sparkLabels[session.sparkStatus]));

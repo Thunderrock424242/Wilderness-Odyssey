@@ -372,7 +372,7 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                    "pattern": "^[A-Za-z0-9_-]{1,100}$"
                   },
                   "title": {
                     "type": "string",
@@ -499,7 +499,7 @@
               "properties": {
                 "id": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "title": {
                   "type": "string",
@@ -594,7 +594,7 @@
             },
             "testerId": {
               "type": "string",
-              "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+              "pattern": "^[A-Za-z0-9_-]{1,100}$"
             },
             "groups": {
               "maxItems": 50,
@@ -607,7 +607,7 @@
                     "properties": {
                       "id": {
                         "type": "string",
-                        "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                        "pattern": "^[A-Za-z0-9_-]{1,100}$"
                       },
                       "title": {
                         "type": "string",
@@ -672,7 +672,7 @@
                     "properties": {
                       "id": {
                         "type": "string",
-                        "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                        "pattern": "^[A-Za-z0-9_-]{1,100}$"
                       },
                       "label": {
                         "type": "string",
@@ -685,6 +685,17 @@
                           "allowed",
                           "paused",
                           "revoked"
+                        ]
+                      },
+                      "collectionId": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "pattern": "^[A-Za-z0-9_-]{1,100}$"
+                          },
+                          {
+                            "type": "null"
+                          }
                         ]
                       },
                       "revision": {
@@ -780,15 +791,23 @@
                         ]
                       },
                       "droppedArtifacts": {
-                        "type": "integer",
-                        "minimum": 0,
-                        "maximum": 9007199254740991
+                        "anyOf": [
+                          {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
                       }
                     },
                     "required": [
                       "id",
                       "label",
                       "permission",
+                      "collectionId",
                       "revision",
                       "changedAt",
                       "reportedName",
@@ -808,20 +827,31 @@
                       "properties": {
                         "id": {
                           "type": "string",
-                          "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                          "pattern": "^[A-Za-z0-9_-]{1,100}$"
                         },
                         "campaignId": {
                           "type": "string",
-                          "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                          "pattern": "^[A-Za-z0-9_-]{1,100}$"
                         },
                         "testerId": {
                           "type": "string",
-                          "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                          "pattern": "^[A-Za-z0-9_-]{1,100}$"
                         },
                         "build": {
                           "type": "string",
                           "minLength": 1,
                           "maxLength": 120
+                        },
+                        "reportedModVersion": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "maxLength": 120
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
                         },
                         "startedAt": {
                           "type": "string",
@@ -880,14 +910,28 @@
                           ]
                         },
                         "droppedArtifacts": {
-                          "type": "integer",
-                          "minimum": 0,
-                          "maximum": 9007199254740991
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
                         },
                         "uploadErrors": {
-                          "type": "integer",
-                          "minimum": 0,
-                          "maximum": 9007199254740991
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
                         },
                         "notes": {
                           "type": "string",
@@ -906,7 +950,7 @@
                             "properties": {
                               "id": {
                                 "type": "string",
-                                "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                                "pattern": "^[A-Za-z0-9_-]{1,100}$"
                               },
                               "kind": {
                                 "type": "string",
@@ -967,7 +1011,7 @@
                             "properties": {
                               "id": {
                                 "type": "string",
-                                "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                                "pattern": "^[A-Za-z0-9_-]{1,100}$"
                               },
                               "scope": {
                                 "type": "string",
@@ -1088,7 +1132,7 @@
               "properties": {
                 "id": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "title": {
                   "type": "string",
@@ -1156,7 +1200,7 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                    "pattern": "^[A-Za-z0-9_-]{1,100}$"
                   },
                   "label": {
                     "type": "string",
@@ -1169,6 +1213,17 @@
                       "allowed",
                       "paused",
                       "revoked"
+                    ]
+                  },
+                  "collectionId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{1,100}$"
+                      },
+                      {
+                        "type": "null"
+                      }
                     ]
                   },
                   "revision": {
@@ -1264,15 +1319,23 @@
                     ]
                   },
                   "droppedArtifacts": {
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": 9007199254740991
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
                   }
                 },
                 "required": [
                   "id",
                   "label",
                   "permission",
+                  "collectionId",
                   "revision",
                   "changedAt",
                   "reportedName",
@@ -1344,7 +1407,7 @@
               "properties": {
                 "id": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "title": {
                   "type": "string",
@@ -1426,6 +1489,10 @@
               "minLength": 1,
               "maxLength": 100
             },
+            "testerId": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,100}$"
+            },
             "expiresInHours": {
               "type": "integer",
               "minimum": 1,
@@ -1455,14 +1522,14 @@
             },
             "campaignId": {
               "type": "string",
-              "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+              "pattern": "^[A-Za-z0-9_-]{1,100}$"
             },
             "invitation": {
               "type": "object",
               "properties": {
                 "id": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "code": {
                   "type": "string",
@@ -1527,7 +1594,7 @@
               "properties": {
                 "id": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "title": {
                   "type": "string",
@@ -1592,7 +1659,7 @@
               "properties": {
                 "id": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "label": {
                   "type": "string",
@@ -1605,6 +1672,17 @@
                     "allowed",
                     "paused",
                     "revoked"
+                  ]
+                },
+                "collectionId": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9_-]{1,100}$"
+                    },
+                    {
+                      "type": "null"
+                    }
                   ]
                 },
                 "revision": {
@@ -1700,15 +1778,23 @@
                   ]
                 },
                 "droppedArtifacts": {
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 9007199254740991
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 }
               },
               "required": [
                 "id",
                 "label",
                 "permission",
+                "collectionId",
                 "revision",
                 "changedAt",
                 "reportedName",
@@ -1728,20 +1814,31 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                    "pattern": "^[A-Za-z0-9_-]{1,100}$"
                   },
                   "campaignId": {
                     "type": "string",
-                    "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                    "pattern": "^[A-Za-z0-9_-]{1,100}$"
                   },
                   "testerId": {
                     "type": "string",
-                    "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                    "pattern": "^[A-Za-z0-9_-]{1,100}$"
                   },
                   "build": {
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 120
+                  },
+                  "reportedModVersion": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "maxLength": 120
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
                   },
                   "startedAt": {
                     "type": "string",
@@ -1800,14 +1897,28 @@
                     ]
                   },
                   "droppedArtifacts": {
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": 9007199254740991
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
                   },
                   "uploadErrors": {
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": 9007199254740991
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
                   },
                   "notes": {
                     "type": "string",
@@ -1826,7 +1937,7 @@
                       "properties": {
                         "id": {
                           "type": "string",
-                          "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                          "pattern": "^[A-Za-z0-9_-]{1,100}$"
                         },
                         "kind": {
                           "type": "string",
@@ -1887,7 +1998,7 @@
                       "properties": {
                         "id": {
                           "type": "string",
-                          "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                          "pattern": "^[A-Za-z0-9_-]{1,100}$"
                         },
                         "scope": {
                           "type": "string",
@@ -2014,14 +2125,14 @@
             },
             "campaignId": {
               "type": "string",
-              "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+              "pattern": "^[A-Za-z0-9_-]{1,100}$"
             },
             "tester": {
               "type": "object",
               "properties": {
                 "id": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "label": {
                   "type": "string",
@@ -2034,6 +2145,17 @@
                     "allowed",
                     "paused",
                     "revoked"
+                  ]
+                },
+                "collectionId": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9_-]{1,100}$"
+                    },
+                    {
+                      "type": "null"
+                    }
                   ]
                 },
                 "revision": {
@@ -2129,15 +2251,23 @@
                   ]
                 },
                 "droppedArtifacts": {
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 9007199254740991
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 }
               },
               "required": [
                 "id",
                 "label",
                 "permission",
+                "collectionId",
                 "revision",
                 "changedAt",
                 "reportedName",
@@ -2194,11 +2324,11 @@
             },
             "campaignId": {
               "type": "string",
-              "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+              "pattern": "^[A-Za-z0-9_-]{1,100}$"
             },
             "testerId": {
               "type": "string",
-              "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+              "pattern": "^[A-Za-z0-9_-]{1,100}$"
             },
             "deleted": {
               "type": "boolean",
@@ -2250,31 +2380,42 @@
             },
             "campaignId": {
               "type": "string",
-              "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+              "pattern": "^[A-Za-z0-9_-]{1,100}$"
             },
             "testerId": {
               "type": "string",
-              "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+              "pattern": "^[A-Za-z0-9_-]{1,100}$"
             },
             "session": {
               "type": "object",
               "properties": {
                 "id": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "campaignId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "testerId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "build": {
                   "type": "string",
                   "minLength": 1,
                   "maxLength": 120
+                },
+                "reportedModVersion": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "maxLength": 120
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 },
                 "startedAt": {
                   "type": "string",
@@ -2333,14 +2474,28 @@
                   ]
                 },
                 "droppedArtifacts": {
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 9007199254740991
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 },
                 "uploadErrors": {
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 9007199254740991
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 },
                 "notes": {
                   "type": "string",
@@ -2359,7 +2514,7 @@
                     "properties": {
                       "id": {
                         "type": "string",
-                        "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                        "pattern": "^[A-Za-z0-9_-]{1,100}$"
                       },
                       "kind": {
                         "type": "string",
@@ -2420,7 +2575,7 @@
                     "properties": {
                       "id": {
                         "type": "string",
-                        "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                        "pattern": "^[A-Za-z0-9_-]{1,100}$"
                       },
                       "scope": {
                         "type": "string",
@@ -2519,19 +2674,19 @@
                 },
                 "campaignId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "testerId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "sessionId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "artifactId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "kind": {
                   "type": "string",
@@ -2586,19 +2741,19 @@
                 },
                 "campaignId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "testerId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "sessionId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "artifactId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "kind": {
                   "type": "string",
@@ -2676,19 +2831,19 @@
                 },
                 "campaignId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "testerId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "sessionId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "artifactId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "kind": {
                   "type": "string",
@@ -2743,19 +2898,19 @@
                 },
                 "campaignId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "testerId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "sessionId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "artifactId": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_-]{1,96}$"
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
                 },
                 "kind": {
                   "type": "string",

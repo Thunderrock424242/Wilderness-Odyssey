@@ -132,6 +132,11 @@ test('returning testers use an explicit profile link in private invitations', as
   await page.getByRole('button', { name: 'Create private invitation' }).click(); await expect(page.getByLabel('Private invitation link')).toBeVisible();
   expect(state.lastMutation).toMatchObject({ testerId: 'tester-a', testerLabel: 'Alex' });
 });
+test('unknown diagnostic counters remain unknown in session details', async ({ page }) => {
+  await fixtures(page);
+  await page.route('**/tester-a/history', route => route.fulfill({ json: { schemaVersion: '1.0', testerId: 'tester-a', groups: [{ campaign, tester, sessions: [{ ...sessionRecord, uploadErrors: null, droppedArtifacts: null }] }], nextCursor: null } }));
+  await openHistory(page); await expect(page.getByText('Upload errors: Not reported · Dropped uploads: Not reported', { exact: true })).toBeVisible();
+});
 test('ambiguous writes reuse the request key; stale records require refresh', async ({ page }) => {
   const state = await fixtures(page); await openHistory(page); state.failed = true;
   await page.getByRole('switch', { name: 'Collect playtest diagnostics', exact: true }).click();
@@ -141,7 +146,7 @@ test('ambiguous writes reuse the request key; stale records require refresh', as
   state.failed = false; await page.route('**/collection', route => route.fulfill({ status: 409, json: {} }));
   await page.getByRole('switch', { name: 'Collect playtest diagnostics', exact: true }).click(); await expect(page.locator('[data-authoring-message]')).toContainText('Refresh');
 });
-test('tester invitation guide keeps the code private and supports enrollment without a gated download', async ({ page }) => {
+test('tester invitation guide keeps the code private and supports enrollment without a gated download', async ({ page }, info) => {
   const calls: string[] = []; page.on('request', request => calls.push(request.url()));
   await page.goto('/playtest/#invitation=private_invitation_code_12345678901234567890&api=https%3A%2F%2Fdiagnostics.example.com');
   await expect(page.getByRole('heading', { name: 'Join an invited playtest' })).toBeVisible();
@@ -150,4 +155,19 @@ test('tester invitation guide keeps the code private and supports enrollment wit
   expect(calls.some(value => value.includes('private_invitation_code'))).toBe(false);
   expect(await page.evaluate(() => JSON.stringify({ ...localStorage, ...sessionStorage }))).toBe('{}');
   await expect(page.getByText('Stop and leave', { exact: false })).toBeVisible();
+  await page.screenshot({ path: info.outputPath('invitation-desktop.png'), fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 }); expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await page.screenshot({ path: info.outputPath('invitation-mobile.png'), fullPage: true });
+  await page.getByRole('button', { name: 'Clear invitation from this page' }).focus(); await page.keyboard.press('Enter');
+  await expect(page.locator('[data-invite-values]')).toBeHidden(); await expect(page.getByLabel('Private invitation code')).toHaveValue('');
+});
+test('identically named returning testers have distinguishable profile choices', async ({ page }) => {
+  const state = await fixtures(page);
+  await page.route('**/playtests/autumn', route => route.fulfill({ json: { schemaVersion: '1.0', campaign, testers: [tester, { ...tester, id: 'tester-b' }], nextCursor: null } }));
+  await page.goto('/admin/playtests/'); await page.getByRole('button', { name: 'Open Autumn playtest', exact: true }).click();
+  await expect(page.getByRole('option', { name: 'Alex · Autumn playtest · profile tester-a', exact: true })).toHaveCount(1);
+  await expect(page.getByRole('option', { name: 'Alex · Autumn playtest · profile tester-b', exact: true })).toHaveCount(1);
+  await page.getByLabel('Existing tester (optional)').selectOption('tester-b'); await page.getByRole('button', { name: 'Create private invitation' }).click();
+  await expect(page.getByLabel('Private invitation link')).toBeVisible(); expect(state.lastMutation).toMatchObject({ testerId: 'tester-b', testerLabel: 'Alex' });
 });

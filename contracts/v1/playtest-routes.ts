@@ -3,7 +3,7 @@ import type { RouteDefinition } from './routes';
 import * as s from './playtests';
 
 function route(method: string, path: string, output: z.ZodType, input?: z.ZodType): RouteDefinition {
-  return { method, path, output, input, capability: input ? 'playtests:write' : 'playtests:read', query: input ? undefined : z.object({ cursor: z.string().max(200).optional() }).strict(), pattern: new RegExp('^' + path.replace(/:[a-zA-Z]+/g, '[a-zA-Z0-9_-]{1,96}') + '$') };
+  return { method, path, output, input, capability: input ? 'playtests:write' : 'playtests:read', query: input ? undefined : z.object({ cursor: z.string().max(200).optional() }).strict(), pattern: new RegExp('^' + path.replace(/:[a-zA-Z]+/g, '[a-zA-Z0-9_-]{1,100}') + '$') };
 }
 const profile = '/playtests/:campaignId/testers/:testerId';
 const session = profile + '/sessions/:sessionId';

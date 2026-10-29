@@ -27,6 +27,15 @@ function upstream(value: unknown, role = 'administrator', capabilities = ['playt
 }
 async function call(req: Request, fetcher: typeof fetch) { return handleGateway(req, env, { fetch: fetcher, jwks }); }
 describe('private playtest gateway adapter', () => {
+  it('accepts diagnostic IDs through the client limit of 100 characters', async () => {
+    const id = 'c'.repeat(100);
+    const response = await call(await request('/playtests/' + id), upstream({ schemaVersion: '1.0', campaign: { ...campaign, id }, testers: [], nextCursor: null }));
+    expect(response.status).toBe(200);
+  });
+  it('preserves unknown upload counters instead of requiring fabricated zeros', async () => {
+    const response = await call(await request(profilePath), upstream({ schemaVersion: '1.0', campaign, tester, sessions: [{ ...sessionRecord, uploadErrors: null }], nextCursor: null }));
+    expect(response.status).toBe(200); expect((await response.json()).sessions[0].uploadErrors).toBeNull();
+  });
   it('allows the valid campaign ID testers without confusing it with global history', async () => {
     const response = await call(await request('/playtests/testers'), upstream({ schemaVersion: '1.0', campaign: { ...campaign, id: 'testers' }, testers: [], nextCursor: null }));
     expect(response.status).toBe(200);
@@ -85,5 +94,23 @@ describe('private playtest gateway adapter', () => {
     const fetcher: typeof fetch = async (url, init) => String(url).endsWith('/session') ? upstream({})(url, init) : new Response('private-stack-trace', { status: 302, headers: { Location: 'https://private-storage.example/secret' } });
     const response = await call(await request(artifactPath + '/download'), fetcher);
     expect(response.status).toBe(502); expect(await response.text()).not.toMatch(/private-stack|private-storage/);
+  });
+  it('keeps Discord staff credentials server-side and rechecks permission before releasing private bytes', async () => {
+    const token = 's'.repeat(43);
+    const discordEnv: GatewayEnv = { ...env, STAFF_AUTH_MODE: 'discord', DISCORD_REDIRECT_URI: 'https://site.example.com/api/auth/discord/callback', DISCORD_GUILD_ID: '123456789012345678' };
+    let checks = 0;
+    const fetcher: typeof fetch = async (url, init) => {
+      const headers = new Headers(init?.headers);
+      expect(headers.get('X-WO-Admin-Session')).toBe(token); expect(headers.get('CF-Access-Client-Secret')).toBe('machine-private');
+      if (String(url).endsWith('/session')) {
+        checks++;
+        if (checks === 2) return Response.json({}, { status: 401 });
+        return Response.json({ schemaVersion: '1.0', user: { id: '345678901234567890', displayName: 'Discord admin', role: 'administrator' }, capabilities: ['playtests:read'], guildId: discordEnv.DISCORD_GUILD_ID, expiresAt: new Date(Date.now() + 850000).toISOString() });
+      }
+      return Response.json(artifact);
+    };
+    const req = new Request('https://site.example.com/api/admin/v1' + artifactPath + '/download', { headers: { Cookie: '__Host-wo-admin-session=' + token, 'X-WO-Admin-Session': 'browser-forgery' } });
+    const response = await handleGateway(req, discordEnv, { fetch: fetcher });
+    expect(checks).toBe(2); expect(response.status).toBe(401); expect(await response.text()).not.toContain(artifact.content);
   });
 });

@@ -10,7 +10,7 @@ export function observedState(campaign: Campaign, tester: Tester, now = Date.now
   if (!tester.lastSeenAt) return 'Waiting for game';
   if (now - Date.parse(tester.lastSeenAt) > 60000) return 'Offline/connection lost';
   if (tester.uploadErrorAt && (!tester.lastUploadAt || Date.parse(tester.uploadErrorAt) > Date.parse(tester.lastUploadAt))) return 'Upload failed';
-  if (acknowledgement?.collectionId === campaign.collectionId && Date.parse(acknowledgement.observedAt) >= changed) {
+  if (acknowledgement && acknowledgement.collectionId === tester.collectionId && Date.parse(acknowledgement.observedAt) >= changed) {
     if (acknowledgement.state === 'recording') return 'Recording';
     return 'Stopped';
   }

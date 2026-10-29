@@ -26,4 +26,8 @@ describe('observed collection state', () => {
     expect(observedState(build, failed, now)).toBe('Upload failed');
     expect(observedState(build, { ...failed, lastUploadAt: '2026-10-25T12:00:06Z' }, now)).toBe('Recording');
   });
+  it('requires the current tester generation after pause and resume', () => {
+    const resumed = testerSchema.parse({ ...tester, collectionId: 'tester-resumed-generation' });
+    expect(observedState(build, resumed, now)).toBe('Waiting for game');
+  });
 });

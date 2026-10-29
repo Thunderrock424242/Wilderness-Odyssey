@@ -10,14 +10,15 @@ const workspace = one('[data-authoring-workspace]'), message = one('[data-author
 const signout = document.querySelector<HTMLButtonElement>('[data-authoring-signout]')!;
 const detail = one('[data-playtest-detail]'), history = one('[data-tester-history]'), invite = one('[data-invitation]');
 let epoch = 0, busy = false;
+let collectionSettledAt = -Infinity;
 let selected: s.Campaign | null = null, testerId: string | null = null;
 let campaignCursor: string | null = null, testerCursor: string | null = null;
 let campaignUpdates: (() => void)[] = [], historyUpdates: (() => void)[] = [];
-const knownTesters = new Map<string, string>();
+const knownTesters = new Map<string, { label: string; context: string }>();
 const api = new PlaytestApi(fetch, clear);
 
 function clear() {
-  epoch++; selected = null; testerId = null; campaignUpdates = []; historyUpdates = [];
+  epoch++; selected = null; testerId = null; campaignUpdates = []; historyUpdates = []; collectionSettledAt = -Infinity;
   workspace.hidden = true; detail.hidden = true; history.replaceChildren(); invite.replaceChildren(); invite.hidden = true;
   one('[data-playtest-list]').replaceChildren(); one('[data-tester-list]').replaceChildren();
   knownTesters.clear(); one<HTMLSelectElement>('[data-existing-tester]').replaceChildren(new Option('New tester', ''));
@@ -71,8 +72,8 @@ async function loadCampaign(id: string, token: number, cursor?: string) {
   if (!current(token)) return;
   if (data.campaign.id !== id) throw new AdminApiError('This playtest could not be verified.', 502);
   selected = data.campaign; campaignUpdates = [];
-  data.testers.forEach(tester => knownTesters.set(tester.id, tester.label));
-  one<HTMLSelectElement>('[data-existing-tester]').replaceChildren(new Option('New tester', ''), ...[...knownTesters].map(([id, label]) => new Option(label, id)));
+  data.testers.forEach(tester => knownTesters.set(tester.id, { label: tester.label, context: data.campaign.title }));
+  one<HTMLSelectElement>('[data-existing-tester]').replaceChildren(new Option('New tester', ''), ...[...knownTesters].map(([id, profile]) => new Option(profile.label + ' · ' + profile.context + ' · profile ' + id, id)));
   one('[data-playtest-title]').textContent = data.campaign.title; one('[data-playtest-build]').textContent = 'Build ' + data.campaign.build + ' · Reports kept for up to ' + data.campaign.retentionDays + ' days from capture.';
   one<HTMLInputElement>('[data-collection-switch]').checked = data.campaign.collect;
   one('[data-collection-desired]').textContent = 'Collection desired: ' + (data.campaign.collect ? 'on. Waiting for each game to acknowledge before showing Recording.' : 'off. New uploads are rejected; stored reports are retained.');
@@ -125,10 +126,14 @@ one<HTMLInputElement>('[data-collection-switch]').addEventListener('change', eve
   const control = event.currentTarget as HTMLInputElement;
   if (!selected) return;
   const campaign = selected, collect = control.checked; control.checked = campaign.collect;
+  // A fast successful response can settle between two clicks/key presses.
+  // Absorb that duplicate input, but keep ambiguous failed requests retryable.
+  if (performance.now() - collectionSettledAt < 600) return;
   void run(async token => {
     const changed = await api.change('/playtests/' + campaign.id + '/collection', s.campaignEnvelope, 'PUT', { collect, revision: campaign.revision });
     if (!current(token)) return;
     if (changed.campaign.id !== campaign.id || changed.campaign.collect !== collect) throw new AdminApiError('Collection permission could not be confirmed. Refresh before retrying.', 502);
+    collectionSettledAt = performance.now();
     await loadCampaign(campaign.id, token); message.textContent = collect ? 'Collection requested. Each game must acknowledge before showing Recording.' : 'Collection is off. New uploads are rejected. Client authorization ends within 60 seconds; stored reports remain.';
   });
 });
@@ -155,7 +160,7 @@ one<HTMLFormElement>('[data-invitation-form]').addEventListener('submit', event 
 });
 one<HTMLSelectElement>('[data-existing-tester]').addEventListener('change', event => {
   const id = (event.currentTarget as HTMLSelectElement).value;
-  one<HTMLInputElement>('[name="testerLabel"]').value = knownTesters.get(id) ?? '';
+  one<HTMLInputElement>('[name="testerLabel"]').value = knownTesters.get(id)?.label ?? '';
 });
 one('[data-authoring-refresh]').addEventListener('click', () => void refresh());
 one('[data-campaign-next]').addEventListener('click', () => { if (campaignCursor) void run(token => campaigns(token, campaignCursor!)); });
