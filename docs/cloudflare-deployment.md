@@ -2,6 +2,8 @@
 
 This replaces the earlier GitHub Pages deployment plan. Local implementation does not authorize deployment, DNS changes, or production operations.
 
+For the public website alone, use `STAFF_AUTH_MODE=disabled` in [`config/deployment.jsonc`](../config/deployment.jsonc). Only the approved `SITE_URL` and `CLOUDFLARE_PAGES_PROJECT` are required for production configuration; Access, Discord, and backend settings can remain blank. Staff/login routes remain unavailable and missing live status is presented as not connected. GitHub deployment credentials and protected-environment gates still apply. See [public website setup](deployment-settings.md#publish-the-public-website-first) before following the connected-mode requirements below.
+
 The website now supports Discord sessions. Edit [`config/deployment.jsonc`](../config/deployment.jsonc): set `STAFF_AUTH_MODE` to `discord`, `DISCORD_GUILD_ID` to the bot's `GUILD_ID`, and `DISCORD_REDIRECT_URI` to the exact HTTPS callback ending in `/api/auth/discord/callback`. Comments explain each value; [editable deployment settings](deployment-settings.md) explains validation and precedence. Nonempty GitHub variables remain supported overrides. See [Discord authentication](discord-admin-auth.md) for the required backend implementation and staged transition. Existing production Access policies must remain until the replacement passes staging and their change is separately approved. Explicit `access` mode retains the previous human Access flow during that transition.
 
 ## Local commands
@@ -33,7 +35,7 @@ The deploy job checks the editable settings, downloads the tested artifact, chec
 GitHub environment secrets:
 - `CLOUDFLARE_ACCOUNT_ID`
 - `CLOUDFLARE_API_TOKEN`: account-scoped Pages Edit, no DNS privileges. Do not assume this token is project-scoped.
-- `PREVIEW_ACCESS_CLIENT_ID`, `PREVIEW_ACCESS_CLIENT_SECRET` for read-only checks of protected deployment URLs. Both GitHub environments need these verifier secrets because production deployments also have generated preview URLs. This identity cannot access staff records.
+- `PREVIEW_ACCESS_CLIENT_ID`, `PREVIEW_ACCESS_CLIENT_SECRET` for read-only checks of protected deployment URLs. Connected production and preview deployments need these verifier secrets. Public-only production instead verifies that generated preview URLs deny anonymous access, without verifier credentials. This identity cannot access staff records.
 
 Set `shared.SITE_URL` in the editable file for the build's canonical public URL. An optional repository variable `SITE_URL` overrides it. The effective build and deployment values must match; deployment preparation rejects an artifact built for a different origin.
 Editable settings (also supported as optional GitHub environment-variable overrides):

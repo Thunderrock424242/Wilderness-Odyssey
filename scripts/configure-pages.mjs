@@ -20,6 +20,12 @@ try {
     vars.DISCORD_REDIRECT_URI = '';
     vars.DISCORD_GUILD_ID = '';
   }
+  if (vars.STAFF_AUTH_MODE === 'disabled') {
+    vars.KINETIC_ADMIN_ORIGIN = '';
+    if (environment === 'production') {
+      vars.ALLOWED_HOSTS = [...new Set([site.hostname, CLOUDFLARE_PAGES_PROJECT + '.pages.dev', ...vars.ALLOWED_HOSTS.split(',').map(host => host.trim()).filter(Boolean)])].join(',');
+    }
+  }
   if (environment !== 'preview') vars.PREVIEW_VERIFY_SERVICE_ID = '';
   config.name = CLOUDFLARE_PAGES_PROJECT;
   config.env[environment].vars = vars;

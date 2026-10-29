@@ -57,6 +57,33 @@ describe('deployment verification', () => {
   it.each(['access', 'discord'])('preserves explicit Cloudflare Access protection in %s mode', async mode => {
     await expect(verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, redirected('https://team.cloudflareaccess.com/cdn-cgi/access/login', true), mode)).resolves.toBeUndefined();
   });
+
+  it('accepts intentionally disabled staff responses on an otherwise working public site', async () => {
+    const disabled: typeof fetch = async input => {
+      const path = new URL(String(input)).pathname;
+      if (path.startsWith('/admin') || path.startsWith('/api/admin') || path.startsWith('/login') || path.startsWith('/api/auth')) return new Response('Staff access is being set up', { status: 503, headers: { 'X-WO-Staff-Mode': 'disabled', 'Cache-Control': 'no-store' } });
+      return responder()(input);
+    };
+    await expect(verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, disabled, 'disabled')).resolves.toBeUndefined();
+    await expect(verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, disabled, 'discord')).rejects.toThrow(/protect/i);
+  });
+
+  it('rejects public staff routes and generic outages in disabled mode', async () => {
+    await expect(verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, responder(true), 'disabled')).rejects.toThrow(/protect/i);
+    const broken: typeof fetch = async input => {
+      if (new URL(String(input)).pathname.startsWith('/admin')) return new Response('Unexpected failure', { status: 503 });
+      return responder()(input);
+    };
+    await expect(verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, broken, 'disabled')).rejects.toThrow(/protect/i);
+  });
+
+  it('checks that generated previews remain inaccessible without requiring preview credentials', async () => {
+    const { verifyBlockedPreview } = await import('../scripts/verify-deployment.mjs');
+    const unavailable: typeof fetch = async () => new Response('Staff access is being set up', { status: 503, headers: { 'X-WO-Staff-Mode': 'disabled', 'Cache-Control': 'no-store' } });
+    await expect(verifyBlockedPreview('https://abc.project.pages.dev', unavailable)).resolves.toBeUndefined();
+    await expect(verifyBlockedPreview('https://abc.project.pages.dev', responder())).rejects.toThrow(/protect/i);
+    await expect(verifyBlockedPreview('https://abc.project.pages.dev', async () => new Response('Unexpected failure', { status: 503 }))).rejects.toThrow(/protect/i);
+  });
 });
 describe('deployment hostname coverage', () => {
   it('checks canonical production, production Pages, unique deployment, and branch alias hosts', () => {

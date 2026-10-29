@@ -24,6 +24,16 @@ test('compiled Pages middleware serves public pages and fails closed for staff',
   expect(await status.json()).toMatchObject({ code: 'NOT_CONFIGURED' });
 });
 
+test('public-only runtime disables login and authentication APIs explicitly', async ({ request }) => {
+  for (const path of ['/login/', '/api/auth/discord/start', '/api/auth/logout']) {
+    const response = await request.get(path, { maxRedirects: 0 });
+    expect(response.status(), path).toBe(503);
+    expect(response.headers()['x-wo-staff-mode']).toBe('disabled');
+    expect(response.headers()['cache-control']).toBe('no-store');
+    expect(await response.text()).not.toContain('discord.com/oauth2');
+  }
+});
+
 test('Pages invitation handling works under its deployed CSP and never sends the code', async ({ page }) => {
   const errors: string[] = [], urls: string[] = [];
   page.on('pageerror', error => errors.push(error.message)); page.on('request', request => urls.push(request.url()));

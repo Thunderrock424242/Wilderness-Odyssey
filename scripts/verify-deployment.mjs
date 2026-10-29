@@ -7,6 +7,20 @@ function protectedResponse(response) {
   if (![302, 303, 307, 308].includes(response.status)) return false;
   try { return new URL(response.headers.get('location')).hostname.endsWith('.cloudflareaccess.com'); } catch { return false; }
 }
+function disabledResponse(response) {
+  return response.status === 503 && response.headers.get('X-WO-Staff-Mode') === 'disabled' && response.headers.get('Cache-Control') === 'no-store';
+}
+
+// Public-only production needs no preview service credentials. Its revision
+// aliases must still deny anonymous access, including all staff/auth routes.
+export async function verifyBlockedPreview(origin, fetchImpl = fetch) {
+  for (const path of ['/', '/revision.json', '/status/', '/robots.txt', '/admin/', '/api/admin/v1/session', '/login/', '/api/auth/discord/start', '/api/public/v1/status']) {
+    const response = await fetchImpl(new URL(path, origin), { redirect: 'manual', cache: 'no-store', signal: AbortSignal.timeout(10000) });
+    const denied = protectedResponse(response) || disabledResponse(response);
+    await response.body?.cancel();
+    if (!denied) throw new Error('Preview protection failed: ' + path);
+  }
+}
 function discordLoginResponse(response, origin) {
   if (response.status !== 303) return false;
   const location = response.headers.get('location');
@@ -18,7 +32,7 @@ function discordLoginResponse(response, origin) {
   } catch { return false; }
 }
 export async function verifyPublishedSite(origin, sha, environment, headers = {}, fetchImpl = fetch, staffAuthMode = 'access') {
-  if (!['access', 'discord'].includes(staffAuthMode)) throw new Error('Unsupported staff authentication mode.');
+  if (!['disabled', 'access', 'discord'].includes(staffAuthMode)) throw new Error('Unsupported staff authentication mode.');
   const request = (path, suppliedHeaders = headers) => fetchImpl(new URL(path, origin), { headers: suppliedHeaders, redirect: 'manual', cache: 'no-store', signal: AbortSignal.timeout(10000) });
   if (environment === 'preview') {
     const anonymous = await request('/', {});
@@ -31,11 +45,14 @@ export async function verifyPublishedSite(origin, sha, environment, headers = {}
     if (response.status !== 200 || !response.headers.get('content-type')?.includes('text/html')) throw new Error('Page verification failed: ' + path);
     await response.body?.cancel();
   }
-  for (const path of ['/admin', '/admin/', '/admin/players/', '/admin/reports/', '/admin/models/', '/admin/content/', '/api/admin/v1/session', '/api/admin/v1/models']) {
+  const staffPaths = ['/admin', '/admin/', '/admin/players/', '/admin/reports/', '/admin/models/', '/admin/content/', '/api/admin/v1/session', '/api/admin/v1/models'];
+  if (staffAuthMode === 'disabled') staffPaths.push('/login/', '/api/auth/discord/start', '/api/auth/logout');
+  for (const path of staffPaths) {
     const response = await request(path, environment === 'preview' ? headers : {});
     const discordRedirect = environment === 'production' && staffAuthMode === 'discord' &&
       path.startsWith('/admin') && discordLoginResponse(response, origin);
-    if (!protectedResponse(response) && !discordRedirect) throw new Error('Staff route protection failed: ' + path);
+    const staffDisabled = staffAuthMode === 'disabled' && disabledResponse(response);
+    if (!protectedResponse(response) && !discordRedirect && !staffDisabled) throw new Error('Staff route protection failed: ' + path);
     await response.body?.cancel();
   }
   const status = await request('/api/public/v1/status');
@@ -81,8 +98,12 @@ async function main() {
   if (deployment?.latest_stage?.status !== 'success') throw new Error('Cloudflare did not confirm a successful deployment for this commit.');
   const targets = verificationTargets(deployment, project, environment, siteUrl);
   const previewHeaders = { 'CF-Access-Client-Id': process.env.PREVIEW_ACCESS_CLIENT_ID || '', 'CF-Access-Client-Secret': process.env.PREVIEW_ACCESS_CLIENT_SECRET || '' };
-  if (targets.some(target => target.environment === 'preview') && (!previewHeaders['CF-Access-Client-Id'] || !previewHeaders['CF-Access-Client-Secret'])) throw new Error('Preview verification credentials are required for deployment URLs.');
-  for (const target of targets) await verifyPublishedSite(target.origin, sha, target.environment, target.environment === 'preview' ? previewHeaders : {}, fetch, staffAuthMode);
+  const publicProduction = environment === 'production' && staffAuthMode === 'disabled';
+  if (!publicProduction && targets.some(target => target.environment === 'preview') && (!previewHeaders['CF-Access-Client-Id'] || !previewHeaders['CF-Access-Client-Secret'])) throw new Error('Preview verification credentials are required for deployment URLs.');
+  for (const target of targets) {
+    if (publicProduction && target.environment === 'preview') await verifyBlockedPreview(target.origin);
+    else await verifyPublishedSite(target.origin, sha, target.environment, target.environment === 'preview' ? previewHeaders : {}, fetch, staffAuthMode);
+  }
   const publishedOrigin = environment === 'production' ? secureOrigin(siteUrl) : secureOrigin(deployment.url);
   if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, 'deployment_url=' + publishedOrigin + '\n');
   console.log('Verified deployment revision, public pages, and protected staff routes.');

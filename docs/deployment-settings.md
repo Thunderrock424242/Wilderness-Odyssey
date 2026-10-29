@@ -2,12 +2,26 @@
 
 Open [`config/deployment.jsonc`](../config/deployment.jsonc). It is the editable source for non-secret website deployment settings, with comments next to every value. Keep IDs and other values inside double quotes. Comments and trailing commas are supported.
 
+## Publish the public website first
+
+The file is set up for `https://wilderness-odyssey.pages.dev`, project `wilderness-odyssey`, with `STAFF_AUTH_MODE` set to `disabled`. For a production deployment in this mode, only `SITE_URL` and `CLOUDFLARE_PAGES_PROJECT` are required. Leave `ACCESS_TEAM_DOMAIN`, `ACCESS_AUDIENCE`, `PUBLIC_STATUS_URL`, and `KINETIC_ADMIN_ORIGIN` blank until you need those integrations.
+
+Run `npm run config:check -- --environment production`. Staff pages, login, and staff/authentication APIs return an uncached setup response; existing backend credentials cannot enable them while disabled. The status page explains that live data has not been connected. You can optionally set a valid `PUBLIC_STATUS_URL` to enable status reads without enabling staff access.
+
+**If a GitHub repository or environment variable already sets `STAFF_AUTH_MODE=discord` or `access`, remove it or change it to `disabled` for this setup.** Those overrides still win over the file. The GitHub `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` deployment secrets and the normal deployment enablement/approval gates remain required; these publish the website and are independent of the optional bot/backend secrets.
+
+The helper adds the canonical website hostname and production Pages hostname to the production allowlist. Other exact public hosts can be listed in `ALLOWED_HOSTS`. Generated revision/branch aliases remain inaccessible; the verifier checks their denial without needing preview service credentials for a public-only production release. The production revision and public pages are still verified on the public origins.
+
+Preview deployments remain protected. Serving a preview still requires its Access team, audience, host allowlist, verifier identity, and verifier credentials, even when staff sign-in is disabled. Until configured, its middleware denies requests instead of serving a public preview.
+
+To enable the dashboard later, explicitly select `discord` or `access`, complete that mode's settings and backend/runtime secrets, and validate in staging. Missing configuration never automatically enables staff access or switches authentication modes.
+
 ## Fix the Discord guild ID error
 
 1. In Discord, enable **User Settings → Advanced → Developer Mode**.
 2. Right-click your server and choose **Copy Server ID**.
 3. Paste the ID into `shared.DISCORD_GUILD_ID`, keeping the quotes. It must match the backend's `GUILD_ID`; it is a server ID, not your account, channel, or application ID.
-4. Fill in the other blank settings using the comments in the file.
+4. If enabling Discord staff access, fill in the other connected-mode settings using the comments in the file. This ID is not required for public-only disabled mode.
 5. Check the configuration:
 
    ```sh

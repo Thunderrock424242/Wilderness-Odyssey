@@ -165,3 +165,17 @@ describe('preview verification identity', () => {
     await expect(verifyAccess(req, { ...previewEnv, PREVIEW_VERIFY_SERVICE_ID: 'other-service' }, jwks, true)).rejects.toThrow();
   });
 });
+
+describe('public website without staff integration', () => {
+  it.each(['/api/admin/v1/session', '/api/admin/v1/content/site', '/api/auth/discord/start', '/api/auth/logout'])(
+    'denies %s without contacting a configured backend', async path => {
+      let upstreamRequests = 0;
+      const response = await handleGateway(new Request('https://site.example.com' + path), { ...env, STAFF_AUTH_MODE: 'disabled' }, {
+        fetch: async () => { upstreamRequests++; return Response.json({ unexpected: true }); },
+      });
+      expect(response.status).toBe(503);
+      expect(await response.json()).toMatchObject({ code: 'STAFF_NOT_CONFIGURED' });
+      expect(upstreamRequests).toBe(0);
+    },
+  );
+});

@@ -17,6 +17,9 @@ export async function handleGateway(request: Request, env: GatewayEnv, dependenc
   const upstream = dependencies.fetch ?? fetch;
   try {
     const url = new URL(request.url);
+    if (env.STAFF_AUTH_MODE === 'disabled' && (url.pathname.startsWith('/api/admin/') || url.pathname.startsWith('/api/auth/'))) {
+      throw new GatewayError(503, 'STAFF_NOT_CONFIGURED', 'Staff sign-in has not been connected. The public website is available.');
+    }
     if (isPlaytestPath(url.pathname)) return await handlePlaytests(request, env, dependencies);
     if (isAuthoringPath(url.pathname)) return await handleAuthoring(request, env, dependencies);
     if (url.pathname.startsWith('/api/auth/')) return await handleDiscordAuth(request, env, upstream);

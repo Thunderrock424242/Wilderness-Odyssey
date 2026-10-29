@@ -8,7 +8,7 @@
   ],
   "vars": {
     "ENVIRONMENT": "unconfigured",
-    "STAFF_AUTH_MODE": "discord",
+    "STAFF_AUTH_MODE": "disabled",
     "DISCORD_REDIRECT_URI": "",
     "DISCORD_GUILD_ID": "",
     "ALLOWED_HOSTS": "",
@@ -22,7 +22,7 @@
     "preview": {
       "vars": {
         "ENVIRONMENT": "preview",
-        "STAFF_AUTH_MODE": "discord",
+        "STAFF_AUTH_MODE": "disabled",
         "DISCORD_REDIRECT_URI": "",
         "DISCORD_GUILD_ID": "",
         "ALLOWED_HOSTS": "",
@@ -36,7 +36,7 @@
     "production": {
       "vars": {
         "ENVIRONMENT": "production",
-        "STAFF_AUTH_MODE": "discord",
+        "STAFF_AUTH_MODE": "disabled",
         "DISCORD_REDIRECT_URI": "",
         "DISCORD_GUILD_ID": "",
         "ALLOWED_HOSTS": "",

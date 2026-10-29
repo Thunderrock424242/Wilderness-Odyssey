@@ -93,7 +93,9 @@ export function validateDeploymentSettings(settings, environment) {
   const site = httpsUrl(settings.SITE_URL, true);
   requireValue('SITE_URL', site, 'enter the approved HTTPS website origin, without a path, credentials, port, query, or fragment.');
   requireValue('CLOUDFLARE_PAGES_PROJECT', /^[a-z0-9-]+$/.test(settings.CLOUDFLARE_PAGES_PROJECT), 'enter the exact lowercase Cloudflare Pages project name.');
-  requireValue('STAFF_AUTH_MODE', ['discord', 'access'].includes(settings.STAFF_AUTH_MODE), 'choose discord or access.');
+  requireValue('STAFF_AUTH_MODE', ['disabled', 'discord', 'access'].includes(settings.STAFF_AUTH_MODE), 'choose disabled for the public website, discord, or access.');
+  const staffEnabled = settings.STAFF_AUTH_MODE !== 'disabled';
+  const accessRequired = staffEnabled || environment === 'preview';
   if (settings.STAFF_AUTH_MODE === 'discord') {
     requireValue('DISCORD_GUILD_ID', /^\d{17,22}$/.test(settings.DISCORD_GUILD_ID), 'enter your 17-22 digit Discord server ID in quotes, matching backend GUILD_ID. Enable Developer Mode, then right-click your server -> Copy Server ID.');
     const callback = httpsUrl(settings.DISCORD_REDIRECT_URI);
@@ -103,13 +105,13 @@ export function validateDeploymentSettings(settings, environment) {
   }
   const hostname = /^(?=.{1,253}$)(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)*[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
   const hosts = settings.ALLOWED_HOSTS.split(',').map(value => value.trim());
-  requireValue('ALLOWED_HOSTS', hosts.every(host => hostname.test(host) || (environment === 'preview' && host === '*.' + settings.CLOUDFLARE_PAGES_PROJECT + '.pages.dev')),
+  if (accessRequired || settings.ALLOWED_HOSTS) requireValue('ALLOWED_HOSTS', hosts.every(host => hostname.test(host) || (environment === 'preview' && host === '*.' + settings.CLOUDFLARE_PAGES_PROJECT + '.pages.dev')),
     'enter comma-separated hostnames without schemes or paths; *.PROJECT.pages.dev is permitted only in preview.');
   const team = httpsUrl(settings.ACCESS_TEAM_DOMAIN, true);
-  requireValue('ACCESS_TEAM_DOMAIN', team && /^[a-z0-9-]+\.cloudflareaccess\.com$/i.test(team.hostname), 'enter your Access team HTTPS origin, e.g. https://TEAM.cloudflareaccess.com (also needed for preview protection in Discord mode).');
-  requireValue('ACCESS_AUDIENCE', !/[\r\n]/.test(settings.ACCESS_AUDIENCE), 'enter the Access application audience (AUD) tag.');
-  requireValue('PUBLIC_STATUS_URL', httpsUrl(settings.PUBLIC_STATUS_URL), 'enter the sanitized public-status HTTPS endpoint, including its path and without credentials.');
-  requireValue('KINETIC_ADMIN_ORIGIN', httpsUrl(settings.KINETIC_ADMIN_ORIGIN, true), 'enter the approved backend HTTPS origin, without a path, credentials, port, query, or fragment.');
+  if (accessRequired || settings.ACCESS_TEAM_DOMAIN) requireValue('ACCESS_TEAM_DOMAIN', team && /^[a-z0-9-]+\.cloudflareaccess\.com$/i.test(team.hostname), 'enter your Access team HTTPS origin, e.g. https://TEAM.cloudflareaccess.com (required for protected previews and connected staff modes).');
+  if (accessRequired || settings.ACCESS_AUDIENCE) requireValue('ACCESS_AUDIENCE', !/[\r\n]/.test(settings.ACCESS_AUDIENCE), 'enter the Access application audience (AUD) tag.');
+  if (staffEnabled || settings.PUBLIC_STATUS_URL) requireValue('PUBLIC_STATUS_URL', httpsUrl(settings.PUBLIC_STATUS_URL), 'enter the sanitized public-status HTTPS endpoint, including its path and without credentials.');
+  if (staffEnabled || settings.KINETIC_ADMIN_ORIGIN) requireValue('KINETIC_ADMIN_ORIGIN', httpsUrl(settings.KINETIC_ADMIN_ORIGIN, true), 'enter the approved backend HTTPS origin, without a path, credentials, port, query, or fragment.');
   if (environment === 'preview') requireValue('PREVIEW_VERIFY_SERVICE_ID', !/[\r\n]/.test(settings.PREVIEW_VERIFY_SERVICE_ID), "enter the staging verifier service token's exact signed common_name identity, not its secret.");
   return errors;
 }

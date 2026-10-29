@@ -5,6 +5,7 @@ import { failure, GatewayError } from '../server/http';
 import { staffSession } from '../server/staff-session';
 import { loginError, loginRedirect } from '../server/discord-auth';
 import { pageError } from '../server/page-error';
+import { validateStaffHost } from '../server/staff-host';
 
 export function normalizedPath(path: string) {
   try {
@@ -28,6 +29,12 @@ export async function onRequest(context: { request: Request; env: GatewayEnv; ne
     const staff = path === '/admin' || path.startsWith('/admin/') || path === '/api/admin' || path.startsWith('/api/admin/');
     const authentication = path === '/api/auth' || path.startsWith('/api/auth/') || path === '/login' || path.startsWith('/login/');
     if (env.ENVIRONMENT === 'preview') await verifyAccess(request, env, undefined, !staff && !authentication);
+    if (env.STAFF_AUTH_MODE === 'disabled') {
+      // Production revision/branch aliases can share production bindings. Keep
+      // them unavailable until preview protection is configured separately.
+      if (env.ENVIRONMENT === 'production') validateStaffHost(request, env);
+      if (staff || authentication) throw new GatewayError(503, 'STAFF_NOT_CONFIGURED', 'Staff sign-in has not been connected. The public website is available.');
+    }
     if (path.startsWith('/api/')) return await handleGateway(request, env);
     if (staff) {
       if (env.STAFF_AUTH_MODE === 'access') await verifyAccess(request, env);
@@ -58,6 +65,8 @@ export async function onRequest(context: { request: Request; env: GatewayEnv; ne
     }
     return await context.next();
   } catch (error) {
-    return !apiRequest && request.headers.get('Accept')?.includes('text/html') ? pageError(error) : failure(error);
+    const response = !apiRequest && request.headers.get('Accept')?.includes('text/html') ? await pageError(error) : failure(error);
+    if (env.STAFF_AUTH_MODE === 'disabled') response.headers.set('X-WO-Staff-Mode', 'disabled');
+    return response;
   }
 }
