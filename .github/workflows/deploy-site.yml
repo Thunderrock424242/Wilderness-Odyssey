@@ -13,7 +13,8 @@ permissions:
 env:
   ASTRO_TELEMETRY_DISABLED: '1'
   WRANGLER_SEND_METRICS: 'false'
-  # Nonempty GitHub variables override config/deployment.jsonc.
+  # Nonempty GitHub variables override config/deployment.jsonc, except an
+  # explicit disabled staff mode in the file cannot be re-enabled by CI vars.
   SITE_URL: ${{ vars.SITE_URL }}
   DEPLOY_ENVIRONMENT: ${{ startsWith(github.ref, 'refs/heads/preview/') && 'preview' || 'production' }}
 

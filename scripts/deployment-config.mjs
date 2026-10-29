@@ -69,7 +69,13 @@ export function readDeploymentSettings({ env = process.env, environment = deploy
   }
   if (errors.length) throw configurationError(errors);
   const selected = { ...defaults, ...config.shared, ...config[environment] };
-  for (const name of Object.keys(defaults)) selected[name] = env[name]?.trim() || selected[name].trim();
+  for (const name of Object.keys(defaults)) {
+    const fileValue = selected[name].trim();
+    // Explicitly disabled staff access cannot be re-enabled by stale CI vars.
+    selected[name] = name === 'STAFF_AUTH_MODE' && fileValue === 'disabled'
+      ? fileValue
+      : env[name]?.trim() || fileValue;
+  }
   return selected;
 }
 

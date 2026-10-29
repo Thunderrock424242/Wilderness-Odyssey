@@ -5,7 +5,8 @@
   // PUBLIC WEBSITE: only SITE_URL and CLOUDFLARE_PAGES_PROJECT are required.
   // Leave the backend/Access settings blank while STAFF_AUTH_MODE is disabled.
   // Order: shared -> production/preview -> nonempty environment variables.
-  // Existing GitHub variables override this file. Remove them to use it alone.
+  // Existing GitHub variables override values EXCEPT an explicit disabled staff
+  // mode: edit this file to enable staff; old GitHub variables cannot enable it.
   "shared": {
     // Your canonical public website origin, e.g. https://www.example.com
     // No path, credentials, port, query, or fragment. Blank = local builds only.

@@ -24,6 +24,8 @@ Keep root paths, redirects, deployment enablement, protected-environment approva
 
 ## Progress
 
+- Follow-up: reproduced the owner's four missing-integration errors by supplying a stale `STAFF_AUTH_MODE=discord` environment override. Explicitly disabled staff mode in the selected file configuration now takes precedence over environment attempts to enable it. Other overrides and deliberate environment-section mode choices retain their existing behavior; preview protection remains mandatory. Regression tests cover stale Discord/Access overrides through both the checker and Pages preparation, plus environment selection and protected previews.
+
 - Regression tests failed before implementation; 88 focused tests pass. `npm run verify` passed clean type/content checks, all 180 unit tests, production build, browser-bundle checks, and generated-site link validation. `npm run test:e2e` passed all 75 browser tests, including disabled login/authentication, protected staff routes, root/legacy routing, mobile, keyboard behavior, and console-error assertions.
 - Type generation and runtime acceptance tests exclude local `.env` files so unrelated bot settings cannot alter the default public-only template or generated website bindings. Ordinary developer previews retain their existing local configuration behavior.
 - Regenerated binding types now contain only the website's configured fields. Independent review found no actionable defects. Production configuration validation succeeds for the owner's Pages URL/project, with backend/Access settings blank. No live deployment, GitHub variable, or Cloudflare policy was changed.

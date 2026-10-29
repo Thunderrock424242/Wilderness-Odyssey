@@ -129,6 +129,38 @@ describe('editable deployment configuration', () => {
     expect(vars).toMatchObject({ ENVIRONMENT: 'production', STAFF_AUTH_MODE: 'disabled', ALLOWED_HOSTS: 'site.example.com,test-site.pages.dev', KINETIC_ADMIN_ORIGIN: '', PUBLIC_STATUS_URL: '' });
   });
 
+  it.each(['discord', 'access'])(
+    'keeps explicitly disabled staff off when a stale environment override selects %s', mode => {
+      configure({ SITE_URL: 'https://site.example.com', CLOUDFLARE_PAGES_PROJECT: 'test-site', STAFF_AUTH_MODE: ' disabled ' });
+      const extraEnv = { DEPLOY_ENVIRONMENT: 'production', STAFF_AUTH_MODE: mode };
+      const checked = run('scripts/check-deployment-config.mjs', extraEnv);
+      expect(checked.status, checked.stderr).toBe(0);
+      expect(checked.stdout).toContain('Staff access is disabled');
+      const prepared = run('scripts/configure-pages.mjs', extraEnv);
+      expect(prepared.status, prepared.stderr).toBe(0);
+      const vars = JSON.parse(readFileSync(join(directory, 'wrangler.jsonc'), 'utf8')).env.production.vars;
+      expect(vars.STAFF_AUTH_MODE).toBe('disabled');
+      expect(vars.KINETIC_ADMIN_ORIGIN).toBe('');
+    },
+  );
+
+  it('permits an explicit environment-section choice to enable staff after shared defaults disable it', () => {
+    configure({ ...settings, STAFF_AUTH_MODE: 'disabled' }, { STAFF_AUTH_MODE: 'discord' });
+    const result = load('readDeploymentSettings({ env: {} })');
+    expect(result.status, result.stderr).toBe(0);
+    expect(JSON.parse(result.stdout).STAFF_AUTH_MODE).toBe('discord');
+  });
+
+  it('keeps previews protected when stale environment settings try to enable disabled staff', () => {
+    configure({ SITE_URL: 'https://site.example.com', CLOUDFLARE_PAGES_PROJECT: 'test-site', STAFF_AUTH_MODE: 'disabled' });
+    const result = run('scripts/check-deployment-config.mjs', { DEPLOY_ENVIRONMENT: 'preview', STAFF_AUTH_MODE: 'discord' });
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain('ACCESS_TEAM_DOMAIN');
+    expect(result.stderr).toContain('ACCESS_AUDIENCE');
+    expect(result.stderr).not.toContain('KINETIC_ADMIN_ORIGIN:');
+    expect(result.stderr).not.toContain('DISCORD_GUILD_ID:');
+  });
+
   it('clears unused administrative settings when preparing disabled mode', () => {
     configure({ ...settings, STAFF_AUTH_MODE: 'disabled' });
     const result = run('scripts/configure-pages.mjs', { DEPLOY_ENVIRONMENT: 'production' });
