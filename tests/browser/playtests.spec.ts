@@ -48,7 +48,10 @@ test('collection distinguishes waiting, acknowledged recording and stop requeste
   await page.getByRole('button', { name: 'Open Autumn playtest', exact: true }).click(); await page.getByRole('button', { name: 'History for Alex', exact: true }).click();
   await expect(page.locator('[data-observed-state]').last()).toHaveText('Recording');
   const toggle = page.getByRole('switch', { name: 'Collect playtest diagnostics', exact: true });
-  await toggle.focus(); await page.keyboard.press('Space'); await page.keyboard.press('Space');
+  // History can render before its request releases the write controls.
+  await expect(toggle).toBeEnabled();
+  await toggle.focus(); await expect(toggle).toBeFocused();
+  await page.keyboard.press('Space'); await page.keyboard.press('Space');
   await expect(toggle).not.toBeChecked(); expect(state.writes).toBe(1);
   await expect(page.locator('[data-observed-state]').first()).toHaveText('Stop requested');
   await page.clock.fastForward(61000); await expect(page.locator('[data-observed-state]').first()).toHaveText('Stopped');
