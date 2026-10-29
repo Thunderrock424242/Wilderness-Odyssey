@@ -13,6 +13,7 @@ pnpm-debug.log*
 data/*.sqlite
 data/*.sqlite-*
 data/*.db
+/data/cloudflared/
 /.npm-cache/
 /.wrangler/
 /test-results/playtests-tester-invitatio-a6346-nt-without-a-gated-download-ui/invitation-desktop.png

@@ -18,4 +18,12 @@ if (build.status !== 0) {
   process.exit(build.status || 1);
 }
 
+const { logger } = require('./dist/utils/logger.js');
+const { startCloudflareTunnel } = require('./dist/services/cloudflareTunnel.js');
+const tunnel = startCloudflareTunnel({ root: __dirname, env: process.env, logger });
+// Register before the bot's own shutdown handlers, which exit synchronously.
+process.once('SIGINT', () => tunnel.stop());
+process.once('SIGTERM', () => tunnel.stop());
+process.once('exit', () => tunnel.stop(true));
+
 require('./dist/index.js');
