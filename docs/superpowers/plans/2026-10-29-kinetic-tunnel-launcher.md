@@ -39,11 +39,11 @@
 - Produces: `ensureCloudflaredBinary(options: { root: string; platform: NodeJS.Platform; arch: string; signal: AbortSignal; fetcher?: typeof fetch }): Promise<string>`.
 - Returns a verified executable path inside the ignored application data cache.
 
-- [ ] Establish the bot checkout's baseline with `npm ci`, `npm run check`, `npm test` and `npm run build`; preserve unrelated changes.
-- [ ] Add failing tests for a valid cached binary, a modified cache entry, a checksum mismatch, a truncated/oversized response, timeout/cancellation and unsupported platform/architecture. Use temporary directories and synthetic HTTP responses; do not execute downloaded software in unit tests.
-- [ ] Run the focused tests and confirm that they fail because the installer is absent.
-- [ ] Implement the installer for Linux x64 and arm64. Pin official release URLs and the vendor-published SHA-256 values for 2026.10.6 after checking the release metadata. Bound each download to 60 seconds and 100 MiB, verify before atomic installation, and remove incomplete downloads. Revalidate cached content before execution. Reject platform/architecture values outside the explicit mapping.
-- [ ] Run the focused tests and require all cases to pass.
+- [x] Establish the bot checkout's baseline with `npm ci`, `npm run check`, `npm test` and `npm run build`; preserve unrelated changes.
+- [x] Add failing tests for a valid cached binary, a modified cache entry, a checksum mismatch, a truncated/oversized response, timeout/cancellation and unsupported platform/architecture. Use temporary directories and synthetic HTTP responses; do not execute downloaded software in unit tests.
+- [x] Run the focused tests and confirm that they fail because the installer is absent.
+- [x] Implement the installer for Linux x64 and arm64. Pin official release URLs and the vendor-published SHA-256 values for 2026.10.6 after checking the release metadata. Bound each download to 60 seconds and 100 MiB, verify before atomic installation, and remove incomplete downloads. Revalidate cached content before execution. Reject platform/architecture values outside the explicit mapping.
+- [x] Run the focused tests and require all cases to pass.
 
 ## Task 2: Optional connector lifetime and launcher integration
 
@@ -58,13 +58,14 @@
 - Produces: `startCloudflareTunnel(options: { root: string; env: NodeJS.ProcessEnv }): { stop(): void }` with nonblocking startup and injected process/network boundaries for tests as needed.
 - The launcher calls this service after a successful build, registers shutdown cleanup and loads the existing compiled bot. Optional connector setup must not delay loading the bot on a network request.
 
-- [ ] Add failing tests for disabled operation, missing token, safe child-process arguments/environment, connector spawn/exit failures, token redaction across output chunks, shutdown during installation, and child termination on shutdown. Include a launcher regression check that a failed build does not load the bot and a connector failure does not prevent bot startup.
-- [ ] Run the focused tests and confirm that they fail because optional connector support is absent.
-- [ ] Implement startup with fixed connector arguments, automatic updates disabled and QUIC selected. Pass only the credential and necessary operating environment to the connector; do not inherit Discord, Access or backend secrets. Suppress or redact token-bearing output before it reaches the logger. Report connector failure safely and leave the bot running; use the connector's documented bounded connection retries rather than adding an unlimited supervisor restart loop.
-- [ ] Implement idempotent shutdown: cancel installation, prevent a late spawn, terminate a running child and clean up listeners/timers. Preserve the bot's existing graceful-shutdown handlers.
-- [ ] Document the optional settings and deployment procedure using the existing Main File. Record the non-secret tunnel name `wilderness-odyssey-bot` and ID `2e826da1-bd4f-4521-80d2-7469050aae7f`; the user enters the token directly on Kinetic. Explain that creating the tunnel alone does not connect it or enable website login.
-- [ ] Run focused tests, then `npm run check`, `npm test`, `npm run build` and `git diff --check`. Review the diff for secrets and startup regressions.
-- [ ] Make the validated bot-branch change available for review before a hosted restart. Confirm a real Kinetic connector appears healthy in Cloudflare before preparing the gateway Worker or changing the HTTP bind address.
+- [x] Add failing tests for disabled operation, missing token, safe child-process arguments/environment, connector spawn/exit failures, token redaction across output chunks, shutdown during installation, and child termination on shutdown. Include a launcher regression check that a failed build does not load the bot and a connector failure does not prevent bot startup.
+- [x] Run the focused tests and confirm that they fail because optional connector support is absent.
+- [x] Implement startup with fixed connector arguments, automatic updates disabled and QUIC selected. Pass only the credential and necessary operating environment to the connector; do not inherit Discord, Access or backend secrets. Suppress or redact token-bearing output before it reaches the logger. Report connector failure safely and leave the bot running; use the connector's documented bounded connection retries rather than adding an unlimited supervisor restart loop.
+- [x] Implement idempotent shutdown: cancel installation, prevent a late spawn, terminate a running child and clean up listeners/timers. Preserve the bot's existing graceful-shutdown handlers.
+- [x] Document the optional settings and deployment procedure using the existing Main File. Record the non-secret tunnel name `wilderness-odyssey-bot` and ID `2e826da1-bd4f-4521-80d2-7469050aae7f`; the user enters the token directly on Kinetic. Explain that creating the tunnel alone does not connect it or enable website login.
+- [x] Run focused tests, then `npm run check`, `npm test`, `npm run build` and `git diff --check`. Review the diff for secrets and startup regressions.
+- [x] Make the validated bot-branch change available for independent review before a hosted restart.
+- [ ] Deploy the reviewed change and confirm a real Kinetic connector appears healthy in Cloudflare before preparing the gateway Worker or changing the HTTP bind address.
 
 ## Separate gateway work after the connector is healthy
 

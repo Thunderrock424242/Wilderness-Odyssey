@@ -30,7 +30,7 @@ CLOUDFLARED_TUNNEL_TOKEN=
 
 After the second `=`, paste only the full tunnel token from Cloudflare, not the `cloudflared service install` command. Do not put the token in Git, a screenshot, chat, the website's deployment JSON or Additional Arguments. Preserve all other existing settings.
 
-Restart the bot through Kinetic's normal controls. On the first enabled start, the connector downloads the official `cloudflared` **2026.10.6** binary for Linux x64 or arm64, checks its pinned SHA-256 digest and caches it under ignored `data/cloudflared/`. Later starts verify the cached binary before using it. Each download is limited to 60 seconds and 100 MiB. Automatic native updates are disabled; updating the release requires a reviewed manifest change.
+Restart the bot through Kinetic's normal controls. On the first enabled start, the connector downloads the official `cloudflared` **2026.10.6** binary for Linux x64 or arm64, checks its pinned SHA-256 digest and caches it under ignored `data/cloudflared/`. Later starts verify the cached binary before using it. Each download is limited to 60 seconds and 100 MiB. Startup reclaims installer-owned partial files left by exited processes, or older than five minutes, while preserving recent files owned by a running process. Automatic native updates are disabled; updating the release requires a reviewed manifest change.
 
 The token is supplied to the child through `TUNNEL_TOKEN`, not process arguments. The connector does not inherit Discord, backend or Access credentials. Output is bounded and the known token is redacted, including when split across chunks.
 

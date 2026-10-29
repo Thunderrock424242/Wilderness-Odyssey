@@ -1,6 +1,6 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { createReadStream } from 'node:fs';
-import { chmod, lstat, mkdir, open, rename, rm } from 'node:fs/promises';
+import { chmod, lstat, mkdir, open, readdir, rename, rm } from 'node:fs/promises';
 import path from 'node:path';
 
 export interface CloudflaredRelease {
@@ -17,6 +17,30 @@ const RELEASE: CloudflaredRelease = {
   },
 };
 const MAX_BYTES = 100 * 1024 * 1024;
+
+async function reclaimAbandonedDownloads(directory: string, signal: AbortSignal): Promise<void> {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    signal.throwIfAborted();
+    const owner = /^cloudflared-linux-(?:amd64|arm64)\.(\d{1,10})\.[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}\.part$/.exec(entry.name);
+    if (!entry.isFile() || !owner || Number(owner[1]) < 1) continue;
+    const filename = path.join(directory, entry.name);
+    try {
+      const stat = await lstat(filename);
+      if (!stat.isFile()) continue;
+      // A valid download is bounded to 60 s. Age also handles OS PID reuse.
+      let abandoned = Date.now() - stat.mtimeMs > 5 * 60 * 1000;
+      if (!abandoned) {
+        try { process.kill(Number(owner[1]), 0); }
+        catch (error) {
+          abandoned = error instanceof Error && 'code' in error && error.code === 'ESRCH';
+        }
+      }
+      if (abandoned) await rm(filename, { force: true });
+    } catch (error) {
+      if (!(error instanceof Error && 'code' in error && error.code === 'ENOENT')) throw error;
+    }
+  }
+}
 
 export async function ensureCloudflaredBinary(options: {
   root: string;
@@ -37,6 +61,7 @@ export async function ensureCloudflaredBinary(options: {
   const directory = path.join(options.root, 'data', 'cloudflared', release.version);
   const binary = path.join(directory, asset.name);
   await mkdir(directory, { recursive: true });
+  await reclaimAbandonedDownloads(directory, signal);
   try {
     const stat = await lstat(binary);
     if (stat.isFile() && stat.size === asset.size) {
@@ -52,7 +77,7 @@ export async function ensureCloudflaredBinary(options: {
     if (!(error instanceof Error && 'code' in error && error.code === 'ENOENT')) throw error;
   }
 
-  const temporary = path.join(directory, `${asset.name}.${randomUUID()}.part`);
+  const temporary = path.join(directory, `${asset.name}.${process.pid}.${randomUUID()}.part`);
   let response: Response | undefined;
   let reader: ReadableStreamDefaultReader<Uint8Array> | undefined;
   try {
