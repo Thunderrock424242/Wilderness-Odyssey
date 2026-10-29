@@ -32,12 +32,12 @@
     // Registered Discord callback, e.g.
     // https://www.example.com/api/auth/discord/callback
     // Must use SITE_URL's origin. Leave blank until enabling Discord mode.
-    "DISCORD_REDIRECT_URI": "",
+    "DISCORD_REDIRECT_URI": "https://wilderness-odyssey.pages.dev/api/auth/discord/callback",
 
     // Comma-separated staff hostnames, without https:// or paths.
     // Include your canonical host AND PROJECT.pages.dev. No wildcards.
     // Optional in disabled production; those two public hosts are added for you.
-    "ALLOWED_HOSTS": "",
+    "ALLOWED_HOSTS": "wilderness-odyssey.pages.dev",
 
     // Cloudflare Zero Trust team origin, e.g. https://TEAM.cloudflareaccess.com
     // Leave blank for public-only production. Required for connected staff modes

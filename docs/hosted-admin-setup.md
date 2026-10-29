@@ -14,9 +14,9 @@ On the **bot backend**, keep its existing `DISCORD_TOKEN`, `CLIENT_ID`, `GUILD_I
 CONNECTED_SERVICES_ENABLED=true
 CONNECTED_ADMIN_ENABLED=true
 CONNECTED_ENVIRONMENT=preview
-DASHBOARD_AUTH_MODE=discord
+STAFF_AUTH_MODE=discord
 DISCORD_CLIENT_SECRET=
-DASHBOARD_REDIRECT_URIS=https://YOUR-STAGING-HOST/api/auth/discord/callback
+DISCORD_REDIRECT_URI=https://YOUR-STAGING-HOST/api/auth/discord/callback
 DASHBOARD_MAIN_ORIGINS=https://YOUR-APPROVED-MAIN-GATEWAY
 DASHBOARD_ENCRYPTION_KEY=
 ACCESS_TEAM_DOMAIN=https://YOUR-TEAM.cloudflareaccess.com
@@ -24,7 +24,7 @@ BACKEND_ACCESS_AUDIENCE=
 GATEWAY_SERVICE_ID=
 ```
 
-`CLIENT_ID` is the Discord application ID. `DISCORD_CLIENT_ID` is an optional explicit override. Register the exact callback in the Discord Developer Portal. The bot must belong to `GUILD_ID` and be able to read guild members and roles. The backend checks current membership and Administrator permission through Discord on every website request; failed checks deny access. Its confidential OAuth flow uses an authenticated code exchange plus independent, single-use state and browser flow binding. See [Discord's authorization-code documentation](https://discord.com/developers/docs/topics/oauth2#authorization-code-grant).
+`CLIENT_ID` is the Discord application ID. The current bot configuration reads `STAFF_AUTH_MODE` and one exact `DISCORD_REDIRECT_URI`; do not substitute `DASHBOARD_AUTH_MODE` or `DASHBOARD_REDIRECT_URIS`. Register the exact callback in the Discord Developer Portal. The bot must belong to `GUILD_ID` and be able to read guild members and roles. The backend checks current membership and Administrator permission through Discord on every website request; failed checks deny access. Its confidential OAuth flow uses an authenticated code exchange plus independent, single-use state and browser flow binding. See [Discord's authorization-code documentation](https://discord.com/developers/docs/topics/oauth2#authorization-code-grant).
 
 Generate the encryption key locally on the backend host:
 
