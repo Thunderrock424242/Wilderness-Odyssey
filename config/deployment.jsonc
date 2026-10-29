@@ -21,7 +21,7 @@
     // Your Discord SERVER ID, matching the backend's GUILD_ID.
     // Discord -> Settings -> Advanced -> Developer Mode. Then right-click
     // your server -> Copy Server ID. Keep the 17-22 digits inside quotes.
-    "DISCORD_GUILD_ID": ""
+    "DISCORD_GUILD_ID": "1165859896407887902"
   },
 
   // LIVE WEBSITE — use approved production services here.
