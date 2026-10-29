@@ -15,3 +15,7 @@ data/*.sqlite-*
 data/*.db
 /.npm-cache/
 /.wrangler/
+/test-results/playtests-tester-invitatio-a6346-nt-without-a-gated-download-ui/invitation-desktop.png
+/test-results/playtests-tester-invitatio-a6346-nt-without-a-gated-download-ui/invitation-mobile.png
+/test-results/playtests-private-invitati-930e8-upports-keyboard-and-mobile-ui/playtests-desktop.png
+/test-results/playtests-private-invitati-930e8-upports-keyboard-and-mobile-ui/playtests-mobile.png
