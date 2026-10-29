@@ -6,7 +6,7 @@ Users run `/dashboard enable` in the Wilderness Odyssey server. The bot verifies
 
 ## Configuration
 
-Configure each approved Pages environment separately:
+Edit [`config/deployment.jsonc`](../config/deployment.jsonc) for each approved Pages environment. Run `npm run config:check -- --environment production` (or `preview`) before deployment; see [editable settings](deployment-settings.md) for precedence and instructions for finding your Discord server ID. Runtime secrets remain in Cloudflare:
 
 | Setting | Value |
 | --- | --- |
@@ -54,6 +54,6 @@ The browser session response adds `authMethod: 'discord'` and an origin- and ses
 
 The login page explains enrollment and displays safe cancellation, expiry, denial, outage and logout messages. Staff HTML and authentication responses are not cached. Staff APIs return safe denials; staff page denials redirect to login. The local `/admin/content/` editor remains loopback-only and independent of Discord enrollment.
 
-The workflow passes the three new non-secret settings to the configuration helper. Existing deployment enable and approval gates remain. No deployment or production policy change is included in the local work.
+The configuration helper reads non-secret settings from the editable file, with nonempty GitHub variables as optional overrides. Existing deployment enable and approval gates remain. No deployment or production policy change is included in the local work.
 
 Run `npm run verify` and `npm run test:e2e`. Automated tests use synthetic backend responses; real Discord login, role removal, self-revocation and queued-operation checks require staging. Give the bot's Codex chat the [implementation message](discord-admin-bot-codex-message.md).

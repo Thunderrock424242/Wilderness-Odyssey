@@ -2,18 +2,19 @@
 
 This replaces the earlier GitHub Pages deployment plan. Local implementation does not authorize deployment, DNS changes, or production operations.
 
-The website now supports Discord sessions. Configure `STAFF_AUTH_MODE=discord`, `DISCORD_GUILD_ID` matching the bot's `GUILD_ID`, and the exact HTTPS `DISCORD_REDIRECT_URI` ending in `/api/auth/discord/callback`. The deployment workflow passes these non-secret variables to its existing configuration helper. See [Discord authentication](discord-admin-auth.md) for the required backend implementation and staged transition. Existing production Access policies must remain until the replacement passes staging and their change is separately approved. Explicit `access` mode retains the previous human Access flow during that transition.
+The website now supports Discord sessions. Edit [`config/deployment.jsonc`](../config/deployment.jsonc): set `STAFF_AUTH_MODE` to `discord`, `DISCORD_GUILD_ID` to the bot's `GUILD_ID`, and `DISCORD_REDIRECT_URI` to the exact HTTPS callback ending in `/api/auth/discord/callback`. Comments explain each value; [editable deployment settings](deployment-settings.md) explains validation and precedence. Nonempty GitHub variables remain supported overrides. See [Discord authentication](discord-admin-auth.md) for the required backend implementation and staged transition. Existing production Access policies must remain until the replacement passes staging and their change is separately approved. Explicit `access` mode retains the previous human Access flow during that transition.
 
 ## Local commands
 
 - `npm ci`: install the lockfile.
+- `npm run config:check -- --environment production` (or `preview`): report missing or invalid non-secret deployment settings together, without building or deploying.
 - `npm run verify`: types, contracts/content tests, Astro build, compiled Pages Functions, generated links and draft exclusion.
 - `npm run test:e2e`: browser acceptance checks against the built Astro site plus the compiled local Pages runtime; install Chromium with `npx playwright install chromium` first.
 - `npm run preview:pages -- --port 8788`: loopback-only Pages runtime, including authentication middleware. With no configuration, public status returns 503 and staff routes deny access.
 - `npm run preview -- --port 4173`: static UI preview only. This does not execute authentication Functions. Never expose it to a network.
 - `npm run admin`: existing loopback repository editor at `http://127.0.0.1:4321/admin/content/`.
 
-Default canonical URL is local-only. Set the non-secret `SITE_URL` to the approved HTTPS website origin for a release build. The Cloudflare site uses root paths. Legacy `/Wilderness-Odyssey/*` paths redirect on the new host; legacy HTML entry points remain present. Redirecting the old github.io host requires a separately approved old-site update.
+Default canonical URL is local-only. Set `shared.SITE_URL` in `config/deployment.jsonc` to the approved HTTPS website origin for a release build, or use a nonempty `SITE_URL` environment override. The Cloudflare site uses root paths. Legacy `/Wilderness-Odyssey/*` paths redirect on the new host; legacy HTML entry points remain present. Redirecting the old github.io host requires a separately approved old-site update.
 
 ## One deployment owner
 
@@ -27,15 +28,15 @@ Deployments remain disabled unless the repository variable `ENABLE_PAGES_DEPLOYM
 
 Create `cloudflare-production` and `cloudflare-preview` environments with required reviewers and deployment branch restrictions. Production permits only `website`; preview permits trusted `preview/**` branches. Prevent self-review when available. Protect website merges and review changes to workflow, gateway, and deploy scripts. If the GitHub plan does not support the required approval protection, leave deployment disabled until an equivalent approval process is agreed.
 
-The deploy job downloads the tested artifact, checks the branch has not advanced, installs an isolated pinned Wrangler, and publishes after approval. Application dependencies/build scripts never receive the deployment token. Environment configuration is prepared from non-secret GitHub variables. The workflow publishes no public Lighthouse reports or authenticated screenshots.
+The deploy job checks the editable settings, downloads the tested artifact, checks the branch has not advanced, installs an isolated pinned Wrangler, and publishes after approval. Application dependencies/build scripts never receive the deployment token. Environment configuration is prepared from `config/deployment.jsonc`, with nonempty GitHub variables as overrides. The workflow publishes no public Lighthouse reports or authenticated screenshots.
 
 GitHub environment secrets:
 - `CLOUDFLARE_ACCOUNT_ID`
 - `CLOUDFLARE_API_TOKEN`: account-scoped Pages Edit, no DNS privileges. Do not assume this token is project-scoped.
 - `PREVIEW_ACCESS_CLIENT_ID`, `PREVIEW_ACCESS_CLIENT_SECRET` for read-only checks of protected deployment URLs. Both GitHub environments need these verifier secrets because production deployments also have generated preview URLs. This identity cannot access staff records.
 
-Repository variable: `SITE_URL` for the build's canonical public URL. It must match the environment value; deployment preparation rejects an artifact built for a different origin.
-Environment variables:
+Set `shared.SITE_URL` in the editable file for the build's canonical public URL. An optional repository variable `SITE_URL` overrides it. The effective build and deployment values must match; deployment preparation rejects an artifact built for a different origin.
+Editable settings (also supported as optional GitHub environment-variable overrides):
 - `CLOUDFLARE_PAGES_PROJECT`
 - `SITE_URL`: approved production verification origin
 - `ALLOWED_HOSTS`: comma-separated exact staff hostnames. Production must include canonical and production pages.dev hostnames. Preview may use `*.PROJECT.pages.dev`; that wildcard is accepted only in preview.
@@ -52,7 +53,7 @@ Runtime secrets go directly into the corresponding Pages production or preview e
 
 Use distinct preview and production runtime credentials and audience values. Preview must point to a staging backend with synthetic test records, not production moderation data. Pages preview bindings are shared by preview branches. Only reviewed trusted code may be deployed with those bindings.
 
-`wrangler.jsonc` is intentionally unconfigured in the repository. The deployment helper fills only the selected environment's non-secret values; runtime secrets remain in Cloudflare. Local `.dev.vars` is ignored. `.dev.vars.example` lists required secret names without values.
+`wrangler.jsonc` is intentionally unconfigured in the repository. Maintain settings in `config/deployment.jsonc`; the deployment helper validates and fills only the selected environment's non-secret values. Runtime secrets remain in Cloudflare. Local `.dev.vars` is ignored. `.dev.vars.example` lists required secret names without values.
 
 ## Access protection before the first preview
 

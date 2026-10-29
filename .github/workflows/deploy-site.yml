@@ -13,7 +13,9 @@ permissions:
 env:
   ASTRO_TELEMETRY_DISABLED: '1'
   WRANGLER_SEND_METRICS: 'false'
-  SITE_URL: ${{ vars.SITE_URL || 'http://localhost:4321' }}
+  # Nonempty GitHub variables override config/deployment.jsonc.
+  SITE_URL: ${{ vars.SITE_URL }}
+  DEPLOY_ENVIRONMENT: ${{ startsWith(github.ref, 'refs/heads/preview/') && 'preview' || 'production' }}
 
 jobs:
   build:
@@ -83,8 +85,6 @@ jobs:
     env:
       DEPLOY_BRANCH: ${{ github.ref_name }}
       DEPLOY_ENVIRONMENT: ${{ github.ref == 'refs/heads/website' && 'production' || 'preview' }}
-      CLOUDFLARE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT }}
-      SITE_URL: ${{ vars.SITE_URL }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
@@ -93,6 +93,21 @@ jobs:
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 24
+      - name: Check editable deployment settings
+        run: node scripts/check-deployment-config.mjs
+        # Resolve overrides at step scope, after protected-environment vars load.
+        env:
+          CLOUDFLARE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT }}
+          SITE_URL: ${{ vars.SITE_URL }}
+          ALLOWED_HOSTS: ${{ vars.ALLOWED_HOSTS }}
+          STAFF_AUTH_MODE: ${{ vars.STAFF_AUTH_MODE }}
+          DISCORD_REDIRECT_URI: ${{ vars.DISCORD_REDIRECT_URI }}
+          DISCORD_GUILD_ID: ${{ vars.DISCORD_GUILD_ID }}
+          ACCESS_TEAM_DOMAIN: ${{ vars.ACCESS_TEAM_DOMAIN }}
+          ACCESS_AUDIENCE: ${{ vars.ACCESS_AUDIENCE }}
+          PUBLIC_STATUS_URL: ${{ vars.PUBLIC_STATUS_URL }}
+          KINETIC_ADMIN_ORIGIN: ${{ vars.KINETIC_ADMIN_ORIGIN }}
+          PREVIEW_VERIFY_SERVICE_ID: ${{ vars.PREVIEW_VERIFY_SERVICE_ID }}
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: pages-${{ github.sha }}
@@ -108,6 +123,8 @@ jobs:
       - name: Prepare environment configuration
         run: node scripts/configure-pages.mjs
         env:
+          CLOUDFLARE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT }}
+          SITE_URL: ${{ vars.SITE_URL }}
           ALLOWED_HOSTS: ${{ vars.ALLOWED_HOSTS }}
           STAFF_AUTH_MODE: ${{ vars.STAFF_AUTH_MODE }}
           DISCORD_REDIRECT_URI: ${{ vars.DISCORD_REDIRECT_URI }}
@@ -126,7 +143,17 @@ jobs:
         id: verify
         run: node scripts/verify-deployment.mjs
         env:
+          CLOUDFLARE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT }}
+          SITE_URL: ${{ vars.SITE_URL }}
+          ALLOWED_HOSTS: ${{ vars.ALLOWED_HOSTS }}
           STAFF_AUTH_MODE: ${{ vars.STAFF_AUTH_MODE }}
+          DISCORD_REDIRECT_URI: ${{ vars.DISCORD_REDIRECT_URI }}
+          DISCORD_GUILD_ID: ${{ vars.DISCORD_GUILD_ID }}
+          ACCESS_TEAM_DOMAIN: ${{ vars.ACCESS_TEAM_DOMAIN }}
+          ACCESS_AUDIENCE: ${{ vars.ACCESS_AUDIENCE }}
+          PUBLIC_STATUS_URL: ${{ vars.PUBLIC_STATUS_URL }}
+          KINETIC_ADMIN_ORIGIN: ${{ vars.KINETIC_ADMIN_ORIGIN }}
+          PREVIEW_VERIFY_SERVICE_ID: ${{ vars.PREVIEW_VERIFY_SERVICE_ID }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           PREVIEW_ACCESS_CLIENT_ID: ${{ secrets.PREVIEW_ACCESS_CLIENT_ID }}

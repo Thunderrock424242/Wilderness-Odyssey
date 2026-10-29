@@ -34,7 +34,7 @@ node -e "process.stdout.write(require('node:crypto').randomBytes(32).toString('b
 
 Store the output privately as `DASHBOARD_ENCRYPTION_KEY`. It encrypts managed read/write credentials with AES-256-GCM and binds them to their environment and scope. Preserve this key separately from database backups. Missing or incorrect keys do not erase credentials; affected connections become unavailable.
 
-On **Cloudflare Pages**, configure existing runtime machine secrets `KINETIC_ACCESS_CLIENT_ID`, `KINETIC_ACCESS_CLIENT_SECRET`, and `CSRF_SECRET`, plus these non-secret runtime values:
+On **Cloudflare Pages**, configure existing runtime machine secrets `KINETIC_ACCESS_CLIENT_ID`, `KINETIC_ACCESS_CLIENT_SECRET`, and `CSRF_SECRET`. Edit [`config/deployment.jsonc`](../config/deployment.jsonc) for the non-secret values below; the deployment helper writes them to the selected Pages environment. See [editable deployment settings](deployment-settings.md) for validation and override rules. `ENVIRONMENT` is selected automatically by the workflow:
 
 | Variable | Value |
 | --- | --- |

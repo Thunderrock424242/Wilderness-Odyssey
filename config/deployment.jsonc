@@ -1,0 +1,75 @@
+{
+  // WEBSITE DEPLOYMENT SETTINGS — edit this file, then commit your changes.
+  // Only non-secret values belong here. Never add tokens, passwords, or keys.
+  // Check your settings: npm run config:check -- --environment production
+  // Blank values need filling in before deployment; local builds still work.
+  // Order: shared -> production/preview -> nonempty environment variables.
+  // Existing GitHub variables override this file. Remove them to use it alone.
+  "shared": {
+    // Your canonical public website origin, e.g. https://www.example.com
+    // No path, credentials, port, query, or fragment. Blank = local builds only.
+    "SITE_URL": "",
+
+    // Cloudflare dashboard -> Workers & Pages -> your Pages project's name.
+    // Use its exact lowercase name, e.g. wilderness-odyssey.
+    "CLOUDFLARE_PAGES_PROJECT": "",
+
+    // "discord" for Discord sign-in; "access" for the existing Access flow.
+    // Changing this setting does not configure either provider for you.
+    "STAFF_AUTH_MODE": "discord",
+
+    // Your Discord SERVER ID, matching the backend's GUILD_ID.
+    // Discord -> Settings -> Advanced -> Developer Mode. Then right-click
+    // your server -> Copy Server ID. Keep the 17-22 digits inside quotes.
+    "DISCORD_GUILD_ID": ""
+  },
+
+  // LIVE WEBSITE — use approved production services here.
+  "production": {
+    // Registered Discord callback, e.g.
+    // https://www.example.com/api/auth/discord/callback
+    // Must use SITE_URL's origin. Required only in Discord mode.
+    "DISCORD_REDIRECT_URI": "",
+
+    // Comma-separated staff hostnames, without https:// or paths.
+    // Include your canonical host AND PROJECT.pages.dev. No wildcards.
+    "ALLOWED_HOSTS": "",
+
+    // Cloudflare Zero Trust team origin, e.g. https://TEAM.cloudflareaccess.com
+    // Still needed for protection of deployment preview URLs in Discord mode.
+    "ACCESS_TEAM_DOMAIN": "",
+
+    // Access application -> Overview -> Application Audience (AUD) Tag.
+    "ACCESS_AUDIENCE": "",
+
+    // Sanitized public server-status HTTPS endpoint, including its path.
+    // Do not use an administrative endpoint or add credentials to this URL.
+    "PUBLIC_STATUS_URL": "",
+
+    // Approved HTTPS backend origin only, e.g. https://backend.example.com
+    // No /v1 path, credentials, port, query, or fragment.
+    "KINETIC_ADMIN_ORIGIN": ""
+  },
+
+  // STAGING WEBSITE — use staging services and synthetic data here.
+  // Add any shared key here (e.g. DISCORD_GUILD_ID) to override it for preview.
+  "preview": {
+    // The exact registered staging Discord callback; same path as production.
+    "DISCORD_REDIRECT_URI": "",
+
+    // Exact staging hostnames, or *.PROJECT.pages.dev for preview branches.
+    "ALLOWED_HOSTS": "",
+
+    // Your staging Access team origin and application audience.
+    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_AUDIENCE": "",
+
+    // Staging status endpoint and approved backend origin.
+    "PUBLIC_STATUS_URL": "",
+    "KINETIC_ADMIN_ORIGIN": "",
+
+    // Preview verifier service token's exact signed common_name identity.
+    // This is an identity, NOT its client secret. Required only for preview.
+    "PREVIEW_VERIFY_SERVICE_ID": ""
+  }
+}

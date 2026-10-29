@@ -1,8 +1,9 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { getSiteUrl } from './deployment-config.mjs';
 const commit = process.env.GITHUB_SHA || execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
-writeFileSync('dist/revision.json', JSON.stringify({ commit, siteOrigin: new URL(process.env.SITE_URL || 'http://localhost:4321').origin, builtAt: new Date().toISOString() }) + '\n');
+writeFileSync('dist/revision.json', JSON.stringify({ commit, siteOrigin: new URL(getSiteUrl()).origin, builtAt: new Date().toISOString() }) + '\n');
 execFileSync(process.execPath, ['node_modules/wrangler/bin/wrangler.js', 'pages', 'functions', 'build', 'functions', '--outdir', 'dist/_worker.js', '--output-routes-path', 'dist/_routes.json'], { stdio: 'inherit', env: { ...process.env, WRANGLER_SEND_METRICS: 'false' } });
 for (const file of readdirSync('dist/_astro')) {
   if (!file.endsWith('.js')) continue;

@@ -1,5 +1,6 @@
 import { appendFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
+import { deploymentEnvironment, requireDeploymentSettings } from './deployment-config.mjs';
 
 function protectedResponse(response) {
   if ([401, 403].includes(response.status)) return true;
@@ -62,8 +63,9 @@ export function verificationTargets(deployment, project, environment, canonical)
   return [...targets].map(([origin, environment]) => ({ origin, environment }));
 }
 async function main() {
-  const { CLOUDFLARE_ACCOUNT_ID: account, CLOUDFLARE_API_TOKEN: token, CLOUDFLARE_PAGES_PROJECT: project, GITHUB_SHA: sha, DEPLOY_BRANCH: branch, DEPLOY_ENVIRONMENT: environment } = process.env;
-  const staffAuthMode = process.env.STAFF_AUTH_MODE || 'discord';
+  const { CLOUDFLARE_ACCOUNT_ID: account, CLOUDFLARE_API_TOKEN: token, GITHUB_SHA: sha, DEPLOY_BRANCH: branch } = process.env;
+  const environment = deploymentEnvironment();
+  const { CLOUDFLARE_PAGES_PROJECT: project, STAFF_AUTH_MODE: staffAuthMode, SITE_URL: siteUrl } = requireDeploymentSettings({ environment });
   if (!/^[a-f0-9]{32}$/.test(account ?? '') || !/^[a-z0-9-]+$/.test(project ?? '') || !/^[a-f0-9]{40}$/.test(sha ?? '') || !['production', 'preview'].includes(environment ?? '') || !token || !branch) throw new Error('Deployment verification configuration is incomplete.');
   const endpoint = 'https://api.cloudflare.com/client/v4/accounts/' + account + '/pages/projects/' + project + '/deployments';
   let deployment;
@@ -77,11 +79,11 @@ async function main() {
     await new Promise(resolve => setTimeout(resolve, 5000));
   }
   if (deployment?.latest_stage?.status !== 'success') throw new Error('Cloudflare did not confirm a successful deployment for this commit.');
-  const targets = verificationTargets(deployment, project, environment, process.env.SITE_URL);
+  const targets = verificationTargets(deployment, project, environment, siteUrl);
   const previewHeaders = { 'CF-Access-Client-Id': process.env.PREVIEW_ACCESS_CLIENT_ID || '', 'CF-Access-Client-Secret': process.env.PREVIEW_ACCESS_CLIENT_SECRET || '' };
   if (targets.some(target => target.environment === 'preview') && (!previewHeaders['CF-Access-Client-Id'] || !previewHeaders['CF-Access-Client-Secret'])) throw new Error('Preview verification credentials are required for deployment URLs.');
   for (const target of targets) await verifyPublishedSite(target.origin, sha, target.environment, target.environment === 'preview' ? previewHeaders : {}, fetch, staffAuthMode);
-  const publishedOrigin = environment === 'production' ? secureOrigin(process.env.SITE_URL) : secureOrigin(deployment.url);
+  const publishedOrigin = environment === 'production' ? secureOrigin(siteUrl) : secureOrigin(deployment.url);
   if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, 'deployment_url=' + publishedOrigin + '\n');
   console.log('Verified deployment revision, public pages, and protected staff routes.');
 }
