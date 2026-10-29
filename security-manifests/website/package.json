@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "admin": "tsx scripts/local-admin.ts",
+    "config:check": "node scripts/check-deployment-config.mjs",
     "dev": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro dev --host 127.0.0.1",
     "check": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check && tsc -p tsconfig.gateway.json --noEmit && node scripts/validate-content.mjs",
     "build": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro build && node scripts/build-pages.mjs",
