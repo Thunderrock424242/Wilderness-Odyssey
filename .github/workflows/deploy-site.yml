@@ -135,8 +135,11 @@ jobs:
           PUBLIC_STATUS_URL: ${{ vars.PUBLIC_STATUS_URL }}
           KINETIC_ADMIN_ORIGIN: ${{ vars.KINETIC_ADMIN_ORIGIN }}
           PREVIEW_VERIFY_SERVICE_ID: ${{ vars.PREVIEW_VERIFY_SERVICE_ID }}
+      - name: Stage tested artifact without application source
+        run: node scripts/stage-pages-upload.mjs "$RUNNER_TEMP/wo-pages-upload"
       - name: Publish tested artifact with Wrangler
-        run: node "$RUNNER_TEMP/wo-deployer/node_modules/wrangler/bin/wrangler.js" pages deploy dist --project-name "$CLOUDFLARE_PAGES_PROJECT" --branch "$DEPLOY_BRANCH" --commit-hash "$GITHUB_SHA"
+        working-directory: ${{ runner.temp }}/wo-pages-upload
+        run: node "$RUNNER_TEMP/wo-deployer/node_modules/wrangler/bin/wrangler.js" pages deploy dist --no-bundle --project-name "$CLOUDFLARE_PAGES_PROJECT" --branch "$DEPLOY_BRANCH" --commit-hash "$GITHUB_SHA"
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
