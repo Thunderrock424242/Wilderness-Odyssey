@@ -71,6 +71,8 @@ Hosted editing uses the signed-in staff session and the separate bot backend. Fo
 
 ## Creating content
 
+Story references: [Core Lore v1.0](docs/lore/WILDERNESS_ODYSSEY_CORE_LORE.md) is binding; [Expanded Lore v1.0](docs/lore/WILDERNESS_ODYSSEY_EXPANDED_LORE.md) separates established context from noncanonical concepts and open questions. Core takes precedence. Existing website copy still needs review; see the [website alignment report](docs/lore/website-alignment-v1.0.md) for conflicts and integration opportunities.
+
 Run `npm run new:post` or copy `templates/transmission.md`. Supported types: news, blog, devlog, patch, lore, announcement. Leave `draft: true` until the content is reviewed.
 
 The authoritative content schema is `src/content.config.ts`. Required fields are title, description, publishedAt, type, author, and tags. Optional fields include updatedAt, coverImage, featured, draft, version, relatedRoadmapItem, and galleryImages.
