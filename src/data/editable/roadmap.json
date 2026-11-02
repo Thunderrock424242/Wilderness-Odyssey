@@ -76,7 +76,7 @@
         "complete": false
       },
       {
-        "label": "Use bunkers and ruins to introduce cryo, Aether, the Blackout Archive, and Project Threshold through environmental clues.",
+        "label": "Use environmental clues to introduce Project Eden, Aether, and Reservoir-9 as distinct parts of preservation history.",
         "complete": false
       }
     ],
@@ -156,11 +156,11 @@
         "complete": false
       },
       {
-        "label": "Build Blackout Archive trails marked by the lizard and Oliver symbols.",
+        "label": "Develop historical records of Beal and Nathan without revealing their boarding outcome in early Earth content.",
         "complete": false
       },
       {
-        "label": "Distribute Project Threshold, The Siren Night, and Exodus Protocol clues across military and civilian structures.",
+        "label": "Distribute established collapse and evacuation history through environmental records without resolving open mysteries.",
         "complete": false
       },
       {
@@ -178,8 +178,8 @@
   {
     "id": "echo-earth-progression",
     "phase": "Phase A4",
-    "title": "Echo Earth and Anomaly Progression",
-    "description": "Meteor material, stabilization technology, and the damaged mirror world of Echo Earth will become a connected progression path that expands the mystery without replacing open-world survival.",
+    "title": "Three-World Reconnection",
+    "description": "Planned narrative work leads toward reliable communication and regulated scientific contact among Earth, Mars, and Echo Earth. Exploration and building continue after this milestone; broader physical travel remains later research.",
     "category": "Dimensions",
     "status": "Planned",
     "progress": 0,
@@ -188,34 +188,34 @@
     "milestone": "Later alpha",
     "dependencies": [
       "Stable overworld foundation and first-alpha feedback.",
-      "Gateway safety, return placement, and save migration tests.",
-      "Final balance for radiation, masks, rift materials, and stabilization tech."
+      "Safe unmanned testing and communication research using the single original dormant rift.",
+      "Separately reviewed research equipment and transit permissions; no additional lore-level rifts."
     ],
     "relatedTransmissions": [],
     "tasks": [
       {
-        "label": "Create meteor and rift materials with clear sources, risks, and uses.",
+        "label": "Develop research records about meteor-derived material without inventing its origin or exact biological mechanisms.",
         "complete": false
       },
       {
-        "label": "Connect Stabilizer Core and Rift Key progression to Project Threshold ruins.",
+        "label": "Connect recovered evacuation telemetry and original dimensional research to gradual communication research.",
         "complete": false
       },
       {
-        "label": "Build a first Echo Earth pass with familiar-but-wrong terrain, hazards, structures, and safe return logic.",
+        "label": "Develop communication with Echo Earth’s varied settlements while preserving local autonomy and initial physical-travel restrictions.",
         "complete": false
       },
       {
-        "label": "Add anomaly exposure and protection systems that reward preparation and adaptation.",
+        "label": "Keep any later limited transit subject to safe testing and authorization, without blocking continued survival play.",
         "complete": false
       }
     ],
     "exitConditions": [
-      "Players understand how to prepare for Echo Earth without receiving a checklist of spoilers.",
-      "Dimension rewards feed back into survival, exploration, and later rocket systems.",
-      "Anomaly danger is readable, tense, and recoverable rather than random punishment."
+      "Players understand the communication and research milestone without receiving a checklist of spoilers.",
+      "Earth, Mars, and Echo Earth reconnect through communication and controlled research without a hard ending.",
+      "Research preserves the world and does not imply unrestricted civilian travel."
     ],
-    "communitySignal": "Later testing will focus on gateway safety, progression clarity, hazard fairness, and reasons to return to Earth."
+    "communitySignal": "Future testing will focus on communication progression, research safety, and continued open-ended play. This track does not describe implemented gameplay."
   },
   {
     "id": "version-0-1-0-stabilization",

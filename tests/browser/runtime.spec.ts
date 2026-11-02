@@ -52,3 +52,19 @@ test('runtime preserves old URLs and does not publish its compiled worker', asyn
   expect(playtest.status()).toBe(301); expect(new URL(playtest.headers().location, 'http://127.0.0.1:8788').pathname).toBe('/playtest/');
   expect((await request.get('/_worker.js')).status()).toBe(404);
 });
+
+test('retired lore tag URLs redirect to the current archive', async ({ request }) => {
+  for (const [tag, target] of [
+    ['project-threshold', '/tags/the-fracture/'],
+    ['blackout-archive', '/tags/recovered-history/'],
+    ['the-siren-night', '/tags/the-fracture/'],
+    ['echo-earth', '/lore/'],
+  ]) {
+    for (const suffix of ['', '/', '/index.html']) {
+      const response = await request.get('/tags/' + tag + suffix, { maxRedirects: 0 });
+      expect(response.status()).toBe(301);
+      expect(new URL(response.headers().location, 'http://127.0.0.1:8788').pathname).toBe(target);
+    }
+    expect((await request.get(target)).status()).toBe(200);
+  }
+});

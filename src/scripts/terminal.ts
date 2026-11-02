@@ -83,7 +83,7 @@ document.querySelectorAll<HTMLElement>('[data-terminal]').forEach((terminal) => 
         return help();
       case 'status':
         return [
-          { text: 'WORLD STATUS // POST-EXODUS RECORD', tone: 'safe' },
+          { text: 'WORLD STATUS // AFTER THE COLLAPSE', tone: 'safe' },
           { text: `Project state ........ ${payload.site.status}`, tone: 'signal' },
           { text: 'Atmosphere ........... BREATHABLE', tone: 'safe' },
           { text: 'Anomalous energy ..... ACTIVE', tone: 'warn' },
@@ -130,14 +130,14 @@ document.querySelectorAll<HTMLElement>('[data-terminal]').forEach((terminal) => 
         if (record === 'reservoir-9') {
           return [
             { text: 'RESERVOIR-9 // QUERY RECEIVED', tone: 'warn' },
-            { text: 'No verified Reservoir-9 record exists in the recovered canon.', tone: 'danger' },
-            { text: 'Record withheld rather than reconstructed from speculation.', tone: 'muted' },
+            { text: 'Reservoir-9 was a separate water-storage, purification, and research complex supporting Eden.', tone: 'danger' },
+            { text: 'Its contamination research matters to preservation history. The exact exposure route remains unresolved.', tone: 'muted' },
           ];
         }
         return [
-          { text: 'PROJECT THRESHOLD // BLACKOUT ARCHIVE FRAGMENT', tone: 'safe' },
-          { text: 'The accelerator did not create the doorway. It activated the material beneath the site.', tone: 'muted' },
-          { text: 'The doorway led to Earth — the same world, remembered incorrectly. Echo Earth.', tone: 'warn' },
+          { text: 'THE FRACTURE // RECOVERED HISTORY', tone: 'safe' },
+          { text: 'A meteor crossed an unstable dimensional fracture, creating the single original space-time rift before striking Earth.', tone: 'muted' },
+          { text: 'The rift later became dormant. Reconnection means communication and regulated research among Earth, Mars, and Echo Earth.', tone: 'warn' },
           { text: 'Open recovered records', tone: 'signal', href: payload.routes.lore },
         ];
       }

@@ -11,8 +11,8 @@
   {
     "id": "threshold-scars",
     "category": "Anomaly",
-    "title": "The Threshold Scars",
-    "caption": "Where Project Threshold failed, reality still remembers the wound.",
+    "title": "After the Impact",
+    "caption": "Meteor-derived material transformed ecosystems long after the impact.",
     "version": "Pre-alpha",
     "lore": "Visual record pending from a stable anomaly-zone build.",
     "placeholderSymbol": "ANM-02"
@@ -21,23 +21,23 @@
     "id": "echo-earth",
     "category": "Dimensions",
     "title": "Echo Earth",
-    "caption": "A familiar world reflected incorrectly. Step through if you dare.",
+    "caption": "An accidental human refuge. Communication and regulated research precede broader travel.",
     "version": "Planned",
     "placeholderSymbol": "ECH-03"
   },
   {
     "id": "displaced-creatures",
     "category": "Creatures",
-    "title": "Displaced Creatures",
-    "caption": "Prehistoric, surviving, altered — and not automatically your enemy.",
+    "title": "Altered Wildlife",
+    "caption": "Surviving and adapted life inhabits both hazardous and peaceful regions.",
     "version": "Pre-alpha",
     "placeholderSymbol": "BIO-04"
   },
   {
     "id": "blackout-trail",
     "category": "Lore",
-    "title": "The Blackout Trail",
-    "caption": "Lizard and Oliver symbols mark a truth someone tried to preserve.",
+    "title": "The Journalists’ Legacy",
+    "caption": "Beal and Nathan documented the collapse with Oliver the dog and Peppermint the lizard. Their boarding records leave questions open.",
     "version": "Canon mapped",
     "placeholderSymbol": "ARC-05"
   },
@@ -45,7 +45,7 @@
     "id": "unknown-energy",
     "category": "Anomaly",
     "title": "Unknown Energy",
-    "caption": "It leaks through old excavation sites and rifts. It never truly stops.",
+    "caption": "The single original rift became dormant, leaving a residual space-time scar.",
     "version": "Pre-alpha",
     "placeholderSymbol": "NRG-06"
   }

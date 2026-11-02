@@ -140,7 +140,7 @@ Content changes should generally remain separate from behavior changes.
 
 Content Management
 
-For story work, read [Core Lore v1.0](docs/lore/WILDERNESS_ODYSSEY_CORE_LORE.md) and [Expanded Lore v1.0](docs/lore/WILDERNESS_ODYSSEY_EXPANDED_LORE.md). Core takes precedence; only Established material is canon, and Concept/Open material does not authorize implementation. Keep these shared references identical across repositories; record conflicts and proposed corrections separately for review rather than silently changing canon. See the [website alignment report](docs/lore/website-alignment-v1.0.md) for existing conflicts.
+For story work, read [Core Lore v1.0](docs/lore/WILDERNESS_ODYSSEY_CORE_LORE.md) and [Expanded Lore v1.0](docs/lore/WILDERNESS_ODYSSEY_EXPANDED_LORE.md). Core takes precedence; only Established material is canon, and Concept/Open material does not authorize implementation. Keep these shared references identical across repositories; record conflicts and proposed corrections separately for review rather than silently changing canon. See the [website alignment report](docs/lore/website-alignment-v1.0.md) for alignment history and integration boundaries.
 
 Structured copy and project records belong in src/content/ when possible.
 

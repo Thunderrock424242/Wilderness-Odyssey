@@ -5,9 +5,9 @@ import { SURVIVOR_LOGS } from '../../data/survivorLogs';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Survivor Logs" description="Read recovered Wilderness Odyssey survivor logs from bunkers, camps, ruins, excavation zones, and unstable Echo Earth records." canonicalPath="/logs/">
-  <PageHero eyebrow="Recovered human records" title="Found in the ruins" description="These logs were recovered from scattered bunkers, abandoned camps, and dead explorers. Read them carefully — they may save your life." primaryLabel="Recovered lore" primaryHref="/lore/" secondaryLabel="Open gallery" secondaryHref="/gallery/" />
-  <section class="section">
+<BaseLayout title="Survivor Logs" description="Read illustrative Wilderness Odyssey survivor fragments inspired by exploration, environmental hazards, and recovered history." canonicalPath="/logs/">
+  <PageHero eyebrow="Illustrative survivor fragments" title="Found in the ruins" description="Imagined field notes evoke exploration and uncertainty. These fragments are illustrative, rather than verified events in the canonical history." primaryLabel="Recovered lore" primaryHref="/lore/" secondaryLabel="Open gallery" secondaryHref="/gallery/" />
+  <section class="section"><div class="shell"><p class="ch-body">Illustrative survivor fragments, not verified historical records. Names, dates, and local observations do not establish additional canon.</p></div>
     <div class="shell survivor-grid">
       {SURVIVOR_LOGS.map((log) => (
         <article class:list={['survivor-log', log.locked && 'survivor-log--locked']}>

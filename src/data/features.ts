@@ -49,23 +49,23 @@ export const FEATURES: Feature[] = [
   {
     category: 'Structures',
     eyebrow: 'Recovered sites',
-    title: 'Bunkers & Threshold Ruins',
+    title: 'Bunkers & Research Sites',
     description:
-      'Bunkers, safehouses, military ruins, and excavation sites carry survival resources and fragments of the Blackout Archive across fresh worlds.',
+      'Bunkers and research sites are being developed as places to discover survival resources and records of Earth’s collapse, Project Eden, and Reservoir-9.',
     status: 'In development',
   },
   {
     category: 'Creatures',
-    eyebrow: 'Displaced life',
-    title: 'A Broken Bestiary',
+    eyebrow: 'Adapted life',
+    title: 'Life After the Impact',
     description:
-      'Prehistoric animals from broken layers of Earth history now share the wilderness with surviving wildlife, mutations, and things from Echo Earth.',
+      'Meteor-derived material affected organisms differently. Surviving wildlife and altered ecosystems make Earth both hazardous and habitable.',
     status: 'Foundation',
   },
   {
     category: 'Survival',
     eyebrow: 'First session',
-    title: 'Adapt, Don’t Restore',
+    title: 'Survive, Build & Explore',
     description:
       'The opening loop is built around waking, reading the land, securing resources, and proving humanity can survive the Earth that remains.',
     status: 'In development',
@@ -83,23 +83,23 @@ export const FEATURES: Feature[] = [
     eyebrow: 'Damaged intelligence',
     title: 'Aether Remembers',
     description:
-      'Aether guides the survivor through incomplete records and survival directives while its missing memories keep Project Threshold’s truth uncertain.',
+      'Eden’s preservation AI helps reconstruct history from damaged records. Its reason for prioritizing the player and the awakening signal remain unexplained.',
     status: 'Foundation',
   },
   {
     category: 'Dimensions',
-    eyebrow: 'Damaged reflection',
+    eyebrow: 'Accidental refuge',
     title: 'Echo Earth',
     description:
-      'A familiar world reflected incorrectly waits beyond stabilized rifts, where terrain repeats, ruins stand in the wrong places, and safe return is never assumed.',
+      'Human settlements have developed on Echo Earth for 150 years. Reconnection begins with communication and regulated research through the single original rift; broader travel remains restricted.',
     status: 'Planned',
   },
   {
     category: 'Lore',
-    eyebrow: 'Blackout Archive',
+    eyebrow: 'Recovered history',
     title: 'The Buried Truth',
     description:
-      'Follow lizard and Oliver symbols through bunkers, terminals, items, and ruins to uncover what forced humanity into space without turning discovery into a forced campaign.',
+      'Discover the collapse through records and environmental clues, including the legacy of independent journalists Beal and Nathan. Their evacuation records begin with an unresolved boarding mystery.',
     status: 'Foundation',
   },
 ];

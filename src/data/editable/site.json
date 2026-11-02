@@ -1,7 +1,7 @@
 {
   "name": "Wilderness Odyssey",
   "tagline": "The World Reborn",
-  "description": "A cinematic post-Exodus Minecraft survival odyssey shaped by Project Threshold, Echo Earth, anomaly weather, and a world reclaimed by nature.",
+  "description": "A Minecraft survival and exploration odyssey on an Earth abandoned roughly 150 years ago. Discover Project Eden, Aether, and the path toward reconnecting three worlds.",
   "status": "Pre-alpha — version 0.1.0 in development",
   "version": "0.1.0",
   "minecraftVersion": "1.21.1",
@@ -15,9 +15,9 @@
   },
   "social": {
     "title": "Wilderness Odyssey // Surface Access Restored",
-    "description": "BUNKER_OS reports breathable air, hostile anomaly weather, and a world reclaimed by nature. Wake up, gear up, and step outside.",
+    "description": "Awaken at Project Eden and explore a living, altered Earth with Aether. Survive, build, and uncover a history still full of unanswered questions.",
     "image": "/images/logo.png"
   },
-  "footer": "A post-Exodus survival project by Thunderrock424242.",
+  "footer": "A survival and exploration project by Thunderrock424242.",
   "author": "Thunderrock424242"
 }

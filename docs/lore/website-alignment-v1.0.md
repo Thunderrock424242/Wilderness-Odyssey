@@ -2,7 +2,23 @@
 
 Reviewed 2026-11-02 against [Core Lore v1.0](WILDERNESS_ODYSSEY_CORE_LORE.md) and [Expanded Lore v1.0](WILDERNESS_ODYSSEY_EXPANDED_LORE.md).
 
-## Scope and file changes
+## Website alignment applied — 2026-11-02
+
+Following approval to align the public site, the homepage, feature cards, terminal, lore article and metadata, gallery captions, login label, survivor-log presentation, and planned roadmap now follow Core Lore v1.0. The previous lore article keeps its permanent URL; gallery IDs and roadmap IDs remain stable. The Site 0.6 patch notes carry a dated clarification while retaining the historical release account.
+
+Survivor fragments are explicitly illustrative, not additional canon. Extra-rift claims, mirror-world origins, unsupported symbol trails, and invented progression-item names were removed from current public copy. No gameplay, backend contracts, authentication, or travel mechanics changed. Both shared reference files remain unmodified. Open mysteries and future integration work remain undecided.
+
+The original audit below is retained as historical evidence. Its conflict descriptions and line numbers describe the pre-alignment sources, not unresolved current claims. The implementation claims in the integration table remain bounded to this website checkout.
+
+### Current validation and URL compatibility
+
+- Full verification passed: no TypeScript diagnostics, 245 unit tests, production build, and generated-site link checks.
+- All 89 browser tests passed, including a new Pages runtime check covering retired lore tag URLs with slash, no-slash, and HTML variants.
+- Inspected nine affected routes at 1440px and 390px widths: no horizontal overflow or unexpected browser errors; confirmed the Reservoir-9 terminal response. Desktop/mobile screenshots are local test artifacts.
+- Public-path change: retired tag archives for Project Threshold, Blackout Archive, The Siren Night, and Echo Earth now redirect through `public/_redirects` to current archives. Existing Cloudflare root routes and legacy GitHub Pages redirects remain supported. The original transmission permalink is unchanged.
+- Both shared reference hashes remain identical to the supplied originals. No backend or modpack implementation was changed or deployed.
+
+## Original audit: scope and file changes
 
 This checkout is the Astro website and Cloudflare Pages gateway, not the API or main modpack implementation. The audit covers relevant website content, documentation, browser interactions, and gateway contract sources. Backend and modpack behavior cannot be verified here. Existing untracked `data/` is outside this audit and was left untouched.
 
