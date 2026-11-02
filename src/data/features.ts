@@ -25,9 +25,9 @@ export const FEATURES: Feature[] = [
   {
     category: 'World Generation',
     eyebrow: 'Living world',
-    title: 'Earth Reclaimed',
+    title: 'World Exploration',
     description:
-      'Environments unlike vanilla Minecraft: changed terrain, dynamic ecosystems, and exploration routes shaped around a planet that kept evolving without humanity.',
+      'Explore varied terrain and ecosystems. Story context: [REDACTED].',
     status: 'In development',
   },
   {
@@ -51,15 +51,15 @@ export const FEATURES: Feature[] = [
     eyebrow: 'Recovered sites',
     title: 'Bunkers & Research Sites',
     description:
-      'Bunkers and research sites are being developed as places to discover survival resources and records of Earth’s collapse, Project Eden, and Reservoir-9.',
+      'Discover structures and survival resources. Story records: [REDACTED].',
     status: 'In development',
   },
   {
     category: 'Creatures',
     eyebrow: 'Adapted life',
-    title: 'Life After the Impact',
+    title: 'Wildlife',
     description:
-      'Meteor-derived material affected organisms differently. Surviving wildlife and altered ecosystems make Earth both hazardous and habitable.',
+      'Creature history and story details: [REDACTED].',
     status: 'Foundation',
   },
   {
@@ -67,7 +67,7 @@ export const FEATURES: Feature[] = [
     eyebrow: 'First session',
     title: 'Survive, Build & Explore',
     description:
-      'The opening loop is built around waking, reading the land, securing resources, and proving humanity can survive the Earth that remains.',
+      'Gather resources, build, and explore at your own pace. Opening story: [REDACTED].',
     status: 'In development',
   },
   {
@@ -80,26 +80,26 @@ export const FEATURES: Feature[] = [
   },
   {
     category: 'Aether',
-    eyebrow: 'Damaged intelligence',
-    title: 'Aether Remembers',
+    eyebrow: 'Restricted records',
+    title: '[REDACTED]',
     description:
-      'Eden’s preservation AI helps reconstruct history from damaged records. Its reason for prioritizing the player and the awakening signal remain unexplained.',
+      '[REDACTED] — Discover the story in play.',
     status: 'Foundation',
   },
   {
     category: 'Dimensions',
-    eyebrow: 'Accidental refuge',
-    title: 'Echo Earth',
+    eyebrow: 'Restricted records',
+    title: '[REDACTED]',
     description:
-      'Human settlements have developed on Echo Earth for 150 years. Reconnection begins with communication and regulated research through the single original rift; broader travel remains restricted.',
+      '[REDACTED] — Discover the story in play.',
     status: 'Planned',
   },
   {
     category: 'Lore',
-    eyebrow: 'Recovered history',
-    title: 'The Buried Truth',
+    eyebrow: 'Restricted records',
+    title: '[REDACTED]',
     description:
-      'Discover the collapse through records and environmental clues, including the legacy of independent journalists Beal and Nathan. Their evacuation records begin with an unresolved boarding mystery.',
+      '[REDACTED] — Discover the story in play.',
     status: 'Foundation',
   },
 ];

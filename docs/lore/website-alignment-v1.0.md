@@ -2,6 +2,10 @@
 
 Reviewed 2026-11-02 against [Core Lore v1.0](WILDERNESS_ODYSSEY_CORE_LORE.md) and [Expanded Lore v1.0](WILDERNESS_ODYSSEY_EXPANDED_LORE.md).
 
+## Public spoiler boundary
+
+Echo Earth remains named publicly, but human habitation, settlements/council, evacuation outcomes, and contact revelations are now redacted or withheld across public copy, metadata, roadmap, gallery, and terminal payloads. Full canonical references remain unchanged for development. Redaction replaces source text; it does not conceal spoilers in the DOM or browser payload.
+
 ## Website alignment applied — 2026-11-02
 
 Following approval to align the public site, the homepage, feature cards, terminal, lore article and metadata, gallery captions, login label, survivor-log presentation, and planned roadmap now follow Core Lore v1.0. The previous lore article keeps its permanent URL; gallery IDs and roadmap IDs remain stable. The Site 0.6 patch notes carry a dated clarification while retaining the historical release account.

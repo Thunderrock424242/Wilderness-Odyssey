@@ -83,7 +83,7 @@ document.querySelectorAll<HTMLElement>('[data-terminal]').forEach((terminal) => 
         return help();
       case 'status':
         return [
-          { text: 'WORLD STATUS // AFTER THE COLLAPSE', tone: 'safe' },
+          { text: 'PROJECT STATUS', tone: 'safe' },
           { text: `Project state ........ ${payload.site.status}`, tone: 'signal' },
           { text: 'Atmosphere ........... BREATHABLE', tone: 'safe' },
           { text: 'Anomalous energy ..... ACTIVE', tone: 'warn' },
@@ -126,19 +126,10 @@ document.querySelectorAll<HTMLElement>('[data-terminal]').forEach((terminal) => 
       case 'patches':
         return [{ text: 'Open versioned patch records', tone: 'signal', href: payload.routes.patches }];
       case 'lore': {
-        const record = command.args.join(' ');
-        if (record === 'reservoir-9') {
-          return [
-            { text: 'RESERVOIR-9 // QUERY RECEIVED', tone: 'warn' },
-            { text: 'Reservoir-9 was a separate water-storage, purification, and research complex supporting Eden.', tone: 'danger' },
-            { text: 'Its contamination research matters to preservation history. The exact exposure route remains unresolved.', tone: 'muted' },
-          ];
-        }
         return [
-          { text: 'THE FRACTURE // RECOVERED HISTORY', tone: 'safe' },
-          { text: 'A meteor crossed an unstable dimensional fracture, creating the single original space-time rift before striking Earth.', tone: 'muted' },
-          { text: 'The rift later became dormant. Reconnection means communication and regulated research among Earth, Mars, and Echo Earth.', tone: 'warn' },
-          { text: 'Open recovered records', tone: 'signal', href: payload.routes.lore },
+          { text: 'STORY RECORDS // [REDACTED]', tone: 'warn' },
+          { text: 'Characters, locations, history, and discoveries are reserved for discovery in play.', tone: 'muted' },
+          { text: 'Open restricted records', tone: 'signal', href: payload.routes.lore },
         ];
       }
       case 'gallery':

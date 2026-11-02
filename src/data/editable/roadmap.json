@@ -28,7 +28,7 @@
         "complete": false
       },
       {
-        "label": "Use the current lore canon as the design baseline without forcing players through a linear campaign.",
+        "label": "Story integration: [REDACTED].",
         "complete": false
       },
       {
@@ -76,7 +76,7 @@
         "complete": false
       },
       {
-        "label": "Use environmental clues to introduce Project Eden, Aether, and Reservoir-9 as distinct parts of preservation history.",
+        "label": "Story integration: [REDACTED].",
         "complete": false
       }
     ],
@@ -134,8 +134,8 @@
   {
     "id": "lore-discovery-layer",
     "phase": "Phase A3",
-    "title": "Lore Discovery Layer",
-    "description": "The story will be discovered through exploration rather than delivered as a forced campaign. Each structure, item, terminal, and quest should reveal a piece of the same mystery from a different direction.",
+    "title": "[REDACTED]",
+    "description": "Story development details are reserved for discovery in play.",
     "category": "Lore",
     "status": "Research",
     "progress": 10,
@@ -143,43 +143,39 @@
     "priority": "High",
     "milestone": "After the first-alpha foundation",
     "dependencies": [
-      "Finalized structure roles and placement rules.",
-      "Current canon naming kept consistent across quests, terminals, items, and site copy.",
-      "Reliable triggers for discoveries and Aether memory fragments."
+      "[REDACTED]"
     ],
     "relatedTransmissions": [
       "version-0-1-0-takes-shape"
     ],
     "tasks": [
       {
-        "label": "Create Aether-guided opening records that help the player survive without explaining the whole collapse.",
+        "label": "[REDACTED]",
         "complete": false
       },
       {
-        "label": "Develop historical records of Beal and Nathan without revealing their boarding outcome in early Earth content.",
+        "label": "[REDACTED]",
         "complete": false
       },
       {
-        "label": "Distribute established collapse and evacuation history through environmental records without resolving open mysteries.",
+        "label": "[REDACTED]",
         "complete": false
       },
       {
-        "label": "Tie lore-linked items and unlocks to exploration so progress feels purposeful instead of arbitrary.",
+        "label": "[REDACTED]",
         "complete": false
       }
     ],
     "exitConditions": [
-      "Lore can be found out of order while still forming a coherent picture over time.",
-      "Players can ignore the mystery temporarily without losing the ability to progress later.",
-      "Environmental clues create questions and theories instead of becoming exposition dumps."
+      "[REDACTED]"
     ],
-    "communitySignal": "Need feedback on which clues feel intriguing, which are too explicit, and where players lose the trail."
+    "communitySignal": "Story details and discoveries are withheld from the public roadmap."
   },
   {
     "id": "echo-earth-progression",
     "phase": "Phase A4",
-    "title": "Three-World Reconnection",
-    "description": "Planned narrative work leads toward reliable communication and regulated scientific contact among Earth, Mars, and Echo Earth. Exploration and building continue after this milestone; broader physical travel remains later research.",
+    "title": "[REDACTED]",
+    "description": "Story development details are reserved for discovery in play.",
     "category": "Dimensions",
     "status": "Planned",
     "progress": 0,
@@ -187,35 +183,31 @@
     "priority": "Later",
     "milestone": "Later alpha",
     "dependencies": [
-      "Stable overworld foundation and first-alpha feedback.",
-      "Safe unmanned testing and communication research using the single original dormant rift.",
-      "Separately reviewed research equipment and transit permissions; no additional lore-level rifts."
+      "[REDACTED]"
     ],
     "relatedTransmissions": [],
     "tasks": [
       {
-        "label": "Develop research records about meteor-derived material without inventing its origin or exact biological mechanisms.",
+        "label": "[REDACTED]",
         "complete": false
       },
       {
-        "label": "Connect recovered evacuation telemetry and original dimensional research to gradual communication research.",
+        "label": "[REDACTED]",
         "complete": false
       },
       {
-        "label": "Develop communication with Echo Earth’s varied settlements while preserving local autonomy and initial physical-travel restrictions.",
+        "label": "[REDACTED]",
         "complete": false
       },
       {
-        "label": "Keep any later limited transit subject to safe testing and authorization, without blocking continued survival play.",
+        "label": "[REDACTED]",
         "complete": false
       }
     ],
     "exitConditions": [
-      "Players understand the communication and research milestone without receiving a checklist of spoilers.",
-      "Earth, Mars, and Echo Earth reconnect through communication and controlled research without a hard ending.",
-      "Research preserves the world and does not imply unrestricted civilian travel."
+      "[REDACTED]"
     ],
-    "communitySignal": "Future testing will focus on communication progression, research safety, and continued open-ended play. This track does not describe implemented gameplay."
+    "communitySignal": "Story details and discoveries are withheld from the public roadmap."
   },
   {
     "id": "version-0-1-0-stabilization",

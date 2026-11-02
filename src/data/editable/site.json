@@ -1,7 +1,7 @@
 {
   "name": "Wilderness Odyssey",
   "tagline": "The World Reborn",
-  "description": "A Minecraft survival and exploration odyssey on an Earth abandoned roughly 150 years ago. Discover Project Eden, Aether, and the path toward reconnecting three worlds.",
+  "description": "A Minecraft survival and exploration experience. Build, explore, and discover the story in play. Lore: [REDACTED].",
   "status": "Pre-alpha — version 0.1.0 in development",
   "version": "0.1.0",
   "minecraftVersion": "1.21.1",
@@ -15,7 +15,7 @@
   },
   "social": {
     "title": "Wilderness Odyssey // Surface Access Restored",
-    "description": "Awaken at Project Eden and explore a living, altered Earth with Aether. Survive, build, and uncover a history still full of unanswered questions.",
+    "description": "Survive, build, and explore Wilderness Odyssey. Story details: [REDACTED].",
     "image": "/images/logo.png"
   },
   "footer": "A survival and exploration project by Thunderrock424242.",
