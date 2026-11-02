@@ -51,6 +51,8 @@ Discord enrollment admits current server administrators within the existing Admi
 
 See [API contracts and integration](docs/api-integration.md) and [deployment, Access setup, and rollback](docs/cloudflare-deployment.md).
 
+For Kinetic hosting without a public backend hostname, the separate [bot gateway Worker](docs/bot-gateway-setup.md) connects Pages to the bot through the existing private Cloudflare Tunnel and VPC service. Its build command is a local dry run; administration remains denied until machine authentication is configured.
+
 ## Existing local content editor
 
 ```sh

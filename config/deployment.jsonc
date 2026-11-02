@@ -19,7 +19,7 @@
     // "disabled" = public website first; staff/login routes remain unavailable.
     // Later: "discord" for Discord sign-in, or "access" for the Access flow.
     // Connected modes require the remaining settings and runtime secrets.
-    "STAFF_AUTH_MODE": "disabled",
+    "STAFF_AUTH_MODE": "discord",
 
     // Your Discord SERVER ID, matching the backend's GUILD_ID.
     // Discord -> Settings -> Advanced -> Developer Mode. Then right-click
@@ -42,7 +42,7 @@
     // Cloudflare Zero Trust team origin, e.g. https://TEAM.cloudflareaccess.com
     // Leave blank for public-only production. Required for connected staff modes
     // and for serving protected previews to an authenticated verifier.
-    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_TEAM_DOMAIN": "https://wilderness-odyssey.cloudflareaccess.com",
 
     // Access application's Application Audience (AUD) Tag. Optional while disabled
     // in production; required with ACCESS_TEAM_DOMAIN for protected previews.
@@ -51,12 +51,12 @@
     // Optional while staff is disabled. Blank = readable "not connected" status.
     // Sanitized public server-status HTTPS endpoint, including its path.
     // Do not use an administrative endpoint or add credentials to this URL.
-    "PUBLIC_STATUS_URL": "",
+    "PUBLIC_STATUS_URL": "https://wilderness-odyssey-bot-gateway.thunderrock-labs.workers.dev/v1/public/status",
 
     // Leave blank while disabled. Later: approved HTTPS backend origin only,
     // e.g. https://backend.example.com
     // No /v1 path, credentials, port, query, or fragment.
-    "KINETIC_ADMIN_ORIGIN": ""
+    "KINETIC_ADMIN_ORIGIN": "https://wilderness-odyssey-bot-gateway.thunderrock-labs.workers.dev"
   },
 
   // STAGING WEBSITE — stays protected; not required to publish production first.
