@@ -14,6 +14,23 @@ function fixture() {
     ? Response.json({ access_token: 'discard', token_type: 'Bearer', scope: 'identify' }) : Response.json({ id: user, username: 'Tester' }));
   return { db, store, service, advance: (ms: number) => { now += ms; } };
 }
+test('remembered participant survives access expiry but not logout or the absolute 30-day deadline', async () => {
+  const f = fixture();
+  try {
+    const started = f.service.start({ redirectUri, remember: true });
+    const logged = await f.service.callback({ redirectUri, code: 'valid-code', state: new URL(started.authorizationUrl).searchParams.get('state'), flowToken: started.flowToken });
+    assert.ok(logged.rememberToken);
+    assert.equal(Date.parse(logged.rememberExpiresAt!) - Date.parse(logged.expiresAt), 2591100000);
+    f.advance(900001);
+    const renewed = f.service.refresh({ rememberToken: logged.rememberToken });
+    assert.equal(f.service.session(renewed.sessionToken).user.id, user);
+    assert.equal(renewed.rememberExpiresAt, logged.rememberExpiresAt);
+    assert.throws(() => f.service.refresh({ rememberToken: logged.rememberToken }));
+    f.advance(2592000000);
+    assert.throws(() => f.service.refresh({ rememberToken: renewed.rememberToken }));
+  } finally { f.db.close(); }
+});
+
 test('claims are account-bound, hash-only, expiring and independent from game invitations', () => {
   const f = fixture(); try {
     const invite = f.service.invite(user, 'alpha', 'key-for-invitation-1', 24);

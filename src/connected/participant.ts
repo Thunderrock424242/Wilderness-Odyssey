@@ -5,6 +5,7 @@ import * as s from '../contracts/v1/participants';
 import { ConnectedStore, ServiceError } from './store';
 import { DiscordOAuth, type DiscordOAuthOptions } from './discordOAuth';
 import { tokenDigest } from './dashboardAuth';
+import { RememberedSessions } from './rememberedSessions';
 
 type Invite = { id: string; user_id: string; campaign_id: string; digest: string; expires_at: number; claimed_at: string | null; revoked: number; delivery: 'sent' | 'failed' | 'unknown' };
 type Campaign = { id: string; title: string; enabled: boolean };
@@ -16,6 +17,7 @@ const deny = (status: number, message: string): never => { throw new ServiceErro
 
 export class ParticipantService {
   private readonly oauth: DiscordOAuth;
+  private readonly remembered: RememberedSessions;
   constructor(readonly store: ConnectedStore, readonly options: DiscordOAuthOptions & { guildId: string }, fetcher: typeof fetch = fetch) {
     this.oauth = new DiscordOAuth(options, fetcher);
     store.db.exec(`
@@ -29,9 +31,11 @@ export class ParticipantService {
     store.db.prepare('INSERT OR IGNORE INTO cs_participant_configuration VALUES (1,?)').run(options.guildId);
     const scope = store.db.prepare('SELECT guild_id FROM cs_participant_configuration WHERE id=1').get() as { guild_id: string };
     if (scope.guild_id !== options.guildId) throw new ServiceError(503, 'GUILD_MISMATCH', 'Participant storage is bound to another guild. An explicit migration is required.');
+    this.remembered = new RememberedSessions(store, 'participant', options.guildId);
   }
   start(body: unknown) {
-    if (discordStartInput.parse(body).redirectUri !== this.options.redirectUri) return deny(403, 'Sign-in destination is not configured.');
+    const input = discordStartInput.parse(body);
+    if (input.redirectUri !== this.options.redirectUri) return deny(403, 'Sign-in destination is not configured.');
     const now = this.store.clock(), state = token(), flowToken = token();
     this.store.transaction(() => {
       this.store.db.prepare('DELETE FROM cs_participant_flows WHERE expires<=?').run(now);
@@ -39,6 +43,7 @@ export class ParticipantService {
       const row = this.store.db.prepare('SELECT count(*) AS n FROM cs_participant_flows').get() as { n: number };
       if (row.n >= 1000) return deny(429, 'Please try signing in shortly.');
       this.store.db.prepare('INSERT INTO cs_participant_flows VALUES (?,?,?)').run(tokenDigest(state), tokenDigest(flowToken), now + 300000);
+      this.remembered.rememberFlow(flowToken, input.remember ?? false);
     });
     const url = new URL('https://discord.com/oauth2/authorize');
     url.search = new URLSearchParams({ client_id: this.options.clientId, redirect_uri: this.options.redirectUri, response_type: 'code', scope: 'identify', state }).toString();
@@ -47,11 +52,16 @@ export class ParticipantService {
   async callback(body: unknown) {
     const input = discordCallbackInput.parse(body);
     if (input.redirectUri !== this.options.redirectUri) return deny(401, 'Start Discord sign-in again.');
-    const changes = this.store.db.prepare('DELETE FROM cs_participant_flows WHERE state=? AND flow=? AND expires>?').run(tokenDigest(input.state), tokenDigest(input.flowToken), this.store.clock()).changes;
-    if (changes !== 1) return deny(401, 'Sign-in expired. Start again.');
+    const remember = this.store.transaction(() => {
+      const changes = this.store.db.prepare('DELETE FROM cs_participant_flows WHERE state=? AND flow=? AND expires>?').run(tokenDigest(input.state), tokenDigest(input.flowToken), this.store.clock()).changes;
+      if (changes !== 1) return deny(401, 'Sign-in expired. Start again.');
+      return this.remembered.consumeFlow(input.flowToken);
+    });
     const user = await this.oauth.identify(input.code), sessionToken = token(), expires = this.store.clock() + 900000;
-    this.store.db.prepare('INSERT INTO cs_participant_sessions VALUES (?,?,?,?)').run(tokenDigest(sessionToken), user.id, user.name, expires);
-    return discordCallbackSchema.parse({ schemaVersion: '1.0', sessionToken, userId: user.id, guildId: this.options.guildId, expiresAt: new Date(expires).toISOString() });
+    return this.store.transaction(() => {
+      this.store.db.prepare('INSERT INTO cs_participant_sessions VALUES (?,?,?,?)').run(tokenDigest(sessionToken), user.id, user.name, expires);
+      return discordCallbackSchema.parse({ schemaVersion: '1.0', sessionToken, userId: user.id, guildId: this.options.guildId, expiresAt: new Date(expires).toISOString(), ...(remember ? this.remembered.issue(user.id, user.name, 0, sessionToken) : {}) });
+    });
   }
   session(value: unknown) {
     const parsed = opaqueTokenSchema.safeParse(value);
@@ -61,9 +71,22 @@ export class ParticipantService {
     return s.participantSessionSchema.parse({ schemaVersion: '1.0', user: { id: row.user_id, displayName: row.name }, guildId: this.options.guildId, expiresAt: new Date(row.expires).toISOString(), campaignIds: this.memberships(row.user_id).map(member => member.campaign_id) });
   }
   logout(value: unknown) {
-    this.store.db.prepare('DELETE FROM cs_participant_sessions WHERE digest=?').run(tokenDigest(opaqueTokenSchema.parse(value)));
+    this.store.transaction(() => {
+      const sessionToken = opaqueTokenSchema.parse(value);
+      this.remembered.logout(sessionToken);
+      this.store.db.prepare('DELETE FROM cs_participant_sessions WHERE digest=?').run(tokenDigest(sessionToken));
+    });
     return logoutSchema.parse({ schemaVersion: '1.0', revoked: true });
   }
+  refresh(body: unknown) {
+    return this.store.transaction(() => {
+      const row = this.remembered.lookup(body), sessionToken = token(), expires = Math.min(this.store.clock() + 900000, row.expires);
+      const remember = this.remembered.rotate(body, sessionToken);
+      this.store.db.prepare('INSERT INTO cs_participant_sessions VALUES (?,?,?,?)').run(tokenDigest(sessionToken), row.user_id, row.name, expires);
+      return discordCallbackSchema.parse({ schemaVersion: '1.0', sessionToken, userId: row.user_id, guildId: this.options.guildId, expiresAt: new Date(expires).toISOString(), ...remember });
+    });
+  }
+  forget(body: unknown) { return this.store.transaction(() => this.remembered.forget(body)); }
   invite(userId: string, campaignId: string, key: string, hours: number) {
     s.participantInviteInput.parse({ discordUserId: userId, campaignId, expiresInHours: hours });
     if (!this.store.record<Campaign>('pt_campaign', campaignId)) return deny(404, 'Playtest not found.');

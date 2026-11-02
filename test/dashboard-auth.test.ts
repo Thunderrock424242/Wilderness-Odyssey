@@ -29,11 +29,62 @@ function fixture() {
   });
   return { db, store, auth, advance: (ms: number) => { now += ms; }, permission: (value: typeof permission) => { permission = value; }, bot: () => { bot = true; }, afterCheck: (fn: () => void) => { afterCheck = fn; }, exchanges: () => exchanges };
 }
-function attempt(f: ReturnType<typeof fixture>) {
-  const start = discordStartSchema.parse(f.auth.start({ redirectUri }));
+function attempt(f: ReturnType<typeof fixture>, remember = false) {
+  const start = discordStartSchema.parse(f.auth.start({ redirectUri, remember }));
   return { redirectUri, code: 'valid-code', state: new URL(start.authorizationUrl).searchParams.get('state')!, flowToken: start.flowToken };
 }
 async function login(f: ReturnType<typeof fixture>) { return discordCallbackSchema.parse(await f.auth.callback(attempt(f))); }
+
+test('remembered administrator renews after access expiry, rotates once, and logout revokes the family', async () => {
+  const f = fixture();
+  try {
+    await f.auth.enroll(user, guild, true);
+    const logged = await f.auth.callback(attempt(f, true));
+    assert.ok(logged.rememberToken);
+    assert.equal(Date.parse(logged.rememberExpiresAt!) - Date.parse(logged.expiresAt), 603900000);
+    f.advance(900001);
+    const renewed = await f.auth.refresh({ rememberToken: logged.rememberToken });
+    assert.equal(renewed.rememberExpiresAt, logged.rememberExpiresAt);
+    assert.notEqual(renewed.rememberToken, logged.rememberToken);
+    await assert.rejects(f.auth.refresh({ rememberToken: logged.rememberToken }));
+    assert.equal((await f.auth.session(renewed.sessionToken)).user.id, user);
+    f.auth.logout(renewed.sessionToken);
+    await assert.rejects(f.auth.refresh({ rememberToken: renewed.rememberToken }));
+  } finally { f.db.close(); }
+});
+
+test('remembered admin renewal respects absolute expiry, disable, temporary failure and concurrent checks', async () => {
+  const f = fixture();
+  try {
+    await f.auth.enroll(user, guild, true);
+    const logged = await f.auth.callback(attempt(f, true));
+    f.permission('unavailable');
+    await assert.rejects(f.auth.refresh({ rememberToken: logged.rememberToken }));
+    f.permission('allowed');
+    const results = await Promise.allSettled([f.auth.refresh({ rememberToken: logged.rememberToken }), f.auth.refresh({ rememberToken: logged.rememberToken })]);
+    assert.equal(results.filter(r => r.status === 'fulfilled').length, 1);
+    const winner = results.find(r => r.status === 'fulfilled');
+    assert.ok(winner?.status === 'fulfilled');
+    f.afterCheck(() => { void f.auth.enroll(user, guild, false); });
+    await assert.rejects(f.auth.refresh({ rememberToken: winner.value.rememberToken }));
+    f.afterCheck(() => {});
+    await f.auth.enroll(user, guild, true);
+    const expired = await f.auth.callback(attempt(f, true));
+    f.advance(604800000);
+    await assert.rejects(f.auth.refresh({ rememberToken: expired.rememberToken }));
+  } finally { f.db.close(); }
+});
+
+test('last-minute renewal never extends access beyond the remembered deadline', async () => {
+  const f = fixture();
+  try {
+    await f.auth.enroll(user, guild, true);
+    const logged = await f.auth.callback(attempt(f, true));
+    f.advance(604799000);
+    const renewed = await f.auth.refresh({ rememberToken: logged.rememberToken });
+    assert.ok(Date.parse(renewed.expiresAt) <= Date.parse(logged.rememberExpiresAt!));
+  } finally { f.db.close(); }
+});
 
 test('enrollment is caller/guild bound, idempotent, and self-revocation never needs permission', async () => {
   const f = fixture();

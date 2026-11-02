@@ -109,7 +109,13 @@ export class ConnectedHttp {
             const credential = request.headers['x-wo-participant-session'];
             this.rate('participant:' + tokenDigest(typeof credential === 'string' ? credential : request.socket.remoteAddress ?? 'unknown'), 60);
             let result: unknown;
-            if (method === 'POST' && ['start', 'callback'].includes(action)) {
+            if (method === 'POST' && ['refresh', 'forget'].includes(action)) {
+              const body = await readJson(request, 4096);
+              result = action === 'refresh' ? this.participant.refresh(body) : this.participant.forget(body);
+            } else if (method === 'POST' && action === 'logout') {
+              z.object({}).strict().parse(await readJson(request, 4096));
+              result = this.participant.logout(credential);
+            } else if (method === 'POST' && ['start', 'callback'].includes(action)) {
               const body = await readJson(request, 16384);
               result = action === 'start' ? this.participant.start(body) : await this.participant.callback(body);
             } else {
@@ -134,6 +140,10 @@ export class ConnectedHttp {
             } else if (path === '/v1/admin/auth/discord/callback') {
               this.rate('oauth-callback:' + address, 30);
               result = await this.dashboard.callback(await readJson(request));
+            } else if (path === '/v1/admin/auth/discord/refresh' || path === '/v1/admin/auth/discord/forget') {
+              this.rate('remember:' + address, 60);
+              const body = await readJson(request, 4096);
+              result = path.endsWith('/refresh') ? await this.dashboard.refresh(body) : this.dashboard.forget(body);
             } else if (path === '/v1/admin/auth/logout') {
               this.rate('logout:' + address, 120);
               z.object({}).strict().parse(await readJson(request));

@@ -1,5 +1,13 @@
 # Discord dashboard authentication on Kinetic
 
+## Optional remembered sign-in
+
+The website can request `remember: true` at OAuth start. The bot binds this choice to the one-time flow and issues a separate hashed, rotating remembered credential with an absolute seven-day administrator or thirty-day participant deadline. Access sessions remain at most fifteen minutes and never exceed that deadline. Callback input does not accept remember choice.
+
+Machine-authenticated POST endpoints `/v1/admin/auth/discord/refresh` and `/v1/admin/participant/refresh` accept `{ rememberToken }` and issue new access/remembered credentials. Matching `/forget` endpoints revoke their entire family. Refresh checks current admin enrollment and permissions and rechecks revocation after awaited reads. `/dashboard disable`, logout and confirmed admin permission loss revoke linked remembered families. Unknown or consumed tokens cannot renew.
+
+Roll out bot support first, the intermediate bot-gateway Worker allowlist second, and website Pages third. No environment variable or hosting startup changes are needed. Default callers retain fifteen-minute sessions. A backend outage during website logout leaves remote revocation unconfirmed even after browser cookies are cleared; administrators can use `/dashboard disable`. Expired family storage cleanup is a documented maintenance follow-up.
+
 The bot implements caller-only `/dashboard enable` and `/dashboard disable`, the four website authentication/session endpoints, and session authorization for existing `/v1/admin/*` actions. No live commands were registered and no deployment or production policy change is part of this implementation.
 
 ## Required configuration

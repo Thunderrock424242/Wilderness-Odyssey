@@ -3,6 +3,7 @@ import { discordCallbackInput, discordCallbackSchema, discordIdSchema, discordSe
 import { roleCapabilities, type Capability } from '../contracts/v1/admin';
 import { DiscordOAuth, type DiscordOAuthOptions } from './discordOAuth';
 import { ConnectedStore, ServiceError, type Actor } from './store';
+import { RememberedSessions } from './rememberedSessions';
 
 type Options = DiscordOAuthOptions & { guildId: string };
 type Enrollment = { active: number; generation: number };
@@ -14,6 +15,7 @@ const token = () => randomBytes(32).toString('base64url');
 
 export class DashboardAuth {
   private readonly oauth: DiscordOAuth;
+  private readonly remembered: RememberedSessions;
   constructor(readonly store: ConnectedStore, readonly options: Options, readonly checkPermission: PermissionCheck, fetcher: typeof fetch = fetch) {
     this.oauth = new DiscordOAuth(options, fetcher);
     store.transaction(() => store.db.exec(`
@@ -22,6 +24,7 @@ export class DashboardAuth {
       CREATE TABLE IF NOT EXISTS cs_dashboard_sessions (digest TEXT PRIMARY KEY, guild_id TEXT NOT NULL, user_id TEXT NOT NULL, name TEXT NOT NULL, generation INTEGER NOT NULL, expires_at INTEGER NOT NULL);
       CREATE INDEX IF NOT EXISTS cs_dashboard_session_owner ON cs_dashboard_sessions(guild_id,user_id);
     `));
+    this.remembered = new RememberedSessions(store, 'administrator', options.guildId);
   }
   private enrollment(userId: string): Enrollment | undefined {
     return this.store.db.prepare('SELECT active,generation FROM cs_dashboard_enrollments WHERE guild_id=? AND user_id=?').get(this.options.guildId, userId) as Enrollment | undefined;
@@ -35,6 +38,7 @@ export class DashboardAuth {
     this.store.transaction(() => {
       this.store.db.prepare('INSERT INTO cs_dashboard_enrollments VALUES (?,?,0,1) ON CONFLICT(guild_id,user_id) DO UPDATE SET active=0,generation=generation+1').run(this.options.guildId, userId);
       this.store.db.prepare('DELETE FROM cs_dashboard_sessions WHERE guild_id=? AND user_id=?').run(this.options.guildId, userId);
+      this.remembered.revokeUser(userId);
       this.store.audit(this.actorId(userId), 'dashboard.revoke', this.options.guildId, outcome);
     });
   }
@@ -61,7 +65,7 @@ export class DashboardAuth {
     });
   }
   start(body: unknown) {
-    const { redirectUri } = discordStartInput.parse(body);
+    const { redirectUri, remember } = discordStartInput.parse(body);
     if (redirectUri !== this.options.redirectUri) throw new ServiceError(403, 'REDIRECT_DENIED', 'This sign-in destination is not configured.');
     const state = token(), flowToken = token(), now = this.store.clock(), expiresAt = now + 300000;
     this.store.transaction(() => {
@@ -70,6 +74,7 @@ export class DashboardAuth {
       const count = this.store.db.prepare('SELECT count(*) AS n FROM cs_dashboard_attempts').get() as { n: number };
       if (count.n >= 1000) throw new ServiceError(429, 'RATE_LIMITED', 'Please try signing in shortly.');
       this.store.db.prepare('INSERT INTO cs_dashboard_attempts VALUES (?,?,?,?)').run(tokenDigest(state), tokenDigest(flowToken), redirectUri, expiresAt);
+      this.remembered.rememberFlow(flowToken, remember ?? false);
     });
     const url = new URL('https://discord.com/oauth2/authorize');
     url.search = new URLSearchParams({ client_id: this.options.clientId, redirect_uri: redirectUri, response_type: 'code', scope: 'identify', state }).toString();
@@ -78,8 +83,11 @@ export class DashboardAuth {
   async callback(body: unknown) {
     const input = discordCallbackInput.parse(body);
     if (input.redirectUri !== this.options.redirectUri) throw new ServiceError(401, 'FLOW_INVALID', 'Sign-in expired or could not be verified. Start again.');
-    const consumed = this.store.transaction(() => this.store.db.prepare('DELETE FROM cs_dashboard_attempts WHERE state_digest=? AND flow_digest=? AND redirect_uri=? AND expires_at>?').run(tokenDigest(input.state), tokenDigest(input.flowToken), input.redirectUri, this.store.clock()).changes);
-    if (consumed !== 1) throw new ServiceError(401, 'FLOW_INVALID', 'Sign-in expired or could not be verified. Start again.');
+    const remember = this.store.transaction(() => {
+      const consumed = this.store.db.prepare('DELETE FROM cs_dashboard_attempts WHERE state_digest=? AND flow_digest=? AND redirect_uri=? AND expires_at>?').run(tokenDigest(input.state), tokenDigest(input.flowToken), input.redirectUri, this.store.clock()).changes;
+      if (consumed !== 1) throw new ServiceError(401, 'FLOW_INVALID', 'Sign-in expired or could not be verified. Start again.');
+      return this.remembered.consumeFlow(input.flowToken);
+    });
     const user = await this.oauth.identify(input.code);
     const enrollment = this.enrolled(user.id);
     await this.eligible(user.id);
@@ -88,7 +96,7 @@ export class DashboardAuth {
       const sessionToken = token(), expiresAt = this.store.clock() + 900000;
       this.store.db.prepare('INSERT INTO cs_dashboard_sessions VALUES (?,?,?,?,?,?)').run(tokenDigest(sessionToken), this.options.guildId, user.id, user.name, enrollment.generation, expiresAt);
       this.store.audit(this.actorId(user.id), 'dashboard.login', this.options.guildId, 'succeeded');
-      return discordCallbackSchema.parse({ schemaVersion: '1.0', sessionToken, userId: user.id, guildId: this.options.guildId, expiresAt: new Date(expiresAt).toISOString() });
+      return discordCallbackSchema.parse({ schemaVersion: '1.0', sessionToken, userId: user.id, guildId: this.options.guildId, expiresAt: new Date(expiresAt).toISOString(), ...(remember ? this.remembered.issue(user.id, user.name, enrollment.generation, sessionToken) : {}) });
     });
   }
   private lookup(digest: string): Session {
@@ -123,8 +131,25 @@ export class DashboardAuth {
   logout(value: unknown) {
     const parsed = opaqueTokenSchema.safeParse(value);
     if (!parsed.success) throw new ServiceError(401, 'SESSION_INVALID', 'A valid dashboard session is required.');
-    this.store.db.prepare('DELETE FROM cs_dashboard_sessions WHERE digest=? AND guild_id=?').run(tokenDigest(parsed.data), this.options.guildId);
+    this.store.transaction(() => {
+      this.remembered.logout(parsed.data);
+      this.store.db.prepare('DELETE FROM cs_dashboard_sessions WHERE digest=? AND guild_id=?').run(tokenDigest(parsed.data), this.options.guildId);
+    });
     return logoutSchema.parse({ schemaVersion: '1.0', revoked: true });
   }
   private actorId(userId: string): string { return DASHBOARD_ISSUER + '|' + this.options.guildId + ':' + userId; }
+  async refresh(body: unknown) {
+    const row = this.remembered.lookup(body);
+    this.enrolled(row.user_id, row.generation);
+    await this.eligible(row.user_id);
+    return this.store.transaction(() => {
+      this.enrolled(row.user_id, row.generation);
+      this.remembered.lookup(body);
+      const sessionToken = token(), expiresAt = Math.min(this.store.clock() + 900000, row.expires);
+      const remember = this.remembered.rotate(body, sessionToken);
+      this.store.db.prepare('INSERT INTO cs_dashboard_sessions VALUES (?,?,?,?,?,?)').run(tokenDigest(sessionToken), this.options.guildId, row.user_id, row.name, row.generation, expiresAt);
+      return discordCallbackSchema.parse({ schemaVersion: '1.0', sessionToken, userId: row.user_id, guildId: this.options.guildId, expiresAt: new Date(expiresAt).toISOString(), ...remember });
+    });
+  }
+  forget(body: unknown) { return this.store.transaction(() => this.remembered.forget(body)); }
 }
