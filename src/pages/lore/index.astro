@@ -8,7 +8,7 @@ import { filterByType, getPublishedTransmissions } from '../../lib/transmissions
 const entries = filterByType(getPublishedTransmissions(await getCollection('transmissions')), 'lore');
 ---
 
-<BaseLayout title="Recovered Records" description="Story records: [REDACTED]. Discover the lore in play." canonicalPath="/lore/">
-  <PageHero eyebrow="Restricted archive" title="Recovered records" description="[REDACTED] — Story details are reserved for discovery in play." primaryLabel="Survivor logs" primaryHref="/logs/" secondaryLabel="Lore roadmap" secondaryHref="/roadmap/#lore-discovery-layer" />
+<BaseLayout title="Recovered Records" description="A spoiler-light introduction to Wilderness Odyssey and its unanswered questions." canonicalPath="/lore/">
+  <PageHero eyebrow="Archive fragments" title="Recovered records" description="A few threads to follow. Deeper histories and discoveries are left for your journey." primaryLabel="Survivor logs" primaryHref="/logs/" secondaryLabel="Lore roadmap" secondaryHref="/roadmap/#lore-discovery-layer" />
   <section class="section"><div class="shell"><TransmissionArchive entries={entries} showTypeFilter={false} /></div></section>
 </BaseLayout>

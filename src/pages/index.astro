@@ -29,7 +29,7 @@ const roadmapPreview = ROADMAP_ITEMS.slice(0, 4);
     <div class="h-content">
       <div class="logo-wrap"><img src={withBase('/images/logo.png')} width="256" height="256" alt="Wilderness Odyssey" /></div>
       <div class="glitch-wrap"><h1 class="g-title" data-text="THE WORLD REBORN">THE WORLD REBORN</h1></div>
-      <p class="h-sub">Story Records <span>·</span> [REDACTED] <span>·</span> Version {SITE.version} In Development</p>
+      <p class="h-sub">Survival <span>·</span> Exploration <span>·</span> Version {SITE.version} In Development</p>
       <div class="h-btns">
         <a class="btn-main" href={withBase('/roadmap/')}>Follow Version {SITE.version}</a>
         <a class="btn-ghost" href={SITE.links.discord} target="_blank" rel="noreferrer">Join Discord</a>
@@ -45,26 +45,22 @@ const roadmapPreview = ROADMAP_ITEMS.slice(0, 4);
     <div class="origin-inner">
       <div>
         <p class="ch-label rx rx-left">Origin Story</p>
-        <h2 class="ch-title rx rx-left d1">The Story<br /><em>[REDACTED]</em></h2>
+        <h2 class="ch-title rx rx-left d1">A World<br /><em>Waiting to Be Found</em></h2>
         <div class="divline rx rx-left d2"></div>
-        <p class="ch-body rx rx-left d3">[REDACTED] — Discover the story in play.</p>
-        <blockquote class="pullquote rx rx-up d4">[REDACTED]</blockquote>
-        <p class="ch-body rx rx-left d5">[REDACTED] — Discover the story in play.</p>
+        <p class="ch-body rx rx-left d3">Earth has been reclaimed by nature. Between the wilderness and abandoned ruins, you build a new life and piece together the traces of what came before.</p>
+        <blockquote class="pullquote rx rx-up d4">Build a home. Follow a lead. Decide how far to explore.</blockquote>
+        <p class="ch-body rx rx-left d5">Aether and a name buried in old records — Echo Earth — offer questions to follow. The answers belong to your journey.</p>
         <a class="section-link rx rx-left d6" href={withBase('/lore/')}>Open recovered records</a>
       </div>
       <aside class="terminal rx rx-right d2" aria-label="BUNKER_OS surface scan">
         <div class="tb"><span class="td"></span><span class="td"></span><span class="td"></span><strong class="tn">BUNKER_OS v2.1 — SURVIVOR LOG</strong></div>
         <div class="os-warning"><strong>LIMITED ACCESS</strong><p>Archive is incomplete. BUNKER_OS only shows recovered records.</p></div>
-        <div class="tl tg">&gt; BOOT SEQUENCE COMPLETE</div><div class="tl">&nbsp;</div>
-        <div class="tl">&nbsp;&nbsp;[OK] Record 01 ......... [REDACTED]</div>
-        <div class="tl">&nbsp;&nbsp;[OK] Record 02 ......... [REDACTED]</div>
-        <div class="tl tw">&nbsp;&nbsp;[!!] Record 03 ....... [REDACTED]</div><div class="tl">&nbsp;</div>
-        <div class="tl tg">&gt; SURFACE SCAN COMPLETE</div>
-        <div class="tl">&nbsp;&nbsp;Record 04 ................ [REDACTED]</div>
-        <div class="tl">&nbsp;&nbsp;Record 05 ................ [REDACTED]</div>
-        <div class="tl tr">&nbsp;&nbsp;Record 06 .......... [REDACTED]</div>
-        <div class="tl tb2">&nbsp;&nbsp;Record 07 ............. [REDACTED]</div><div class="tl">&nbsp;</div>
-        <div class="tl tg">&gt; STORY RECORD: [REDACTED]</div>
+        <div class="tl tg">&gt; ARCHIVE INDEX READY</div><div class="tl">&nbsp;</div>
+        <div class="tl">&nbsp;&nbsp;Public records ........ AVAILABLE</div>
+        <div class="tl tw">&nbsp;&nbsp;Historical index ...... INCOMPLETE</div>
+        <div class="tl">&nbsp;&nbsp;Field notes ........... PENDING</div><div class="tl">&nbsp;</div>
+        <div class="tl tg">&gt; FOLLOW THE RECORDS</div>
+        <div class="tl">Explore at your own pace.</div>
         <div class="tl tg">&gt; Good luck, Survivor. <span class="tcur"></span></div>
       </aside>
     </div>
@@ -75,19 +71,19 @@ const roadmapPreview = ROADMAP_ITEMS.slice(0, 4);
     <div class="world-inner">
       <header class="world-head">
         <p class="ch-label rx rx-up">The World</p><h2 class="ch-title rx rx-up d1">What Awaits <em>Outside</em></h2><div class="divline rx rx-up d2"></div>
-        <p class="ch-body rx rx-up d3">Story locations and discoveries: [REDACTED].</p>
+        <p class="ch-body rx rx-up d3">Wild landscapes, abandoned places, and unfinished stories reward a closer look.</p>
       </header>
       <div class="biome-grid">
-        <article class="bcard lush rx rx-left d2"><div class="bcard-bg"></div><div class="bcard-overlay"></div><div class="bcard-gfx">🌿</div><span class="bcard-tag">Biome</span><div class="bcard-content"><h3>World Records</h3><p>[REDACTED]</p></div></article>
-        <article class="bcard crater rx rx-up d3"><div class="bcard-bg"></div><div class="bcard-overlay"></div><div class="bcard-gfx">☄️</div><span class="bcard-tag">Anomaly Zone</span><div class="bcard-content"><h3>Historical Records</h3><p>[REDACTED]</p></div></article>
-        <article class="bcard deep rx rx-right d4"><div class="bcard-bg"></div><div class="bcard-overlay"></div><div class="bcard-gfx">🌀</div><span class="bcard-tag">Dimension</span><div class="bcard-content"><h3>Restricted Records</h3><p>[REDACTED]</p></div></article>
+        <article class="bcard lush rx rx-left d2"><div class="bcard-bg"></div><div class="bcard-overlay"></div><div class="bcard-gfx">🌿</div><span class="bcard-tag">Biome</span><div class="bcard-content"><h3>The Living World</h3><p>Explore varied landscapes, find resources, and make a place of your own.</p></div></article>
+        <article class="bcard crater rx rx-up d3"><div class="bcard-bg"></div><div class="bcard-overlay"></div><div class="bcard-gfx">☄️</div><span class="bcard-tag">Anomaly Zone</span><div class="bcard-content"><h3>Forgotten Places</h3><p>Search abandoned structures for supplies and clues worth following.</p></div></article>
+        <article class="bcard deep rx rx-right d4"><div class="bcard-bg"></div><div class="bcard-overlay"></div><div class="bcard-gfx">🌀</div><span class="bcard-tag">Dimension</span><div class="bcard-content"><h3>Echo Earth</h3><p>A name in the archives. Its meaning is yours to uncover.</p></div></article>
       </div>
     </div>
   </section>
 
   <section id="content-hub" class="chapter">
     <div class="hub-inner">
-      <header class="hub-head"><p class="ch-label rx rx-left">Mission Directory</p><h2 class="ch-title rx rx-left d1">Choose Your <em>Signal</em></h2><div class="divline rx rx-left d2"></div><p class="ch-body rx rx-left d3">[REDACTED] — Discover the story in play.</p></header>
+      <header class="hub-head"><p class="ch-label rx rx-left">Mission Directory</p><h2 class="ch-title rx rx-left d1">Choose Your <em>Signal</em></h2><div class="divline rx rx-left d2"></div><p class="ch-body rx rx-left d3">Browse updates, development plans, and community resources.</p></header>
       <div class="hub-grid">
         <a class="hub-card rx rx-up d1" href={withBase('/roadmap/')} data-code="MAP"><span class="hub-card-kicker">Build path</span><span class="hub-card-title">Roadmap</span><span class="hub-card-copy">Active engineering tracks, dependencies, release gates, and progress.</span><span class="hub-card-link">Open roadmap</span></a>
         <a class="hub-card rx rx-up d2" href={withBase('/gallery/')} data-code="VIS"><span class="hub-card-kicker">Visual archive</span><span class="hub-card-title">Gallery</span><span class="hub-card-copy">Browse planned visual records by category. Development captures are pending.</span><span class="hub-card-link">Open gallery</span></a>
@@ -112,7 +108,7 @@ const roadmapPreview = ROADMAP_ITEMS.slice(0, 4);
   <section id="roadmap" class="chapter" data-roadmap-mode="summary">
     <div class="ch-num rn" aria-hidden="true">04</div>
     <div class="road-inner">
-      <div><div class="alpha-badge rx rx-left"><span class="abdot"></span>Version {SITE.version} In Development</div><h2 class="ch-title rx rx-left d1">The <em>Journey</em><br />Continues</h2><div class="divline rx rx-left d2"></div><p class="ch-body rx rx-left d3">[REDACTED] — Discover the story in play.</p><p class="road-note">Targets are quality-based, not promises on a calendar.</p><a class="section-link" href={withBase('/roadmap/')}>Open interactive roadmap</a></div>
+      <div><div class="alpha-badge rx rx-left"><span class="abdot"></span>Version {SITE.version} In Development</div><h2 class="ch-title rx rx-left d1">The <em>Journey</em><br />Continues</h2><div class="divline rx rx-left d2"></div><p class="ch-body rx rx-left d3">Follow the engineering work and quality gates shaping the first alpha.</p><p class="road-note">Targets are quality-based, not promises on a calendar.</p><a class="section-link" href={withBase('/roadmap/')}>Open interactive roadmap</a></div>
       <ol class="rmap">
         {roadmapPreview.map((item) => <li class="ri rx rx-up"><div class="ri-dot-wrap"><span class:list={['ri-dot', item.status === 'Complete' ? 'done' : item.status === 'In Development' ? 'in-progress' : 'planned']}></span></div><article class="ri-body"><div class="ri-meta"><span class="ri-phase">{item.phase}</span><span class="ri-status">{item.status}</span></div><h3>{item.title}</h3><p class="ri-summary">{item.description}</p><div class="ri-progress"><div class="ri-progress-label"><span>{item.category}</span><strong>{item.progressLabel}</strong></div><div class="ri-progress-track"><span class="ri-progress-fill" style={`width:${item.progress}%`}></span></div></div></article></li>)}
       </ol>
@@ -122,12 +118,12 @@ const roadmapPreview = ROADMAP_ITEMS.slice(0, 4);
   <section id="terminal-section" class="chapter"><div class="ch-num" aria-hidden="true">05</div><div class="terminal-section-inner"><BunkerTerminal transmissions={transmissions} /></div></section>
 
   <section id="survivor-logs" class="chapter">
-    <div class="ch-num" aria-hidden="true">06</div><div class="survivor-inner"><header class="survivor-head"><p class="ch-label rx rx-left">Survivor Logs</p><h2 class="ch-title rx rx-left d1">Found in the<br /><em>Ruins</em></h2><div class="divline rx rx-left d2"></div><p class="ch-body rx rx-left d3">[REDACTED] — Discover the story in play.</p></header><div class="survivor-logs-grid">{SURVIVOR_LOGS.slice(0,3).map((log) => <article class="slog"><div class="slog-head"><span class="slog-id">{log.id}</span><time class="slog-date">{log.date}</time></div><h3 class="slog-author">SURVIVOR: {log.survivor}</h3><p class="slog-body">{log.body}</p><div class="slog-footer"><StatusBadge label={log.status} tone={log.tone === 'safe' ? 'safe' : log.tone === 'warn' ? 'warn' : 'danger'} /></div></article>)}</div><a class="section-link" href={withBase('/logs/')}>Open all survivor logs</a></div>
+    <div class="ch-num" aria-hidden="true">06</div><div class="survivor-inner"><header class="survivor-head"><p class="ch-label rx rx-left">Survivor Logs</p><h2 class="ch-title rx rx-left d1">Found in the<br /><em>Ruins</em></h2><div class="divline rx rx-left d2"></div><p class="ch-body rx rx-left d3">A glimpse of the archive. The stories behind these records are left for exploration.</p></header><div class="survivor-logs-grid">{SURVIVOR_LOGS.slice(0,3).map((log) => <article class="slog"><div class="slog-head"><span class="slog-id">{log.id}</span><time class="slog-date">{log.date}</time></div><h3 class="slog-author">SURVIVOR: {log.survivor}</h3><p class="slog-body">{log.locked ? 'A restricted archive fragment. Discover its story in play.' : log.body}</p><div class="slog-footer"><StatusBadge label={log.status} tone={log.tone === 'safe' ? 'safe' : log.tone === 'warn' ? 'warn' : 'danger'} /></div></article>)}</div><a class="section-link" href={withBase('/logs/')}>Open all survivor logs</a></div>
   </section>
 
-  <section id="latest-news" class="chapter"><div class="news-inner"><header class="news-head"><div class="news-head-text"><p class="ch-label rx rx-left">Latest News</p><h2 class="ch-title rx rx-left d1">Newest<br /><em>Transmissions</em></h2><div class="divline rx rx-left d2"></div><p class="ch-body rx rx-left d3">[REDACTED] — Discover the story in play.</p></div><a class="section-link" href={withBase('/news/')}>Open all news</a></header><div class="transmission-grid">{newest.map((entry) => <TransmissionCard entry={entry} />)}</div></div></section>
+  <section id="latest-news" class="chapter"><div class="news-inner"><header class="news-head"><div class="news-head-text"><p class="ch-label rx rx-left">Latest News</p><h2 class="ch-title rx rx-left d1">Newest<br /><em>Transmissions</em></h2><div class="divline rx rx-left d2"></div><p class="ch-body rx rx-left d3">Development news, release notes, and project announcements.</p></div><a class="section-link" href={withBase('/news/')}>Open all news</a></header><div class="transmission-grid">{newest.map((entry) => <TransmissionCard entry={entry} />)}</div></div></section>
 
-  {fieldNotes.length > 0 && <section id="blog" class="chapter"><div class="ch-num" aria-hidden="true">08</div><div class="blog-inner"><header class="blog-head"><p class="ch-label rx rx-left">Field Notes</p><h2 class="ch-title rx rx-left d1">Development<br /><em>Blog</em></h2><div class="divline rx rx-left d2"></div><p class="ch-body rx rx-left d3">[REDACTED] — Discover the story in play.</p></header><div class="transmission-grid">{fieldNotes.map((entry) => <TransmissionCard entry={entry} />)}</div><a class="section-link" href={withBase('/blog/')}>Open the blog</a></div></section>}
+  {fieldNotes.length > 0 && <section id="blog" class="chapter"><div class="ch-num" aria-hidden="true">08</div><div class="blog-inner"><header class="blog-head"><p class="ch-label rx rx-left">Field Notes</p><h2 class="ch-title rx rx-left d1">Development<br /><em>Blog</em></h2><div class="divline rx rx-left d2"></div><p class="ch-body rx rx-left d3">Notes on building and testing Wilderness Odyssey.</p></header><div class="transmission-grid">{fieldNotes.map((entry) => <TransmissionCard entry={entry} />)}</div><a class="section-link" href={withBase('/blog/')}>Open the blog</a></div></section>}
 
   <section id="community"><div class="comm-glow" aria-hidden="true"></div><div class="comm-ring ring-one" aria-hidden="true"></div><div class="comm-ring ring-two" aria-hidden="true"></div><div class="comm-inner"><p class="ch-label rx rx-up">Community</p><h2 class="ch-title rx rx-up d1">Shape the <em>World</em></h2><div class="divline rx rx-up d2"></div><p class="ch-body rx rx-up d3">Your ideas, bug reports, seed coordinates, hardware profiles, and exact reproduction steps help turn version {SITE.version} into a testable first alpha.</p><a class="dc-card rx rx-up d4" href={SITE.links.discord} target="_blank" rel="noreferrer"><span class="dc-icon">💬</span><strong class="dc-name">Join Our Discord</strong><span class="dc-desc">Connect with fellow survivors and the development team</span><span class="dc-badge">discord.gg/XHSFDb7EM5</span></a></div></section>
 </BaseLayout>

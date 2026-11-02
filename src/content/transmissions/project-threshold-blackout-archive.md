@@ -1,6 +1,6 @@
 ---
-title: "Restricted Lore Record"
-description: "[REDACTED] — Story details are reserved for discovery in play."
+title: "Traces of a Forgotten World"
+description: "A spoiler-light introduction to the wilderness, Aether, and the mystery of Echo Earth."
 publishedAt: 2026-06-20
 updatedAt: 2026-11-02
 type: "lore"
@@ -13,10 +13,8 @@ draft: false
 relatedRoadmapItem: "lore-discovery-layer"
 ---
 
-## [REDACTED]
+Earth has been reclaimed by nature. Abandoned structures and scattered records offer traces of what came before. You survive, build, and follow those clues at your own pace.
 
-Story records, characters, locations, chronology, and discoveries are withheld from the public archive.
+Aether is one thread in that mystery. Echo Earth is another: a name in the archives, with its meaning still to uncover.
 
-> **[REDACTED]**
->
-> Discover the story in play.
+The public archive offers a starting point. Characters’ histories, discoveries, and story outcomes are left for players to find in play.

@@ -3,7 +3,7 @@
     "id": "living-world",
     "category": "World Generation",
     "title": "The Living World",
-    "caption": "[REDACTED] — Story details are reserved for discovery in play.",
+    "caption": "Landscapes to explore and places to build.",
     "version": "Pre-alpha",
     "relatedTransmission": "version-0-1-0-takes-shape",
     "placeholderSymbol": "BIO-01"
@@ -11,41 +11,40 @@
   {
     "id": "threshold-scars",
     "category": "Anomaly",
-    "title": "[REDACTED]",
-    "caption": "[REDACTED] — Story details are reserved for discovery in play.",
+    "title": "Forgotten Places",
+    "caption": "Abandoned structures invite a closer look.",
     "version": "Pre-alpha",
-    "lore": "[REDACTED]",
     "placeholderSymbol": "ANM-02"
   },
   {
     "id": "echo-earth",
     "category": "Dimensions",
-    "title": "[REDACTED]",
-    "caption": "[REDACTED] — Story details are reserved for discovery in play.",
+    "title": "Echo Earth",
+    "caption": "A name from the archives, with its story still to discover.",
     "version": "Planned",
     "placeholderSymbol": "ECH-03"
   },
   {
     "id": "displaced-creatures",
     "category": "Creatures",
-    "title": "Altered Wildlife",
-    "caption": "[REDACTED] — Story details are reserved for discovery in play.",
+    "title": "Wildlife",
+    "caption": "Encounters from the wilderness.",
     "version": "Pre-alpha",
     "placeholderSymbol": "BIO-04"
   },
   {
     "id": "blackout-trail",
     "category": "Lore",
-    "title": "[REDACTED]",
-    "caption": "[REDACTED] — Story details are reserved for discovery in play.",
+    "title": "Archive Fragments",
+    "caption": "Traces of stories waiting to be uncovered.",
     "version": "Canon mapped",
     "placeholderSymbol": "ARC-05"
   },
   {
     "id": "unknown-energy",
     "category": "Anomaly",
-    "title": "[REDACTED]",
-    "caption": "[REDACTED] — Story details are reserved for discovery in play.",
+    "title": "Unexplained Findings",
+    "caption": "Some discoveries begin with a question.",
     "version": "Pre-alpha",
     "placeholderSymbol": "NRG-06"
   }

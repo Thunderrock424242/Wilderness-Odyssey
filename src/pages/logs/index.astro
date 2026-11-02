@@ -5,9 +5,9 @@ import { SURVIVOR_LOGS } from '../../data/survivorLogs';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Survivor Logs" description="Survivor records: [REDACTED]. Discover these stories in play." canonicalPath="/logs/">
-  <PageHero eyebrow="Illustrative survivor fragments" title="Found in the ruins" description="[REDACTED] — Survivor stories are reserved for discovery in play." primaryLabel="Recovered lore" primaryHref="/lore/" secondaryLabel="Open gallery" secondaryHref="/gallery/" />
-  <section class="section"><div class="shell"><p class="ch-body">Identities, dates, observations, and outcomes: [REDACTED].</p></div>
+<BaseLayout title="Survivor Logs" description="A glimpse of the archive, with survivor stories reserved for discovery in play." canonicalPath="/logs/">
+  <PageHero eyebrow="Illustrative survivor fragments" title="Found in the ruins" description="The archive is incomplete. Survivor stories will unfold through exploration." primaryLabel="Recovered lore" primaryHref="/lore/" secondaryLabel="Open gallery" secondaryHref="/gallery/" />
+  <section class="section"><div class="shell"><p class="ch-body">Further field notes are reserved for discovery in play.</p></div>
     <div class="shell survivor-grid">
       {SURVIVOR_LOGS.map((log) => (
         <article class:list={['survivor-log', log.locked && 'survivor-log--locked']}>

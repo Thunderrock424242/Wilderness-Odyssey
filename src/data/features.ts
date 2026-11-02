@@ -27,7 +27,7 @@ export const FEATURES: Feature[] = [
     eyebrow: 'Living world',
     title: 'World Exploration',
     description:
-      'Explore varied terrain and ecosystems. Story context: [REDACTED].',
+      'Explore varied terrain and ecosystems, with room to build and routes worth wandering.',
     status: 'In development',
   },
   {
@@ -51,7 +51,7 @@ export const FEATURES: Feature[] = [
     eyebrow: 'Recovered sites',
     title: 'Bunkers & Research Sites',
     description:
-      'Discover structures and survival resources. Story records: [REDACTED].',
+      'Search abandoned structures for resources and environmental clues.',
     status: 'In development',
   },
   {
@@ -59,7 +59,7 @@ export const FEATURES: Feature[] = [
     eyebrow: 'Adapted life',
     title: 'Wildlife',
     description:
-      'Creature history and story details: [REDACTED].',
+      'Encounter wildlife across varied environments as you explore.',
     status: 'Foundation',
   },
   {
@@ -67,7 +67,7 @@ export const FEATURES: Feature[] = [
     eyebrow: 'First session',
     title: 'Survive, Build & Explore',
     description:
-      'Gather resources, build, and explore at your own pace. Opening story: [REDACTED].',
+      'Gather resources, build, and explore at your own pace.',
     status: 'In development',
   },
   {
@@ -80,26 +80,26 @@ export const FEATURES: Feature[] = [
   },
   {
     category: 'Aether',
-    eyebrow: 'Restricted records',
-    title: '[REDACTED]',
+    eyebrow: 'A voice in the records',
+    title: 'Aether',
     description:
-      '[REDACTED] — Discover the story in play.',
+      'Aether offers a thread to follow through incomplete records. Discover its story in play.',
     status: 'Foundation',
   },
   {
     category: 'Dimensions',
-    eyebrow: 'Restricted records',
-    title: '[REDACTED]',
+    eyebrow: 'An unanswered name',
+    title: 'Echo Earth',
     description:
-      '[REDACTED] — Discover the story in play.',
+      'A name in the archives hints at something beyond the familiar. Details are left for discovery.',
     status: 'Planned',
   },
   {
     category: 'Lore',
-    eyebrow: 'Restricted records',
-    title: '[REDACTED]',
+    eyebrow: 'Follow the clues',
+    title: 'Stories in the Wilderness',
     description:
-      '[REDACTED] — Discover the story in play.',
+      'Find the story through exploration and environmental clues, at your own pace.',
     status: 'Foundation',
   },
 ];

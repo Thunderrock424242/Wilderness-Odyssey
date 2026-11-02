@@ -28,7 +28,7 @@
         "complete": false
       },
       {
-        "label": "Story integration: [REDACTED].",
+        "label": "Keep optional story discoveries integrated with exploration.",
         "complete": false
       },
       {
@@ -76,7 +76,7 @@
         "complete": false
       },
       {
-        "label": "Story integration: [REDACTED].",
+        "label": "Keep optional story discoveries integrated with exploration.",
         "complete": false
       }
     ],
@@ -134,8 +134,8 @@
   {
     "id": "lore-discovery-layer",
     "phase": "Phase A3",
-    "title": "[REDACTED]",
-    "description": "Story development details are reserved for discovery in play.",
+    "title": "Narrative Discovery",
+    "description": "Develop optional discoveries and environmental storytelling that fit open-ended survival.",
     "category": "Lore",
     "status": "Research",
     "progress": 10,
@@ -143,39 +143,27 @@
     "priority": "High",
     "milestone": "After the first-alpha foundation",
     "dependencies": [
-      "[REDACTED]"
+      "Stable exploration and content foundations."
     ],
     "relatedTransmissions": [
       "version-0-1-0-takes-shape"
     ],
     "tasks": [
       {
-        "label": "[REDACTED]",
-        "complete": false
-      },
-      {
-        "label": "[REDACTED]",
-        "complete": false
-      },
-      {
-        "label": "[REDACTED]",
-        "complete": false
-      },
-      {
-        "label": "[REDACTED]",
+        "label": "Connect environmental clues to optional discoveries.",
         "complete": false
       }
     ],
     "exitConditions": [
-      "[REDACTED]"
+      "Exploration remains rewarding without forcing a linear campaign."
     ],
-    "communitySignal": "Story details and discoveries are withheld from the public roadmap."
+    "communitySignal": "Future feedback will focus on discovery pacing and clarity without sharing spoilers."
   },
   {
     "id": "echo-earth-progression",
     "phase": "Phase A4",
-    "title": "[REDACTED]",
-    "description": "Story development details are reserved for discovery in play.",
+    "title": "Echo Earth Exploration",
+    "description": "A future exploration track. Specific discoveries will be revealed through play.",
     "category": "Dimensions",
     "status": "Planned",
     "progress": 0,
@@ -183,31 +171,19 @@
     "priority": "Later",
     "milestone": "Later alpha",
     "dependencies": [
-      "[REDACTED]"
+      "Stable exploration and content foundations."
     ],
     "relatedTransmissions": [],
     "tasks": [
       {
-        "label": "[REDACTED]",
-        "complete": false
-      },
-      {
-        "label": "[REDACTED]",
-        "complete": false
-      },
-      {
-        "label": "[REDACTED]",
-        "complete": false
-      },
-      {
-        "label": "[REDACTED]",
+        "label": "Develop exploration content without publishing story outcomes.",
         "complete": false
       }
     ],
     "exitConditions": [
-      "[REDACTED]"
+      "Exploration remains rewarding without forcing a linear campaign."
     ],
-    "communitySignal": "Story details and discoveries are withheld from the public roadmap."
+    "communitySignal": "Future feedback will focus on discovery pacing and clarity without sharing spoilers."
   },
   {
     "id": "version-0-1-0-stabilization",

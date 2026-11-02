@@ -18,7 +18,7 @@ The interactive terminal became part of the site identity, turning update text a
 ## Highlights
 
 - Added command history, autocomplete, clickable command hints, and terminal output styling.
-- Introduced Bunker OS presentation; story context: [REDACTED].
+- Introduced the Bunker OS presentation.
 - Created a foundation for future lore commands, version output, and hidden records.
 
 ## Fixes

@@ -2,7 +2,13 @@
 
 Reviewed 2026-11-02 against [Core Lore v1.0](WILDERNESS_ODYSSEY_CORE_LORE.md) and [Expanded Lore v1.0](WILDERNESS_ODYSSEY_EXPANDED_LORE.md).
 
-## Current public spoiler boundary
+## Current presentation: curiosity without spoilers
+
+The public site now keeps a brief premise (an Earth reclaimed by nature, survival and exploration) and intriguing names such as Aether and Echo Earth. Story answers, human habitation and politics on Echo Earth, character histories, evacuation outcomes, and later milestones remain withheld. Repeated redaction placeholders were replaced with useful introductions, gameplay copy, or omitted details. A single restricted survivor fragment and the terminal retain sparse redaction as archive atmosphere. Full canonical references remain unchanged. This supersedes the stricter redaction policy below.
+
+Validation: 245 unit tests, 90 browser tests, type/content checks, production build and internal links passed. Inspected seven affected routes at desktop and mobile widths (14 page checks), with no horizontal overflow or unexpected browser errors. Only two redaction labels remain in public source, in the survivor fragment and terminal response. Shared reference hashes are unchanged.
+
+## Previous full-redaction policy
 
 All public story details are now redacted, superseding the earlier Echo Earth-only boundary below. This includes articles, historical release-note story claims, survivor records, homepage story panels, gallery copy, roadmap narrative tracks, terminal responses, and metadata. Canonical developer references remain unchanged. Retired story tag archives redirect to the restricted lore page.
 

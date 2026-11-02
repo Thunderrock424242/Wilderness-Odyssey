@@ -16,11 +16,11 @@ relatedRoadmapItem: "first-alpha-foundation"
 
 The public story now follows the current lore canon, and the roadmap reflects the real version 0.1.0 build: worldgen changes, bunker placement, performance work, and SPH water VRAM investigation.
 
-> **Public archive notice:** All story details are [REDACTED] and reserved for discovery in play.
+> **Public archive notice:** Story discoveries and outcomes are reserved for play.
 
 ## Highlights
 
-- Updated story content: [REDACTED].
+- Updated the public story introduction.
 - Rebuilt the roadmap around version 0.1.0, the upcoming first alpha, and its active engineering gates.
 - Added the June development update to the Field Notes and Latest News feeds.
 

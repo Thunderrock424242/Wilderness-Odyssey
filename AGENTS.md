@@ -142,7 +142,7 @@ Content Management
 
 For story work, read [Core Lore v1.0](docs/lore/WILDERNESS_ODYSSEY_CORE_LORE.md) and [Expanded Lore v1.0](docs/lore/WILDERNESS_ODYSSEY_EXPANDED_LORE.md). Core takes precedence; only Established material is canon, and Concept/Open material does not authorize implementation. Keep these shared references identical across repositories; record conflicts and proposed corrections separately for review rather than silently changing canon. See the [website alignment report](docs/lore/website-alignment-v1.0.md) for alignment history and integration boundaries.
 
-All public lore and spoilers must be redacted, including story names, characters, locations, chronology, outcomes, survivor fragments, and future narrative milestones. Apply this to copy, metadata, feeds, gallery, roadmap, and terminal/browser payloads; remove spoiler text from public source rather than hiding it with CSS. Keep full canonical developer reference documents intact.
+Public copy should offer a short spoiler-light premise and intriguing names such as Aether and Echo Earth. Withhold story answers, human habitation on Echo Earth, settlements/council details, evacuation outcomes, character histories, and later narrative milestones. Omit spoiler-heavy passages rather than filling pages with redaction labels; reserve sparse redaction for archive/terminal presentation. Apply this boundary to metadata, feeds, gallery, roadmap, and browser payloads. Keep full canonical developer references intact.
 
 Structured copy and project records belong in src/content/ when possible.
 

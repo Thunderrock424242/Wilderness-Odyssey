@@ -20,7 +20,7 @@ test('terminal completes a prefix and lets Tab and Shift+Tab leave the input', a
   await expect(input).toHaveValue('hel');
 });
 
-test('public story records and metadata withhold narrative spoilers', async ({ request }) => {
+test('public introductions name the mystery without revealing story answers', async ({ request }) => {
   for (const path of [
     '/', '/lore/', '/logs/', '/features/', '/gallery/', '/roadmap/',
     '/transmissions/project-threshold-blackout-archive/', '/rss.xml',
@@ -28,8 +28,8 @@ test('public story records and metadata withhold narrative spoilers', async ({ r
     const response = await request.get(path);
     expect(response.status()).toBe(200);
     const source = await response.text();
-    expect(source).not.toMatch(/Project Eden|Reservoir-9|Echo Earth|Beal|Nathan|Peppermint|meteor-derived|150 years|cryogenic|awakening signal/i);
-    expect(source).toContain('[REDACTED]');
+    expect(source).not.toMatch(/Beal|Nathan|Peppermint|meteor-derived|150 years|cryogenic|awakening signal|human settlements|inter-settlement council|accidental human refuge/i);
+    if (path !== '/logs/') expect(source).not.toContain('[REDACTED]');
   }
 });
 
