@@ -2,6 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { onRequest } from '../functions/_middleware';
 
 describe('staff asset protection', () => {
+  it('preserves a bookmarked admin destination for a remembered-only sign-in without serving private HTML', async () => {
+    const response = await onRequest({ request: new Request('https://site.example.com/admin/content/pages/', { headers: { Cookie: '__Host-wo-admin-remember=' + 'r'.repeat(43) } }), env: { ENVIRONMENT: 'production', STAFF_AUTH_MODE: 'discord', ALLOWED_HOSTS: 'site.example.com', DISCORD_REDIRECT_URI: 'https://site.example.com/api/auth/discord/callback', DISCORD_GUILD_ID: '123456789012345678' }, next: async () => new Response('private staff shell') });
+    expect(response.status).toBe(303);
+    expect(new URL(response.headers.get('Location')!, 'https://site.example.com').searchParams.get('returnTo')).toBe('/admin/content/pages/');
+    expect(await response.text()).not.toContain('private staff shell');
+  });
   for (const path of ['/admin', '/admin/', '/admin/index.html', '/%61dmin/', '/%2561dmin/', '//admin/', '/ADMIN/', '/api/admin/v1/session']) {
     it('denies unconfigured staff access through ' + path, async () => {
       const response = await onRequest({ request: new Request('https://site.example.com' + path), env: {}, next: async () => new Response('private staff shell') });

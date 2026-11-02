@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { rememberedFetch } from '../../services/rememberedFetch';
 import * as s from '../../../contracts/v1/playtests';
 import { HostedAdminApi } from './hostedApi';
 import { AdminApiError } from './types';
@@ -25,7 +26,7 @@ export class PlaytestApi extends HostedAdminApi {
   }
   async download(path: string, spark: boolean) {
     let response: Response;
-    try { const fetcher = this.fetcher; response = await fetcher('/api/admin/v1' + path + '/download', { credentials: 'same-origin', redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(20000) }); }
+    try { const fetcher = this.fetcher; response = await rememberedFetch('/api/admin/v1' + path + '/download', { credentials: 'same-origin', redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(20000) }, fetcher); }
     catch { throw new AdminApiError('This private download could not be confirmed. Try refreshing.', 0); }
     if (!response.ok) {
       await response.body?.cancel(); if ([401, 403].includes(response.status)) this.invalidate();

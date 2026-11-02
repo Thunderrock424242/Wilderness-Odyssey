@@ -7,7 +7,7 @@ import { authoringRoutes } from '../contracts/v1/authoring-routes';
 import { playtestRoutes } from '../contracts/v1/playtest-routes';
 import { mediaSchema } from '../contracts/v1/content';
 import * as participant from '../contracts/v1/participants';
-import { discordStartInput, discordStartSchema, discordCallbackInput, discordCallbackSchema, discordSessionSchema, logoutSchema } from '../contracts/v1/auth';
+import { discordStartInput, discordStartSchema, discordCallbackInput, discordCallbackSchema, discordSessionSchema, logoutSchema, rememberRefreshInput, rememberRefreshSchema } from '../contracts/v1/auth';
 mkdirSync('contracts/v1', { recursive: true });
 const contract = {
   contractVersion: '1.0', publicStatus: z.toJSONSchema(publicStatusSchema),
@@ -17,6 +17,7 @@ const contract = {
   discordAuthentication: {
     staffSession: z.toJSONSchema(discordSessionSchema),
     sessionHeader: 'X-WO-Admin-Session',
+    remembered: { input: z.toJSONSchema(rememberRefreshInput), output: z.toJSONSchema(rememberRefreshSchema), administratorDays: 7, participantDays: 30 },
     routes: [
       { method: 'POST', backendPath: '/v1/admin/auth/discord/start', input: discordStartInput, output: discordStartSchema },
       { method: 'POST', backendPath: '/v1/admin/auth/discord/callback', input: discordCallbackInput, output: discordCallbackSchema },

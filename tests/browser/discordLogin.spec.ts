@@ -7,9 +7,19 @@ test('Discord login explains bot enrollment, works with a keyboard and fits mobi
   page.on('console', entry => { if (entry.type() === 'error') errors.push(entry.text()); });
   await page.goto('/login/');
   await expect(page.getByRole('heading', { name: 'Sign in with Discord', exact: true })).toBeVisible();
+  await expect(page.getByLabel('Stay signed in on this device')).not.toBeChecked();
+  for (const radio of await page.getByRole('radio').all()) {
+    expect(await radio.evaluate(input => input.getBoundingClientRect().width)).toBeLessThanOrEqual(24);
+    expect(await radio.evaluate(input => { const label = input.closest('label')!; return label.querySelector('span')!.getBoundingClientRect().right <= label.getBoundingClientRect().right; })).toBe(true);
+  }
+  await page.getByRole('radio', { name: /^Administrator/ }).check();
+  await page.getByText('First time signing in as an administrator?').click();
   await expect(page.getByText('/dashboard enable', { exact: true })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Sign in with Discord', exact: true })).toHaveAttribute('href', '/api/auth/discord/start');
+  await expect(page.locator('[data-login-form]')).toHaveAttribute('action', '/api/auth/discord/start');
+  await page.getByLabel('Stay signed in on this device').check();
+  await expect(page.locator('[name="remember"]')).toHaveValue('true');
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await page.goto('/login/');
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Skip to sign-in' })).toBeFocused();
   await page.keyboard.press('Enter');
@@ -19,6 +29,59 @@ test('Discord login explains bot enrollment, works with a keyboard and fits mobi
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath('discord-login-mobile.png'), fullPage: true });
   expect(errors).toEqual([]);
+});
+
+test('role and remember choices submit only approved OAuth query fields', async ({ page }) => {
+  await page.route('**/api/auth/discord/start*', route => route.fulfill({ body: 'OAuth started' }));
+  await page.goto('/login/');
+  await page.getByRole('radio', { name: /^Administrator/ }).check();
+  await page.getByLabel('Stay signed in on this device').check();
+  await page.getByRole('button', { name: 'Continue with Discord' }).click();
+  await expect(page).toHaveURL(/\/api\/auth\/discord\/start\?remember=true$/);
+});
+
+test('playtester sign-in form works without JavaScript', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.route('**/api/participant/start*', route => route.fulfill({ body: 'OAuth started' }));
+  await page.goto(baseURL + '/login/');
+  await page.getByLabel('Stay signed in on this device').check();
+  await page.getByRole('button', { name: 'Continue with Discord' }).click();
+  await expect(page).toHaveURL(/\/api\/participant\/start\?remember=true$/);
+  await context.close();
+});
+
+test('a remembered sign-in restores the guarded admin destination', async ({ page }) => {
+  let valid = false, renewals = 0;
+  await page.route('**/api/auth/discord/refresh', route => { valid = true; renewals++; return route.fulfill({ json: { schemaVersion: '1.0', renewed: true } }); });
+  await page.route('**/api/admin/v1/**', route => {
+    if (!valid) return route.fulfill({ status: 401, json: { code: 'AUTH_REQUIRED' } });
+    return route.fulfill({ json: new URL(route.request().url()).pathname.endsWith('/session')
+      ? { schemaVersion: '1.0', user: { id: '123456789012345678', displayName: 'Administrator', role: 'administrator' }, capabilities: ['reports:read'], csrfToken: 'fixture-csrf', authMethod: 'discord' }
+      : { schemaVersion: '1.0', reports: [], nextCursor: null } });
+  });
+  await page.goto('/login/?returnTo=%2Fadmin%2Freports%2F');
+  await expect(page).toHaveURL(/\/admin\/reports\/$/);
+  await expect(page.locator('[data-staff-workspace]')).toBeVisible();
+  expect(renewals).toBe(1);
+});
+
+test('idle permission checks do not renew but a user refresh can restore access', async ({ page }) => {
+  await page.clock.install();
+  let valid = true, renewals = 0;
+  await page.route('**/api/auth/discord/refresh', route => { valid = true; renewals++; return route.fulfill({ json: { schemaVersion: '1.0', renewed: true } }); });
+  await page.route('**/api/admin/v1/**', route => !valid ? route.fulfill({ status: 401, json: { code: 'AUTH_REQUIRED' } }) : route.fulfill({ json: new URL(route.request().url()).pathname.endsWith('/session')
+    ? { schemaVersion: '1.0', user: { id: '123456789012345678', displayName: 'Administrator', role: 'administrator' }, capabilities: ['reports:read'], csrfToken: 'fixture-csrf', authMethod: 'discord' }
+    : { schemaVersion: '1.0', reports: [], nextCursor: null } }));
+  await page.goto('/admin/reports/');
+  await expect(page.locator('[data-staff-workspace]')).toBeVisible();
+  valid = false;
+  await page.clock.fastForward(61000);
+  await expect(page.locator('[data-staff-workspace]')).toBeHidden();
+  expect(renewals).toBe(0);
+  await page.getByRole('button', { name: 'Refresh dashboard' }).click();
+  await expect(page.locator('[data-staff-workspace]')).toBeVisible();
+  expect(renewals).toBe(1);
 });
 
 test('login errors use safe messages and discard supplied URL text', async ({ page }) => {

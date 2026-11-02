@@ -6,6 +6,7 @@ import { kinetic } from './kinetic-client';
 import { discordCsrfSubject, FLOW_COOKIE, lifetime, SESSION_COOKIE, setStaffCookie, staffCookie } from './staff-cookies';
 import { discordConfig } from './staff-host';
 import { participantCallback, PARTICIPANT_FLOW } from './participant-gateway';
+import { rememberChoice, rememberedCookies } from './remembered-auth';
 
 export function loginRedirect(error?: string) { return authRedirect('/login/' + (error ? '?error=' + error : '')); }
 function authRedirect(location: string, status = 303) {
@@ -59,6 +60,7 @@ export async function handleDiscordAuth(request: Request, env: GatewayEnv, upstr
         if (result.guildId !== config.guildId) throw new GatewayError(502, 'INVALID_LOGIN', 'Discord sign-in could not be verified.');
         response = authRedirect('/admin/');
         response.headers.append('Set-Cookie', setStaffCookie(SESSION_COOKIE, result.sessionToken, maxAge));
+        rememberedCookies(response, result, false);
       }
     } catch (error) { response = loginRedirect(loginError(error)); }
     response.headers.append('Set-Cookie', setStaffCookie(FLOW_COOKIE, '', 0));
@@ -67,9 +69,9 @@ export async function handleDiscordAuth(request: Request, env: GatewayEnv, upstr
   if (path === '/api/auth/discord/start' && request.method === 'GET') {
     // Validate the deployment before translating backend failures to login UI.
     const config = discordConfig(request, env);
-    if (config.url.search) throw new GatewayError(400, 'INVALID_QUERY', 'Start sign-in from the login page.');
+    const remember = rememberChoice(config.url);
     try {
-      const result = await kinetic('/auth/discord/start', discordStartSchema, undefined, env, upstream, { method: 'POST', body: JSON.stringify({ redirectUri: config.redirectUri }) });
+      const result = await kinetic('/auth/discord/start', discordStartSchema, undefined, env, upstream, { method: 'POST', body: JSON.stringify({ redirectUri: config.redirectUri, ...(remember ? { remember: true } : {}) }) });
       const response = authRedirect(authorizationUrl(result.authorizationUrl, config.redirectUri), 302);
       response.headers.append('Set-Cookie', setStaffCookie(FLOW_COOKIE, result.flowToken, lifetime(result.expiresAt, 300)));
       response.headers.append('Set-Cookie', setStaffCookie(PARTICIPANT_FLOW, '', 0));

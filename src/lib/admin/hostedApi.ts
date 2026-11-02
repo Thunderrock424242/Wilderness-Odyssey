@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { rememberedFetch } from '../../services/rememberedFetch';
 import { browserSessionSchema, roleCapabilities, type BrowserSession } from '../../../contracts/v1/admin';
 import * as c from '../../../contracts/v1/content';
 import { logoutSchema } from '../../../contracts/v1/auth';
@@ -18,7 +19,7 @@ export class HostedAdminApi {
     }
     let response: Response;
     const fetcher = this.fetcher;
-    try { response = await fetcher('/api/admin/v1' + path, { ...init, headers, credentials: 'same-origin', cache: 'no-store', signal: AbortSignal.timeout(20000) }); }
+    try { response = await rememberedFetch('/api/admin/v1' + path, { ...init, headers, credentials: 'same-origin', cache: 'no-store', signal: AbortSignal.timeout(20000) }, fetcher); }
     catch { throw new AdminApiError('The request could not be confirmed. Refresh before retrying.', 0); }
     if (!response.ok) {
       await response.body?.cancel(); if ([401, 403].includes(response.status)) this.invalidate();
@@ -39,7 +40,7 @@ export class HostedAdminApi {
     const session = this.session; this.invalidate();
     if (session?.authMethod === 'access') { location.assign('/cdn-cgi/access/logout'); return; }
     const fetcher = this.fetcher;
-    const response = await fetcher('/api/auth/logout', { method: 'POST', headers: { 'X-CSRF-Token': session?.csrfToken ?? '' }, credentials: 'same-origin', signal: AbortSignal.timeout(12000) });
+    const response = await rememberedFetch('/api/auth/logout', { method: 'POST', headers: { 'X-CSRF-Token': session?.csrfToken ?? '' }, credentials: 'same-origin', signal: AbortSignal.timeout(12000) }, fetcher);
     if (!response.ok || !logoutSchema.safeParse(await response.json()).success) throw new AdminApiError('Sign-out could not be confirmed. Close this page and sign in again.', response.status);
   }
 }

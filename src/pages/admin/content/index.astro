@@ -6,6 +6,9 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getPublishedTransmissions } from '../../../lib/transmissions';
 import type { AdminTransmissionSummary } from '../../../lib/admin/types';
 import '../../../styles/admin.css';
+import '../../../styles/operations.css';
+import '../../../styles/workspace.css';
+import StaffNavigation from '../../../components/StaffNavigation.astro';
 
 const published = getPublishedTransmissions(await getCollection('transmissions'));
 const seeds: AdminTransmissionSummary[] = published.map((entry) => ({
@@ -46,8 +49,8 @@ const bootstrap = {
   <div class="admin-shell" data-admin-root>
     <header class="admin-masthead">
       <a class="admin-brand" href="/" aria-label="Return to Wilderness Odyssey">
-        <span>BUNKER_OS</span>
-        <strong>TRANSMISSION COMMAND</strong>
+        <span>Wilderness Odyssey</span>
+        <strong>Content studio</strong>
       </a>
       <div class="admin-masthead__status">
         <span class="admin-signal" aria-hidden="true"></span>
@@ -85,10 +88,8 @@ const bootstrap = {
         <nav aria-label="Admin sections">
           <button type="button" class="is-active" data-admin-route="dashboard">Transmission archive</button>
           <button type="button" data-admin-create>New transmission</button>
-          <a href="/admin/content/pages/">Site information, roadmap, and gallery</a>
-          <a href="/admin/settings/">Service settings</a>
-          <a href="/admin/">Server dashboard</a>
         </nav>
+        <StaffNavigation />
         <div class="admin-operator">
           <small>AUTHORIZED OPERATOR</small>
           <strong data-admin-user>Unknown</strong>

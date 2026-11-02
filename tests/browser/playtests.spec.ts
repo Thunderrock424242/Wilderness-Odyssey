@@ -117,6 +117,7 @@ test('per-tester pause, notes, revocation and retained-data deletion stay separa
   await page.getByRole('button', { name: 'History for Bea', exact: true }).click(); await expect(page.getByLabel('Staff notes')).toHaveValue('Bea private note');
 });
 test('switching with an expired session clears the private page without confirming a change', async ({ page }) => {
+  await page.route('**/api/auth/discord/refresh', route => route.fulfill({ status: 401, json: { code: 'AUTH_REQUIRED' } }));
   const state = await fixtures(page); await openHistory(page); state.revoked = true;
   await page.getByRole('switch', { name: 'Collect playtest diagnostics', exact: true }).click();
   await expect(page.locator('[data-authoring-workspace]')).toBeHidden(); expect(state.collect).toBe(true);

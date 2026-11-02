@@ -8,6 +8,7 @@ import { createCsrf, verifyCsrf } from './csrf';
 import { kinetic } from './kinetic-client';
 import { GatewayError, json, readJson } from './http';
 import { authorizationUrl } from './discord-auth';
+import { rememberChoice, rememberedCookies } from './remembered-auth';
 
 export const PARTICIPANT_COOKIE = '__Host-wo-participant-session';
 export const PARTICIPANT_FLOW = '__Host-wo-participant-flow';
@@ -34,6 +35,7 @@ export async function participantCallback(request: Request, env: GatewayEnv, ups
     if (result.guildId !== config.guildId) throw new Error();
     response = redirect('/playtester/');
     response.headers.append('Set-Cookie', setStaffCookie(PARTICIPANT_COOKIE, result.sessionToken, lifetime(result.expiresAt, 900)));
+    rememberedCookies(response, result, true);
   } catch { response = redirect('/login/?error=tester_login_failed'); }
   response.headers.append('Set-Cookie', setStaffCookie(PARTICIPANT_FLOW, '', 0));
   return response;
@@ -44,10 +46,11 @@ export async function handleParticipant(request: Request, env: GatewayEnv, upstr
   if (!allowed.includes(action) || !((['claim', 'logout'].includes(action) ? 'POST' : 'GET') === request.method)) throw new GatewayError(404, 'NOT_FOUND', 'This playtester operation is unavailable.');
   const fields = [...config.url.searchParams];
   const query = Object.fromEntries(fields);
-  if (fields.length !== Object.keys(query).length || !(action === 'history' ? s.participantQuery : z.object({}).strict()).safeParse(query).success) throw new GatewayError(400, 'INVALID_QUERY', 'This page request is invalid.');
+  if (action !== 'start' && (fields.length !== Object.keys(query).length || !(action === 'history' ? s.participantQuery : z.object({}).strict()).safeParse(query).success)) throw new GatewayError(400, 'INVALID_QUERY', 'This page request is invalid.');
   if (action === 'start') {
+    const remember = rememberChoice(config.url);
     try {
-      const result = await kinetic('/participant/start', discordStartSchema, undefined, env, upstream, { method: 'POST', body: JSON.stringify({ redirectUri: config.redirectUri }) });
+      const result = await kinetic('/participant/start', discordStartSchema, undefined, env, upstream, { method: 'POST', body: JSON.stringify({ redirectUri: config.redirectUri, ...(remember ? { remember: true } : {}) }) });
       const response = redirect(authorizationUrl(result.authorizationUrl, config.redirectUri), 302);
       response.headers.append('Set-Cookie', setStaffCookie(PARTICIPANT_FLOW, result.flowToken, lifetime(result.expiresAt, 300)));
       response.headers.append('Set-Cookie', setStaffCookie(FLOW_COOKIE, '', 0));

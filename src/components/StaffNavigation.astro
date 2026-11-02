@@ -1,0 +1,12 @@
+---
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const groups = [
+  { title: 'Operations', links: [['Server management', '/admin/'], ['Player moderation', '/admin/players/'], ['AI conversation moderation', '/admin/reports/'], ['AI model management', '/admin/models/']] },
+  { title: 'Community', links: [['Playtests', '/admin/playtests/'], ['Playtester website access', '/admin/playtester-access/'], ['My playtester home', '/playtester/']] },
+  { title: 'Website', links: [['Content editor', '/admin/content/'], ['Site, roadmap & gallery', '/admin/content/pages/'], ['Service settings', '/admin/settings/']] },
+  { title: 'Explore', links: [['Public website', '/'], ['Public status', '/status/']] },
+];
+---
+<nav class="staff-nav" aria-label="Staff sections">
+  {groups.map(group => <div class="nav-group"><p class="nav-group-title">{group.title}</p><ul>{group.links.map(([title, href]) => <li><a href={href} aria-current={path === (href.replace(/\/$/, '') || '/') ? 'page' : undefined}>{title}</a></li>)}</ul></div>)}
+</nav>

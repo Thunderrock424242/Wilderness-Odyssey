@@ -57,7 +57,7 @@ async function load() {
 }
 element('[data-tester-refresh]').addEventListener('click', () => { void load(); });
 more.addEventListener('click', async () => { more.disabled = true; try { await history(false, generation, userId); } catch (error) { failure(error); } finally { more.disabled = false; } });
-logout.addEventListener('click', async () => { logout.disabled = true; const logoutCsrf = csrf; try { await participantRequest('logout', logoutSchema, {}, csrf); ++generation; clear(); logout.hidden = true; signIn.hidden = false; message.textContent = 'You are signed out.'; } catch { ++generation; clear(); csrf = logoutCsrf; message.textContent = 'Your records are cleared, but sign-out could not be confirmed. Retry sign-out or close this browser and wait 15 minutes for the session to expire.'; } finally { logout.disabled = false; } });
+logout.addEventListener('click', async () => { logout.disabled = true; const logoutCsrf = csrf; try { await participantRequest('logout', logoutSchema, {}, csrf); ++generation; clear(); logout.hidden = true; signIn.hidden = false; message.textContent = 'You are signed out.'; } catch { ++generation; clear(); csrf = logoutCsrf; message.textContent = 'Your records are cleared, but server sign-out could not be confirmed. A remembered sign-in may remain valid for up to 30 days. If retrying cannot confirm revocation, contact the server owner.'; } finally { logout.disabled = false; } });
 window.addEventListener('pagehide', () => { ++generation; clear(); });
 window.addEventListener('pageshow', event => { if (event.persisted) void load(); });
 void load();

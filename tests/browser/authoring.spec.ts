@@ -72,7 +72,7 @@ test('dashboard navigation and roadmap/gallery private saves work with the keybo
     return route.fulfill({ json: { schemaVersion: '1.0', kind, revision: 'draft-1', sourceRevision: 'source-1', data: documents[kind] } });
   });
   await page.goto('/admin/settings/'); await expect(page.locator('[data-authoring-workspace]')).toBeVisible();
-  await page.getByRole('link', { name: 'Site content', exact: true }).focus(); await page.keyboard.press('Enter');
+  await page.getByRole('link', { name: 'Site, roadmap & gallery', exact: true }).focus(); await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/\/admin\/content\/pages\/$/); await expect(page.getByLabel('Tagline', { exact: true })).toBeVisible();
   const section = page.getByLabel('Content section');
   await section.focus(); await page.keyboard.press('ArrowDown'); await page.keyboard.press('Enter');
@@ -85,7 +85,7 @@ test('dashboard navigation and roadmap/gallery private saves work with the keybo
   await page.locator('[data-page-fields] > fieldset').first().getByLabel('Caption', { exact: true }).fill('Reviewed gallery caption');
   await page.getByRole('button', { name: 'Save private draft', exact: true }).focus(); await page.keyboard.press('Enter');
   await expect.poll(() => saved.gallery).toMatchObject(gallery.map((item, index) => index === 0 ? { ...item, caption: 'Reviewed gallery caption' } : item));
-  await page.getByRole('link', { name: 'Transmissions', exact: true }).focus(); await page.keyboard.press('Enter');
+  await page.getByRole('link', { name: 'Content editor', exact: true }).focus(); await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/\/admin\/content\/$/); await expect(page.locator('[data-admin-user]')).toHaveText('Test administrator');
   expect(errors).toEqual([]);
 });

@@ -6,6 +6,8 @@ import { staffSession } from '../server/staff-session';
 import { loginError, loginRedirect } from '../server/discord-auth';
 import { pageError } from '../server/page-error';
 import { validateStaffHost } from '../server/staff-host';
+import { ADMIN_REMEMBER } from '../server/remembered-auth';
+import { staffCookie } from '../server/staff-cookies';
 
 export function normalizedPath(path: string) {
   try {
@@ -42,7 +44,11 @@ export async function onRequest(context: { request: Request; env: GatewayEnv; ne
         try { await staffSession(request, env); }
         catch (error) {
           if (error instanceof GatewayError && [401, 403].includes(error.status) && error.code !== 'HOST_DENIED') {
-            return loginRedirect(error.code === 'AUTH_REQUIRED' ? undefined : loginError(error));
+            const redirect = loginRedirect(error.code === 'AUTH_REQUIRED' ? undefined : loginError(error));
+            if (error.status === 401 && staffCookie(request, ADMIN_REMEMBER)) {
+              redirect.headers.set('Location', '/login/?returnTo=' + encodeURIComponent(path));
+            }
+            return redirect;
           }
           throw error;
         }

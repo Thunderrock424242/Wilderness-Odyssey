@@ -1,5 +1,6 @@
 ---
 import '../../styles/operations.css';
+import '../../styles/workspace.css';
 ---
 <!doctype html>
 <html lang="en">
@@ -12,34 +13,39 @@ import '../../styles/operations.css';
     <title>Sign in with Discord | Wilderness Odyssey</title>
     <link rel="icon" href="/images/logo.png" />
   </head>
-  <body class="staff">
+  <body class="staff login-page">
     <a class="skip-link" href="#login-main">Skip to sign-in</a>
-    <header class="staff-header"><a class="staff-brand" href="/">Wilderness Odyssey<small>Your place in the Odyssey</small></a><a href="/support/">Get help</a></header>
-    <main id="login-main" class="staff-login">
-      <p class="ops-kicker">Dashboard access</p>
-      <h1>Sign in with Discord</h1>
-      <p>Use the Discord account you registered with the Wilderness Odyssey bot.</p>
-      <p class="staff-message" data-login-message role="status" hidden></p>
-      <section class="ops-card" aria-labelledby="tester-heading">
-        <h2 id="tester-heading">Your playtester home</h2>
-        <p>Invited survivors have a place here. See your playtests, recorded playtime, tested builds and session history.</p>
-        <p>Staff invites your Discord account by DM. Sign in, then reopen the invitation to claim it. Only the invited account can claim access.</p>
-        <a class="ops-button discord-signin" href="/api/participant/start">Playtester sign-in</a>
-        <p><a href="/playtester/">Already signed in? Open your home</a></p>
+    <header class="staff-header"><a class="staff-brand" href="/">Wilderness Odyssey<small>Survivor network</small></a><a href="/support/">Get help</a></header>
+    <main id="login-main" class="odyssey-login">
+      <section class="login-landscape" aria-labelledby="expedition-title">
+        <p class="ops-kicker">Echo Earth / Survivor access</p>
+        <h2 id="expedition-title">The world<br />left behind.<br /><em>Your story ahead.</em></h2>
+        <p>Beyond the bunker doors, something is still worth finding.</p>
+        <div class="landscape-ridge landscape-ridge--far" aria-hidden="true"></div>
+        <div class="landscape-ridge landscape-ridge--near" aria-hidden="true"></div>
+        <p class="landscape-footer">Wilderness Odyssey<br /><span>Project Threshold · Survivor network</span></p>
       </section>
-      <section class="ops-card" aria-labelledby="access-heading">
-        <h2 id="access-heading">Administrator access</h2>
-        <ol>
-          <li>In the Wilderness Odyssey Discord server, run <code>/dashboard enable</code>.</li>
-          <li>The bot checks that you have Administrator permission in that server.</li>
-          <li>After the bot confirms your access, sign in below.</li>
-        </ol>
-        <p>You keep access while you remain an administrator. Run <code>/dashboard disable</code> to revoke your own dashboard access.</p>
+      <section class="login-panel" aria-labelledby="signin-title">
+        <p class="ops-kicker">Welcome back</p>
+        <h1 id="signin-title">Sign in with Discord</h1>
+        <p>Choose your space in the Odyssey.</p>
+        <p class="staff-message" data-login-message role="status" hidden></p>
+        <form action="/api/participant/start" method="get" data-login-form>
+          <fieldset class="login-roles" data-login-roles disabled hidden>
+            <legend class="visually-hidden">Your destination</legend>
+            <label><input type="radio" name="destination" value="playtester" checked data-login-role /><span>Playtester<small>Playtests & your journey</small></span></label>
+            <label><input type="radio" name="destination" value="admin" data-login-role /><span>Administrator<small>Manage the Odyssey</small></span></label>
+          </fieldset>
+          <label class="remember-choice"><input type="checkbox" name="remember" value="true" />Stay signed in on this device</label>
+          <p class="ops-muted" data-remember-duration>Remember this device for up to 30 days. Use this only on a device you trust.</p>
+          <button class="login-continue" type="submit">Continue with Discord <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="ops-muted">Discord handles your sign-in. We never see your password.</p>
+        <details data-playtester-help><summary>New to playtesting?</summary><p>Sign in with the Discord account staff invited, then reopen your private Discord invitation to claim access. Only the invited account can claim it.</p></details>
+        <details data-admin-help hidden><summary>First time signing in as an administrator?</summary><p>Run <code>/dashboard enable</code> in the Wilderness Odyssey Discord server, then continue with Discord. You need current Administrator permission. Run <code>/dashboard disable</code> to revoke all your dashboard access.</p></details>
+        <noscript><p>The form above signs in playtesters. Administrators can <a href="/api/auth/discord/start">sign in with Discord here</a>, or <a href="/api/auth/discord/start?remember=true">stay signed in for up to 7 days</a>. Run <code>/dashboard enable</code> first. JavaScript is required to use either dashboard.</p></noscript>
+        <nav class="login-footer" aria-label="Login links"><a href="/">← Back to website</a><a href="/status/">Server status</a></nav>
       </section>
-      <a class="ops-button discord-signin" href="/api/auth/discord/start">Sign in with Discord</a>
-      <p class="ops-muted">Discord handles your password. The dashboard checks your access through the bot.</p>
-      <p><a href="/">Return to the website</a> · <a href="/status/">Public server status</a></p>
-      <noscript><p>The sign-in link works without JavaScript. JavaScript is required to use the dashboard after signing in.</p></noscript>
     </main>
     <script src="../../scripts/login.ts"></script>
   </body>

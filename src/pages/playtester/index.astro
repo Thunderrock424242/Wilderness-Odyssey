@@ -7,9 +7,9 @@ import PlaytesterLayout from '../../layouts/PlaytesterLayout.astro';
     <a href="/api/participant/start" data-tester-signin hidden>Sign in with Discord</a>
     <div class="staff-actions"><button type="button" data-tester-refresh>Refresh</button><button type="button" class="secondary" data-tester-logout hidden>Sign out</button></div>
     <div data-tester-workspace hidden>
-      <section aria-labelledby="stats-title"><h2 id="stats-title">Your recorded journey</h2><div class="tester-stats" data-tester-stats></div><p class="ops-muted">Recorded game sessions only. Time signed in to the website does not count. Unknown durations are excluded; overlapping sessions count once. Earlier sessions may not have timing data.</p></section>
       <section class="ops-card"><h2>Invitations waiting for you</h2><div data-tester-invitations></div><p>Reopen your private DM link after signing in to claim an invitation. A website claim does not enroll your game or enable diagnostics.</p></section>
       <section aria-labelledby="campaigns-title"><h2 id="campaigns-title">Your playtests</h2><div data-tester-campaigns></div></section>
+      <section aria-labelledby="stats-title"><h2 id="stats-title">Your recorded journey</h2><div class="tester-stats" data-tester-stats></div><p class="ops-muted">Recorded game sessions only. Time signed in to the website does not count. Unknown durations are excluded; overlapping sessions count once. Earlier sessions may not have timing data.</p></section>
       <section class="ops-card"><h2>Playtesting history</h2><div data-tester-history class="tester-history"></div><button type="button" class="secondary" data-tester-more hidden>Load more sessions</button></section>
       <section class="ops-card"><h2>Before your next expedition</h2><p><a href="/playtest/">Game enrollment and consent instructions</a> · <a href="/support/">Feedback and support</a> · <a href="/status/">Server status</a></p><p>You choose diagnostic consent in your game. You can use Stop and leave there at any time. Staff manages website invitations separately.</p></section>
     </div>

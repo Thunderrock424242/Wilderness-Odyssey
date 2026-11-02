@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { rememberedFetch as fetch } from '../services/rememberedFetch';
 import { browserSessionSchema, incidentsSchema, modelsSchema, mutationSchema, overviewSchema, playerDetailSchema, playersSchema, reportDetailSchema, reportsSchema, roleCapabilities, type BrowserSession, type Capability } from '../../contracts/v1/admin';
 import { statusPresentation } from '../lib/status';
 import { logoutSchema } from '../../contracts/v1/auth';
@@ -42,9 +43,9 @@ function clearPrivateState() {
   result.hidden = true; result.textContent = '';
 }
 class UiError extends Error { constructor(message: string, public status: number) { super(message); } }
-async function api<T>(path: string, schema: z.ZodType<T>, init: RequestInit = {}): Promise<T> {
+async function api<T>(path: string, schema: z.ZodType<T>, init: RequestInit = {}, allowRenewal = true): Promise<T> {
   let response: Response;
-  try { response = await fetch('/api/admin/v1' + path, { ...init, credentials: 'same-origin', cache: 'no-store', signal: AbortSignal.timeout(12000) }); }
+  try { response = await (allowRenewal ? fetch : globalThis.fetch)('/api/admin/v1' + path, { ...init, credentials: 'same-origin', cache: 'no-store', signal: AbortSignal.timeout(12000) }); }
   catch { throw new UiError('The request could not be confirmed. Refresh to check its status before retrying.', 0); }
   if (!response.ok) {
     if (response.status === 401 || response.status === 403) clearPrivateState();
@@ -262,7 +263,7 @@ setInterval(async () => {
   if (!session || document.hidden) return;
   const prior = session;
   try {
-    const renewed = await api('/session', browserSessionSchema);
+    const renewed = await api('/session', browserSessionSchema, {}, false);
     if (!session) return;
     if (renewed.user.id !== prior.user.id || renewed.user.role !== prior.user.role || renewed.capabilities.join(',') !== prior.capabilities.join(',')) { clearPrivateState(); await load(); }
     else { session = renewed; logoutCsrf = renewed.csrfToken; }

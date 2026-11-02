@@ -12,12 +12,15 @@ import type { GatewayEnv } from './env';
 import { failure, GatewayError, httpsUrl, json, readJson } from './http';
 import { kinetic } from './kinetic-client';
 import { handleParticipant } from './participant-gateway';
+import { handleRemembered } from './remembered-auth';
 
 type Dependencies = { fetch?: typeof fetch; jwks?: JWTVerifyGetKey };
 export async function handleGateway(request: Request, env: GatewayEnv, dependencies: Dependencies = {}) {
   const upstream = dependencies.fetch ?? fetch;
   try {
     const url = new URL(request.url);
+    const remembered = await handleRemembered(request, env, upstream);
+    if (remembered) return remembered;
     if (url.pathname.startsWith('/api/participant/')) return await handleParticipant(request, env, upstream);
     if (env.STAFF_AUTH_MODE === 'disabled' && (url.pathname.startsWith('/api/admin/') || url.pathname.startsWith('/api/auth/'))) {
       throw new GatewayError(503, 'STAFF_NOT_CONFIGURED', 'Staff sign-in has not been connected. The public website is available.');

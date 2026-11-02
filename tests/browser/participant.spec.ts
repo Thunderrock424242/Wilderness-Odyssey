@@ -9,7 +9,7 @@ test('public navigation exposes sign-in on desktop and mobile', async ({ page })
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole('button', { name: 'Open navigation' }).click();
   await page.getByRole('link', { name: 'Sign in', exact: true }).click();
-  await expect(page.getByRole('link', { name: 'Playtester sign-in' })).toHaveAttribute('href', '/api/participant/start');
+  await expect(page.locator('[data-login-form]')).toHaveAttribute('action', '/api/participant/start');
 });
 test('tester home shows own recorded stats, missing durations and history', async ({ page }, testInfo) => {
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
@@ -49,6 +49,7 @@ test('claim clears the private fragment and sends it only after explicit accepta
 });
 
 test('tester home handles sign-in required and offline responses without showing private workspace', async ({ page }) => {
+  await page.route('**/api/participant/refresh', route => route.fulfill({ status:401,json:{ code:'AUTH_REQUIRED' } }));
   await page.route('**/api/participant/session', route => route.fulfill({ status:401,json:{ code:'AUTH_REQUIRED' } }));
   await page.goto('/playtester/');
   await expect(page.locator('[data-tester-signin]')).toBeVisible();

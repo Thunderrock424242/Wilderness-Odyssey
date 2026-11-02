@@ -47,6 +47,7 @@ test('a viewer sees read-only server information without action forms', async ({
 });
 
 test('expired sessions clear sensitive record panels', async ({ page }) => {
+  await page.route('**/api/auth/discord/refresh', route => route.fulfill({ status: 401, json: { code: 'AUTH_REQUIRED' } }));
   await page.route('**/api/admin/v1/session', route => route.fulfill({ status: 401, json: { code: 'AUTH_REQUIRED', message: 'Sign in again.' } }));
   await page.goto('/admin/reports/');
   await expect(page.locator('[data-staff-message]')).toContainText('Sign in again');

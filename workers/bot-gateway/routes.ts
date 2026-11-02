@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { adminRoutes } from '../../contracts/v1/routes';
 import { authoringRoutes } from '../../contracts/v1/authoring-routes';
 import { playtestRoutes } from '../../contracts/v1/playtest-routes';
-import { discordStartInput, discordStartSchema, discordCallbackInput, discordCallbackSchema, discordSessionSchema, logoutSchema } from '../../contracts/v1/auth';
+import { discordStartInput, discordStartSchema, discordCallbackInput, discordCallbackSchema, discordSessionSchema, logoutSchema, rememberRefreshInput, rememberRefreshSchema } from '../../contracts/v1/auth';
 import { mediaSchema } from '../../contracts/v1/content';
 import { publicStatusSchema } from '../../contracts/v1/status';
 import * as participant from '../../contracts/v1/participants';
@@ -20,6 +20,8 @@ const authRoutes = [
   { path: '/auth/discord/start', input: discordStartInput, output: discordStartSchema },
   { path: '/auth/discord/callback', input: discordCallbackInput, output: discordCallbackSchema },
   { path: '/auth/logout', input: z.object({}).strict(), output: logoutSchema },
+  { path: '/auth/discord/refresh', input: rememberRefreshInput, output: rememberRefreshSchema },
+  { path: '/auth/discord/forget', input: rememberRefreshInput, output: logoutSchema },
 ];
 
 export function selectRoute(method: string, pathname: string): BotRoute | undefined {
@@ -31,6 +33,8 @@ export function selectRoute(method: string, pathname: string): BotRoute | undefi
     const definitions: Record<string, { method: string; input?: z.ZodType; output: z.ZodType; query?: z.ZodType }> = {
       start: { method: 'POST', input: discordStartInput, output: discordStartSchema },
       callback: { method: 'POST', input: discordCallbackInput, output: discordCallbackSchema },
+      refresh: { method: 'POST', input: rememberRefreshInput, output: rememberRefreshSchema },
+      forget: { method: 'POST', input: rememberRefreshInput, output: logoutSchema },
       session: { method: 'GET', output: participant.participantSessionSchema },
       home: { method: 'GET', output: participant.participantHomeSchema },
       history: { method: 'GET', output: participant.participantHistorySchema, query: participant.participantQuery },
