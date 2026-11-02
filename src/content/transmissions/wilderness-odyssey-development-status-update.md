@@ -1,12 +1,20 @@
 ---
 title: "Wilderness Odyssey — Development Status Update"
-description: "Why the next Wilderness Odyssey update is taking longer, what is being developed, and details about the upcoming limited-invite playtest."
+description: "A development update covering progress, the reason the next update is taking longer, and plans for an upcoming limited playtest."
 publishedAt: 2026-11-02
 type: "blog"
 author: "Thunder"
-tags: ["Development", "Playtest", "Status Update"]
+tags:
+  - Development
+  - Playtest
+  - Update
+coverImage: "/images/blog/development-update/world-preview-bunker.png"
 featured: true
 draft: false
+galleryImages:
+  - src: "/images/blog/development-update/world-preview-bunker.png"
+    alt: "Gameplay preview of Wilderness Odyssey showing terrain, water, forest, and the bunker in the background."
+    caption: "A small gameplay preview showing the atmosphere, world generation, and the bunker visible in the distance."
 ---
 
 # 📢 Wilderness Odyssey — Development Status Update
@@ -30,6 +38,10 @@ The problem is that developing these systems, making sure they're compatible wit
 I also don't want to release an update that's full of crashes, performance problems, or unfinished systems just for the sake of releasing something.
 
 ### 🌎 What's being worked on?
+
+Here's a small look at gameplay so far. In this screenshot you can even spot the bunker in the distance, along with some of the world generation, terrain, and atmosphere I'm working on.
+
+![Wilderness Odyssey gameplay preview showing the landscape, coastline, forested terrain, and the bunker visible in the background.](/images/blog/development-update/world-preview-bunker.png)
 
 There are quite a few things currently being worked on or planned, including:
 
