@@ -54,7 +54,7 @@ jobs:
             --skip 'https?://(?!127\.0\.0\.1).*' \
             --skip '.*/cdn-cgi/.*' \
             --skip 'data:.*' \
-            --skip '^http://127\.0\.0\.1:4173/api/(participant/start|auth/discord/start)$'
+            --skip '^http://127\.0\.0\.1:4173/api/(participant/start|auth/discord/start)(\?remember=true)?$'
       - name: Audit production dependencies
         run: npm audit --omit=dev --audit-level=high
       - name: Save tested Pages artifact
