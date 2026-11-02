@@ -1,0 +1,25 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "wilderness-odyssey-bot-gateway",
+  "main": "index.ts",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  // Avoid recording private query values in automatic invocation logs/traces.
+  "observability": {
+    "enabled": true,
+    "logs": { "enabled": true, "invocation_logs": false },
+    "traces": { "enabled": true, "head_sampling_rate": 0 }
+  },
+  "vpc_services": [{
+    "binding": "BOT_API",
+    "service_id": "01a1993c-5cfc-7310-a7b6-6b4677160389"
+  }],
+  "vars": {
+    "ENVIRONMENT": "production",
+    "ACCESS_TEAM_DOMAIN": "https://wilderness-odyssey.cloudflareaccess.com",
+    // Non-secret backend Access audience and service token Client ID.
+    "BACKEND_ACCESS_AUDIENCE": "83dc71c849a21c99edd9ee2eb2d976db49fe7815cd7e3dc533859b850a48bf41",
+    "GATEWAY_SERVICE_ID": "5da7e533c6f6ce6f27c2c29629920928.access"
+  }
+}

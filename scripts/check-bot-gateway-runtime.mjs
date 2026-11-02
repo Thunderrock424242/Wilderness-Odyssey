@@ -40,7 +40,7 @@ try {
   assert.equal(response.status, 200);
   assert.deepEqual(await response.json(), status);
   const denied = await runtime.dispatchFetch('https://gateway.example/v1/admin/session');
-  assert.equal(denied.status, 503);
+  assert.equal(denied.status, config.vars.BACKEND_ACCESS_AUDIENCE && config.vars.GATEWAY_SERVICE_ID ? 401 : 503);
   assert.equal(denied.headers.get('Cache-Control'), 'no-store');
   const arbitrary = await runtime.dispatchFetch('https://gateway.example/v1/service/authenticate', { method: 'POST' });
   assert.equal(arbitrary.status, 404);
