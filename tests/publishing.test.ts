@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { publicationState } from '../scripts/publication-status';
-import { verifyPublishedSite, verificationTargets } from '../scripts/verify-deployment.mjs';
+import { verifyPublishedSite, verificationTargets, verifyWithPropagation, verificationFailureMessage } from '../scripts/verify-deployment.mjs';
 
 describe('truthful publishing', () => {
   it('does not call a checks-only workflow published', () => {
@@ -36,6 +36,35 @@ describe('deployment verification', () => {
   });
   it('accepts the matching public artifact with protected staff routes', async () => {
     await expect(verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, responder())).resolves.toBeUndefined();
+  });
+  it('retries a temporarily missing public page but keeps the tested revision mandatory', async () => {
+    let attempts = 0;
+    const transient: typeof fetch = async input => {
+      if (new URL(String(input)).pathname === '/patches/' && ++attempts === 1) return new Response(null, { status: 404 });
+      return responder()(input);
+    };
+    await expect(verifyWithPropagation(() => verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, transient), async () => {})).resolves.toBeUndefined();
+    expect(attempts).toBe(2);
+    let waits = 0;
+    await expect(verifyWithPropagation(() => verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, responder(false, 'b'.repeat(40))), async () => { waits++; })).rejects.toThrow(/revision/i);
+    expect(waits).toBe(2);
+  });
+  it('never retries a failed staff-protection check', async () => {
+    let waits = 0;
+    await expect(verifyWithPropagation(() => verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, responder(true)), async () => { waits++; })).rejects.toThrow(/protect/i);
+    expect(waits).toBe(0);
+  });
+  it('reports the failing public check without logging untrusted responses or secrets', async () => {
+    try {
+      await verifyPublishedSite('https://site.pages.dev', sha, 'production', {}, async input => new URL(String(input)).pathname === '/patches/' ? new Response('private secret payload', { status: 502 }) : responder()(input));
+      throw new Error('Expected the page check to fail');
+    } catch (error) {
+      const message = verificationFailureMessage(error);
+      expect(message).toContain('/patches/');
+      expect(message).toContain('502');
+      expect(message).not.toContain('private secret payload');
+    }
+    expect(verificationFailureMessage(new Error('Bearer never-print-this-secret'))).not.toContain('never-print-this-secret');
   });
   const redirected = (location: string, redirectApis = false, previewPublic = false): typeof fetch => async input => {
     const path = new URL(String(input)).pathname;
