@@ -46,7 +46,7 @@
 
     // Access application's Application Audience (AUD) Tag. Optional while disabled
     // in production; required with ACCESS_TEAM_DOMAIN for protected previews.
-    "ACCESS_AUDIENCE": "",
+    "ACCESS_AUDIENCE": "3d5ad3a3635e8833cfc4f6b80f323d0f3f4626028b2bf22b9ccc03f980b34e05",
 
     // Optional while staff is disabled. Blank = readable "not connected" status.
     // Sanitized public server-status HTTPS endpoint, including its path.
