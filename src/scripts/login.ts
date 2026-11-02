@@ -1,4 +1,5 @@
 const messages: Record<string, string> = {
+  tester_login_failed: 'Playtester sign-in expired, was cancelled or could not be verified. Start again with Playtester sign-in, then reopen your invitation from Discord.',
   enrollment_required: 'Your account has not enabled dashboard access. Run /dashboard enable in the Wilderness Odyssey Discord server, then sign in again.',
   permission_denied: 'Your account does not currently have dashboard access. Check that you still have Administrator permission in the Wilderness Odyssey Discord server and have run /dashboard enable.',
   login_expired: 'This sign-in attempt or session has expired. Select Sign in with Discord to start again.',

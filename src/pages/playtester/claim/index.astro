@@ -1,0 +1,12 @@
+---
+import PlaytesterLayout from '../../../layouts/PlaytesterLayout.astro';
+---
+<PlaytesterLayout title="Claim your playtest invitation">
+  <div data-tester-claim><p class="ops-kicker">Your next expedition</p><h1>Claim your playtest invitation</h1>
+    <p data-claim-message role="status">Checking your invitation and Discord sign-in…</p>
+    <p>This invitation is tied to the Discord account staff selected. Claiming it gives you a website home; game enrollment and diagnostic consent happen separately.</p>
+    <div class="staff-actions"><a class="ops-button" href="/api/participant/start" data-claim-signin hidden>Sign in with Discord</a><button type="button" data-claim-accept disabled>Claim my invitation</button></div>
+    <p><a href="/playtester/">Open my playtester home</a> · <a href="/support/">Ask staff for help</a></p>
+  </div>
+  <script src="../../../scripts/playtesterClaim.ts"></script>
+</PlaytesterLayout>

@@ -52,6 +52,11 @@ function requestHeaders(request: Request, env: BotGatewayEnv, assertion?: string
     if (!opaqueTokenSchema.safeParse(session).success) throw new GatewayError(400, 'INVALID_SESSION', 'The session credential is invalid.');
     headers.set('X-WO-Admin-Session', session);
   }
+  const participant = request.headers.get('X-WO-Participant-Session');
+  if (participant) {
+    if (!opaqueTokenSchema.safeParse(participant).success) throw new GatewayError(400, 'INVALID_SESSION', 'The session credential is invalid.');
+    headers.set('X-WO-Participant-Session', participant);
+  }
   const key = request.headers.get('Idempotency-Key');
   if (key) {
     if (!/^[a-zA-Z0-9_-]{16,100}$/.test(key)) throw new GatewayError(400, 'INVALID_REQUEST_ID', 'The request identifier is invalid.');
@@ -101,7 +106,7 @@ async function forward(request: Request, env: BotGatewayEnv, route: BotRoute, ur
         if (enrollmentRequired) throw new GatewayError(403, 'ENROLLMENT_REQUIRED', 'Run /dashboard enable in the Discord server before signing in.');
       }
       void upstream.body?.cancel().catch(() => undefined);
-      const code = !route.public && [400, 401, 403, 404, 409, 413, 422, 429, 503].includes(upstream.status) ? upstream.status : route.public && upstream.status === 503 ? 503 : 502;
+      const code = !route.public && [400, 401, 403, 404, 409, 410, 413, 422, 429, 503].includes(upstream.status) ? upstream.status : route.public && upstream.status === 503 ? 503 : 502;
       // Never return upstream error text, cookies, redirects, or arbitrary headers.
       throw new GatewayError(code, 'BACKEND_UNAVAILABLE', 'The backend request could not be completed.');
     }

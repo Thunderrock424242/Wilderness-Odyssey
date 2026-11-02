@@ -117,3 +117,10 @@ describe('bot gateway', () => {
     } finally { vi.useRealTimers(); }
   });
 });
+
+it('preserves expired participant invitation status through machine gateway', async () => {
+  const { env, fetcher } = fixture();
+  fetcher.mockResolvedValue(Response.json({ error: { code: 'EXPIRED' } }, { status: 410 }));
+  const response = await handleBotGateway(await request('/v1/admin/participant/claim', {}, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-WO-Participant-Session': 's'.repeat(43) }, body: JSON.stringify({ token: 'x'.repeat(43) }) }), env, { jwks });
+  expect(response.status).toBe(410);
+});

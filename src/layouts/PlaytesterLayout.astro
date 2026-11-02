@@ -1,0 +1,12 @@
+---
+import '../styles/operations.css';
+import '../styles/playtester.css';
+const { title } = Astro.props;
+---
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="robots" content="noindex,nofollow" /><meta name="referrer" content="no-referrer" /><meta name="color-scheme" content="dark" /><title>{title} | Wilderness Odyssey</title><link rel="icon" href="/images/logo.png" /></head>
+<body class="staff tester"><a class="skip-link" href="#tester-main">Skip to playtester home</a>
+  <header class="staff-header"><a class="staff-brand" href="/">Wilderness Odyssey<small>Playtester quarters</small></a><nav aria-label="Member navigation"><a href="/playtester/">My home</a><a href="/login/">Sign in / admin access</a><a href="/support/">Support</a></nav></header>
+  <main id="tester-main" class="tester-main"><slot /></main>
+  <noscript><p class="tester-main">JavaScript is required to load your private records. You can still <a href="/api/participant/start">sign in with Discord</a> and contact staff in Discord for help.</p></noscript>
+</body></html>

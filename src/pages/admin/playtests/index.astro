@@ -3,6 +3,7 @@ import AuthoringLayout from '../../../layouts/AuthoringLayout.astro';
 import '../../../styles/playtests.css';
 ---
 <AuthoringLayout title="Playtests and tester histories" capability="playtests:read">
+  <p><a href="/admin/playtester-access/">Invite Discord accounts and manage their website homes</a></p>
   <p>Private diagnostics for invited testers. Collection needs the tester’s local consent. Minecraft names reported by a client are unverified labels.</p>
   <p>Switching off rejects new uploads immediately at the backend and ends client authorization within 60 seconds. Already stored reports remain until their retention deadline or explicit deletion. A hard crash may leave no final report or Spark recording.</p>
   <p><a href="/support/troubleshooting/">Help when the game cannot launch</a> · <a href="/playtest/">Tester enrollment and local stop instructions</a></p>

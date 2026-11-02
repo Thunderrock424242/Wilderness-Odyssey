@@ -11,12 +11,14 @@ import { createCsrf, verifyCsrf } from './csrf';
 import type { GatewayEnv } from './env';
 import { failure, GatewayError, httpsUrl, json, readJson } from './http';
 import { kinetic } from './kinetic-client';
+import { handleParticipant } from './participant-gateway';
 
 type Dependencies = { fetch?: typeof fetch; jwks?: JWTVerifyGetKey };
 export async function handleGateway(request: Request, env: GatewayEnv, dependencies: Dependencies = {}) {
   const upstream = dependencies.fetch ?? fetch;
   try {
     const url = new URL(request.url);
+    if (url.pathname.startsWith('/api/participant/')) return await handleParticipant(request, env, upstream);
     if (env.STAFF_AUTH_MODE === 'disabled' && (url.pathname.startsWith('/api/admin/') || url.pathname.startsWith('/api/auth/'))) {
       throw new GatewayError(503, 'STAFF_NOT_CONFIGURED', 'Staff sign-in has not been connected. The public website is available.');
     }

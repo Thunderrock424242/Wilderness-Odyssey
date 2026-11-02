@@ -402,3 +402,7 @@ p { color: var(--text-soft); }
   .n-logo { font-size: .8125rem; }
   .h-sub { font-size: .8125rem; letter-spacing: .16em; }
 }
+
+/* Keep account access visible when the main navigation is collapsed. */
+.n-account { order: 2; flex-shrink: 0; display: inline-flex; align-items: center; min-height: 44px; color: var(--gold-readable); font: .875rem var(--F-mono); white-space: nowrap; text-decoration: none; }
+@media (max-width: 1280px) { #nav { gap: .75rem; } #nav .n-logo { flex: 1 1 0; min-width: 0; max-width: none; } .n-account { order: 0; font-size: .8125rem; } }

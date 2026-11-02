@@ -27,7 +27,7 @@ export async function onRequest(context: { request: Request; env: GatewayEnv; ne
     const path = normalizedPath(rawPath);
     apiRequest = path === '/api' || path.startsWith('/api/');
     const staff = path === '/admin' || path.startsWith('/admin/') || path === '/api/admin' || path.startsWith('/api/admin/');
-    const authentication = path === '/api/auth' || path.startsWith('/api/auth/') || path === '/login' || path.startsWith('/login/');
+    const authentication = path === '/api/auth' || path.startsWith('/api/auth/') || path === '/login' || path.startsWith('/login/') || path === '/playtester' || path.startsWith('/playtester/') || path === '/api/participant' || path.startsWith('/api/participant/');
     if (env.ENVIRONMENT === 'preview') await verifyAccess(request, env, undefined, !staff && !authentication);
     if (env.STAFF_AUTH_MODE === 'disabled') {
       // Production revision/branch aliases can share production bindings. Keep

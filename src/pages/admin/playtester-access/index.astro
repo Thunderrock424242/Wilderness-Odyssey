@@ -1,0 +1,26 @@
+---
+import AuthoringLayout from '../../../layouts/AuthoringLayout.astro';
+---
+<AuthoringLayout title="Playtester website access" capability="server:write">
+  <p>Invite a specific Discord account to its own website home. Website invitations are separate from game installation enrollment and diagnostic consent.</p>
+  <p>In Discord you can select the person directly with <code>/playtester invite account: campaign:</code>. The bot DMs a claim link that only that account can use.</p>
+  <section class="ops-card"><h2>Invite a Discord account</h2><form data-member-invite>
+    <label>Discord account ID<input name="discordUserId" inputmode="numeric" pattern="[0-9]{17,22}" maxlength="22" required /></label>
+    <label>Existing playtest campaign ID<input name="campaignId" pattern="[A-Za-z0-9_-]{1,100}" maxlength="100" required /></label>
+    <label>Expires in hours<input name="expiresInHours" type="number" min="1" max="168" value="24" required /></label>
+    <button type="submit">Send invitation DM</button>
+  </form><p data-invite-receipt role="status"></p><a data-invite-fallback hidden>Private fallback claim link</a></section>
+  <section class="ops-card"><h2>Update a playtester home</h2><form data-member-content>
+    <label>Playtest campaign ID<input name="campaignId" pattern="[A-Za-z0-9_-]{1,100}" maxlength="100" required /></label>
+    <label>Build and installation instructions<textarea name="instructions" maxlength="4000" required></textarea></label>
+    <label>Announcement<textarea name="announcement" maxlength="4000"></textarea></label>
+    <label>Tasks (one per line, up to 20)<textarea name="tasks" maxlength="6019"></textarea></label>
+    <button type="submit">Save playtester instructions</button>
+  </form><p data-content-receipt role="status"></p></section>
+  <section class="ops-card"><h2>Revoke website membership</h2><p>This revokes website membership and pending claims for this campaign. Manage game installation access separately through playtest administration.</p><form data-member-revoke>
+    <label>Discord account ID<input name="discordUserId" inputmode="numeric" pattern="[0-9]{17,22}" maxlength="22" required /></label>
+    <label>Playtest campaign ID<input name="campaignId" pattern="[A-Za-z0-9_-]{1,100}" maxlength="100" required /></label>
+    <button type="submit">Revoke website membership</button>
+  </form><p data-revoke-receipt role="status"></p></section>
+  <script src="../../../scripts/playtesterStaff.ts"></script>
+</AuthoringLayout>

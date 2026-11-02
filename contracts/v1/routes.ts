@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import * as s from './admin';
+import * as participant from './participants';
 
 export type RouteDefinition = { method: string; path: string; pattern: RegExp; capability?: s.Capability; input?: z.ZodType; output: z.ZodType; query?: z.ZodType };
 const cursorQuery = z.object({ cursor: z.string().max(200).optional() }).strict();
@@ -8,6 +9,9 @@ const route = (method: string, path: string, output: z.ZodType, capability?: s.C
   pattern: new RegExp('^' + path.replace(':uuid', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}').replaceAll(':id', '[a-zA-Z0-9_-]{1,96}') + '$'),
 });
 export const adminRoutes = [
+  route('POST', '/participant-staff/invite', participant.participantInviteSchema, 'server:write', participant.participantInviteInput),
+  route('POST', '/participant-staff/revoke', participant.participantRevokeSchema, 'server:write', participant.participantRevokeInput),
+  route('POST', '/participant-staff/content', participant.participantContentSchema, 'server:write', participant.participantContentInput),
   route('GET', '/session', s.sessionSchema),
   route('GET', '/overview', s.overviewSchema, 'status:read'),
   route('GET', '/incidents', s.incidentsSchema, 'status:read'),

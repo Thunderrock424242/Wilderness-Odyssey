@@ -5,6 +5,7 @@ import { playtestRoutes } from '../../contracts/v1/playtest-routes';
 import { discordStartInput, discordStartSchema, discordCallbackInput, discordCallbackSchema, discordSessionSchema, logoutSchema } from '../../contracts/v1/auth';
 import { mediaSchema } from '../../contracts/v1/content';
 import { publicStatusSchema } from '../../contracts/v1/status';
+import * as participant from '../../contracts/v1/participants';
 
 export type BotRoute = {
   public?: boolean;
@@ -25,6 +26,21 @@ export function selectRoute(method: string, pathname: string): BotRoute | undefi
   if (method === 'GET' && pathname === '/v1/public/status') return { public: true, output: publicStatusSchema, bodyLimit: 0, responseLimit: 65536 };
   if (!pathname.startsWith('/v1/admin/')) return;
   const path = pathname.slice('/v1/admin'.length);
+  if (path.startsWith('/participant/')) {
+    const action = path.slice('/participant/'.length);
+    const definitions: Record<string, { method: string; input?: z.ZodType; output: z.ZodType; query?: z.ZodType }> = {
+      start: { method: 'POST', input: discordStartInput, output: discordStartSchema },
+      callback: { method: 'POST', input: discordCallbackInput, output: discordCallbackSchema },
+      session: { method: 'GET', output: participant.participantSessionSchema },
+      home: { method: 'GET', output: participant.participantHomeSchema },
+      history: { method: 'GET', output: participant.participantHistorySchema, query: participant.participantQuery },
+      claim: { method: 'POST', input: participant.participantClaimInput, output: participant.participantClaimSchema },
+      logout: { method: 'POST', input: z.object({}).strict(), output: logoutSchema },
+    };
+    const definition = Object.hasOwn(definitions, action) ? definitions[action] : undefined;
+    if (!definition || definition.method !== method) return;
+    return { ...definition, bodyLimit: definition.input ? 16384 : 0, responseLimit: action === 'home' ? 8 * 1024 * 1024 : 262144 };
+  }
   if (method === 'POST') {
     const auth = authRoutes.find(item => item.path === path);
     if (auth) return { ...auth, bodyLimit: 16384, responseLimit: 16384 };

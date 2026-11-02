@@ -68,6 +68,27 @@ describe('Discord OAuth gateway', () => {
     expect(await response.text()).not.toMatch(/ssss|privateNote|discord-code/);
   });
 
+  it('accepts the exact Discord issuer returned with a callback', async () => {
+    const upstream = vi.fn<typeof fetch>(async () => Response.json({ schemaVersion: '1.0', sessionToken, userId: '345678901234567890', guildId: env.DISCORD_GUILD_ID, expiresAt: expiry(900) }));
+    const response = await handleGateway(request(callbackPath + '&iss=https%3A%2F%2Fdiscord.com', { headers: { Cookie: '__Host-wo-admin-flow=' + flowToken } }), env, { fetch: upstream });
+    expect(response.headers.get('Location')).toBe('/admin/');
+    expect(upstream).toHaveBeenCalledOnce();
+  });
+
+  it.each(['https://evil.example', 'https://discord.com.evil.example', 'https://discord.com/', ''])('rejects an unexpected OAuth issuer %s before exchanging credentials', async issuer => {
+    const upstream = vi.fn<typeof fetch>();
+    const response = await handleGateway(request(callbackPath + '&iss=' + encodeURIComponent(issuer), { headers: { Cookie: '__Host-wo-admin-flow=' + flowToken } }), env, { fetch: upstream });
+    expect(response.headers.get('Location')).toBe('/login/?error=login_expired');
+    expect(upstream).not.toHaveBeenCalled();
+  });
+
+  it('rejects duplicate issuer parameters before contacting the backend', async () => {
+    const upstream = vi.fn<typeof fetch>();
+    const response = await handleGateway(request(callbackPath + '&iss=https%3A%2F%2Fdiscord.com&iss=https%3A%2F%2Fdiscord.com', { headers: { Cookie: '__Host-wo-admin-flow=' + flowToken } }), env, { fetch: upstream });
+    expect(response.headers.get('Location')).toBe('/login/?error=login_expired');
+    expect(upstream).not.toHaveBeenCalled();
+  });
+
   it('clears a cancelled login attempt without exchanging a code', async () => {
     const upstream = vi.fn<typeof fetch>();
     const response = await handleGateway(request('/api/auth/discord/callback?error=access_denied&state=' + state, { headers: { Cookie: '__Host-wo-admin-flow=' + flowToken } }), env, { fetch: upstream });

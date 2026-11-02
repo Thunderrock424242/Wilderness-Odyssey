@@ -5,6 +5,7 @@ import { failure, GatewayError, json } from './http';
 import { kinetic } from './kinetic-client';
 import { discordCsrfSubject, FLOW_COOKIE, lifetime, SESSION_COOKIE, setStaffCookie, staffCookie } from './staff-cookies';
 import { discordConfig } from './staff-host';
+import { participantCallback, PARTICIPANT_FLOW } from './participant-gateway';
 
 export function loginRedirect(error?: string) { return authRedirect('/login/' + (error ? '?error=' + error : '')); }
 function authRedirect(location: string, status = 303) {
@@ -21,7 +22,7 @@ export function loginError(error: unknown) {
   }
   return 'service_unavailable';
 }
-function authorizationUrl(raw: string, redirectUri: string) {
+export function authorizationUrl(raw: string, redirectUri: string) {
   const url = new URL(raw);
   const fields = [...url.searchParams.keys()];
   const allowed = ['client_id', 'response_type', 'scope', 'redirect_uri', 'state', 'prompt'];
@@ -39,11 +40,13 @@ function authorizationUrl(raw: string, redirectUri: string) {
 export async function handleDiscordAuth(request: Request, env: GatewayEnv, upstream: typeof fetch) {
   const path = new URL(request.url).pathname;
   if (path === '/api/auth/discord/callback' && request.method === 'GET') {
+    if (staffCookie(request, PARTICIPANT_FLOW)) return participantCallback(request, env, upstream);
     let response: Response;
     try {
       const config = discordConfig(request, env);
       const fields = [...config.url.searchParams.keys()];
-      if (new Set(fields).size !== fields.length || fields.some(field => !['code', 'state', 'error', 'error_description'].includes(field))) throw new GatewayError(400, 'INVALID_CALLBACK', 'Start Discord sign-in again.');
+      if (new Set(fields).size !== fields.length || fields.some(field => !['code', 'state', 'error', 'error_description', 'iss'].includes(field)) ||
+        (config.url.searchParams.has('iss') && config.url.searchParams.get('iss') !== 'https://discord.com')) throw new GatewayError(400, 'INVALID_CALLBACK', 'Start Discord sign-in again.');
       const flowToken = staffCookie(request, FLOW_COOKIE);
       if (!flowToken) throw new GatewayError(401, 'AUTH_REQUIRED', 'Start Discord sign-in again.');
       if (config.url.searchParams.get('error') === 'access_denied') {
@@ -69,6 +72,7 @@ export async function handleDiscordAuth(request: Request, env: GatewayEnv, upstr
       const result = await kinetic('/auth/discord/start', discordStartSchema, undefined, env, upstream, { method: 'POST', body: JSON.stringify({ redirectUri: config.redirectUri }) });
       const response = authRedirect(authorizationUrl(result.authorizationUrl, config.redirectUri), 302);
       response.headers.append('Set-Cookie', setStaffCookie(FLOW_COOKIE, result.flowToken, lifetime(result.expiresAt, 300)));
+      response.headers.append('Set-Cookie', setStaffCookie(PARTICIPANT_FLOW, '', 0));
       return response;
     } catch { return loginRedirect('service_unavailable'); }
   }

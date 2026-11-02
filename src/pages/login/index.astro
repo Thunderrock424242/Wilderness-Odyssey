@@ -9,19 +9,26 @@ import '../../styles/operations.css';
     <meta name="robots" content="noindex,nofollow" />
     <meta name="color-scheme" content="dark" />
     <meta name="referrer" content="no-referrer" />
-    <title>Sign in with Discord | Wilderness Odyssey Staff</title>
+    <title>Sign in with Discord | Wilderness Odyssey</title>
     <link rel="icon" href="/images/logo.png" />
   </head>
   <body class="staff">
     <a class="skip-link" href="#login-main">Skip to sign-in</a>
-    <header class="staff-header"><a class="staff-brand" href="/">Wilderness Odyssey<small>Staff administration</small></a><a href="/support/">Get help</a></header>
+    <header class="staff-header"><a class="staff-brand" href="/">Wilderness Odyssey<small>Your place in the Odyssey</small></a><a href="/support/">Get help</a></header>
     <main id="login-main" class="staff-login">
       <p class="ops-kicker">Dashboard access</p>
       <h1>Sign in with Discord</h1>
       <p>Use the Discord account you registered with the Wilderness Odyssey bot.</p>
       <p class="staff-message" data-login-message role="status" hidden></p>
+      <section class="ops-card" aria-labelledby="tester-heading">
+        <h2 id="tester-heading">Your playtester home</h2>
+        <p>Invited survivors have a place here. See your playtests, recorded playtime, tested builds and session history.</p>
+        <p>Staff invites your Discord account by DM. Sign in, then reopen the invitation to claim it. Only the invited account can claim access.</p>
+        <a class="ops-button discord-signin" href="/api/participant/start">Playtester sign-in</a>
+        <p><a href="/playtester/">Already signed in? Open your home</a></p>
+      </section>
       <section class="ops-card" aria-labelledby="access-heading">
-        <h2 id="access-heading">Enable your access first</h2>
+        <h2 id="access-heading">Administrator access</h2>
         <ol>
           <li>In the Wilderness Odyssey Discord server, run <code>/dashboard enable</code>.</li>
           <li>The bot checks that you have Administrator permission in that server.</li>

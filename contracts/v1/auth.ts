@@ -18,4 +18,4 @@ export const discordCallbackSchema = z.object({
 });
 export const discordSessionSchema = sessionSchema.extend({ guildId: discordIdSchema, expiresAt: timestamp });
 export const logoutSchema = z.object({ schemaVersion: z.literal('1.0'), revoked: z.literal(true) });
-export type StaffCredential = { kind: 'access'; assertion: string } | { kind: 'discord'; token: string };
+export type StaffCredential = { kind: 'access'; assertion: string } | { kind: 'discord'; token: string } | { kind: 'participant'; token: string };
