@@ -62,6 +62,17 @@ const artifact = (campaignId: string, testerId: string, collectionId: string, ch
   schemaVersion: '1.0', artifactId: randomUUID(), campaignId, testerId, collectionId, sessionId: randomUUID(), kind: 'log', scope: 'client', capturedAt: new Date().toISOString(), contentType: 'text/plain', encoding: 'utf8', content: 'safe log', ...changes,
 });
 
+test('game session timing is projected only from validated terminal metadata', async () => {
+  const f = await fixture();
+  try {
+    const a = await f.seed(), enrolled = await f.enroll(a.invite.invitation), sessionId = randomUUID();
+    const startedAt = new Date(Date.now() - 120000).toISOString();
+    const item = artifact(a.campaignId, a.testerId, a.campaign.collectionId, { sessionId, kind: 'session', contentType: 'application/json', content: JSON.stringify({ state: 'ended', sparkStatus: 'idle', startedAt, durationSeconds: 120, build: 'alpha-1' }) });
+    assert.equal((await f.call('/api/playtest/v1/artifacts', item, enrolled.body.accessToken)).status, 200);
+    assert.deepEqual(f.store.record('pt_session_metadata', sessionId), { startedAt, durationSeconds: 120, build: 'alpha-1' });
+  } finally { await f.close(); }
+});
+
 test('atomic invitations require consent, expire, cannot be reused and never expose credentials in lists', async () => {
   const f = await fixture();
   try {

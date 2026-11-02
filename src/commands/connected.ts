@@ -3,3 +3,4 @@ export { reportCommand } from './connected/report';
 export { maintenanceCommand } from './connected/maintenance';
 export { modlogCommand } from './connected/modlog';
 export { dashboardCommand } from './connected/dashboard';
+export { playtesterCommand } from './connected/playtester';

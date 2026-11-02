@@ -32,6 +32,7 @@ test('Aether registration preserves every existing slash command', async () => {
     'maintenance',
     'modlog',
     'dashboard',
+    'playtester',
     'setup'
   ]);
   assert.deepEqual(withAetherNames, [...existingNames, 'aether']);

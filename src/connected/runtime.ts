@@ -11,7 +11,14 @@ import { MainServerClient } from './mainClient';
 import { ConnectedHttp } from './http';
 import { DashboardAuth, DASHBOARD_ISSUER } from './dashboardAuth';
 import { requireDiscordAdministrator } from './discordPermissions';
+import { ParticipantService } from './participant';
+import { participantInviteSchema } from '../contracts/v1/participants';
 import type { Capability } from '../contracts/v1/admin';
+async function boundedDiscord<T>(work: Promise<T>): Promise<T> {
+  let timer!: NodeJS.Timeout;
+  const timeout = new Promise<never>((_resolve, reject) => { timer = setTimeout(() => reject(new ServiceError(503, 'DISCORD_TIMEOUT', 'Discord delivery could not be confirmed.')), 3000); });
+  try { return await Promise.race([work, timeout]); } finally { clearTimeout(timer); }
+}
 export class ConnectedRuntime {
   readonly store: ConnectedStore;
   readonly identity: IdentityService;
@@ -21,6 +28,7 @@ export class ConnectedRuntime {
   readonly http: ConnectedHttp;
   readonly main: MainServerClient;
   readonly dashboard?: DashboardAuth;
+  readonly participant?: ParticipantService;
   private client?: Client;
   private readonly timers = new Set<NodeJS.Timeout>();
   private stopped = false;
@@ -30,13 +38,33 @@ export class ConnectedRuntime {
     this.identity = new IdentityService(this.store, config.serverId);
     this.monitor = new ServiceMonitor(this.store, config.serverId, Date.now, config.failures, config.recoveries, config.staleSeconds);
     this.moderation = new ModerationService(this.store, this.identity);
+    if (config.discord) this.participant = new ParticipantService(this.store, config.discord);
     if (config.discord) this.dashboard = new DashboardAuth(this.store, config.discord, async (guildId, userId) => {
       if (!this.client?.isReady()) throw new ServiceError(503, 'DISCORD_UNAVAILABLE', 'Discord permissions could not be verified. Try again later.');
       await requireDiscordAdministrator(this.client.rest, guildId, userId);
     });
     this.main = new MainServerClient(config, fetch, (actor, capability) => this.authorizeStaff(actor, capability));
     this.admin = new AdminService(this.store, this.monitor, this.moderation, config.mainOrigin ? this.main : undefined, (actor, capability) => this.authorizeStaff(actor, capability));
-    this.http = new ConnectedHttp(config, this.store, this.monitor, this.identity, this.moderation, this.admin, this.dashboard);
+    this.http = new ConnectedHttp(config, this.store, this.monitor, this.identity, this.moderation, this.admin, this.dashboard, this.participant, (user, campaign, key, hours, verify) => this.inviteParticipant(user, campaign, key, hours, verify));
+  }
+  async inviteParticipant(userId: string, campaignId: string, key: string, hours: number, verify: () => Promise<void> = async () => {}) {
+    if (!this.participant || !this.client?.isReady()) throw new ServiceError(503, 'UNAVAILABLE', 'Playtester invitations are unavailable.');
+    let member;
+    try { member = await boundedDiscord(this.client.guilds.fetch(this.participant.options.guildId).then(guild => guild.members.fetch({ user:userId, force:true }))); }
+    catch { throw new ServiceError(503, 'MEMBER_UNAVAILABLE', 'The selected account could not be verified in this Discord server. Check membership and try again.'); }
+    if (member.user.bot) throw new ServiceError(400, 'INVALID_ACCOUNT', 'Select a human Discord account.');
+    await verify();
+    const invitation = this.participant.invite(userId, campaignId, key, hours);
+    const link = new URL('/playtester/claim/', this.participant.options.redirectUri);
+    link.hash = new URLSearchParams({ invitation: invitation.token }).toString();
+    let delivery: 'sent' | 'failed' | 'unknown' = 'failed';
+    try {
+      await boundedDiscord(member.send({ content: 'You have been invited to a Wilderness Odyssey playtest. Sign in with your Discord account and claim your invitation:\n' + link.href + '\nThis link only works for your account and expires at ' + invitation.expiresAt + '. Website access does not enable game diagnostic collection.', allowedMentions: { parse: [] } }));
+      delivery = 'sent';
+    } catch (error) { delivery = error instanceof ServiceError && error.code === 'DISCORD_TIMEOUT' ? 'unknown' : 'failed'; }
+    this.store.db.prepare('UPDATE cs_participant_invites SET delivery=? WHERE id=?').run(delivery, invitation.id);
+    this.store.audit('participant-invitation', 'participant.delivery', invitation.id, delivery);
+    return participantInviteSchema.parse({ schemaVersion: '1.0', invitationId: invitation.id, expiresAt: invitation.expiresAt, delivery, claimUrl: link.href });
   }
   attachDiscord(client: Client): void { this.client = client; }
   async authorizeStaff(actor: Actor, capability: Capability): Promise<Actor> {

@@ -5,6 +5,28 @@ import type { Client } from 'discord.js';
 import { ConnectedRuntime } from '../src/connected/runtime';
 import { loadConnectedConfig } from '../src/connected/config';
 const flush = async () => { for (let i = 0; i < 20; i++) await Promise.resolve(); };
+
+test('participant invitation validates guild membership, reports blocked DMs and bounds stalled delivery', async context => {
+  context.mock.timers.enable({ apis: ['setTimeout'] });
+  const db = new DatabaseSync(':memory:');
+  const user = '123456789012345678', guild = '234567890123456789';
+  const config = loadConnectedConfig({ CONNECTED_SERVICES_ENABLED:'true', CONNECTED_ADMIN_ENABLED:'true', STAFF_AUTH_MODE:'discord', GUILD_ID:guild, CLIENT_ID:user, DISCORD_CLIENT_SECRET:'test-secret', DISCORD_REDIRECT_URI:'https://site.example/api/auth/discord/callback', ACCESS_TEAM_DOMAIN:'https://test.cloudflareaccess.com', BACKEND_ACCESS_AUDIENCE:'aud', GATEWAY_SERVICE_ID:'gateway' });
+  const runtime = new ConnectedRuntime(db,config);
+  let mode: 'sent' | 'blocked' | 'missing' | 'stalled' = 'sent';
+  const member = { user: { bot:false }, send: async () => { if(mode === 'blocked') throw new Error('blocked'); if(mode === 'stalled') await new Promise(() => {}); } };
+  runtime.attachDiscord({ isReady:() => true, guilds:{ fetch:async () => ({ members:{ fetch:async () => { if(mode === 'missing') throw new Error('missing'); return member; } } }) } } as unknown as Client);
+  runtime.store.put('pt_campaign','alpha','alpha',{ id:'alpha',title:'Alpha',enabled:false });
+  try {
+    assert.equal((await runtime.inviteParticipant(user,'alpha','invitation-sent-key',24)).delivery,'sent');
+    mode = 'blocked'; assert.equal((await runtime.inviteParticipant(user,'alpha','invitation-blocked-key',24)).delivery,'failed');
+    mode = 'missing'; await assert.rejects(runtime.inviteParticipant(user,'alpha','invitation-missing-key',24));
+    mode = 'sent'; const before = db.prepare('SELECT count(*) AS n FROM cs_participant_invites').get()!.n;
+    await assert.rejects(runtime.inviteParticipant(user,'alpha','invitation-revoked-staff-key',24,async () => { throw new Error('Staff access revoked during member lookup.'); }));
+    assert.equal(db.prepare('SELECT count(*) AS n FROM cs_participant_invites').get()!.n,before);
+    mode = 'stalled'; const pending = runtime.inviteParticipant(user,'alpha','invitation-stalled-key',24); await flush();
+    context.mock.timers.tick(6000); await flush(); assert.equal((await pending).delivery,'unknown');
+  } finally { runtime.stop(); context.mock.timers.reset(); db.close(); }
+});
 test('a stalled Discord delivery cannot prevent later service observations', async context => {
   context.mock.timers.enable({ apis: ['setTimeout', 'Date'], now: Date.parse('2026-09-23T20:00:00Z') });
   const db = new DatabaseSync(':memory:');

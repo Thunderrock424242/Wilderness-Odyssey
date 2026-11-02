@@ -5,6 +5,7 @@ import test from 'node:test';
 import { AccessAuthenticator, loadJose } from '../src/connected/auth';
 import { AdminService } from '../src/connected/admin';
 import { DashboardAuth } from '../src/connected/dashboardAuth';
+import { ParticipantService } from '../src/connected/participant';
 import { ConnectedHttp } from '../src/connected/http';
 import { loadConnectedConfig } from '../src/connected/config';
 import { ConnectedStore, ServiceError } from '../src/connected/store';
@@ -23,7 +24,8 @@ async function fixture() {
   }, async input => String(input).endsWith('/oauth2/token') ? Response.json({ access_token: 'discard', token_type: 'Bearer', scope: 'identify' }) : Response.json({ id: user, username: 'Admin' }));
   const identity = new IdentityService(store, 'official'), monitor = new ServiceMonitor(store, 'official'), moderation = new ModerationService(store, identity);
   const admin = new AdminService(store, monitor, moderation, undefined, (actor, capability) => auth.authorize(actor, capability));
-  const handler = new ConnectedHttp(config, store, monitor, identity, moderation, admin, auth);
+  const participant = new ParticipantService(store, config.discord!, async input => String(input).endsWith('/oauth2/token') ? Response.json({ access_token: 'discard', token_type: 'Bearer', scope: 'identify' }) : Response.json({ id: user, username: 'Tester' }));
+  const handler = new ConnectedHttp(config, store, monitor, identity, moderation, admin, auth, participant);
   const { generateKeyPair, SignJWT, exportJWK, createLocalJWKSet } = await loadJose();
   const keys = await generateKeyPair('RS256'), jwk = { ...await exportJWK(keys.publicKey), kid: 'test', alg: 'RS256' };
   const verifier = new AccessAuthenticator(store, config.trust, createLocalJWKSet({ keys: [jwk] }));
@@ -42,6 +44,24 @@ async function fixture() {
   };
   return { db, store, auth, admin, handler, call, login, server, headers, permission: (allowed: boolean) => { permitted = allowed; }, outage: (value: boolean) => { unavailable = value; }, afterCheck: (fn: () => void) => { afterCheck = fn; }, close: async () => { server.closeAllConnections(); await new Promise<void>(resolve => server.close(() => resolve())); db.close(); } };
 }
+test('participant HTTP keeps machine auth and staff permission boundaries', async () => {
+  const f = await fixture();
+  try {
+    assert.equal((await f.call('/participant/start', { redirectUri }, undefined, { 'cf-access-jwt-assertion': 'forged' })).status, 401);
+    const start = await (await f.call('/participant/start', { redirectUri })).json() as { authorizationUrl: string; flowToken: string };
+    const callback = await f.call('/participant/callback', { redirectUri, code: 'code', state: new URL(start.authorizationUrl).searchParams.get('state'), flowToken: start.flowToken });
+    assert.equal(callback.status, 200);
+    const logged = await callback.json() as { sessionToken: string };
+    const extra = { 'x-wo-participant-session': logged.sessionToken };
+    assert.equal((await f.call('/participant/session', undefined, undefined, extra)).status, 200);
+    assert.equal((await f.call('/session', undefined, logged.sessionToken)).status, 401);
+    assert.equal((await f.call('/participant/home?userId=someone', undefined, undefined, extra)).status, 400);
+    assert.equal((await f.call('/participant/claim', { token: 'x'.repeat(43) }, undefined, extra)).status, 403);
+    assert.equal((await f.call('/participant/logout', {}, undefined, extra)).status, 200);
+    assert.equal((await f.call('/participant/home', undefined, undefined, extra)).status, 401);
+  } finally { await f.close(); }
+});
+
 test('HTTP brokers OAuth/session/logout with machine-only Access and preserves admin revision/idempotency rules', async () => {
   const f = await fixture();
   try {

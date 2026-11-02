@@ -11,6 +11,8 @@ import { AdminService } from './admin';
 import { DashboardAuth, tokenDigest } from './dashboardAuth';
 import { PlaytestService } from './playtest';
 import { PrivateArtifactDownload } from './playtestAdmin';
+import { ParticipantService } from './participant';
+import * as participant from '../contracts/v1/participants';
 const idempotency = z.string().regex(/^[a-zA-Z0-9_-]{16,100}$/);
 export async function readJson(request: IncomingMessage, limit = 65536): Promise<unknown> {
   if (!/^application\/json(?:\s*;.*)?$/i.test(request.headers['content-type'] ?? '')) throw new ServiceError(415, 'JSON_REQUIRED', 'Send a JSON request.');
@@ -37,7 +39,7 @@ export class ConnectedHttp {
   readonly staffAuth: AccessAuthenticator;
   readonly accountAuth: AccessAuthenticator;
   private readonly buckets = new Map<string, { start: number; count: number }>();
-  constructor(readonly config: ConnectedConfig, readonly store: ConnectedStore, readonly monitor: ServiceMonitor, readonly identity: IdentityService, readonly moderation: ModerationService, readonly admin: AdminService, readonly dashboard?: DashboardAuth) {
+  constructor(readonly config: ConnectedConfig, readonly store: ConnectedStore, readonly monitor: ServiceMonitor, readonly identity: IdentityService, readonly moderation: ModerationService, readonly admin: AdminService, readonly dashboard?: DashboardAuth, readonly participant?: ParticipantService, readonly inviteParticipant?: (user: string, campaign: string, key: string, hours: number, verify: () => Promise<void>) => Promise<unknown>) {
     this.staffAuth = new AccessAuthenticator(store, config.trust);
     this.accountAuth = new AccessAuthenticator(store, { ...config.trust, staffAudience: config.accountAudience ?? '' });
     this.playtest = new PlaytestService(store);
@@ -51,7 +53,7 @@ export class ConnectedHttp {
       const duplicate = new Set<string>();
       for (let i = 0; i < request.rawHeaders.length; i += 2) {
         const name = request.rawHeaders[i]!.toLowerCase();
-        if (!['authorization', 'cf-access-jwt-assertion', 'x-wo-user-assertion', 'x-wo-admin-session', 'x-wo-environment', 'x-request-id', 'idempotency-key'].includes(name)) continue;
+        if (!['authorization', 'cf-access-jwt-assertion', 'x-wo-user-assertion', 'x-wo-admin-session', 'x-wo-participant-session', 'x-wo-environment', 'x-request-id', 'idempotency-key'].includes(name)) continue;
         if (duplicate.has(name)) throw new ServiceError(400, 'INVALID_HEADERS', 'Duplicate authentication header.');
         duplicate.add(name);
       }
@@ -98,6 +100,30 @@ export class ConnectedHttp {
         if (discordMode) {
           await this.staffAuth.machine(request.headers);
           if (!this.dashboard) throw new ServiceError(503, 'AUTH_NOT_CONFIGURED', 'Staff authentication has not been configured.');
+          if (path.startsWith('/v1/admin/participant/')) {
+            if (!this.participant || request.headers['content-encoding']) throw new ServiceError(503, 'UNAVAILABLE', 'Playtester access is unavailable.');
+            const action = path.slice('/v1/admin/participant/'.length);
+            const query = Object.fromEntries(url.searchParams);
+            if ([...url.searchParams].length !== Object.keys(query).length) throw new ServiceError(400, 'INVALID_QUERY', 'Duplicate query field.');
+            participant.participantQuery.parse(action === 'history' ? query : (z.object({}).strict().parse(query), {}));
+            const credential = request.headers['x-wo-participant-session'];
+            this.rate('participant:' + tokenDigest(typeof credential === 'string' ? credential : request.socket.remoteAddress ?? 'unknown'), 60);
+            let result: unknown;
+            if (method === 'POST' && ['start', 'callback'].includes(action)) {
+              const body = await readJson(request, 16384);
+              result = action === 'start' ? this.participant.start(body) : await this.participant.callback(body);
+            } else {
+              const body = method === 'POST' ? await readJson(request, 16384) : undefined;
+              const session = this.participant.session(credential);
+              if (method === 'GET' && action === 'session') result = session;
+              else if (method === 'GET' && action === 'home') result = this.participant.home(session.user.id, session.user.displayName);
+              else if (method === 'GET' && action === 'history') result = this.participant.history(session.user.id, query.cursor);
+              else if (method === 'POST' && action === 'claim') result = this.participant.claim(session.user.id, participant.participantClaimInput.parse(body).token);
+              else if (method === 'POST' && action === 'logout') { z.object({}).strict().parse(body); result = this.participant.logout(credential); }
+              else throw new ServiceError(404, 'NOT_FOUND', 'Route not found.');
+            }
+            json(response, 200, result); return true;
+          }
           if (path.startsWith('/v1/admin/auth/')) {
             if (method !== 'POST' || url.search) throw new ServiceError(404, 'NOT_FOUND', 'Route not found.');
             const address = request.socket.remoteAddress ?? 'unknown';
@@ -135,6 +161,19 @@ export class ConnectedHttp {
         }
         let result: unknown;
         try {
+          if (path.startsWith('/v1/admin/participant-staff/') && method === 'POST') {
+            if (!discordMode || !this.participant || !this.inviteParticipant || currentActor.role !== 'administrator') throw new ServiceError(403, 'FORBIDDEN', 'Administrator access required.');
+            z.object({}).strict().parse(query); idempotency.parse(key);
+            if (path === '/v1/admin/participant-staff/invite') {
+              const input = participant.participantInviteInput.parse(body);
+              result = await this.inviteParticipant(input.discordUserId, input.campaignId, key, input.expiresInHours, async () => { await this.dashboard!.authorize(currentActor, 'server:write'); });
+            } else if (path === '/v1/admin/participant-staff/revoke') {
+              const input = participant.participantRevokeInput.parse(body); result = this.participant.revoke(input.discordUserId, input.campaignId);
+            } else if (path === '/v1/admin/participant-staff/content') result = this.participant.content(body);
+            else throw new ServiceError(404, 'NOT_FOUND', 'Route not found.');
+            await this.dashboard!.authorize(currentActor, 'server:write');
+            json(response, 200, result); return true;
+          }
           result = discordMode && path === '/v1/admin/session' && method === 'GET'
             ? (z.object({}).strict().parse(query), await this.dashboard!.session(request.headers['x-wo-admin-session']))
             : await this.admin.handle(currentActor, method, path.slice('/v1/admin'.length), body, query, key);

@@ -2,6 +2,7 @@ import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import * as s from '../contracts/v1/playtest';
 import type { z } from 'zod';
 import { ConnectedStore, ServiceError } from './store';
+import { z as schema } from 'zod';
 
 export type Campaign = z.infer<typeof s.campaignSchema>;
 export type Tester = z.infer<typeof s.testerSchema>;
@@ -106,6 +107,15 @@ export class PlaytestService {
         ...(update && observed ? { state: observed.state, sparkStatus: observed.sparkStatus, observedAt: input.capturedAt, observedReceivedAt: record.receivedAt } : {}),
       };
       this.store.put('pt_session', input.sessionId, testerKey(campaign.id, input.testerId), next);
+      if (update && observed) {
+        const timing = schema.object({ startedAt: schema.iso.datetime(), durationSeconds: schema.number().int().min(0).max(2678400).optional(), endedAt: schema.iso.datetime().optional(), build: schema.string().min(1).max(120).optional() }).safeParse(observed);
+        if (timing.success) {
+          const start = Date.parse(timing.data.startedAt), end = timing.data.endedAt ? Date.parse(timing.data.endedAt) : NaN;
+          const derived = Number.isFinite(end) && end >= start && end - start <= 2678400000 ? Math.floor((end - start) / 1000) : null;
+          const duration = observed.state === 'recording' ? null : timing.data.durationSeconds ?? derived;
+          this.store.put('pt_session_metadata', input.sessionId, testerKey(campaign.id, input.testerId), { startedAt: timing.data.startedAt, durationSeconds: duration, build: timing.data.build ?? null });
+        }
+      }
       this.store.enqueue('playtest-artifact:' + input.artifactId, 'staff', 'Playtest ' + input.kind + ' saved: ' + input.artifactId + ' (tester ' + input.testerId + ', campaign ' + campaign.id + ', session ' + input.sessionId + ').');
       return { schemaVersion: '1.0', accepted: true, artifactId: input.artifactId };
     });
