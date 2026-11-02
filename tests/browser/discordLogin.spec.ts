@@ -1,5 +1,22 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { onRequest } from '../../functions/_middleware';
+
+for (const role of ['Playtester', 'Administrator']) {
+  test(role + ' form follows the Discord redirect under the production security policy', async ({ page }) => {
+    const shell = await onRequest({ request: new Request('https://site.example/login/'), env: { ENVIRONMENT: 'production' }, next: async () => new Response('login') });
+    await page.route('**/login/', async route => {
+      const response = await route.fetch();
+      await route.fulfill({ response, headers: { ...response.headers(), 'Content-Security-Policy': shell.headers.get('Content-Security-Policy')! } });
+    });
+    await page.route('**/api/**/start*', route => route.fulfill({ status: 302, headers: { Location: 'https://discord.com/oauth2/authorize?client_id=123456789012345678&scope=identify' } }));
+    await page.route('https://discord.com/oauth2/authorize*', route => route.fulfill({ contentType: 'text/html', body: '<h1>Discord sign-in</h1>' }));
+    await page.goto('/login/');
+    await page.getByRole('radio', { name: new RegExp('^' + role) }).check();
+    await page.getByRole('button', { name: 'Continue with Discord' }).click();
+    await expect(page).toHaveURL(/^https:\/\/discord\.com\/oauth2\/authorize\?/);
+  });
+}
 
 test('Discord login explains bot enrollment, works with a keyboard and fits mobile', async ({ page }, testInfo) => {
   const errors: string[] = [];

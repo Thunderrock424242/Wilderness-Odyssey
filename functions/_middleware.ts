@@ -66,7 +66,9 @@ export async function onRequest(context: { request: Request; env: GatewayEnv; ne
       headers.set('Cache-Control', 'no-store');
       headers.set('Referrer-Policy', 'no-referrer');
       headers.set('X-Robots-Tag', 'noindex, nofollow');
-      headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
+      // Browsers also apply form-action to redirects from the same-origin OAuth start route.
+      const formAction = path === '/login' || path === '/login/' ? "'self' https://discord.com/oauth2/authorize" : "'self'";
+      headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action " + formAction);
       return new Response(response.body, { status: response.status, headers });
     }
     return await context.next();

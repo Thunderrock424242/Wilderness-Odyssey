@@ -2,6 +2,14 @@ import { describe, expect, it } from 'vitest';
 import { onRequest } from '../functions/_middleware';
 
 describe('staff asset protection', () => {
+  it('permits Discord OAuth form redirects only on the login page', async () => {
+    for (const path of ['/login/', '/playtester/']) {
+      const response = await onRequest({ request: new Request('https://site.example.com' + path), env: { ENVIRONMENT: 'production' }, next: async () => new Response('public login shell') });
+      const policy = response.headers.get('Content-Security-Policy');
+      expect(policy).toContain(path === '/login/' ? "form-action 'self' https://discord.com/oauth2/authorize" : "form-action 'self'");
+      if (path !== '/login/') expect(policy).not.toContain('https://discord.com');
+    }
+  });
   it('preserves a bookmarked admin destination for a remembered-only sign-in without serving private HTML', async () => {
     const response = await onRequest({ request: new Request('https://site.example.com/admin/content/pages/', { headers: { Cookie: '__Host-wo-admin-remember=' + 'r'.repeat(43) } }), env: { ENVIRONMENT: 'production', STAFF_AUTH_MODE: 'discord', ALLOWED_HOSTS: 'site.example.com', DISCORD_REDIRECT_URI: 'https://site.example.com/api/auth/discord/callback', DISCORD_GUILD_ID: '123456789012345678' }, next: async () => new Response('private staff shell') });
     expect(response.status).toBe(303);
