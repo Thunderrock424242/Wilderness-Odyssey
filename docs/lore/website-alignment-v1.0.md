@@ -2,7 +2,11 @@
 
 Reviewed 2026-11-02 against [Core Lore v1.0](WILDERNESS_ODYSSEY_CORE_LORE.md) and [Expanded Lore v1.0](WILDERNESS_ODYSSEY_EXPANDED_LORE.md).
 
-## Public spoiler boundary
+## Current public spoiler boundary
+
+All public story details are now redacted, superseding the earlier Echo Earth-only boundary below. This includes articles, historical release-note story claims, survivor records, homepage story panels, gallery copy, roadmap narrative tracks, terminal responses, and metadata. Canonical developer references remain unchanged. Retired story tag archives redirect to the restricted lore page.
+
+## Previous public spoiler boundary
 
 Echo Earth remains named publicly, but human habitation, settlements/council, evacuation outcomes, and contact revelations are now redacted or withheld across public copy, metadata, roadmap, gallery, and terminal payloads. Full canonical references remain unchanged for development. Redaction replaces source text; it does not conceal spoilers in the DOM or browser payload.
 

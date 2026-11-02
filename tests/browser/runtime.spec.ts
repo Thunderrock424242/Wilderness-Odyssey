@@ -55,10 +55,13 @@ test('runtime preserves old URLs and does not publish its compiled worker', asyn
 
 test('retired lore tag URLs redirect to the current archive', async ({ request }) => {
   for (const [tag, target] of [
-    ['project-threshold', '/tags/the-fracture/'],
-    ['blackout-archive', '/tags/recovered-history/'],
-    ['the-siren-night', '/tags/the-fracture/'],
+    ['project-threshold', '/lore/'],
+    ['blackout-archive', '/lore/'],
+    ['the-siren-night', '/lore/'],
     ['echo-earth', '/lore/'],
+    ['the-fracture', '/lore/'],
+    ['project-eden', '/lore/'],
+    ['recovered-history', '/lore/'],
   ]) {
     for (const suffix of ['', '/', '/index.html']) {
       const response = await request.get('/tags/' + tag + suffix, { maxRedirects: 0 });

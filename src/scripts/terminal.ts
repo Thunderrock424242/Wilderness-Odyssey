@@ -38,7 +38,7 @@ document.querySelectorAll<HTMLElement>('[data-terminal]').forEach((terminal) => 
   let historyIndex = 0;
   const phraseSuggestions = [
     'help', 'status', 'latest', 'roadmap', 'roadmap water', 'roadmap aether', 'logs', 'patches', 'lore',
-    'lore reservoir-9', 'gallery', 'version', 'discord', 'download', 'clear',
+    'gallery', 'version', 'discord', 'download', 'clear',
   ];
 
   const append = (line: OutputLine) => {
@@ -64,7 +64,7 @@ document.querySelectorAll<HTMLElement>('[data-terminal]').forEach((terminal) => 
     { text: 'AVAILABLE COMMANDS', tone: 'safe' },
     { text: 'help · status · latest · roadmap [topic] · logs · patches', tone: 'muted' },
     { text: 'lore [record] · gallery · version · discord · download · clear', tone: 'muted' },
-    { text: 'Try: roadmap water, roadmap aether, or lore reservoir-9', tone: 'signal' },
+    { text: 'Try: roadmap water, roadmap aether, or lore', tone: 'signal' },
   ];
 
   const resolve = (raw: string): OutputLine[] => {

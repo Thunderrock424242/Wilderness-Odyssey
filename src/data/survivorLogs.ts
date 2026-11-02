@@ -10,13 +10,12 @@ export type SurvivorLog = {
   locked?: boolean;
 };
 
-
 export const SURVIVOR_LOGS: SurvivorLog[] = [
   {
     id: 'LOG #0001',
     date: '[REDACTED]',
     survivor: '[REDACTED]',
-    body: '████████████████████ [REDACTED] — Discover this record in play.',
+    body: '[REDACTED] — Discover this record in play.',
     status: 'ACCESS: REDACTED',
     tone: 'safe',
   },
@@ -24,7 +23,7 @@ export const SURVIVOR_LOGS: SurvivorLog[] = [
     id: 'LOG #0047',
     date: '[REDACTED]',
     survivor: '[REDACTED]',
-    body: '████████████████████ [REDACTED] — Discover this record in play.',
+    body: '[REDACTED] — Discover this record in play.',
     status: 'ACCESS: REDACTED',
     tone: 'warn',
   },
@@ -32,7 +31,7 @@ export const SURVIVOR_LOGS: SurvivorLog[] = [
     id: 'LOG #0112',
     date: '[REDACTED]',
     survivor: '[REDACTED]',
-    body: '████████████████████ [REDACTED] — Discover this record in play.',
+    body: '[REDACTED] — Discover this record in play.',
     status: 'ACCESS: REDACTED',
     tone: 'danger',
   },
@@ -40,7 +39,7 @@ export const SURVIVOR_LOGS: SurvivorLog[] = [
     id: 'LOG #0203',
     date: '[REDACTED]',
     survivor: '[REDACTED]',
-    body: '████████████████████ [REDACTED] — Discover this record in play.',
+    body: '[REDACTED] — Discover this record in play.',
     status: 'ACCESS: REDACTED',
     tone: 'warn',
   },
@@ -48,7 +47,7 @@ export const SURVIVOR_LOGS: SurvivorLog[] = [
     id: 'LOG #0318',
     date: '[REDACTED]',
     survivor: '[REDACTED]',
-    body: '████████████████████ [REDACTED] — Discover this record in play.',
+    body: '[REDACTED] — Discover this record in play.',
     status: 'ACCESS: REDACTED',
     tone: 'safe',
   },

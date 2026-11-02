@@ -20,6 +20,19 @@ test('terminal completes a prefix and lets Tab and Shift+Tab leave the input', a
   await expect(input).toHaveValue('hel');
 });
 
+test('public story records and metadata withhold narrative spoilers', async ({ request }) => {
+  for (const path of [
+    '/', '/lore/', '/logs/', '/features/', '/gallery/', '/roadmap/',
+    '/transmissions/project-threshold-blackout-archive/', '/rss.xml',
+  ]) {
+    const response = await request.get(path);
+    expect(response.status()).toBe(200);
+    const source = await response.text();
+    expect(source).not.toMatch(/Project Eden|Reservoir-9|Echo Earth|Beal|Nathan|Peppermint|meteor-derived|150 years|cryogenic|awakening signal/i);
+    expect(source).toContain('[REDACTED]');
+  }
+});
+
 for (const width of [320, 390]) {
   test(`survivor logs fit a ${width}px viewport without losing redactions`, async ({ page }) => {
     await page.setViewportSize({ width, height: 844 });
