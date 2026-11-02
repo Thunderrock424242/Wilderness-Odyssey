@@ -48,7 +48,13 @@ jobs:
             sleep 1
           done
           curl --silent --fail http://127.0.0.1:4173/ > /dev/null
-          npx --yes linkinator@7.6.1 http://127.0.0.1:4173/ --recurse --skip 'https?://(?!127\.0\.0\.1).*' --skip '.*/cdn-cgi/.*' --skip 'data:.*'
+          # Astro preview serves static files only. These login entry points are
+          # Pages Functions, covered by gateway and browser tests instead.
+          npx --yes linkinator@7.6.1 http://127.0.0.1:4173/ --recurse \
+            --skip 'https?://(?!127\.0\.0\.1).*' \
+            --skip '.*/cdn-cgi/.*' \
+            --skip 'data:.*' \
+            --skip '^http://127\.0\.0\.1:4173/api/(participant/start|auth/discord/start)$'
       - name: Audit production dependencies
         run: npm audit --omit=dev --audit-level=high
       - name: Save tested Pages artifact
