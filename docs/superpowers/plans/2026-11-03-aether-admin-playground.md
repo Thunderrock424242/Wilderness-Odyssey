@@ -52,5 +52,14 @@
 ## Task 6 — Review and rollout
 
 - [x] Run bot check/build/full Node 22 tests; website verify/full browsers; compiled gateway smoke. Review the complete diff.
-- [ ] Push bot/website branches, deploy gateway, monitor normal Pages CI and verify its exact commit.
-- [ ] Report Kinetic update/configuration and server-side implementation as remaining dependencies, and deliver the requested Codex message.
+- [x] Push bot/website branches, deploy gateway, monitor normal Pages CI and verify its exact commit.
+- [x] Report Kinetic update/configuration and server-side implementation as remaining dependencies, and deliver the requested Codex message.
+
+## Rollout evidence
+
+- Bot implementation: 60a962005e1684610da1b6588e63b6fc195f0fd5; website: f18bbac89ebe0f496bcad864680ba0c28c27ed68.
+- Node 22 bot suite: 207 passed. Final compiler/build and four focused contract/service tests passed after the last store changes.
+- Website: 273 unit tests, 101 browser tests, production build/link checks and compiled gateway smoke passed.
+- Gateway production version: 0ea963a3-6774-47d3-b7db-353040fda02a; anonymous public status 200 and private playground 403 with no-store.
+- Pages production deployment e7b57a67-149f-4b9d-bd2f-4206f8d5b2c5 uses website f18bbac. GitHub run 41709637943 build/deploy and live staff protection checks succeeded.
+- Remaining external dependencies: update/restart Kinetic from the bot branch, implement/deploy the API-side handoff, then configure the private peer and verify actual inference/training. No live model training is claimed.
