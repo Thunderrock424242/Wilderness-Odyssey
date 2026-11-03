@@ -10,12 +10,23 @@ const headers = { Cookie: '__Host-wo-participant-session=' + session };
 const sessionData = () => ({ schemaVersion: '1.0', user, guildId: env.DISCORD_GUILD_ID, expiresAt: new Date(Date.now() + 850000).toISOString() });
 const stats = { recordedSeconds: 120, sessions: 1, unknownDurationSessions: 0 };
 describe('participant gateway', () => {
-  it('requires a distinct tester session and never uses an admin cookie', async () => {
-    const upstream = vi.fn<typeof fetch>();
-    const result = await handleGateway(request('/api/participant/home', { headers: { Cookie: '__Host-wo-admin-session=' + session } }), env, { fetch: upstream });
-    expect(result.status).toBe(401); expect(upstream).not.toHaveBeenCalled();
+  it('reuses an active administrator session for the same participant identity', async () => {
+    const upstream = vi.fn<typeof fetch>(async (_url, init) => {
+      expect(new Headers(init?.headers).get('X-WO-Admin-Session')).toBe(session);
+      expect(new Headers(init?.headers).has('X-WO-Participant-Session')).toBe(false);
+      return Response.json(sessionData());
+    });
+    const result = await handleGateway(request('/api/participant/session', { headers: { Cookie: '__Host-wo-admin-session=' + session } }), env, { fetch: upstream });
+    expect(result.status).toBe(200);
+    expect(await result.json()).toMatchObject({ user, authMethod: 'discord' });
   });
-  it('returns only the authenticated tester home and forwards a distinct session header', async () => {
+  it('falls back to administrator only when the separate participant session expired', async () => {
+    const upstream = vi.fn<typeof fetch>(async (_url, init) => new Headers(init?.headers).has('X-WO-Participant-Session')
+      ? Response.json({}, { status: 401 }) : Response.json(sessionData()));
+    const result = await handleGateway(request('/api/participant/session', { headers: { Cookie: '__Host-wo-admin-session=' + session + '; __Host-wo-participant-session=' + 'p'.repeat(43) } }), env, { fetch: upstream });
+    expect(result.status).toBe(200);
+    expect(await result.json()).toMatchObject({ user, authMethod: 'discord' });
+  });  it('returns only the authenticated tester home and forwards a distinct session header', async () => {
     const upstream = vi.fn<typeof fetch>(async (url, init) => {
       const sent = new Headers(init?.headers);
       expect(sent.get('X-WO-Participant-Session')).toBe(session);
@@ -76,4 +87,30 @@ it('withholds a slow home response if membership was revoked during the read', a
   });
   const response = await handleGateway(request('/api/participant/home',{ headers }),env,{ fetch:upstream });
   expect(response.status).toBe(403); expect(await response.text()).not.toContain('Private');
+});
+
+
+it('keeps the independently authenticated tester identity when both cookies exist', async () => {
+  const upstream = vi.fn<typeof fetch>(async (_url, init) => {
+    const sent = new Headers(init?.headers);
+    expect(sent.get('X-WO-Participant-Session')).toBe(session);
+    expect(sent.has('X-WO-Admin-Session')).toBe(false);
+    return Response.json(sessionData());
+  });
+  const response = await handleGateway(request('/api/participant/session', { headers: { Cookie: headers.Cookie + '; __Host-wo-admin-session=' + 'a'.repeat(43) } }), env, { fetch: upstream });
+  expect(response.status).toBe(200);
+  expect(await response.json()).toMatchObject({ user, authMethod: 'participant' });
+  expect(upstream).toHaveBeenCalledTimes(1);
+});
+it.each([401, 403, 503])('preserves admin session rejection %s without starting OAuth', async status => {
+  const upstream = vi.fn<typeof fetch>(async () => Response.json({}, { status }));
+  const response = await handleGateway(request('/api/participant/home', { headers: { Cookie: '__Host-wo-admin-session=' + session } }), env, { fetch: upstream });
+  expect(response.status).toBe(status);
+  expect(upstream).toHaveBeenCalledTimes(1);
+  expect(String(upstream.mock.calls[0][0])).toContain('/participant/session');
+});
+
+it('a valid separate tester session does not depend on an unrelated malformed admin cookie', async () => {
+  const response = await handleGateway(request('/api/participant/session', { headers: { Cookie: headers.Cookie + '; __Host-wo-admin-session=invalid' } }), env, { fetch: async () => Response.json(sessionData()) });
+  expect(response.status).toBe(200);
 });

@@ -121,3 +121,21 @@ describe('hosted authoring gateway', () => {
     expect((await call(new Request('https://site.example.com/api/admin/v1/configuration'), upstream({}))).status).toBe(401);
   });
 });
+
+describe('website source setup', () => {
+  it('imports the build snapshot after authenticated same-origin acknowledgement, never browser-supplied source', async () => {
+    let received: { snapshot?: { sourceRevision: string; transmissions: unknown[] }; acknowledgePublicSource?: boolean } | null = null;
+    const result = { schemaVersion: '1.0', imported: true, sourceRevision: 'a'.repeat(40), transmissionCount: 9, pageCount: 3, publicationConfigured: false };
+    const fetcher: typeof fetch = async (url, init) => {
+      if (String(url).endsWith('/session')) return upstream({})(url, init);
+      received = JSON.parse(String(init?.body));
+      return Response.json(result);
+    };
+    const response = await call(await request('/content/source', 'POST', { acknowledgePublicSource: true }), fetcher);
+    expect(response.status).toBe(200);
+    expect(received).toMatchObject({ acknowledgePublicSource: true, snapshot: { sourceRevision: expect.stringMatching(/^[a-f0-9]{40}$/), transmissions: expect.any(Array) } });
+    const invalid = await call(await request('/content/source', 'POST', { acknowledgePublicSource: true, snapshot: { sourceRevision: 'b'.repeat(40) } }), fetcher);
+    expect(invalid.status).toBe(400);
+    expect((await call(await request('/content/source', 'POST', { acknowledgePublicSource: true }, false), fetcher)).status).toBe(403);
+  });
+});

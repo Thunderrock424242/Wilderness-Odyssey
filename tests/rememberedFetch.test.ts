@@ -54,3 +54,21 @@ it('queued tabs reuse the winner after acquiring the renewal lock', async () => 
     expect(rotations).toBe(2); // First sign-in renewal plus exactly one for the two tabs.
   } finally { vi.unstubAllGlobals(); }
 });
+
+it('admin and playtester tabs serialize renewal of the same remembered administrator', async () => {
+  const queues = new Map<string,Promise<unknown>>();
+  let valid = false, rotations = 0;
+  vi.stubGlobal('navigator',{locks:{request:(name:string,callback:()=>Promise<number>) => {
+    const job = (queues.get(name) ?? Promise.resolve()).then(callback);
+    queues.set(name,job.then(()=>undefined)); return job;
+  }}});
+  const fetcher:typeof fetch = async input => {
+    if (String(input).endsWith('/refresh')) { rotations++; valid = true; return Response.json({renewed:true}); }
+    return valid ? Response.json({user:{id:'same-admin'},csrfToken:'csrf'}) : new Response(null,{status:401});
+  };
+  try {
+    const results = await Promise.all([rememberedFetch('/api/admin/v1/session',{},fetcher),rememberedFetch('/api/participant/session',{},fetcher)]);
+    expect(results.map(item=>item.status)).toEqual([200,200]);
+    expect(rotations).toBe(1);
+  } finally {vi.unstubAllGlobals();}
+});

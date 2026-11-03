@@ -1,0 +1,84 @@
+---
+import AuthoringLayout from '../../../layouts/AuthoringLayout.astro';
+---
+<AuthoringLayout title="Owner guide & setup" capability="content:read">
+  <p class="authoring-note">Start here to understand the staff dashboard, prepare the content editor, and choose the right playtester tools. Available actions depend on your Discord permissions and which services are connected.</p>
+  <nav aria-label="Guide topics" class="guide-topics"><a href="#content-setup">Prepare content</a><a href="#sections">Dashboard sections</a><a href="#playtesters">Invite playtesters</a><a href="#publishing">Publish changes</a><a href="#troubleshooting">Troubleshooting</a></nav>
+
+  <section class="ops-card" id="content-setup" aria-labelledby="content-setup-title">
+    <h2 id="content-setup-title">Prepare the content editor</h2>
+    <p>The public website and the bot’s private draft storage are separate. On a new installation, the transmission archive, site information, roadmap, and gallery editors can be empty even while the public website has content.</p>
+    <p>Import the public source bundled with this website build to add missing editable records. Existing private drafts are preserved. Importing does not request publication or deploy the website. If the website build is old, deploy the intended website revision before importing.</p>
+    <p data-content-setup role="status" aria-live="polite">Checking content setup…</p>
+    <label class="authoring-check"><input type="checkbox" data-content-import-ack /><span>I understand this imports public website source into private draft storage and does not overwrite existing drafts.</span></label>
+    <div class="authoring-actions"><button type="button" data-content-import disabled>Import missing website content</button><a href="/admin/content/">Open transmission archive</a><a href="/admin/content/pages/">Open site, roadmap &amp; gallery</a></div>
+    <h3>Publication readiness</h3>
+    <div data-content-publication-status role="status" aria-live="polite">Checking whether reviewed publication is configured…</div>
+    <p class="authoring-note">The guide remains useful if a setup check fails. Read the reported error before retrying; private draft editing and GitHub publication have separate requirements.</p>
+  </section>
+
+  <section class="ops-card" id="sections" aria-labelledby="sections-title">
+    <h2 id="sections-title">What each dashboard section does</h2>
+    <dl class="guide-sections">
+      <dt><a href="/admin/">Server management</a></dt><dd>Check service health, recent Minecraft performance, incidents, and operation requests. Authorized staff can manage maintenance notices, pause new Aether requests, or request approved service operations. An accepted request may still be waiting or may fail; refresh to check its result.</dd>
+      <dt><a href="/admin/players/">Player moderation</a></dt><dd>Find a verified Minecraft player, review moderation history and appeals, issue warnings, or restrict Aether access when permitted.</dd>
+      <dt><a href="/admin/reports/">AI conversation moderation</a></dt><dd>Review player-submitted reports and their attached excerpts, then resolve or escalate a case. This is not an archive of everyone’s private AI conversations.</dd>
+      <dt><a href="/admin/models/">AI model management</a></dt><dd>Check model readiness and request an approved model or permitted inference settings. This requires the connected Aether service and the appropriate staff permission.</dd>
+      <dt><a href="/admin/playtests/">Playtests</a></dt><dd>Create campaigns, label builds, set report retention, invite diagnostic installations, and review tester histories and private artifacts. Collection requires a compatible client and the tester’s local consent.</dd>
+      <dt><a href="/admin/playtester-chat/">Playtester inbox</a></dt><dd>Read shared private bot DMs and attachments, queue replies, and send campaign updates. The owner chooses which current Discord administrators may use this inbox.</dd>
+      <dt><a href="/admin/playtester-access/">Playtester website access</a></dt><dd>Invite a particular Discord account to a campaign home, edit its instructions, announcements and tasks, or revoke website membership.</dd>
+      <dt><a href="/playtester/">My playtester home</a></dt><dd>View campaigns available to your own Discord account. Administrator access does not automatically enroll that account as a tester.</dd>
+      <dt><a href="/admin/content/">Content editor</a></dt><dd>Create or edit transmissions such as news, dev logs, patches, lore and announcements, including their images and metadata.</dd>
+      <dt><a href="/admin/content/pages/">Site, roadmap &amp; gallery</a></dt><dd>Edit the supported site information, roadmap records, and gallery captions as private drafts.</dd>
+      <dt><a href="/admin/settings/">Service settings</a></dt><dd>Read the actual host-managed connection configuration and setup readiness. Credentials and connection changes are managed on the trusted host; this screen does not replace that setup.</dd>
+      <dt><a href="/">Public website</a> and <a href="/status/">Public status</a></dt><dd>Check what visitors can see. These pages show deployed content and available public status information.</dd>
+    </dl>
+  </section>
+
+  <section class="ops-card" id="playtesters" aria-labelledby="playtesters-title">
+    <h2 id="playtesters-title">Invite and support a playtester</h2>
+    <ol>
+      <li>Create a campaign in <a href="/admin/playtests/">Playtests</a> and note its campaign ID.</li>
+      <li>Use <a href="/admin/playtester-access/">Playtester website access</a> to invite their Discord account and add build instructions and tasks. In Discord, staff can also use <code>/playtester invite</code> with the account and campaign. The private claim link only works for that account.</li>
+      <li>If diagnostics are needed, create a separate client invitation in Playtests. The tester must use a compatible diagnostic client, enroll it, and consent locally. A website invitation alone does not enable collection.</li>
+      <li>Use the <a href="/admin/playtester-chat/">inbox</a> for private support. Ask the tester to DM the bot <code>chat CAMPAIGN_ID</code> to choose a campaign. Tell them messages and attachments are shared with the owner’s approved administrator team.</li>
+    </ol>
+    <p>Testers can pause or resume inbox sharing with <code>chat off</code> and <code>chat start</code>, and stop or resume campaign update DMs with <code>updates off</code> and <code>updates on</code>. A queued reply is not proof of delivery; Discord DM settings can block it.</p>
+    <p>An optional private Discord channel or group is useful for general build announcements and discussion. Joining the Discord server is recommended, but not required for playtesting. Keep diagnostic files and personal support conversations private.</p>
+    <p>Removing website membership does not by itself revoke a diagnostic installation. Manage diagnostic permissions and collection separately in Playtests. For launch problems, share <a href="/support/troubleshooting/">the troubleshooting guide</a>.</p>
+  </section>
+
+  <section class="ops-card" id="publishing" aria-labelledby="publishing-title">
+    <h2 id="publishing-title">Save, review, and publish website changes</h2>
+    <ol>
+      <li>Import missing source records above if the editor has not been initialized.</li>
+      <li>Edit and save. Saving stores a private draft in the bot’s database; it does not update the public website.</li>
+      <li>When ready, review the saved content and acknowledge that requesting publication makes its source and included images public in a GitHub pull request. Do not include private messages, logs, credentials, or other sensitive material.</li>
+      <li>Submit the saved draft for review. A configured GitHub App creates a publication branch and a pull request targeting the website branch.</li>
+      <li>Review the pull request, complete its checks, and merge it through GitHub. Approve a protected deployment if GitHub asks for one.</li>
+      <li>Check publication status and the live public page. A merge or a successful check alone does not prove deployment; the publication tracker verifies the deployment and public revision.</li>
+    </ol>
+    <p>If publication is unavailable, drafts can still be prepared when private storage is configured. Ask the host administrator to finish GitHub App and deployment setup. A failed publication keeps the draft. Resolve source conflicts against the latest public version before submitting again.</p>
+  </section>
+
+  <section class="ops-card" id="troubleshooting" aria-labelledby="troubleshooting-title">
+    <h2 id="troubleshooting-title">When something looks wrong</h2>
+    <ul>
+      <li><strong>Archive or page editor is empty:</strong> check content setup above. Import missing source records, then refresh the editor. Do not recreate existing public posts just to fill an empty private archive.</li>
+      <li><strong>Access denied:</strong> confirm the Discord account, administrator enrollment and required permission. Inbox access also needs the owner’s approval. Sign in again if access expired; repeated denial needs a permission or host configuration check.</li>
+      <li><strong>Playtester home has no campaigns:</strong> the signed-in account needs its own claimed website invitation. Staff access and diagnostic enrollment are different permissions.</li>
+      <li><strong>Health or reports say unknown/unavailable:</strong> check the connected service and its latest report. The dashboard cannot infer missing data. Unreported session timing, mode, upload errors and Spark status remain unknown; server profiles require a real source.</li>
+      <li><strong>A fix is present in code but absent online:</strong> check which commit Kinetic runs from the bot branch, which website commit completed production deployment, and whether the gateway was deployed from the intended website revision. Compare the public <a href="/revision.json">website revision</a> with the expected website commit. These are separate deployments.</li>
+    </ul>
+    <p>For a useful support report, include the page, the action, the time, and the short error message. Keep tokens, private invitation links, diagnostic files and private host configuration out of public posts.</p>
+  </section>
+</AuthoringLayout>
+<script src="../../../scripts/adminHelp.ts"></script>
+<style>
+  .guide-topics { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; margin-block: 1.5rem; }
+  .guide-sections dt { font-weight: 700; margin-top: 1rem; }
+  .guide-sections dd { margin: .35rem 0 1rem; }
+  .ops-card { margin-block: 1.25rem; scroll-margin-top: 1rem; }
+  li { margin-block: .7rem; }
+  p, dd, li { line-height: 1.65; overflow-wrap: anywhere; }
+</style>

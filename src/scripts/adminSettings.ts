@@ -5,6 +5,11 @@ const shell = authoringShell(async api => { render(await api.request('/configura
 const form = shell.root.querySelector<HTMLFormElement>('[data-settings-form]')!, credentialForm = shell.root.querySelector<HTMLFormElement>('[data-credential-form]')!;
 function render(value: Configuration) {
   view = value;
+  const hostManaged = !shell.api.can('configuration:write');
+  shell.root.querySelector<HTMLElement>('[data-settings-host-managed]')!.hidden = !hostManaged;
+  const summary = shell.root.querySelector('[data-settings-current]')!;
+  const labels: Record<string,string> = {mainOrigin:'Main server',intervalMs:'Monitoring interval (milliseconds)',staleSeconds:'Freshness limit (seconds)',failures:'Failures before outage',recoveries:'Recoveries before online',staffChannel:'Staff notification channel ID',publicChannel:'Public notification channel ID'};
+  summary.replaceChildren(...Object.entries(value.settings).flatMap(([name,setting]) => { const title = document.createElement('dt'), detail = document.createElement('dd'); title.textContent = labels[name] ?? name; detail.textContent = setting === null ? 'Not configured' : String(setting); return [title,detail]; }));
   for (const [key, data] of Object.entries(value.settings)) { const input = form.elements.namedItem(key); if (input instanceof HTMLInputElement) input.value = data === null ? '' : String(data); }
   shell.root.querySelector('[data-settings-state]')!.textContent = 'Application: ' + value.application.state.replaceAll('-', ' ') + '. ' + value.verification.message + ' Read access: ' + (value.verification.readVerified ? 'verified' : 'unverified') + '. Write access: ' + (value.verification.writeVerified ? 'verified' : 'unverified') + '.';
   shell.root.querySelector('[data-credential-state]')!.textContent = ['read', 'write'].map(scope => { const data = value.credentials[scope as 'read' | 'write']; return scope + ': ' + (data.configured ? 'configured' : 'not configured') + (data.updatedAt ? ' · replaced ' + new Date(data.updatedAt).toLocaleString() : ''); }).join(' | ');

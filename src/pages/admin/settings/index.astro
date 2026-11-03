@@ -2,8 +2,8 @@
 import AuthoringLayout from '../../../layouts/AuthoringLayout.astro';
 ---
 <AuthoringLayout title="Service settings" capability="configuration:read">
-  <p class="authoring-note">Save approved connection settings here. Changes take effect after a backend restart. Host authentication, encryption keys, and GitHub App credentials are configured once on the trusted host.</p>
-  <p data-settings-state role="status"></p><ul data-settings-bootstrap></ul>
+  <p class="authoring-note">Review active service connections and setup readiness here. Host-managed settings are changed on Kinetic; website editing controls appear only when the backend supports them. See the <a href="/admin/help/">admin guide</a> for setup instructions.</p>
+  <p data-settings-state role="status"></p><p data-settings-host-managed hidden>These are the active Kinetic settings. Website changes and credential replacement are not enabled by this backend.</p><dl data-settings-current></dl><ul data-settings-bootstrap></ul>
   <form data-settings-form>
     <div class="authoring-grid">
       <label>Main-server HTTPS origin<input name="mainOrigin" type="url" placeholder="https://approved-server.example" /></label>
@@ -17,7 +17,7 @@ import AuthoringLayout from '../../../layouts/AuthoringLayout.astro';
     </div>
     <div class="authoring-actions"><button type="submit">Save settings</button><button type="button" class="secondary" data-settings-verify>Verify saved connection</button></div>
   </form>
-  <section><h2>Replace connection credentials</h2><p class="authoring-note">Stored credentials are never shown. Sign in again before replacing a credential if your session is more than five minutes old. Read and write credentials must be different.</p><p data-credential-state></p>
+  <section><h2>Connection credentials</h2><p class="authoring-note">Stored credentials are never shown. Sign in again before replacing a credential if your session is more than five minutes old. Read and write credentials must be different.</p><p data-credential-state></p>
     <form data-credential-form><div class="authoring-grid"><label>Credential scope<select name="scope"><option value="read">Read connection</option><option value="write">Write operations</option></select></label><label>New credential<input name="value" type="password" autocomplete="new-password" minlength="32" maxlength="4096" required /></label><label>Reason<textarea name="reason" minlength="10" maxlength="1000" required></textarea></label></div><button type="submit">Replace credential</button></form>
   </section>
   <section><h2>Operational controls</h2><p><a href="/admin/">Maintenance and AI pause</a> · <a href="/admin/models/">Model selection and inference limits</a></p></section>

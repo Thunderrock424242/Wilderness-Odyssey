@@ -24,7 +24,7 @@ export class HostedAdminApi {
     if (!response.ok) {
       await response.body?.cancel(); if ([401, 403].includes(response.status)) this.invalidate();
       const messages: Record<number, string> = { 401: 'Sign in again to continue. Credential replacement needs a recent sign-in.', 403: 'Current administrator permission is required.', 404: 'This record or service is not available. The backend may need its initial content import.', 409: 'This record changed. Refresh before saving again.', 413: 'This document or image is too large.', 422: 'Check the settings, approved connection, and referenced images.', 429: 'Wait briefly before trying again.', 503: 'The backend is unavailable or needs its one-time setup.' };
-      throw new AdminApiError(messages[response.status] ?? 'The editing request failed.', response.status);
+      throw new AdminApiError(response.status === 404 && path.startsWith('/content/pages/') ? 'Existing website content has not been imported. Open Admin guide & setup, then import the current website source.' : messages[response.status] ?? 'The editing request failed.', response.status);
     }
     try {
       if (!response.body) throw new Error(); const reader = response.body.getReader(), chunks: Uint8Array[] = []; let size = 0;

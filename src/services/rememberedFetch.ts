@@ -30,7 +30,7 @@ async function renew(participant: boolean, fetcher: typeof fetch): Promise<numbe
     return response.status;
   };
   const promise = typeof navigator !== 'undefined' && navigator.locks
-    ? navigator.locks.request('wo-session:' + endpoint, operation) : operation();
+    ? navigator.locks.request('wo-session-renewal', operation) : operation();
   pending.set(endpoint, promise);
   try { return await promise; } finally { pending.delete(endpoint); }
 }

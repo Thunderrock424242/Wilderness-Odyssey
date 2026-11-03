@@ -30,3 +30,6 @@ Modpack_Checklist.txt
 !.dev.vars.example
 playwright-report/
 test-results/
+
+# Generated public source snapshot is bundled only into Pages Functions.
+/server/content-source-snapshot.json

@@ -60,3 +60,7 @@ export const pageDocumentSchema = z.discriminatedUnion('kind', [
 export const pageSaveInput = z.object({ revision: contentRevision, sourceRevision: contentRevision.nullable(), document: pageDocumentSchema }).strict();
 export type Transmission = z.infer<typeof transmissionSchema>;
 export type PageDocument = z.infer<typeof pageDocumentSchema>;
+
+export const contentSourceSnapshotSchema = z.object({ sourceRevision:z.string().regex(/^[a-f0-9]{40}$/),transmissions:z.array(transmissionInputSchema).max(1000),site:siteDataSchema,roadmap:roadmapDataSchema,gallery:galleryDataSchema,assets:z.array(imagePath).max(10000) }).strict();
+export const contentSetupSchema = z.object({ schemaVersion:z.literal('1.0'),imported:z.boolean(),sourceRevision:z.string().regex(/^[a-f0-9]{40}$/).nullable(),transmissionCount:z.number().int().min(0).max(1000),pageCount:z.number().int().min(0).max(3),publicationConfigured:z.boolean() });
+export const contentImportInput = z.object({ acknowledgePublicSource:z.literal(true),snapshot:contentSourceSnapshotSchema }).strict();

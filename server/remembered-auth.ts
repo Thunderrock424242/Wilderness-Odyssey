@@ -23,24 +23,30 @@ export async function handleRemembered(request: Request, env: GatewayEnv, upstre
   const config = discordConfig(request, env);
   if (request.method !== 'POST' || config.url.search) throw new GatewayError(405, 'METHOD_DENIED', 'Use the sign-in controls on this website.');
   if (request.headers.get('Origin') !== config.url.origin || request.headers.get('X-WO-Auth-Intent') !== 'renew' || (request.headers.has('Sec-Fetch-Site') && request.headers.get('Sec-Fetch-Site') !== 'same-origin')) throw new GatewayError(403, 'ORIGIN_DENIED', 'Use the sign-in controls on this website.');
-  const remember = staffCookie(request, participant ? PARTICIPANT_REMEMBER : ADMIN_REMEMBER);
-  const sessionName = participant ? '__Host-wo-participant-session' : SESSION_COOKIE;
+  // Participant remember credentials retain their separate account. Shared admin
+  // renewal applies only when this browser has no participant remember credential.
+  const participantCredential = participant && (refresh
+    ? !!staffCookie(request, PARTICIPANT_REMEMBER)
+    : !!staffCookie(request, PARTICIPANT_REMEMBER) || !!staffCookie(request, '__Host-wo-participant-session'));
+  const useParticipant = participant && participantCredential;
+  const remember = staffCookie(request, useParticipant ? PARTICIPANT_REMEMBER : ADMIN_REMEMBER);
+  const sessionName = useParticipant ? '__Host-wo-participant-session' : SESSION_COOKIE;
   const session = staffCookie(request, sessionName);
   let response: Response;
   try {
     if (refresh) {
       if (!remember) throw new GatewayError(401, 'AUTH_REQUIRED', 'Sign in with Discord again.');
-      const result = await kinetic(participant ? '/participant/refresh' : '/auth/discord/refresh', rememberRefreshSchema, undefined, env, upstream, { method: 'POST', body: JSON.stringify({ rememberToken: remember }) });
+      const result = await kinetic(useParticipant ? '/participant/refresh' : '/auth/discord/refresh', rememberRefreshSchema, undefined, env, upstream, { method: 'POST', body: JSON.stringify({ rememberToken: remember }) });
       if (result.guildId !== config.guildId) throw new GatewayError(502, 'INVALID_LOGIN', 'Sign-in could not be verified.');
       response = json({ schemaVersion: '1.0', renewed: true });
       response.headers.append('Set-Cookie', setStaffCookie(sessionName, result.sessionToken, lifetime(result.expiresAt, 900)));
-      rememberedCookies(response, result, participant);
+      rememberedCookies(response, result, useParticipant);
       return response;
     }
     if (!remember && !session) throw new GatewayError(401, 'REVOCATION_UNCONFIRMED', 'This browser is signed out. Earlier server revocation cannot be confirmed without its credential.');
     const operations: Promise<unknown>[] = [];
-    if (remember) operations.push(kinetic(participant ? '/participant/forget' : '/auth/discord/forget', logoutSchema, undefined, env, upstream, { method: 'POST', body: JSON.stringify({ rememberToken: remember }) }));
-    if (session) operations.push(kinetic(participant ? '/participant/logout' : '/auth/logout', logoutSchema, { kind: participant ? 'participant' : 'discord', token: session }, env, upstream, { method: 'POST', body: '{}' }));
+    if (remember) operations.push(kinetic(useParticipant ? '/participant/forget' : '/auth/discord/forget', logoutSchema, undefined, env, upstream, { method: 'POST', body: JSON.stringify({ rememberToken: remember }) }));
+    if (session) operations.push(kinetic(useParticipant ? '/participant/logout' : '/auth/logout', logoutSchema, { kind: useParticipant ? 'participant' : 'discord', token: session }, env, upstream, { method: 'POST', body: '{}' }));
     const results = await Promise.allSettled(operations);
     for (const result of results) if (result.status === 'rejected') throw result.reason;
     response = json({ schemaVersion: '1.0', revoked: true });
@@ -49,7 +55,7 @@ export async function handleRemembered(request: Request, env: GatewayEnv, upstre
     if (refresh) return response; // A losing tab must never erase the winning cookies.
   }
   response.headers.append('Set-Cookie', setStaffCookie(sessionName, '', 0));
-  response.headers.append('Set-Cookie', setStaffCookie(participant ? PARTICIPANT_REMEMBER : ADMIN_REMEMBER, '', 0));
+  response.headers.append('Set-Cookie', setStaffCookie(useParticipant ? PARTICIPANT_REMEMBER : ADMIN_REMEMBER, '', 0));
   response.headers.set('X-WO-Browser-Session-Ended', 'true');
   return response;
 }

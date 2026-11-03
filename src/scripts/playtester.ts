@@ -7,6 +7,7 @@ const element = <T extends HTMLElement>(selector: string) => root.querySelector<
 const message = element('[data-tester-message]'), workspace = element('[data-tester-workspace]');
 const signIn = element('[data-tester-signin]'), logout = element<HTMLButtonElement>('[data-tester-logout]');
 const more = element<HTMLButtonElement>('[data-tester-more]');
+let authMethod: 'participant' | 'discord' = 'participant';
 let csrf = '', cursor: string | null = null, generation = 0;
 function text(tag: string, value: string) { const node = document.createElement(tag); node.textContent = value; return node; }
 const duration = (seconds: number | null) => seconds === null ? 'Unavailable' : `${Math.floor(seconds / 3600)}h ${Math.floor(seconds % 3600 / 60)}m`;
@@ -34,7 +35,7 @@ async function load() {
     const data = await participantRequest('home', participantHomeSchema);
     if (current !== generation) return;
     if (data.user.id !== session.user.id) throw new ParticipantError(502);
-    userId = session.user.id; csrf = session.csrfToken;
+    userId = session.user.id; csrf = session.csrfToken; authMethod = session.authMethod ?? 'participant';
     element('[data-tester-heading]').textContent = 'Welcome home, ' + data.user.displayName;
     const stats = element('[data-tester-stats]');
     for (const [label, value] of [['Recorded playtime', recordedTime(data.stats)], ['Recorded sessions', String(data.stats.sessions)], ['Sessions without timing', String(data.stats.unknownDurationSessions)]]) { const card = document.createElement('div'); card.className = 'tester-stat'; card.append(text('strong', value!), text('span', label!)); stats.append(card); }
@@ -57,7 +58,7 @@ async function load() {
 }
 element('[data-tester-refresh]').addEventListener('click', () => { void load(); });
 more.addEventListener('click', async () => { more.disabled = true; try { await history(false, generation, userId); } catch (error) { failure(error); } finally { more.disabled = false; } });
-logout.addEventListener('click', async () => { logout.disabled = true; const logoutCsrf = csrf; try { await participantRequest('logout', logoutSchema, {}, csrf); ++generation; clear(); logout.hidden = true; signIn.hidden = false; message.textContent = 'You are signed out.'; } catch { ++generation; clear(); csrf = logoutCsrf; message.textContent = 'Your records are cleared, but server sign-out could not be confirmed. A remembered sign-in may remain valid for up to 30 days. If retrying cannot confirm revocation, contact the server owner.'; } finally { logout.disabled = false; } });
+logout.addEventListener('click', async () => { logout.disabled = true; const logoutCsrf = csrf; try { await participantRequest('logout', logoutSchema, {}, csrf, authMethod); ++generation; clear(); logout.hidden = true; signIn.hidden = false; message.textContent = 'You are signed out.'; } catch { ++generation; clear(); csrf = logoutCsrf; message.textContent = 'Your records are cleared, but server sign-out could not be confirmed. A remembered sign-in may remain valid for up to 30 days. If retrying cannot confirm revocation, contact the server owner.'; } finally { logout.disabled = false; } });
 window.addEventListener('pagehide', () => { ++generation; clear(); });
 window.addEventListener('pageshow', event => { if (event.persisted) void load(); });
 void load();

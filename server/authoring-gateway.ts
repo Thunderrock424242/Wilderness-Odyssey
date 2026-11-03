@@ -1,4 +1,6 @@
 import type { JWTVerifyGetKey } from 'jose';
+import { z } from 'zod';
+import sourceSnapshot from './content-source-snapshot.json' with { type: 'json' };
 import { roleCapabilities } from '../contracts/v1/admin';
 import { authoringRoutes } from '../contracts/v1/authoring-routes';
 import { mediaSchema } from '../contracts/v1/content';
@@ -27,7 +29,10 @@ export async function handleAuthoring(request: Request, env: GatewayEnv, depende
       await verifyCsrf(request.headers.get('X-CSRF-Token') ?? '', staff.csrfSubject, url.origin, env.CSRF_SECRET ?? '');
       const key = request.headers.get('Idempotency-Key') ?? '';
       if (!/^[a-zA-Z0-9_-]{16,100}$/.test(key)) throw new GatewayError(400, 'IDEMPOTENCY_REQUIRED', 'Refresh the form and submit the change again.');
-      const parsed = route.input.safeParse(await readJson(request, route.bodyLimit));
+      const submitted = await readJson(request, path === '/content/source' ? 1024 : route.bodyLimit);
+      const acknowledgement = path === '/content/source' ? z.object({ acknowledgePublicSource: z.literal(true) }).strict().safeParse(submitted) : null;
+      if (acknowledgement && !acknowledgement.success) throw new GatewayError(400, 'INVALID_INPUT', 'Acknowledge the source import from the admin guide.');
+      const parsed = route.input.safeParse(acknowledgement?.success ? { ...acknowledgement.data, snapshot: sourceSnapshot } : submitted);
       if (!parsed.success) throw new GatewayError(400, 'INVALID_INPUT', 'Check the required fields and refresh any changed record.');
       body = JSON.stringify(parsed.data); headers.set('Content-Type', 'application/json'); headers.set('Idempotency-Key', key);
     }

@@ -14,8 +14,8 @@ const publicationMessages = {
 export function projectAuthoringResponse(path: string, value: unknown): unknown {
   if (path.startsWith('/configuration')) {
     const data = configurationSchema.parse(value), check = data.verification;
-    const messages = { unverified: 'Verify the saved connection before using managed credentials.', verified: check.writeVerified ? 'Read access and the write credential scope are verified.' : 'Read access verified. Write credential scope remains unverified.', unavailable: 'The main server could not be reached or returned an unsupported response.', rejected: 'The main server rejected the connection credential.', 'wrong-server': 'This connection points to a different server.' };
-    return { ...data, verification: { ...check, message: messages[check.state] }, bootstrap: data.bootstrap.map(item => ({ ...item, label: ['Encryption key', 'Credential encryption key'].includes(item.label) ? 'Credential encryption key' : 'Host configuration check' })) };
+    const messages = { unverified: 'Main-server connection access has not been verified.', verified: check.writeVerified ? 'Read access and the write credential scope are verified.' : 'Read access verified. Write credential scope remains unverified.', unavailable: 'The main server could not be reached or returned an unsupported response.', rejected: 'The main server rejected the connection credential.', 'wrong-server': 'This connection points to a different server.' };
+    return { ...data, verification: { ...check, message: messages[check.state] }, bootstrap: data.bootstrap.map(item => ({ ...item, label: ['Encryption key', 'Credential encryption key'].includes(item.label) ? 'Credential encryption key' : ['Discord sign-in','Website source import','GitHub publication','Playtest client API','Main-server origin','Read credential','Write credential'].includes(item.label) ? item.label : 'Host configuration check' })) };
   }
   if (path.endsWith('/publication') || path.startsWith('/content/publications/')) {
     const data = publicationSchema.parse(value); return { ...data, message: publicationMessages[data.state] };

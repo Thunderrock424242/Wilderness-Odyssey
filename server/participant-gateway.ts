@@ -3,7 +3,7 @@ import * as s from '../contracts/v1/participants';
 import { discordStartSchema, discordCallbackInput, discordCallbackSchema, logoutSchema } from '../contracts/v1/auth';
 import type { GatewayEnv } from './env';
 import { discordConfig } from './staff-host';
-import { discordCsrfSubject, FLOW_COOKIE, lifetime, setStaffCookie, staffCookie } from './staff-cookies';
+import { discordCsrfSubject, FLOW_COOKIE, SESSION_COOKIE, lifetime, setStaffCookie, staffCookie } from './staff-cookies';
 import { createCsrf, verifyCsrf } from './csrf';
 import { kinetic } from './kinetic-client';
 import { GatewayError, json, readJson } from './http';
@@ -14,13 +14,21 @@ export const PARTICIPANT_COOKIE = '__Host-wo-participant-session';
 export const PARTICIPANT_FLOW = '__Host-wo-participant-flow';
 function redirect(path: string, status = 303) { return new Response(null, { status, headers: { Location: path, 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer' } }); }
 export async function participantSession(request: Request, env: GatewayEnv, upstream: typeof fetch) {
-  const config = discordConfig(request, env), token = staffCookie(request, PARTICIPANT_COOKIE);
-  if (!token) throw new GatewayError(401, 'AUTH_REQUIRED', 'Sign in with Discord to view your playtester home.');
-  const credential = { kind: 'participant' as const, token };
-  const session = await kinetic('/participant/session', s.participantSessionSchema, credential, env, upstream);
-  lifetime(session.expiresAt, 900);
-  if (session.guildId !== config.guildId) throw new GatewayError(502, 'INVALID_SESSION', 'Your sign-in could not be verified.');
-  return { session, credential, csrfSubject: 'participant:' + await discordCsrfSubject(token) };
+  const config = discordConfig(request, env);
+  for (const kind of ['participant', 'discord'] as const) {
+    const token = staffCookie(request, kind === 'participant' ? PARTICIPANT_COOKIE : SESSION_COOKIE);
+    if (!token) continue;
+    const credential = { kind, token };
+    try {
+      const session = await kinetic('/participant/session', s.participantSessionSchema, credential, env, upstream);
+      lifetime(session.expiresAt, 900);
+      if (session.guildId !== config.guildId) throw new GatewayError(502, 'INVALID_SESSION', 'Your sign-in could not be verified.');
+      return { session, credential, csrfSubject: (credential.kind === 'participant' ? 'participant:' : '') + await discordCsrfSubject(credential.token) };
+    } catch (error) {
+      if (!(error instanceof GatewayError) || error.status !== 401 || credential.kind !== 'participant') throw error;
+    }
+  }
+  throw new GatewayError(401, 'AUTH_REQUIRED', 'Sign in with Discord to view your playtester home.');
 }
 export async function participantCallback(request: Request, env: GatewayEnv, upstream: typeof fetch) {
   let response: Response;
@@ -58,7 +66,7 @@ export async function handleParticipant(request: Request, env: GatewayEnv, upstr
     } catch { return redirect('/login/?error=service_unavailable'); }
   }
   const staff = await participantSession(request, env, upstream);
-  if (action === 'session') return json({ ...staff.session, csrfToken: await createCsrf(staff.csrfSubject, config.url.origin, env.CSRF_SECRET ?? '') });
+  if (action === 'session') return json({ ...staff.session, authMethod: staff.credential.kind, csrfToken: await createCsrf(staff.csrfSubject, config.url.origin, env.CSRF_SECRET ?? '') });
   if (request.method === 'POST') {
     if (request.headers.get('Origin') !== config.url.origin || (request.headers.has('Sec-Fetch-Site') && request.headers.get('Sec-Fetch-Site') !== 'same-origin')) throw new GatewayError(403, 'ORIGIN_DENIED', 'Submit this action from your playtester home.');
     await verifyCsrf(request.headers.get('X-CSRF-Token') ?? '', staff.csrfSubject, config.url.origin, env.CSRF_SECRET ?? '');
@@ -68,9 +76,9 @@ export async function handleParticipant(request: Request, env: GatewayEnv, upstr
     const options = { method: 'POST', body: JSON.stringify(input.data) };
     const result = action === 'claim'
       ? await kinetic('/participant/claim', s.participantClaimSchema, staff.credential, env, upstream, options)
-      : await kinetic('/participant/logout', logoutSchema, staff.credential, env, upstream, options);
+      : await kinetic(staff.credential.kind === 'discord' ? '/auth/logout' : '/participant/logout', logoutSchema, staff.credential, env, upstream, options);
     const response = json(result);
-    if (action === 'logout') response.headers.append('Set-Cookie', setStaffCookie(PARTICIPANT_COOKIE, '', 0));
+    if (action === 'logout') response.headers.append('Set-Cookie', setStaffCookie(staff.credential.kind === 'discord' ? SESSION_COOKIE : PARTICIPANT_COOKIE, '', 0));
     return response;
   }
   const result = action === 'home'

@@ -11,3 +11,5 @@
 .authoring-check input { width: auto; margin-top: .3rem; }
 .authoring-record { border: 1px solid #345646; padding: 1rem; margin-block: 1rem; }
 @media (max-width: 640px) { .authoring-grid { grid-template-columns: minmax(0, 1fr); } }
+
+.guide-topics{display:flex;flex-wrap:wrap;gap:12px 20px;margin:20px 0}.guide-topics a{padding:6px 0}[data-settings-current]{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:10px 20px}[data-settings-current] dd{margin:0;overflow-wrap:anywhere}@media(max-width:640px){[data-settings-current]{grid-template-columns:1fr;gap:6px}[data-settings-current] dd{margin-bottom:12px}}

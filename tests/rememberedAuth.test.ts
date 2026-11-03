@@ -51,3 +51,31 @@ it('failed logout clears this browser but does not claim server revocation on re
   expect(retry.status).toBe(401);
   expect(await retry.json()).toMatchObject({ code: 'REVOCATION_UNCONFIRMED' });
 });
+
+it('participant renewal restores the existing admin remember credential without minting participant membership', async () => {
+  const calls: string[] = [];
+  const request = new Request('https://site.example/api/participant/refresh', { method: 'POST', headers: { Origin: 'https://site.example', 'X-WO-Auth-Intent': 'renew', Cookie: '__Host-wo-admin-remember=' + 'r'.repeat(43) } });
+  const result = await handleGateway(request, env, { fetch: async input => {
+    calls.push(String(input));
+    return Response.json({ schemaVersion: '1.0', sessionToken: 's'.repeat(43), rememberToken: 'n'.repeat(43), userId: '234567890123456789', guildId: env.DISCORD_GUILD_ID, expiresAt: new Date(Date.now() + 850000).toISOString(), rememberExpiresAt: new Date(Date.now() + 600000000).toISOString() });
+  } });
+  expect(result.status).toBe(200);
+  expect(calls).toEqual(['https://bot.example/v1/admin/auth/discord/refresh']);
+  expect(result.headers.get('Set-Cookie')).toContain('__Host-wo-admin-session=');
+  expect(result.headers.get('Set-Cookie')).not.toContain('__Host-wo-participant-session=');
+});
+
+it('shared admin sign-out revokes both remembered and active admin credentials', async () => {
+  const calls: string[] = [];
+  const request = new Request('https://site.example/api/auth/logout', { method: 'POST', headers: { Origin: 'https://site.example', 'X-WO-Auth-Intent': 'renew', Cookie: '__Host-wo-admin-remember=' + 'r'.repeat(43) + '; __Host-wo-admin-session=' + 's'.repeat(43) + '; __Host-wo-participant-session=' + 'p'.repeat(43) } });
+  const result = await handleGateway(request, env, { fetch: async (input, init) => {
+    calls.push(String(input));
+    if (String(input).endsWith('/logout')) expect(new Headers(init?.headers).get('X-WO-Admin-Session')).toBe('s'.repeat(43));
+    return Response.json({ schemaVersion: '1.0', revoked: true });
+  } });
+  expect(result.status).toBe(200);
+  expect(calls.sort()).toEqual(['https://bot.example/v1/admin/auth/discord/forget', 'https://bot.example/v1/admin/auth/logout']);
+  expect(result.headers.get('Set-Cookie')).toContain('__Host-wo-admin-session=;');
+  expect(result.headers.get('Set-Cookie')).toContain('__Host-wo-admin-remember=;');
+  expect(result.headers.get('Set-Cookie')).not.toContain('__Host-wo-participant-session=');
+});
