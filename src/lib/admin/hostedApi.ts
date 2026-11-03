@@ -19,7 +19,7 @@ export class HostedAdminApi {
     }
     let response: Response;
     const fetcher = this.fetcher;
-    try { response = await rememberedFetch('/api/admin/v1' + path, { ...init, headers, credentials: 'same-origin', cache: 'no-store', signal: AbortSignal.timeout(20000) }, fetcher); }
+    try { response = await rememberedFetch('/api/admin/v1' + path, { ...init, headers, credentials: 'same-origin', cache: 'no-store', signal: init.signal ?? AbortSignal.timeout(20000) }, fetcher); }
     catch { throw new AdminApiError('The request could not be confirmed. Refresh before retrying.', 0); }
     if (!response.ok) {
       await response.body?.cancel(); if ([401, 403].includes(response.status)) this.invalidate();

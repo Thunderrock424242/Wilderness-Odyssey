@@ -1,9 +1,9 @@
 import { capabilitySchema } from '../../../contracts/v1/admin';
 import { AdminApiError } from './types';
 import { HostedAdminApi } from './hostedApi';
-export function authoringShell(load: (api: HostedAdminApi) => Promise<void>) {
+export function authoringShell(load: (api: HostedAdminApi) => Promise<void>, onInvalidate?: () => void) {
   const root = document.querySelector<HTMLElement>('[data-authoring-root]')!, workspace = root.querySelector<HTMLElement>('[data-authoring-workspace]')!, message = root.querySelector<HTMLElement>('[data-authoring-message]')!, signin = root.querySelector<HTMLAnchorElement>('[data-authoring-signin]')!, signout = document.querySelector<HTMLButtonElement>('[data-authoring-signout]')!;
-  const api = new HostedAdminApi(); let generation = 0;
+  const api = new HostedAdminApi(fetch, onInvalidate); let generation = 0;
   const clear = () => { api.invalidate(); workspace.hidden = true; signin.hidden = false; signout.disabled = true; root.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input,textarea').forEach(input => { input.value = ''; }); root.querySelector('[data-page-fields]')?.replaceChildren(); document.querySelector('[data-authoring-identity]')!.textContent = 'Not signed in'; };
   function error(value: unknown) {
     if (value instanceof AdminApiError && value.status === 403 && api.session) {

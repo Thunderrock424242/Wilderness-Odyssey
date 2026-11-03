@@ -67,3 +67,12 @@ Draft editing and GitHub publication have separate setup requirements. If public
 For support, record the page, attempted action, time, and short error message. Share private diagnostic files only through authorized channels. Never include tokens, private invitations, or private host configuration in a public report.
 
 For host setup details, use [hosted-admin-setup.md](hosted-admin-setup.md), [playtest-backend.md](playtest-backend.md), and [playtester-inbox.md](playtester-inbox.md).
+
+
+## Aether playground and training
+
+Open **Aether playground** in staff navigation. Only enrolled Discord administrators receive playground read, write and train capabilities. Connection, verified server identity, inference and training readiness are shown separately. Setup required means the Aether peer or approved credentials need configuration; it never means a training job succeeded. Follow the coordinated Aether server handoff and version 1 contract before enabling server operations. Examples stay in private bot storage and remain editable while the Aether peer is unavailable.
+
+Sandbox output is ephemeral until explicitly copied into the example editor and saved. Submit only text you have permission to use; production conversations are not imported automatically. Add an expected response and evaluation, then explicitly approve or reject each example. Editing resets approval. Select approved examples, an approved base model and server preset, provide a reason and acknowledge resource use before submitting a training job. The backend captures immutable approved revisions.
+
+An unknown job means acceptance is uncertain. Use **Reconcile** for that original local job instead of submitting a replacement. Candidate model identifiers appear only when reported by the server; training never activates or downloads a model. Cancellation is offered only where the peer supports it. Pause/resume controls require verified identity, readiness, the real admission feature and a current numeric admission revision, plus confirmation and a reason.

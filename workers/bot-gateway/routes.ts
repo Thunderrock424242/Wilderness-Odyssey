@@ -3,6 +3,7 @@ import * as client from '../../contracts/v1/playtest-client';
 import { adminRoutes } from '../../contracts/v1/routes';
 import { authoringRoutes } from '../../contracts/v1/authoring-routes';
 import { playtestRoutes } from '../../contracts/v1/playtest-routes';
+import { playgroundRoutes } from '../../contracts/v1/aether-playground';
 import { chatRoutes } from '../../contracts/v1/playtester-chat';
 import { discordStartInput, discordStartSchema, discordCallbackInput, discordCallbackSchema, discordSessionSchema, logoutSchema, rememberRefreshInput, rememberRefreshSchema } from '../../contracts/v1/auth';
 import { mediaSchema } from '../../contracts/v1/content';
@@ -10,6 +11,7 @@ import { publicStatusSchema } from '../../contracts/v1/status';
 import * as participant from '../../contracts/v1/participants';
 
 export type BotRoute = {
+  timeoutMs?: number;
   public?: boolean;
   installation?: boolean;
   input?: z.ZodType;
@@ -36,6 +38,8 @@ export function selectRoute(method: string, pathname: string): BotRoute | undefi
   if (!pathname.startsWith('/v1/admin/')) return;
   const path = pathname.slice('/v1/admin'.length);
   if (method === 'GET' && /^\/playtester-chat\/attachments\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(path)) return { attachment: true, bodyLimit: 0, responseLimit: 5 * 1024 * 1024 };
+  const playground = playgroundRoutes.find(item => item.method === method && item.pattern.test(path));
+  if (playground) return { ...playground, bodyLimit: playground.input ? playground.bodyLimit : 0, responseLimit: 2 * 1024 * 1024, query: path === '/aether-playground/examples' ? z.object({ cursor: z.string().regex(/^(0|[1-9][0-9]{0,7})$/).refine(value => Number(value) <= 10000000).optional() }).strict() : z.object({}).strict() };
   const chat = chatRoutes.find(item => item.method === method && item.pattern.test(path));
   if (chat) return { ...chat, bodyLimit: chat.input ? chat.bodyLimit : 0, responseLimit: 1024 * 1024 };
   if (path.startsWith('/participant/')) {

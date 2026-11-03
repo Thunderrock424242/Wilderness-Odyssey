@@ -28,7 +28,7 @@ export async function kineticResponse(path: string, credential: StaffCredential 
   headers.set('X-WO-Environment', env.ENVIRONMENT || 'unconfigured');
   headers.set('X-Request-Id', crypto.randomUUID());
   if (init.body) headers.set('Content-Type', 'application/json');
-  const response = await upstream(new URL('/v1/admin' + path, base), { ...init, headers, redirect: 'manual', signal: AbortSignal.timeout(8000), cache: 'no-store' });
+  const response = await upstream(new URL('/v1/admin' + path, base), { ...init, headers, redirect: 'manual', signal: init.signal ?? AbortSignal.timeout(8000), cache: 'no-store' });
   if (!response.ok) {
     const status = [401, 403, 404, 409, 410, 422, 429, 503].includes(response.status) ||
       (env.STAFF_AUTH_MODE === 'discord' && path.startsWith('/auth/') && response.status === 400) ? response.status : 502;

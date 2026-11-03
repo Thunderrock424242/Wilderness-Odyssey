@@ -67,7 +67,7 @@ function requestHeaders(request: Request, env: BotGatewayEnv, assertion?: string
 
 async function forward(request: Request, env: BotGatewayEnv, route: BotRoute, url: URL, headers: Headers): Promise<Response> {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 15000);
+  const timer = setTimeout(() => controller.abort(), route.timeoutMs ?? 15000);
   const cancel = () => controller.abort();
   request.signal.addEventListener('abort', cancel, { once: true });
   try {
