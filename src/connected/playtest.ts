@@ -30,6 +30,11 @@ export class PlaytestService {
   tester(campaign: string, id: string): Tester {
     return this.store.record<Tester>('pt_tester', testerKey(campaign, id)) ?? fail(404, 'NOT_FOUND', 'Tester not found.');
   }
+  collection(campaign: Campaign, tester: Tester): { enabled: boolean; collectionId: string | null } {
+    const metadata = this.store.record<{ permission: string; campaignCollection: string | null; collectionId: string | null }>('pt_web_tester', testerKey(campaign.id, tester.id));
+    const collectionId = metadata?.campaignCollection === campaign.collectionId ? metadata.collectionId : campaign.collectionId;
+    return { enabled: campaign.enabled && !tester.revokedAt && (!metadata || metadata.permission === 'allowed'), collectionId };
+  }
   invitation(id: string): Invitation {
     return this.store.record<Invitation>('pt_invite', id) ?? fail(404, 'NOT_FOUND', 'Invitation not found.');
   }
@@ -50,7 +55,7 @@ export class PlaytestService {
       if (invite.revokedAt || Date.parse(invite.expiresAt) <= this.store.clock()) return fail(410, 'INVITATION_EXPIRED', 'Invitation expired or was revoked. Request a fresh invitation.');
       if (invite.redeemedAt) return fail(409, 'INVITATION_USED', 'Invitation already redeemed. If the credential was lost, ask staff to revoke enrollment and issue a fresh invitation.');
       const campaign = this.campaign(invite.campaignId), tester = this.tester(invite.campaignId, invite.testerId);
-      if (!campaign.enabled || tester.revokedAt) return fail(403, 'COLLECTION_DISABLED', 'Campaign or enrollment is disabled.');
+      if (!this.collection(campaign, tester).enabled) return fail(403, 'COLLECTION_DISABLED', 'Campaign or enrollment is disabled.');
       const id = testerKey(campaign.id, tester.id) + ':' + input.installationId;
       const old = this.store.record<Installation>('pt_installation', id);
       if (old && !old.revokedAt) return fail(409, 'INSTALLATION_EXISTS', 'Revoke the previous enrollment before reenrolling this installation.');
@@ -68,8 +73,9 @@ export class PlaytestService {
     return this.store.transaction(() => {
       const installation = this.authenticate(token), campaign = this.campaign(installation.campaignId);
       this.store.put('pt_installation', installation.id, testerKey(installation.campaignId, installation.testerId), { ...installation, lastSeenAt: this.store.now() });
-      if (!campaign.enabled) return { schemaVersion: '1.0', enabled: false };
-      return { schemaVersion: '1.0', enabled: true, campaignId: campaign.id, testerId: installation.testerId, collectionId: campaign.collectionId, captureLogs: campaign.captureLogs, captureSpark: campaign.captureSpark, leaseSeconds: 60 };
+      const policy = this.collection(campaign, this.tester(campaign.id, installation.testerId));
+      if (!policy.enabled) return { schemaVersion: '1.0', enabled: false };
+      return { schemaVersion: '1.0', enabled: true, campaignId: campaign.id, testerId: installation.testerId, collectionId: policy.collectionId, captureLogs: campaign.captureLogs, captureSpark: campaign.captureSpark, leaseSeconds: 60 };
     });
   }
   accept(token: string, body: unknown) {
@@ -80,7 +86,8 @@ export class PlaytestService {
       // This decision occurs after the complete bounded body read, with no subsequent awaits.
       const installation = this.authenticate(token), campaign = this.campaign(installation.campaignId);
       if (input.campaignId !== campaign.id || input.testerId !== installation.testerId) return fail(403, 'SCOPE_DENIED', 'Artifact does not belong to this enrollment.');
-      if (!campaign.enabled || input.collectionId !== campaign.collectionId) return fail(403, 'COLLECTION_DISABLED', 'This collection is no longer authorized.');
+      const policy = this.collection(campaign, this.tester(campaign.id, installation.testerId));
+      if (!policy.enabled || input.collectionId !== policy.collectionId) return fail(403, 'COLLECTION_DISABLED', 'This collection is no longer authorized.');
       if ((input.kind === 'log' && !campaign.captureLogs) || (input.kind === 'spark' && !campaign.captureSpark)) return fail(403, 'CAPTURE_DISABLED', 'This artifact kind is disabled.');
       const existing = this.store.record<Artifact>('pt_artifact', input.artifactId);
       if (existing) {
@@ -90,7 +97,7 @@ export class PlaytestService {
       }
       const session = this.store.record<Session>('pt_session', input.sessionId);
       if (session && (session.installation !== installation.id || session.collectionId !== input.collectionId)) return fail(403, 'SESSION_SCOPE_DENIED', 'Session does not belong to this installation and collection.');
-      const quota = this.store.db.prepare("SELECT count(*) AS n, COALESCE(sum(CASE WHEN json_extract(data,'$.deletedAt') IS NULL THEN json_extract(data,'$.bytes') ELSE 0 END),0) AS total, COALESCE(sum(CASE WHEN owner=? AND json_extract(data,'$.deletedAt') IS NULL THEN json_extract(data,'$.bytes') ELSE 0 END),0) AS tester FROM cs_records WHERE kind='pt_artifact'").get(testerKey(campaign.id, input.testerId)) as { n: number; total: number; tester: number };
+      const quota = this.store.db.prepare("SELECT sum(CASE WHEN json_extract(data,'$.deletedAt') IS NULL THEN 1 ELSE 0 END) AS n, COALESCE(sum(CASE WHEN json_extract(data,'$.deletedAt') IS NULL THEN json_extract(data,'$.bytes') ELSE 0 END),0) AS total, COALESCE(sum(CASE WHEN owner=? AND json_extract(data,'$.deletedAt') IS NULL THEN json_extract(data,'$.bytes') ELSE 0 END),0) AS tester FROM cs_records WHERE kind='pt_artifact'").get(testerKey(campaign.id, input.testerId)) as { n: number; total: number; tester: number };
       if (quota.n >= 100000 || quota.total + bytes.length > 512 * 1024 * 1024 || quota.tester + bytes.length > 64 * 1024 * 1024) return fail(429, 'STORAGE_FULL', 'Private artifact storage is full. Ask staff to review retention.');
       const { content: _content, encoding: _encoding, schemaVersion: _version, ...metadata } = input;
       const record: Artifact = { ...metadata, installation: installation.id, receivedAt: this.store.now(), bytes: bytes.length, digest: hash, revision: randomUUID(), deletedAt: null };

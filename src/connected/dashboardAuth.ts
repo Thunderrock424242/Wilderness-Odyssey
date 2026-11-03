@@ -109,12 +109,14 @@ export class DashboardAuth {
     const parsed = opaqueTokenSchema.safeParse(value);
     if (!parsed.success) throw new ServiceError(401, 'SESSION_INVALID', 'A valid dashboard session is required.');
     const row = this.lookup(tokenDigest(parsed.data));
-    return this.authorize({ id: this.actorId(row.user_id), issuer: DASHBOARD_ISSUER, subject: row.user_id, role: 'administrator', displayName: row.name, guildId: row.guild_id, sessionDigest: row.digest }, 'status:read');
+    // Login/renewal verified Discord. Navigation checks this durable, absolute
+    // session and its enrollment locally rather than starting another REST lookup.
+    return { id: this.actorId(row.user_id), issuer: DASHBOARD_ISSUER, subject: row.user_id, role: 'administrator', displayName: row.name, guildId: row.guild_id, sessionDigest: row.digest };
   }
-  async authorize(actor: Actor, capability: Capability): Promise<Actor> {
+  async authorize(actor: Actor, capability: Capability, verifyDiscord = true): Promise<Actor> {
     const row = this.lookup(actor.sessionDigest ?? '');
     if (actor.issuer !== DASHBOARD_ISSUER || actor.subject !== row.user_id || actor.guildId !== row.guild_id || actor.id !== this.actorId(row.user_id) || !roleCapabilities.administrator.includes(capability)) throw new ServiceError(403, 'FORBIDDEN', 'This action is not permitted.');
-    await this.eligible(row.user_id);
+    if (verifyDiscord) await this.eligible(row.user_id);
     this.lookup(row.digest); // Logout, disable, expiry or generation change during Discord reads wins.
     return { ...actor, role: 'administrator' };
   }

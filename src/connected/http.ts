@@ -166,6 +166,7 @@ export class ConnectedHttp {
         const { actor, subject } = discordMode
           ? { actor: await this.dashboard!.authenticate(request.headers['x-wo-admin-session']), subject: '' }
           : await this.staffAuth.authenticate(request.headers);
+        if (discordMode && (method !== 'GET' || path.includes('/artifacts/') || path.includes('/server-profiles/'))) await this.dashboard!.authorize(actor, 'status:read');
         this.rate('staff:' + actor.id, 120);
         const query: Record<string, string> = {};
         for (const [key, value] of url.searchParams) { if (key in query) throw new ServiceError(400, 'INVALID_QUERY', 'Duplicate query parameter.'); query[key] = value; }
@@ -190,7 +191,7 @@ export class ConnectedHttp {
           const capability = uploading ? 'content:write' as const : 'content:read' as const;
           const media = new ContentMedia(this.admin.content);
           const bytes = uploading ? await readBytes(request,12 * 1024 * 1024) : undefined;
-          const current = discordMode ? await this.dashboard!.authorize(actor,capability) : this.store.staff(this.staffAuth.trust.issuer,subject);
+          const current = discordMode ? await this.dashboard!.authorize(actor,capability,uploading) : this.store.staff(this.staffAuth.trust.issuer,subject);
           if (!current) throw new ServiceError(403,'FORBIDDEN','Current staff access is required.');
           if (uploading) {
             const rawMetadata = request.headers['x-wo-media'];
@@ -209,7 +210,7 @@ export class ConnectedHttp {
         const body = ['POST', 'PUT', 'DELETE'].includes(method) ? await readJson(request,authoring?.bodyLimit ?? 65536) : undefined;
         const key = typeof request.headers['idempotency-key'] === 'string' ? request.headers['idempotency-key'] : '';
         // Uploads can outlive a role assignment. Resolve current authority after the last await.
-        const currentActor = discordMode ? await this.dashboard!.authorize(actor, 'status:read') : this.store.staff(this.staffAuth.trust.issuer, subject);
+        const currentActor = discordMode ? await this.dashboard!.authorize(actor, 'status:read', method !== 'GET') : this.store.staff(this.staffAuth.trust.issuer, subject);
         if (!currentActor) {
           this.store.audit(actor.id, 'admin.denied', path, 'assignment_revoked');
           throw new ServiceError(403, 'FORBIDDEN', 'No active staff permission assignment.');

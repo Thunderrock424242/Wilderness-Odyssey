@@ -68,7 +68,7 @@ export class ConnectedRuntime {
       catch (error) { if (error instanceof DiscordAPIError && error.code === 50007) throw new ServiceError(503,'CHAT_DELIVERY_FAILED','Discord refused this DM.'); throw error; }
     },'https://discord.gg/XHSFDb7EM5');
     this.main = new MainServerClient(config, fetch, (actor, capability) => this.authorizeStaff(actor, capability));
-    this.admin = new AdminService(this.store, this.monitor, this.moderation, config.mainOrigin ? this.main : undefined, (actor, capability) => this.authorizeStaff(actor, capability));
+    this.admin = new AdminService(this.store, this.monitor, this.moderation, config.mainOrigin ? this.main : undefined, (actor, capability, verifyDiscord) => this.authorizeStaff(actor, capability, verifyDiscord), config.playtestPublicApiOrigin);
     if (config.contentRepository) {
       this.publishing = new ContentPublishing(this.admin.content,new GitHubContentRepository(config.contentRepository,this.admin.content),(actor) => this.authorizeStaff(actor,'content:publish'));
       this.admin.content.publisher = this.publishing;
@@ -96,10 +96,10 @@ export class ConnectedRuntime {
     return participantInviteSchema.parse({ schemaVersion: '1.0', invitationId: invitation.id, expiresAt: invitation.expiresAt, delivery, claimUrl: link.href });
   }
   attachDiscord(client: Client): void { this.client = client; }
-  async authorizeStaff(actor: Actor, capability: Capability): Promise<Actor> {
+  async authorizeStaff(actor: Actor, capability: Capability, verifyDiscord = true): Promise<Actor> {
     if (actor.issuer === DASHBOARD_ISSUER) {
       if (!this.dashboard || this.config.staffAuthMode !== 'discord') throw new ServiceError(403, 'FORBIDDEN', 'This action is not permitted.');
-      return this.dashboard.authorize(actor, capability);
+      return this.dashboard.authorize(actor, capability, verifyDiscord);
     }
     if (actor.issuer !== 'discord' && this.config.staffAuthMode === 'discord') throw new ServiceError(403, 'FORBIDDEN', 'This staff authentication method is disabled.');
     if (actor.issuer === 'discord' && this.dashboard && actor.subject) await this.dashboard.authorizeMember(actor.subject);
@@ -111,8 +111,9 @@ export class ConnectedRuntime {
   start(): void {
     if (this.started || this.stopped) return;
     this.started = true;
-    this.schedule(3600000, async () => this.moderation.cleanup());
+    this.schedule(3600000, async () => { this.moderation.cleanup(); this.admin.playtestWebsite.cleanup(); });
     if (!this.config.enabled) return;
+    this.admin.playtestWebsite.cleanup();
     if (this.chat) { this.schedule(5000,() => this.chat!.deliver());this.schedule(3600000,async () => this.chat!.data.cleanup()); }
     if (this.publishing) this.schedule(10000,() => this.publishing!.tick());
     if (this.config.mainOrigin) {

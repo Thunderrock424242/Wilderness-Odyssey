@@ -24,7 +24,7 @@ async function fixture() {
     if (!permitted) throw new ServiceError(403, 'PERMISSION_LOST', 'Administrator required');
   }, async input => String(input).endsWith('/oauth2/token') ? Response.json({ access_token: 'discard', token_type: 'Bearer', scope: 'identify' }) : Response.json({ id: user, username: 'Admin' }));
   const identity = new IdentityService(store, 'official'), monitor = new ServiceMonitor(store, 'official'), moderation = new ModerationService(store, identity);
-  const admin = new AdminService(store, monitor, moderation, undefined, (actor, capability) => auth.authorize(actor, capability));
+  const admin = new AdminService(store, monitor, moderation, undefined, (actor, capability, verifyDiscord) => auth.authorize(actor, capability, verifyDiscord), 'https://gateway.example');
   const participant = new ParticipantService(store, config.discord!, async input => String(input).endsWith('/oauth2/token') ? Response.json({ access_token: 'discard', token_type: 'Bearer', scope: 'identify' }) : Response.json({ id: user, username: 'Tester' }));
   const chat = new PlaytesterChat(store,async actor => { await auth.authorize(actor,'server:write');return {owner:actor.subject === user,userId:actor.subject!}; },async () => {},async (_user,_body,verify) => {await verify();},'https://discord.gg/example');
   const handler = new ConnectedHttp(config, store, monitor, identity, moderation, admin, auth, participant,undefined,chat);
@@ -46,6 +46,23 @@ async function fixture() {
   };
   return { db, store, auth, admin, handler, call, login, server, headers, permission: (allowed: boolean) => { permitted = allowed; }, outage: (value: boolean) => { unavailable = value; }, afterCheck: (fn: () => void) => { afterCheck = fn; }, close: async () => { server.closeAllConnections(); await new Promise<void>(resolve => server.close(() => resolve())); db.close(); } };
 }
+
+test('website playtest routes expose capabilities, persist campaigns and reuse the active session across navigation', async () => {
+  const f = await fixture();
+  try {
+    await f.auth.enroll(user, guild, true);
+    const { sessionToken } = await (await f.login()).json() as { sessionToken: string };
+    const session = await (await f.call('/session', undefined, sessionToken)).json() as { capabilities: string[] };
+    assert.ok(session.capabilities.includes('playtests:read'));
+    const created = await f.call('/playtests', { title: 'Live backend integration', build: '0.2', retentionDays: 7 }, sessionToken, { 'idempotency-key': 'website-playtest-create-001' });
+    assert.equal(created.status, 200);
+    f.outage(true);
+    for (const path of ['/session', '/playtests', '/content/transmissions', '/incidents']) assert.equal((await f.call(path, undefined, sessionToken)).status, 200, path);
+    assert.equal((await f.call('/playtests', { title: 'Rejected during outage', build: '0.3', retentionDays: 7 }, sessionToken, { 'idempotency-key': 'website-playtest-create-002' })).status, 503);
+    await f.auth.enroll(user, guild, false);
+    assert.equal((await f.call('/session', undefined, sessionToken)).status, 401);
+  } finally { await f.close(); }
+});
 test('hosted editor permissions and draft routes work through the real staff HTTP pipeline', async () => {
   const f = await fixture();
   try {
@@ -74,7 +91,9 @@ test('hosted editor permissions and draft routes work through the real staff HTT
     assert.equal((await f.call('/content/transmissions',{ ...create,content:{...content,slug:'unsafe',bodyMarkdown:'[bad](javascript:alert(1))'} },logged.sessionToken,{ 'idempotency-key':'unsafe-content-http-001' })).status,422);
     assert.equal((await f.call('/content/transmissions',{ ...create,content:{...content,slug:'html-test',bodyMarkdown:'<script>alert(1)</script>'} },logged.sessionToken,{ 'idempotency-key':'unsafe-content-http-002' })).status,422);
     f.permission(false);
-    assert.equal((await f.call('/content/transmissions',undefined,logged.sessionToken)).status,403);
+    assert.equal((await f.call('/content/transmissions',undefined,logged.sessionToken)).status,200);
+    assert.equal((await f.call('/content/transmissions',create,logged.sessionToken,{ 'idempotency-key':'demoted-content-http-001' })).status,403);
+    assert.equal((await f.call('/content/transmissions',undefined,logged.sessionToken)).status,401);
   } finally { await f.close(); }
 });
 
@@ -123,7 +142,9 @@ test('private editor images validate bytes and require current administrator acc
     assert.equal((await f.call('/content/media/' + image.id)).status,401);
     assert.equal((await upload(Buffer.from('<svg><script>bad</script></svg>'),'image/png','upload-content-image-002')).status,422);
     f.permission(false);
-    assert.equal((await f.call('/content/media/' + image.id,undefined,logged.sessionToken)).status,403);
+    assert.equal((await f.call('/content/media/' + image.id,undefined,logged.sessionToken)).status,200);
+    assert.equal((await upload(png,'image/png','upload-after-demotion-001')).status,403);
+    assert.equal((await f.call('/content/media/' + image.id,undefined,logged.sessionToken)).status,401);
   } finally { await f.close(); }
 });
 
@@ -163,9 +184,10 @@ test('HTTP brokers OAuth/session/logout with machine-only Access and preserves a
     assert.equal(first.status, 200);
     assert.deepEqual(await (await f.call('/maintenance', body, session.sessionToken, { 'idempotency-key': 'dashboard-maintenance-001' }, 'PUT')).json(), await first.json());
     assert.equal((await f.call('/maintenance', body, session.sessionToken, { 'idempotency-key': 'dashboard-maintenance-002' }, 'PUT')).status, 409);
-    f.outage(true); assert.equal((await f.call('/session', undefined, session.sessionToken)).status, 503);
+    f.outage(true); assert.equal((await f.call('/session', undefined, session.sessionToken)).status, 200);
     f.outage(false); assert.equal((await f.call('/session', undefined, session.sessionToken)).status, 200);
-    f.permission(false); assert.equal((await f.call('/session', undefined, session.sessionToken)).status, 403);
+    f.permission(false); assert.equal((await f.call('/session', undefined, session.sessionToken)).status, 200);
+    assert.equal((await f.call('/maintenance', body, session.sessionToken, { 'idempotency-key': 'demoted-maintenance-001' }, 'PUT')).status, 403);
     assert.equal((await f.call('/auth/logout', {}, session.sessionToken)).status, 200);
     assert.equal((await f.call('/auth/logout', {}, session.sessionToken)).status, 200);
     assert.equal((await f.call('/session', undefined, session.sessionToken)).status, 401);
@@ -217,7 +239,7 @@ test('playtest administration and downloads require signed machine identity and 
     assert.equal((await f.call('/playtest/campaigns', body, sessionToken, { 'idempotency-key': 'playtest-signed-create' })).status, 200);
     assert.equal((await f.call('/playtest/campaigns', undefined, sessionToken)).status, 200);
     f.outage(true);
-    assert.equal((await f.call('/playtest/campaigns', undefined, sessionToken)).status, 503);
+    assert.equal((await f.call('/playtest/campaigns', undefined, sessionToken)).status, 200);
     f.outage(false);
     f.permission(false);
     assert.equal((await f.call('/playtest/artifacts/12345678-1234-4234-8234-123456789012/download', undefined, sessionToken)).status, 403);

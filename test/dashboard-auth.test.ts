@@ -140,7 +140,7 @@ test('OAuth rejects unenrolled users and bots; parallel callbacks exchange once'
   } finally { f.db.close(); }
 });
 
-test('sessions keep original absolute expiry; outages preserve enrollment, confirmed loss requires enable again', async () => {
+test('sessions keep original absolute expiry; navigation uses the session and privileged actions recheck Discord', async () => {
   const f = fixture();
   try {
     f.store.assign('discord', user, 'moderator', 'Historical staff', 'test');
@@ -149,7 +149,9 @@ test('sessions keep original absolute expiry; outages preserve enrollment, confi
     const actor = await f.auth.authenticate(session.sessionToken);
     f.advance(10000);
     assert.equal(discordSessionSchema.parse(await f.auth.session(session.sessionToken)).expiresAt, session.expiresAt);
-    f.permission('unavailable'); await assert.rejects(f.auth.authenticate(session.sessionToken));
+    f.permission('unavailable');
+    assert.equal((await f.auth.session(session.sessionToken)).user.id, user);
+    await assert.rejects(f.auth.authorize(actor, 'server:write'));
     f.permission('allowed'); await f.auth.authenticate(session.sessionToken);
     f.permission('denied'); await assert.rejects(f.auth.authorize(actor, 'server:write'));
     f.permission('allowed'); await assert.rejects(login(f), (e: unknown) => e instanceof ServiceError && e.code === 'ENROLLMENT_REQUIRED');
