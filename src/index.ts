@@ -1,4 +1,4 @@
-import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
+import { Client, Collection, Events, GatewayIntentBits, Partials } from 'discord.js';
 import { config } from './config';
 import { getDb } from './db';
 import { commands } from './commands';
@@ -24,8 +24,10 @@ const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.DirectMessages,
     GatewayIntentBits.MessageContent
-  ]
+  ],
+  partials:[Partials.Channel],
 });
 connected.attachDiscord(client);
 registerRuntime({ client, verificationApiServer });
@@ -43,6 +45,7 @@ client.on(Events.InteractionCreate, (interaction) => {
 });
 client.on(Events.MessageCreate, (message) => {
   void (async () => {
+    if (connected.chat && await connected.chat.receive(message)) return;
     if (await handleMinecraftVerificationRelayMessage(message)) {
       return;
     }

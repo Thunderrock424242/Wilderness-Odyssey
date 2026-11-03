@@ -4,6 +4,8 @@ Discord support and dev help desk bot for the **Wilderness Odyssey** Minecraft m
 
 The personality is light in-universe support AI: helpful, calm, and a little eerie, without making support answers confusing.
 
+For hosted content editing, reviewed publication, outside-server playtester invitations, and the remaining dashboard-control inventory, see [Website control center](docs/website-control-center.md).
+
 ## Stack
 
 - Node.js

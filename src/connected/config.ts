@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { AccessTrust } from './auth';
 import { discordIdSchema } from '../contracts/v1/auth';
+import { contentRepositoryConfig } from './contentRepository';
 
 const origin = z.string().url().refine(value => { const url = new URL(value); return url.protocol === 'https:' && !url.username && !url.password && url.pathname === '/' && !url.search && !url.hash; });
 const optional = (value: string | undefined) => value?.trim() || undefined;
@@ -37,6 +38,6 @@ export function loadConnectedConfig(env: NodeJS.ProcessEnv) {
     if (!settings.success) throw new Error('Discord administration requires GUILD_ID, CLIENT_ID, DISCORD_CLIENT_SECRET and one exact HTTPS DISCORD_REDIRECT_URI.');
     discord = settings.data;
   }
-  return { ...parsed.data, adminEnabled, staffAuthMode, discord, trust, accountAudience: optional(env.ACCOUNT_ACCESS_AUDIENCE), staffChannel: optional(env.MONITOR_STAFF_CHANNEL_ID), publicChannel: optional(env.MONITOR_PUBLIC_CHANNEL_ID), guildId: optional(env.GUILD_ID) };
+  return { ...parsed.data, adminEnabled, staffAuthMode, discord, trust, contentRepository:contentRepositoryConfig(env), accountAudience: optional(env.ACCOUNT_ACCESS_AUDIENCE), staffChannel: optional(env.MONITOR_STAFF_CHANNEL_ID), publicChannel: optional(env.MONITOR_PUBLIC_CHANNEL_ID), guildId: optional(env.GUILD_ID) };
 }
 export type ConnectedConfig = ReturnType<typeof loadConnectedConfig>;

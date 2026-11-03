@@ -13,9 +13,18 @@ import { PlaytestService } from './playtest';
 import { PrivateArtifactDownload } from './playtestAdmin';
 import { ParticipantService } from './participant';
 import * as participant from '../contracts/v1/participants';
+import { authoringRoutes } from '../contracts/v1/authoring-routes';
+import { ContentMedia } from './contentMedia';
+import type { PlaytesterChat } from './playtesterChat';
 const idempotency = z.string().regex(/^[a-zA-Z0-9_-]{16,100}$/);
 export async function readJson(request: IncomingMessage, limit = 65536): Promise<unknown> {
   if (!/^application\/json(?:\s*;.*)?$/i.test(request.headers['content-type'] ?? '')) throw new ServiceError(415, 'JSON_REQUIRED', 'Send a JSON request.');
+  const bytes = await readBytes(request,limit);
+  try { return JSON.parse(bytes.toString('utf8')) as unknown; }
+  catch { throw new ServiceError(400, 'INVALID_JSON', 'Invalid JSON request.'); }
+}
+export async function readBytes(request:IncomingMessage,limit:number):Promise<Buffer> {
+  if (request.headers['content-encoding']) throw new ServiceError(400,'INVALID_ENCODING','Encoded request bodies are not supported.');
   let size = 0;
   const declared = request.headers['content-length'];
   if (declared && (!/^\d+$/.test(declared) || Number(declared) > limit)) throw new ServiceError(413, 'TOO_LARGE', 'Request is too large.');
@@ -26,8 +35,7 @@ export async function readJson(request: IncomingMessage, limit = 65536): Promise
     if (size > limit) throw new ServiceError(413, 'TOO_LARGE', 'Request is too large.');
     chunks.push(part);
   }
-  try { return JSON.parse(Buffer.concat(chunks).toString('utf8')) as unknown; }
-  catch { throw new ServiceError(400, 'INVALID_JSON', 'Invalid JSON request.'); }
+  return Buffer.concat(chunks);
 }
 export function json(response: ServerResponse, status: number, value: unknown): void {
   if (response.destroyed || response.writableEnded) return;
@@ -39,7 +47,7 @@ export class ConnectedHttp {
   readonly staffAuth: AccessAuthenticator;
   readonly accountAuth: AccessAuthenticator;
   private readonly buckets = new Map<string, { start: number; count: number }>();
-  constructor(readonly config: ConnectedConfig, readonly store: ConnectedStore, readonly monitor: ServiceMonitor, readonly identity: IdentityService, readonly moderation: ModerationService, readonly admin: AdminService, readonly dashboard?: DashboardAuth, readonly participant?: ParticipantService, readonly inviteParticipant?: (user: string, campaign: string, key: string, hours: number, verify: () => Promise<void>) => Promise<unknown>) {
+  constructor(readonly config: ConnectedConfig, readonly store: ConnectedStore, readonly monitor: ServiceMonitor, readonly identity: IdentityService, readonly moderation: ModerationService, readonly admin: AdminService, readonly dashboard?: DashboardAuth, readonly participant?: ParticipantService, readonly inviteParticipant?: (user: string, campaign: string, key: string, hours: number, verify: () => Promise<void>) => Promise<unknown>,readonly chat?:PlaytesterChat) {
     this.staffAuth = new AccessAuthenticator(store, config.trust);
     this.accountAuth = new AccessAuthenticator(store, { ...config.trust, staffAudience: config.accountAudience ?? '' });
     this.playtest = new PlaytestService(store);
@@ -53,7 +61,7 @@ export class ConnectedHttp {
       const duplicate = new Set<string>();
       for (let i = 0; i < request.rawHeaders.length; i += 2) {
         const name = request.rawHeaders[i]!.toLowerCase();
-        if (!['authorization', 'cf-access-jwt-assertion', 'x-wo-user-assertion', 'x-wo-admin-session', 'x-wo-participant-session', 'x-wo-environment', 'x-request-id', 'idempotency-key'].includes(name)) continue;
+        if (!['authorization', 'cf-access-jwt-assertion', 'x-wo-user-assertion', 'x-wo-admin-session', 'x-wo-participant-session', 'x-wo-environment', 'x-request-id', 'idempotency-key', 'x-wo-media', 'content-type'].includes(name)) continue;
         if (duplicate.has(name)) throw new ServiceError(400, 'INVALID_HEADERS', 'Duplicate authentication header.');
         duplicate.add(name);
       }
@@ -161,7 +169,44 @@ export class ConnectedHttp {
         this.rate('staff:' + actor.id, 120);
         const query: Record<string, string> = {};
         for (const [key, value] of url.searchParams) { if (key in query) throw new ServiceError(400, 'INVALID_QUERY', 'Duplicate query parameter.'); query[key] = value; }
-        const body = ['POST', 'PUT'].includes(method) ? await readJson(request) : undefined;
+        if (path === '/v1/admin/playtester-chat' || path.startsWith('/v1/admin/playtester-chat/')) {
+          if (!discordMode || !this.chat) throw new ServiceError(403,'CHAT_DENIED','Discord administrator sign-in is required.');
+          await this.chat.authorize(actor);
+          const attachment = /^\/v1\/admin\/playtester-chat\/attachments\/([a-f0-9-]{36})$/.exec(path);
+          if (attachment && method === 'GET') {
+            z.object({}).strict().parse(query);
+            const file = await this.chat.attachment(actor,attachment[1]);
+            response.writeHead(200,{'Content-Type':file.kind === 'spark' ? 'application/x-spark-sampler':'text/plain; charset=utf-8','Content-Length':file.bytes.length,'Content-Disposition':'attachment; filename="diagnostic.' + (file.kind === 'spark' ? 'sparkprofile':'txt') + '"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; sandbox",'Referrer-Policy':'no-referrer'});
+            response.end(Buffer.from(file.bytes));return true;
+          }
+          const body = method === 'POST' ? await readJson(request,8192):undefined;
+          const key = typeof request.headers['idempotency-key'] === 'string' ? request.headers['idempotency-key']:'';
+          json(response,200,await this.chat.handle(actor,method,path.slice('/v1/admin'.length),body,query,key));return true;
+        }
+        if (path === '/v1/admin/content/media' || /^\/v1\/admin\/content\/media\/[A-Za-z0-9_-]{1,96}$/.test(path)) {
+          z.object({}).strict().parse(query);
+          const uploading = method === 'POST' && path === '/v1/admin/content/media';
+          if (!uploading && !(method === 'GET' && path !== '/v1/admin/content/media')) throw new ServiceError(404,'NOT_FOUND','Image route not found.');
+          const capability = uploading ? 'content:write' as const : 'content:read' as const;
+          const media = new ContentMedia(this.admin.content);
+          const bytes = uploading ? await readBytes(request,12 * 1024 * 1024) : undefined;
+          const current = discordMode ? await this.dashboard!.authorize(actor,capability) : this.store.staff(this.staffAuth.trust.issuer,subject);
+          if (!current) throw new ServiceError(403,'FORBIDDEN','Current staff access is required.');
+          if (uploading) {
+            const rawMetadata = request.headers['x-wo-media'];
+            if (typeof rawMetadata !== 'string' || rawMetadata.length > 1024) throw new ServiceError(400,'INVALID_METADATA','Image metadata is required.');
+            let input:unknown;
+            try { input = JSON.parse(rawMetadata) as unknown; } catch { throw new ServiceError(400,'INVALID_METADATA','Invalid image metadata.'); }
+            json(response,200,media.upload(current,input,request.headers['content-type'] ?? '',bytes!,typeof request.headers['idempotency-key'] === 'string' ? request.headers['idempotency-key'] : ''));
+          } else {
+            const image = media.read(current,path.split('/').pop()!);
+            response.writeHead(200,{ 'Content-Type':image.contentType,'Content-Length':image.bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; sandbox",'Content-Disposition':'inline','Referrer-Policy':'no-referrer' });
+            response.end(image.bytes);
+          }
+          return true;
+        }
+        const authoring = authoringRoutes.find(item => item.method === method && item.pattern.test(path.slice('/v1/admin'.length)));
+        const body = ['POST', 'PUT', 'DELETE'].includes(method) ? await readJson(request,authoring?.bodyLimit ?? 65536) : undefined;
         const key = typeof request.headers['idempotency-key'] === 'string' ? request.headers['idempotency-key'] : '';
         // Uploads can outlive a role assignment. Resolve current authority after the last await.
         const currentActor = discordMode ? await this.dashboard!.authorize(actor, 'status:read') : this.store.staff(this.staffAuth.trust.issuer, subject);

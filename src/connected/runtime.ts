@@ -1,4 +1,5 @@
-import type { Client } from 'discord.js';
+import { DiscordAPIError, Routes, type Client, type User } from 'discord.js';
+import { z } from 'zod';
 import type { DatabaseSync } from 'node:sqlite';
 import type { AetherRequest } from '../aether/types';
 import { ConnectedStore, ServiceError, authorize, type Actor } from './store';
@@ -12,8 +13,11 @@ import { ConnectedHttp } from './http';
 import { DashboardAuth, DASHBOARD_ISSUER } from './dashboardAuth';
 import { requireDiscordAdministrator } from './discordPermissions';
 import { ParticipantService } from './participant';
-import { participantInviteSchema } from '../contracts/v1/participants';
+import { participantInviteInput, participantInviteSchema } from '../contracts/v1/participants';
 import type { Capability } from '../contracts/v1/admin';
+import { ContentPublishing } from './contentPublishing';
+import { GitHubContentRepository } from './contentRepository';
+import { PlaytesterChat, CHAT_GUIDE } from './playtesterChat';
 async function boundedDiscord<T>(work: Promise<T>): Promise<T> {
   let timer!: NodeJS.Timeout;
   const timeout = new Promise<never>((_resolve, reject) => { timer = setTimeout(() => reject(new ServiceError(503, 'DISCORD_TIMEOUT', 'Discord delivery could not be confirmed.')), 3000); });
@@ -29,6 +33,8 @@ export class ConnectedRuntime {
   readonly main: MainServerClient;
   readonly dashboard?: DashboardAuth;
   readonly participant?: ParticipantService;
+  readonly publishing?:ContentPublishing;
+  readonly chat?:PlaytesterChat;
   private client?: Client;
   private readonly timers = new Set<NodeJS.Timeout>();
   private stopped = false;
@@ -43,23 +49,46 @@ export class ConnectedRuntime {
       if (!this.client?.isReady()) throw new ServiceError(503, 'DISCORD_UNAVAILABLE', 'Discord permissions could not be verified. Try again later.');
       await requireDiscordAdministrator(this.client.rest, guildId, userId);
     });
+    if (config.discord && config.staffAuthMode === 'discord') this.chat = new PlaytesterChat(this.store,async (actor,dispatch) => {
+      if (actor.issuer !== DASHBOARD_ISSUER || !actor.subject) throw new ServiceError(403,'CHAT_DENIED','Use an enrolled Discord administrator account.');
+      if (!this.client?.isReady()) throw new ServiceError(503,'DISCORD_UNAVAILABLE','Discord is unavailable.');
+      const guild = z.object({id:z.literal(config.discord!.guildId),owner_id:z.string().regex(/^\d{17,22}$/)}).parse(await boundedDiscord(this.client.rest.get(Routes.guild(config.discord!.guildId))));
+      if (dispatch) await this.dashboard!.authorizeMember(actor.subject);
+      else await this.authorizeStaff(actor,'server:write');
+      return {owner:guild.owner_id === actor.subject,userId:actor.subject};
+    },async user => {
+      if (!this.client?.isReady()) throw new ServiceError(503,'DISCORD_UNAVAILABLE','Discord is unavailable.');
+      await requireDiscordAdministrator(this.client.rest,config.discord!.guildId,user);
+    },async (user,body,verify) => {
+      if (!this.client?.isReady()) throw new ServiceError(503,'DISCORD_UNAVAILABLE','Discord is unavailable.');
+      const account = await boundedDiscord(this.client.users.fetch(user,{force:true}));
+      if (account.bot || account.id !== user) throw new ServiceError(403,'CHAT_DENIED','A human tester is required.');
+      await verify();
+      try { await boundedDiscord(account.send({content:body,allowedMentions:{parse:[]}})); }
+      catch (error) { if (error instanceof DiscordAPIError && error.code === 50007) throw new ServiceError(503,'CHAT_DELIVERY_FAILED','Discord refused this DM.'); throw error; }
+    },'https://discord.gg/XHSFDb7EM5');
     this.main = new MainServerClient(config, fetch, (actor, capability) => this.authorizeStaff(actor, capability));
     this.admin = new AdminService(this.store, this.monitor, this.moderation, config.mainOrigin ? this.main : undefined, (actor, capability) => this.authorizeStaff(actor, capability));
-    this.http = new ConnectedHttp(config, this.store, this.monitor, this.identity, this.moderation, this.admin, this.dashboard, this.participant, (user, campaign, key, hours, verify) => this.inviteParticipant(user, campaign, key, hours, verify));
+    if (config.contentRepository) {
+      this.publishing = new ContentPublishing(this.admin.content,new GitHubContentRepository(config.contentRepository,this.admin.content),(actor) => this.authorizeStaff(actor,'content:publish'));
+      this.admin.content.publisher = this.publishing;
+    }
+    this.http = new ConnectedHttp(config, this.store, this.monitor, this.identity, this.moderation, this.admin, this.dashboard, this.participant, (user, campaign, key, hours, verify) => this.inviteParticipant(user, campaign, key, hours, verify),this.chat);
   }
   async inviteParticipant(userId: string, campaignId: string, key: string, hours: number, verify: () => Promise<void> = async () => {}) {
+    participantInviteInput.parse({ discordUserId:userId, campaignId, expiresInHours:hours });
     if (!this.participant || !this.client?.isReady()) throw new ServiceError(503, 'UNAVAILABLE', 'Playtester invitations are unavailable.');
-    let member;
-    try { member = await boundedDiscord(this.client.guilds.fetch(this.participant.options.guildId).then(guild => guild.members.fetch({ user:userId, force:true }))); }
-    catch { throw new ServiceError(503, 'MEMBER_UNAVAILABLE', 'The selected account could not be verified in this Discord server. Check membership and try again.'); }
-    if (member.user.bot) throw new ServiceError(400, 'INVALID_ACCOUNT', 'Select a human Discord account.');
+    let account: User;
+    try { account = await boundedDiscord(this.client.users.fetch(userId, { force:true })); }
+    catch { throw new ServiceError(503, 'ACCOUNT_UNAVAILABLE', 'The selected Discord account could not be verified. Check the account ID and try again.'); }
+    if (account.id !== userId || account.bot) throw new ServiceError(400, 'INVALID_ACCOUNT', 'Select a human Discord account.');
     await verify();
     const invitation = this.participant.invite(userId, campaignId, key, hours);
     const link = new URL('/playtester/claim/', this.participant.options.redirectUri);
     link.hash = new URLSearchParams({ invitation: invitation.token }).toString();
     let delivery: 'sent' | 'failed' | 'unknown' = 'failed';
     try {
-      await boundedDiscord(member.send({ content: 'You have been invited to a Wilderness Odyssey playtest. Sign in with your Discord account and claim your invitation:\n' + link.href + '\nThis link only works for your account and expires at ' + invitation.expiresAt + '. Website access does not enable game diagnostic collection.', allowedMentions: { parse: [] } }));
+      await boundedDiscord(account.send({ content: 'You have been invited to a Wilderness Odyssey playtest. Sign in with your Discord account and claim your invitation:\n' + link.href + '\nThis link only works for your account and expires at ' + invitation.expiresAt + '. Website access does not enable game diagnostic collection.\n\n' + CHAT_GUIDE + '\nRecommended community: https://discord.gg/XHSFDb7EM5', allowedMentions: { parse: [] } }));
       delivery = 'sent';
     } catch (error) { delivery = error instanceof ServiceError && error.code === 'DISCORD_TIMEOUT' ? 'unknown' : 'failed'; }
     this.store.db.prepare('UPDATE cs_participant_invites SET delivery=? WHERE id=?').run(delivery, invitation.id);
@@ -84,6 +113,8 @@ export class ConnectedRuntime {
     this.started = true;
     this.schedule(3600000, async () => this.moderation.cleanup());
     if (!this.config.enabled) return;
+    if (this.chat) { this.schedule(5000,() => this.chat!.deliver());this.schedule(3600000,async () => this.chat!.data.cleanup()); }
+    if (this.publishing) this.schedule(10000,() => this.publishing!.tick());
     if (this.config.mainOrigin) {
       this.schedule(this.config.intervalMs, async () => {
         try { const observation = await this.main.health(); if (!this.stopped) this.monitor.accept(observation); }
@@ -93,7 +124,7 @@ export class ConnectedRuntime {
     }
     this.schedule(5000, () => this.deliver());
   }
-  stop(): void { this.stopped = true; for (const timer of this.timers) clearTimeout(timer); this.timers.clear(); this.main.stop(); }
+  stop(): void { this.stopped = true; for (const timer of this.timers) clearTimeout(timer); this.timers.clear(); this.main.stop(); this.publishing?.stop(); this.chat?.stop(); }
   authorizeAether(request: AetherRequest): boolean {
     if (request.sourcePlatform === 'discord') {
       if (!/^\d{17,22}$/.test(request.userIdentity.platformUserId)) return false;

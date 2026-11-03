@@ -12,11 +12,11 @@ test('playtester commands enforce current Discord permission and use the selecte
   const db = new DatabaseSync(':memory:');
   const runtime = initializeConnected(db, { CONNECTED_SERVICES_ENABLED:'true',CONNECTED_ADMIN_ENABLED:'true',STAFF_AUTH_MODE:'discord',GUILD_ID:guild,CLIENT_ID:user,DISCORD_CLIENT_SECRET:'secret',DISCORD_REDIRECT_URI:'https://site.example/api/auth/discord/callback',ACCESS_TEAM_DOMAIN:'https://test.cloudflareaccess.com',BACKEND_ACCESS_AUDIENCE:'backend',GATEWAY_SERVICE_ID:'gateway' });
   runtime.stop(); let permitted = false, sends = 0;
-  const client = { isReady:() => true, rest:{ get:async (path:string) => path.endsWith('/roles') ? [{ id:guild,permissions:permitted ? '8':'0' }] : path.includes('/members/') ? { user:{id:user},roles:[] } : { id:guild,owner_id:other } }, guilds:{fetch:async () => ({ members:{ fetch:async (value:{user:string}) => { assert.equal(value.user,other); return { user:{bot:false},send:async () => { sends++; } }; } } }) } } as unknown as Client;
+  const client = { isReady:() => true, rest:{ get:async (path:string) => path.endsWith('/roles') ? [{ id:guild,permissions:permitted ? '8':'0' }] : path.includes('/members/') ? { user:{id:user},roles:[] } : { id:guild,owner_id:other } }, users:{ fetch:async (id:string) => { assert.equal(id,other); return { id:other,bot:false,send:async () => { sends++; } }; } } } as unknown as Client;
   runtime.attachDiscord(client);
-  async function call(command:string,guildId:string|null = guild) {
+  async function call(command:string,guildId:string|null = guild,rawId?:string,both = false) {
     const replies:Record<string,unknown>[] = [];
-    const interaction = { id:'interaction-' + command,user:{id:user},guildId,client,options:{getSubcommand:() => command,getString:(name:string) => name === 'title' ? 'Alpha expedition':'alpha',getUser:() => ({id:other,bot:false})},deferReply:async (value:Record<string,unknown>) => {replies.push(value);},editReply:async (value:Record<string,unknown>) => {replies.push(value);} };
+    const interaction = { id:'interaction-' + command + (rawId ?? ''),user:{id:user},guildId,client,options:{getSubcommand:() => command,getString:(name:string) => name === 'account_id' ? rawId ?? null : name === 'title' ? 'Alpha expedition':'alpha',getUser:() => rawId && !both ? null : ({id:other,bot:false})},deferReply:async (value:Record<string,unknown>) => {replies.push(value);},editReply:async (value:Record<string,unknown>) => {replies.push(value);} };
     await playtesterCommand.execute(interaction as unknown as ChatInputCommandInteraction);
     assert.equal(replies[0]!.flags,'Ephemeral'); return JSON.stringify(replies);
   }
@@ -28,5 +28,12 @@ test('playtester commands enforce current Discord permission and use the selecte
     const row = db.prepare('SELECT user_id FROM cs_participant_invites').get()!; assert.equal(row.user_id,other);
     assert.match(await call('revoke'),/revoked/);
     assert.match(await call('invite',null),/configured Discord server/);
+    assert.match(await call('invite',guild,other),/sent by DM/);
+    assert.equal(sends,2);
+    assert.match(await call('invite',guild,'invalid'),/valid Discord account ID/);
+    assert.match(await call('invite',guild,other,true),/either/);
+    const registered = playtesterCommand.data.toJSON();
+    const invite = registered.options!.find(option => option.name === 'invite')!;
+    assert.ok('options' in invite && invite.options?.some(option => option.name === 'account_id'));
   } finally {shutdownConnected(); db.close();}
 });

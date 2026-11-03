@@ -4,6 +4,15 @@ import { DatabaseSync } from 'node:sqlite';
 import { parseArgs } from 'node:util';
 import { roleSchema } from '../contracts/v1/admin';
 import { ConnectedStore } from './store';
+import { ContentService } from './content';
+export function importContentSnapshot(database:string,input:string,operator:string):void {
+  verifyDatabase(database);
+  if (!operator.trim() || operator.length > 100 || fs.statSync(input).size > 32 * 1024 * 1024) throw new Error('Provide a local operator and a public source snapshot up to 32 MiB.');
+  const snapshot:unknown = JSON.parse(fs.readFileSync(input,'utf8')) as unknown;
+  const db = new DatabaseSync(database);
+  try { db.exec('PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000'); new ContentService(new ConnectedStore(db)).importSnapshot(snapshot,operator); }
+  finally { db.close(); }
+}
 export function backupDatabase(source: string, destination: string): void {
   source = path.resolve(source); destination = path.resolve(destination);
   if (!fs.existsSync(source) || fs.statSync(source).size === 0) throw new Error('Source database does not exist.');
@@ -22,11 +31,15 @@ export function verifyDatabase(file: string): void {
   } finally { db.close(); }
 }
 function main(): void {
-  const { values, positionals } = parseArgs({ allowPositionals: true, options: { database: { type: 'string' }, output: { type: 'string' }, issuer: { type: 'string' }, subject: { type: 'string' }, role: { type: 'string' }, name: { type: 'string' }, operator: { type: 'string' } } });
+  const { values, positionals } = parseArgs({ allowPositionals: true, options: { database: { type: 'string' }, output: { type: 'string' }, input: { type:'string' }, issuer: { type: 'string' }, subject: { type: 'string' }, role: { type: 'string' }, name: { type: 'string' }, operator: { type: 'string' } } });
   const action = positionals[0];
-  if (!values.database || positionals.length !== 1) throw new Error('Usage: connected:operator <backup|verify|grant|revoke> --database <path> [--output <new file>] [--issuer <issuer> --subject <subject> --role <role> --name <name> --operator <operator>]');
+  if (!values.database || positionals.length !== 1) throw new Error('Usage: connected:operator <backup|verify|grant|revoke|import-content> --database <path> [--input <public source snapshot>] [--output <new file>] [--issuer <issuer> --subject <subject> --role <role> --name <name> --operator <operator>]');
   if (action === 'backup') { if (!values.output) throw new Error('A new backup path is required.'); backupDatabase(values.database, values.output); }
   else if (action === 'verify') verifyDatabase(values.database);
+  else if (action === 'import-content') {
+    if (!values.input || !values.operator) throw new Error('Specify --input and --operator for the one-time source import.');
+    importContentSnapshot(values.database,values.input,values.operator);
+  }
   else if (action === 'grant' || action === 'revoke') {
     verifyDatabase(values.database);
     if (!values.issuer || !values.subject || !values.operator || values.subject.length > 200 || values.operator.length > 100 || !/^(discord|https:\/\/[a-z0-9-]+\.cloudflareaccess\.com)$/.test(values.issuer)) throw new Error('Specify the verified issuer, subject, and local operator.');

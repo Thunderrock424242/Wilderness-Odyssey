@@ -12,6 +12,7 @@ import { ConnectedStore, ServiceError } from '../src/connected/store';
 import { IdentityService } from '../src/connected/identity';
 import { ModerationService } from '../src/connected/moderation';
 import { ServiceMonitor } from '../src/connected/monitor';
+import { PlaytesterChat } from '../src/connected/playtesterChat';
 const user = '123456789012345678', guild = '234567890123456789', redirectUri = 'https://staff.example/api/auth/discord/callback';
 async function fixture() {
   const db = new DatabaseSync(':memory:'), store = new ConnectedStore(db);
@@ -25,7 +26,8 @@ async function fixture() {
   const identity = new IdentityService(store, 'official'), monitor = new ServiceMonitor(store, 'official'), moderation = new ModerationService(store, identity);
   const admin = new AdminService(store, monitor, moderation, undefined, (actor, capability) => auth.authorize(actor, capability));
   const participant = new ParticipantService(store, config.discord!, async input => String(input).endsWith('/oauth2/token') ? Response.json({ access_token: 'discard', token_type: 'Bearer', scope: 'identify' }) : Response.json({ id: user, username: 'Tester' }));
-  const handler = new ConnectedHttp(config, store, monitor, identity, moderation, admin, auth, participant);
+  const chat = new PlaytesterChat(store,async actor => { await auth.authorize(actor,'server:write');return {owner:actor.subject === user,userId:actor.subject!}; },async () => {},async (_user,_body,verify) => {await verify();},'https://discord.gg/example');
+  const handler = new ConnectedHttp(config, store, monitor, identity, moderation, admin, auth, participant,undefined,chat);
   const { generateKeyPair, SignJWT, exportJWK, createLocalJWKSet } = await loadJose();
   const keys = await generateKeyPair('RS256'), jwk = { ...await exportJWK(keys.publicKey), kid: 'test', alg: 'RS256' };
   const verifier = new AccessAuthenticator(store, config.trust, createLocalJWKSet({ keys: [jwk] }));
@@ -44,6 +46,87 @@ async function fixture() {
   };
   return { db, store, auth, admin, handler, call, login, server, headers, permission: (allowed: boolean) => { permitted = allowed; }, outage: (value: boolean) => { unavailable = value; }, afterCheck: (fn: () => void) => { afterCheck = fn; }, close: async () => { server.closeAllConnections(); await new Promise<void>(resolve => server.close(() => resolve())); db.close(); } };
 }
+test('hosted editor permissions and draft routes work through the real staff HTTP pipeline', async () => {
+  const f = await fixture();
+  try {
+    await f.auth.enroll(user,guild,true);
+    const logged = await (await f.login()).json() as { sessionToken:string };
+    const session = await (await f.call('/session',undefined,logged.sessionToken)).json() as { capabilities:string[] };
+    assert.ok(session.capabilities.includes('content:read'));
+    assert.ok(session.capabilities.includes('content:write'));
+    assert.equal((await f.call('/content/transmissions')).status,401);
+    const list = await f.call('/content/transmissions',undefined,logged.sessionToken);
+    assert.equal(list.status,200);
+    assert.deepEqual(await list.json(),{ schemaVersion:'1.0',records:[] });
+    const content = { slug:'alpha-test',title:'Alpha test',description:'A new expedition update.',publishedAt:'2026-11-02',type:'news',author:'Staff',tags:['testing'],featured:false,draft:true,galleryImages:[],bodyMarkdown:'## Expedition\n\nA private draft.' };
+    const create = { content,revision:null,sourceRevision:null };
+    const key = { 'idempotency-key':'create-content-http-001' };
+    const response = await f.call('/content/transmissions',create,logged.sessionToken,key);
+    assert.equal(response.status,200);
+    const saved = await response.json() as { transmission:{ revision:string;sourceRevision:null };publishing:{state:string} };
+    assert.equal(saved.publishing.state,'draft-saved');
+    assert.equal(saved.transmission.sourceRevision,null);
+    assert.deepEqual(await (await f.call('/content/transmissions',create,logged.sessionToken,key)).json(),saved);
+    assert.equal((await f.call('/content/transmissions',create,logged.sessionToken,{ 'idempotency-key':'create-content-http-002' })).status,409);
+    const update = { content:{ ...content,bodyMarkdown:'A revised draft.' },revision:saved.transmission.revision,sourceRevision:null };
+    assert.equal((await f.call('/content/transmissions/alpha-test',update,logged.sessionToken,{ 'idempotency-key':'update-content-http-001' },'PUT')).status,200);
+    assert.equal((await f.call('/content/transmissions/alpha-test',update,logged.sessionToken,{ 'idempotency-key':'update-content-http-002' },'PUT')).status,409);
+    assert.equal((await f.call('/content/transmissions',{ ...create,content:{...content,slug:'unsafe',bodyMarkdown:'[bad](javascript:alert(1))'} },logged.sessionToken,{ 'idempotency-key':'unsafe-content-http-001' })).status,422);
+    assert.equal((await f.call('/content/transmissions',{ ...create,content:{...content,slug:'html-test',bodyMarkdown:'<script>alert(1)</script>'} },logged.sessionToken,{ 'idempotency-key':'unsafe-content-http-002' })).status,422);
+    f.permission(false);
+    assert.equal((await f.call('/content/transmissions',undefined,logged.sessionToken)).status,403);
+  } finally { await f.close(); }
+});
+
+test('playtester inbox HTTP protects conversations and downloads with current signed staff identity', async () => {
+  const f = await fixture();
+  try {
+    assert.equal((await f.call('/playtester-chat')).status,401);
+    await f.auth.enroll(user,guild,true);
+    const logged = await (await f.login()).json() as {sessionToken:string};
+    const home = await f.call('/playtester-chat',undefined,logged.sessionToken);
+    assert.equal(home.status,200);assert.equal((await home.json() as {owner:boolean}).owner,true);
+    assert.equal((await f.call('/playtester-chat',undefined,logged.sessionToken,{'cf-access-jwt-assertion':'forged'})).status,401);
+    f.handler.participant!.createCampaign('inbox','Inbox');
+    const tester = '345678901234567890';
+    f.handler.participant!.claim(tester,f.handler.participant!.invite(tester,'inbox','http-chat-tester-invite',24).token);
+    f.handler.chat!.data.receive(tester,'inbox','discord-message-1','A private log',[{name:'latest.log',kind:'text',bytes:Buffer.from('private diagnostics')}]);
+    const thread = await f.call('/playtester-chat/threads/inbox/' + tester,undefined,logged.sessionToken);
+    assert.equal(thread.status,200);
+    const messages = await thread.json() as {messages:{attachments:{id:string}[]}[]};
+    const id = messages.messages[0].attachments[0].id;
+    const download = await f.call('/playtester-chat/attachments/' + id,undefined,logged.sessionToken);
+    assert.equal(download.headers.get('cache-control'),'no-store');
+    assert.equal(download.headers.get('content-type'),'text/plain; charset=utf-8');
+    assert.match(download.headers.get('content-disposition')!,/^attachment;/);
+    assert.equal(await download.text(),'private diagnostics');
+    assert.equal((await f.call('/playtester-chat/threads/inbox/' + tester + '/reply',{body:'Reply'},logged.sessionToken,{'idempotency-key':'reply-http-request-001'})).status,200);
+    f.permission(false);
+    assert.equal((await f.call('/playtester-chat/attachments/' + id,undefined,logged.sessionToken)).status,403);
+  } finally {await f.close();}
+});
+
+test('private editor images validate bytes and require current administrator access', async () => {
+  const f = await fixture();
+  try {
+    await f.auth.enroll(user,guild,true);
+    const logged = await (await f.login()).json() as { sessionToken:string };
+    const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=','base64');
+    const upload = (bytes:Buffer,type = 'image/png',id = 'upload-content-image-001') => fetch('http://127.0.0.1:' + (f.server.address() as {port:number}).port + '/v1/admin/content/media',{ method:'POST',headers:{ ...f.headers,'x-wo-admin-session':logged.sessionToken,'idempotency-key':id,'content-type':type,'x-wo-media':JSON.stringify({ slug:'alpha',purpose:'cover',fileName:'cover.png',mimeType:type }) },body:new Uint8Array(bytes) });
+    const uploaded = await upload(png); assert.equal(uploaded.status,200);
+    const image = await uploaded.json() as {id:string;src:string;previewUrl:string};
+    assert.match(image.src,/^\/images\/transmissions\/alpha\/[a-f0-9-]+\.png$/);
+    const read = await f.call('/content/media/' + image.id,undefined,logged.sessionToken);
+    assert.equal(read.status,200); assert.equal(read.headers.get('content-type'),'image/png');
+    assert.equal(read.headers.get('cache-control'),'no-store');
+    assert.deepEqual(Buffer.from(await read.arrayBuffer()),png);
+    assert.equal((await f.call('/content/media/' + image.id)).status,401);
+    assert.equal((await upload(Buffer.from('<svg><script>bad</script></svg>'),'image/png','upload-content-image-002')).status,422);
+    f.permission(false);
+    assert.equal((await f.call('/content/media/' + image.id,undefined,logged.sessionToken)).status,403);
+  } finally { await f.close(); }
+});
+
 test('participant HTTP keeps machine auth and staff permission boundaries', async () => {
   const f = await fixture();
   try {
