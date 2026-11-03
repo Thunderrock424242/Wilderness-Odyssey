@@ -20,7 +20,7 @@ test('backend auth schemas and actual producers match the website generated JSON
       assert.deepEqual(z.toJSONSchema(schemas[index]!), route.input);
     }
     assert.equal(website.sessionHeader, 'X-WO-Admin-Session');
-    // The bot's existing eight capabilities are within the website's fourteen-capability ceiling.
+    // The bot's actual capabilities must remain within the website's current ceiling.
     // Validate actual producers against the frozen JSON schemas, including their exact timestamp patterns.
     await auth.enroll(user, guild, true);
     const start = auth.start({ redirectUri });

@@ -36,7 +36,7 @@
         "additionalProperties": false
       },
       "capabilities": {
-        "maxItems": 16,
+        "maxItems": 19,
         "type": "array",
         "items": {
           "type": "string",
@@ -56,7 +56,10 @@
             "configuration:write",
             "configuration:credentials",
             "playtests:read",
-            "playtests:write"
+            "playtests:write",
+            "playground:read",
+            "playground:write",
+            "playground:train"
           ]
         }
       },

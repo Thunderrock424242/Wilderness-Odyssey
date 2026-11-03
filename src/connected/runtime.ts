@@ -19,6 +19,8 @@ import { ContentPublishing } from './contentPublishing';
 import { GitHubContentRepository } from './contentRepository';
 import { PlaytesterChat, CHAT_GUIDE } from './playtesterChat';
 import { configurationView } from './configurationView';
+import { AetherGatewayClient } from './aetherGatewayClient';
+import { AetherPlayground } from './aetherPlayground';
 async function boundedDiscord<T>(work: Promise<T>): Promise<T> {
   let timer!: NodeJS.Timeout;
   const timeout = new Promise<never>((_resolve, reject) => { timer = setTimeout(() => reject(new ServiceError(503, 'DISCORD_TIMEOUT', 'Discord delivery could not be confirmed.')), 3000); });
@@ -32,6 +34,7 @@ export class ConnectedRuntime {
   readonly admin: AdminService;
   readonly http: ConnectedHttp;
   readonly main: MainServerClient;
+  readonly playground:AetherPlayground;
   readonly dashboard?: DashboardAuth;
   readonly participant?: ParticipantService;
   readonly publishing?:ContentPublishing;
@@ -71,6 +74,8 @@ export class ConnectedRuntime {
     this.main = new MainServerClient(config, fetch, (actor, capability) => this.authorizeStaff(actor, capability));
     this.admin = new AdminService(this.store, this.monitor, this.moderation, config.mainOrigin ? this.main : undefined, (actor, capability, verifyDiscord) => this.authorizeStaff(actor, capability, verifyDiscord), config.playtestPublicApiOrigin);
     this.admin.configuration = () => configurationView(config,this.admin.content.setup());
+    this.playground=new AetherPlayground(this.store,new AetherGatewayClient(config.aetherGateway),(actor,capability,fresh)=>this.authorizeStaff(actor,capability,fresh));
+    this.admin.playground=this.playground;
     if (config.contentRepository) {
       this.publishing = new ContentPublishing(this.admin.content,new GitHubContentRepository(config.contentRepository,this.admin.content),(actor) => this.authorizeStaff(actor,'content:publish'));
       this.admin.content.publisher = this.publishing;
@@ -113,9 +118,10 @@ export class ConnectedRuntime {
   start(): void {
     if (this.started || this.stopped) return;
     this.started = true;
-    this.schedule(3600000, async () => { this.moderation.cleanup(); this.admin.playtestWebsite.cleanup(); });
+    this.schedule(3600000, async () => { this.moderation.cleanup(); this.admin.playtestWebsite.cleanup(); this.playground.cleanup(); });
     if (!this.config.enabled) return;
     this.admin.playtestWebsite.cleanup();
+    this.playground.cleanup();
     if (this.chat) { this.schedule(5000,() => this.chat!.deliver());this.schedule(3600000,async () => this.chat!.data.cleanup()); }
     if (this.publishing) this.schedule(10000,() => this.publishing!.tick());
     if (this.config.mainOrigin) {

@@ -14,6 +14,8 @@ import { ModerationService } from '../src/connected/moderation';
 import { ServiceMonitor } from '../src/connected/monitor';
 import { PlaytesterChat } from '../src/connected/playtesterChat';
 import { configurationView } from '../src/connected/configurationView';
+import { AetherPlayground } from '../src/connected/aetherPlayground';
+import { AetherGatewayClient } from '../src/connected/aetherGatewayClient';
 const user = '123456789012345678', guild = '234567890123456789', redirectUri = 'https://staff.example/api/auth/discord/callback';
 async function fixture() {
   const db = new DatabaseSync(':memory:'), store = new ConnectedStore(db);
@@ -27,6 +29,7 @@ async function fixture() {
   const identity = new IdentityService(store, 'official'), monitor = new ServiceMonitor(store, 'official'), moderation = new ModerationService(store, identity);
   const admin = new AdminService(store, monitor, moderation, undefined, (actor, capability, verifyDiscord) => auth.authorize(actor, capability, verifyDiscord), 'https://gateway.example');
   admin.configuration = () => configurationView(config,admin.content.setup());
+  admin.playground=new AetherPlayground(store,new AetherGatewayClient(),(actor,capability,fresh)=>auth.authorize(actor,capability,fresh));
   const participant = new ParticipantService(store, config.discord!, async input => String(input).endsWith('/oauth2/token') ? Response.json({ access_token: 'discard', token_type: 'Bearer', scope: 'identify' }) : Response.json({ id: user, username: 'Tester' }));
   const chat = new PlaytesterChat(store,async actor => { await auth.authorize(actor,'server:write');return {owner:actor.subject === user,userId:actor.subject!}; },async () => {},async (_user,_body,verify) => {await verify();},'https://discord.gg/example');
   const handler = new ConnectedHttp(config, store, monitor, identity, moderation, admin, auth, participant,undefined,chat);
@@ -64,6 +67,25 @@ test('website playtest routes expose capabilities, persist campaigns and reuse t
     await f.auth.enroll(user, guild, false);
     assert.equal((await f.call('/session', undefined, sessionToken)).status, 401);
   } finally { await f.close(); }
+});
+
+test('Aether playground exposes truthful missing-server status and protects private reviewed examples',async()=>{
+  const f=await fixture();try{
+    assert.equal((await f.call('/aether-playground')).status,401);
+    await f.auth.enroll(user,guild,true);
+    const {sessionToken}=await (await f.login()).json() as {sessionToken:string};
+    const status=await f.call('/aether-playground',undefined,sessionToken);assert.equal(status.status,200);
+    assert.deepEqual((await status.json() as {state:string;configured:boolean}).state,'setup-required');
+    const input={title:'Private case',modelId:'aether:8b',prompt:'Sandbox staff example',response:'Answer',expectedResponse:'Reviewed answer',notes:'',rating:null};
+    const saved=await f.call('/aether-playground/examples',input,sessionToken,{'idempotency-key':'playground-example-http-001'});assert.equal(saved.status,200);
+    const example=await saved.json() as {example:{id:string;revision:string}};
+    assert.equal((await f.call('/aether-playground/examples',undefined,sessionToken)).status,200);
+    const training={baseModelId:'aether:8b',presetId:'small',examples:[{id:example.example.id,revision:example.example.revision}],reason:'Reviewed example training request',acknowledgeTraining:true};
+    assert.equal((await f.call('/aether-playground/jobs',training,sessionToken,{'idempotency-key':'playground-training-http-001'})).status,503);
+    f.permission(false);
+    assert.equal((await f.call('/aether-playground/examples/'+example.example.id+'/review',{state:'approved',revision:example.example.revision},sessionToken,{'idempotency-key':'playground-review-http-001'},'PUT')).status,403);
+    assert.equal((await f.call('/aether-playground/examples',undefined,sessionToken)).status,401);
+  }finally{await f.close();}
 });
 test('hosted editor permissions and draft routes work through the real staff HTTP pipeline', async () => {
   const f = await fixture();

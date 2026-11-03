@@ -30,7 +30,7 @@ export class MainServerClient implements RemoteControl {
     this.controllers.add(controller);
     const timeout = setTimeout(() => controller.abort(), 5000);
     try {
-      const response = await this.fetcher(new URL(path, this.config.mainOrigin), { method: body ? 'POST' : 'GET', redirect: 'error', signal: controller.signal, headers: { authorization: 'Bearer ' + (body ? this.config.writeToken : this.config.readToken), accept: 'application/json', ...(body ? { 'content-type': 'application/json' } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}) });
+      const response = await this.fetcher(new URL(path, this.config.mainOrigin), { method: body ? 'POST' : 'GET', redirect: 'error', signal: controller.signal, headers: { ...(this.config.mainAccessClientId && this.config.mainAccessClientSecret ? { 'CF-Access-Client-Id':this.config.mainAccessClientId, 'CF-Access-Client-Secret':this.config.mainAccessClientSecret } : {}), authorization: 'Bearer ' + (body ? this.config.writeToken : this.config.readToken), accept: 'application/json', ...(body ? { 'content-type': 'application/json' } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}) });
       if (!response.ok) { await response.body?.cancel(); throw new RemoteError(response.status); }
       if (!response.body) throw new Error('Missing response.');
       const reader = response.body.getReader();
