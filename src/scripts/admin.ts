@@ -153,11 +153,17 @@ async function initialize() {
   if (service.mode === 'mock') loginNote.textContent = 'Development-only local access. No credentials leave this browser.';
   try {
     session = await service.getSession();
+    if (session.authenticated) await openWorkspace();
+    else loginView.hidden = false;
   } catch (error) {
-    loginError.textContent = errorMessage(error);
+    workspace.hidden = true;
+    loginView.hidden = false;
+    if (bootstrap.config.hosted) {
+      loginView.querySelector('h1')!.textContent = 'Content editor unavailable.';
+      const verified = service instanceof HostedAdminCmsService ? service.api.session : null;
+      loginNote.textContent = (verified ? 'You are signed in as ' + verified.user.displayName + '. ' : '') + errorMessage(error);
+    } else loginError.textContent = errorMessage(error);
   }
-  if (session.authenticated) await openWorkspace();
-  else loginView.hidden = false;
 }
 
 loginForm.addEventListener('submit', async (event) => {

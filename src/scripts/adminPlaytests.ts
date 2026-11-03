@@ -59,7 +59,10 @@ async function refresh() {
   await run(async token => {
     message.textContent = 'Checking administrator access…';
     const session = await api.initialize(); if (!current(token)) return;
-    if (!api.can('playtests:read') || session.user.role !== 'administrator') { api.invalidate(); throw new AdminApiError('Playtest administration is not enabled for this account. The backend must grant current administrator playtest access.', 403); }
+    if (session.user.role !== 'administrator') { api.invalidate(); throw new AdminApiError('Administrator permission is required for playtest management.', 403); }
+    document.querySelector('[data-authoring-identity]')!.textContent = session.user.displayName + ' · ' + session.user.role;
+    signin.hidden = true; signout.disabled = false;
+    if (!api.can('playtests:read')) throw new AdminApiError('You are signed in as an administrator. This backend does not currently provide playtest management. Use Playtester website access for invitations and Playtester inbox for messages. Signing in again will not enable this service.', 503);
     await campaigns(token); if (!current(token)) return;
     document.querySelector('[data-authoring-identity]')!.textContent = session.user.displayName + ' · ' + session.user.role;
     workspace.hidden = false; signin.hidden = true; signout.disabled = false;

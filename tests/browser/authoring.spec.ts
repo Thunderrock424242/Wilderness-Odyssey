@@ -89,3 +89,27 @@ test('dashboard navigation and roadmap/gallery private saves work with the keybo
   await expect(page).toHaveURL(/\/admin\/content\/$/); await expect(page.locator('[data-admin-user]')).toHaveText('Test administrator');
   expect(errors).toEqual([]);
 });
+
+test('hosted content permission errors remain visible outside the hidden local login form', async ({page}) => {
+  await page.route('**/api/admin/v1/session',route => route.fulfill({json:{...session,capabilities:['server:write'],authMethod:'discord'}}));
+  await page.goto('/admin/content/');
+  await expect(page.locator('[data-admin-login-note]')).toContainText('Administrator content access is required.');
+  await expect(page.locator('[data-admin-login] h1')).toHaveText('Content editor unavailable.');
+  await expect(page.locator('[data-admin-login-form]')).toBeHidden();
+});
+test('playtest service capability gaps keep the administrator signed in', async ({page}) => {
+  await page.route('**/api/admin/v1/session',route => route.fulfill({json:{...session,capabilities:['server:write'],authMethod:'discord'}}));
+  await page.goto('/admin/playtests/');
+  await expect(page.locator('[data-authoring-message]')).toContainText('You are signed in');
+  await expect(page.locator('[data-authoring-signin]')).toBeHidden();
+  await expect(page.locator('[data-authoring-identity]')).toContainText('Test administrator');
+});
+
+test('missing section capabilities preserve a verified administrator identity', async ({page}) => {
+  await page.route('**/api/admin/v1/session',route => route.fulfill({json:{...session,capabilities:['server:write'],authMethod:'discord'}}));
+  await page.goto('/admin/settings/');
+  await expect(page.locator('[data-authoring-message]')).toContainText('You are signed in.');
+  await expect(page.locator('[data-authoring-signin]')).toBeHidden();
+  await expect(page.locator('[data-authoring-identity]')).toContainText('Test administrator');
+  await expect(page.locator('[data-authoring-workspace]')).toBeHidden();
+});

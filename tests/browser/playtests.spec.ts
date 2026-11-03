@@ -86,7 +86,7 @@ test('expired staff access clears private histories and ignores late results', a
   await expect(page.locator('[data-authoring-message]')).not.toContainText('private-backend-stack');
 });
 test('nonstaff and missing backend cannot operate a fake dashboard', async ({ page }) => {
-  await fixtures(page, { role: 'moderator' }); await page.goto('/admin/playtests/'); await expect(page.locator('[data-authoring-message]')).toContainText('not enabled'); await expect(page.locator('[data-authoring-workspace]')).toBeHidden();
+  await fixtures(page, { role: 'moderator' }); await page.goto('/admin/playtests/'); await expect(page.locator('[data-authoring-message]')).toContainText('Administrator permission'); await expect(page.locator('[data-authoring-workspace]')).toBeHidden();
   await page.unrouteAll(); await fixtures(page, { unavailable: true }); await page.goto('/admin/playtests/');
   await expect(page.locator('[data-authoring-message]')).toContainText('unavailable'); await expect(page.locator('[data-authoring-workspace]')).toBeHidden();
 });

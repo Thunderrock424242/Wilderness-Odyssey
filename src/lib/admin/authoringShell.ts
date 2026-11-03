@@ -5,7 +5,16 @@ export function authoringShell(load: (api: HostedAdminApi) => Promise<void>) {
   const root = document.querySelector<HTMLElement>('[data-authoring-root]')!, workspace = root.querySelector<HTMLElement>('[data-authoring-workspace]')!, message = root.querySelector<HTMLElement>('[data-authoring-message]')!, signin = root.querySelector<HTMLAnchorElement>('[data-authoring-signin]')!, signout = document.querySelector<HTMLButtonElement>('[data-authoring-signout]')!;
   const api = new HostedAdminApi(); let generation = 0;
   const clear = () => { api.invalidate(); workspace.hidden = true; signin.hidden = false; signout.disabled = true; root.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input,textarea').forEach(input => { input.value = ''; }); root.querySelector('[data-page-fields]')?.replaceChildren(); document.querySelector('[data-authoring-identity]')!.textContent = 'Not signed in'; };
-  function error(value: unknown) { if (value instanceof AdminApiError && [401, 403].includes(value.status)) { generation++; clear(); } message.textContent = value instanceof Error ? value.message : 'This request could not be completed.'; }
+  function error(value: unknown) {
+    if (value instanceof AdminApiError && value.status === 403 && api.session) {
+      const verified = api.session;
+      generation++; clear(); api.session = verified;
+      signin.hidden = true; signout.disabled = false;
+      document.querySelector('[data-authoring-identity]')!.textContent = verified.user.displayName + ' · ' + verified.user.role;
+      message.textContent = 'You are signed in. ' + value.message;
+      return;
+    }
+    if (value instanceof AdminApiError && [401, 403].includes(value.status)) { generation++; clear(); } message.textContent = value instanceof Error ? value.message : 'This request could not be completed.'; }
   async function refresh() {
     const current = ++generation; workspace.hidden = true; message.textContent = 'Loading verified administrator information…';
     try {
