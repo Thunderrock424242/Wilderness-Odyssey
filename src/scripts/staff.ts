@@ -263,7 +263,7 @@ setInterval(async () => {
   if (!session || document.hidden) return;
   const prior = session;
   try {
-    const renewed = await api('/session', browserSessionSchema, {}, false);
+    const renewed = await api('/session', browserSessionSchema);
     if (!session) return;
     if (renewed.user.id !== prior.user.id || renewed.user.role !== prior.user.role || renewed.capabilities.join(',') !== prior.capabilities.join(',')) { clearPrivateState(); await load(); }
     else { session = renewed; logoutCsrf = renewed.csrfToken; }

@@ -12,7 +12,7 @@ The website calls only same-origin `/api/public/v1/status` and `/api/admin/v1/*`
 
 ## Discord authentication
 
-The new website flow uses bot-mediated self-enrollment, Discord OAuth and opaque backend sessions. Its exact endpoints, runtime schemas and machine-authentication requirements are documented in [discord-admin-auth.md](discord-admin-auth.md). In Discord mode, `X-WO-Admin-Session` replaces the human Access assertion; Kinetic still independently verifies the gateway's signed machine Access identity and checks enrollment and current guild Administrator permission on every request and queued execution. The bot implementation remains a separate deliverable.
+The new website flow uses bot-mediated self-enrollment, Discord OAuth and opaque backend sessions. Its exact endpoints, runtime schemas and machine-authentication requirements are documented in [discord-admin-auth.md](discord-admin-auth.md). In Discord mode, `X-WO-Admin-Session` replaces the human Access assertion; Kinetic still independently verifies the gateway's signed machine Access identity and checks enrollment and current guild Administrator permission at sign-in, renewal, administrative mutations and queued execution. Ordinary navigation uses the active fifteen-minute server session with local enrollment and revocation checks. The bot implementation remains a separate deliverable.
 
 ## Legacy Access identities at Kinetic
 

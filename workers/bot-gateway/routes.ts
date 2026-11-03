@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import * as client from '../../contracts/v1/playtest-client';
 import { adminRoutes } from '../../contracts/v1/routes';
 import { authoringRoutes } from '../../contracts/v1/authoring-routes';
 import { playtestRoutes } from '../../contracts/v1/playtest-routes';
@@ -10,6 +11,7 @@ import * as participant from '../../contracts/v1/participants';
 
 export type BotRoute = {
   public?: boolean;
+  installation?: boolean;
   input?: z.ZodType;
   output?: z.ZodType;
   query?: z.ZodType;
@@ -28,6 +30,9 @@ const authRoutes = [
 
 export function selectRoute(method: string, pathname: string): BotRoute | undefined {
   if (method === 'GET' && pathname === '/v1/public/status') return { public: true, output: publicStatusSchema, bodyLimit: 0, responseLimit: 65536 };
+  if (pathname === '/api/playtest/v1/enroll' && method === 'POST') return { public: true, installation: true, input: client.enrollInput, output: client.enrollSchema, bodyLimit: 4096, responseLimit: 4096 };
+  if (pathname === '/api/playtest/v1/policy' && method === 'GET') return { public: true, installation: true, output: client.policySchema, bodyLimit: 0, responseLimit: 4096 };
+  if (pathname === '/api/playtest/v1/artifacts' && method === 'POST') return { public: true, installation: true, input: client.artifactInput, output: client.acceptedSchema, bodyLimit: 1536 * 1024, responseLimit: 4096 };
   if (!pathname.startsWith('/v1/admin/')) return;
   const path = pathname.slice('/v1/admin'.length);
   if (method === 'GET' && /^\/playtester-chat\/attachments\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(path)) return { attachment: true, bodyLimit: 0, responseLimit: 5 * 1024 * 1024 };

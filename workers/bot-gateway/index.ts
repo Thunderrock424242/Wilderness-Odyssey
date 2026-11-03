@@ -106,7 +106,7 @@ async function forward(request: Request, env: BotGatewayEnv, route: BotRoute, ur
         if (enrollmentRequired) throw new GatewayError(403, 'ENROLLMENT_REQUIRED', 'Run /dashboard enable in the Discord server before signing in.');
       }
       void upstream.body?.cancel().catch(() => undefined);
-      const code = !route.public && [400, 401, 403, 404, 409, 410, 413, 422, 429, 503].includes(upstream.status) ? upstream.status : route.public && upstream.status === 503 ? 503 : 502;
+      const code = (!route.public || route.installation) && [400, 401, 403, 404, 409, 410, 413, 422, 429, 503].includes(upstream.status) ? upstream.status : route.public && upstream.status === 503 ? 503 : 502;
       // Never return upstream error text, cookies, redirects, or arbitrary headers.
       throw new GatewayError(code, 'BACKEND_UNAVAILABLE', 'The backend request could not be completed.');
     }
@@ -126,7 +126,7 @@ async function forward(request: Request, env: BotGatewayEnv, route: BotRoute, ur
       if (!/^application\/json(?:\s*;.*)?$/i.test(upstream.headers.get('Content-Type') ?? '')) throw new Error();
       const output = route.output?.safeParse(parseJson(bytes));
       if (!output?.success) throw new Error();
-      return json(output.data, 200, route.public ? 'public, max-age=15, must-revalidate' : 'no-store');
+      return json(output.data, 200, route.public && !route.installation ? 'public, max-age=15, must-revalidate' : 'no-store');
     } catch (error) {
       if (signal.aborted) throw error;
       throw new GatewayError(502, 'INVALID_RESPONSE', 'The backend returned an unsupported response.');
@@ -145,7 +145,13 @@ export async function handleBotGateway(request: Request, env: BotGatewayEnv, dep
     const assertion = route.public ? undefined : await authenticate(request, env, dependencies.jwks);
     const entries = [...url.searchParams];
     if (new Set(entries.map(([name]) => name)).size !== entries.length || !(route.query ?? emptyQuery).safeParse(Object.fromEntries(entries)).success) throw new GatewayError(400, 'INVALID_QUERY', 'The query fields are invalid.');
-    return await forward(request, env, route, url, requestHeaders(request, env, assertion));
+    const headers = requestHeaders(request, env, assertion);
+    if (route.installation && url.pathname !== '/api/playtest/v1/enroll') {
+      const authorization = request.headers.get('Authorization') ?? '';
+      if (!/^Bearer [A-Za-z0-9_-]{43}$/.test(authorization)) throw new GatewayError(401, 'AUTH_REQUIRED', 'Installation authentication is required.');
+      headers.set('Authorization', authorization);
+    }
+    return await forward(request, env, route, url, headers);
   } catch (error) { return failure(error); }
 }
 

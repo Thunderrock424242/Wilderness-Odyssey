@@ -80,10 +80,10 @@ test('a remembered sign-in restores the guarded admin destination', async ({ pag
   await page.goto('/login/?returnTo=%2Fadmin%2Freports%2F');
   await expect(page).toHaveURL(/\/admin\/reports\/$/);
   await expect(page.locator('[data-staff-workspace]')).toBeVisible();
-  expect(renewals).toBe(1);
+  await expect.poll(() => renewals).toBe(1);
 });
 
-test('idle permission checks do not renew but a user refresh can restore access', async ({ page }) => {
+test('remembered administrator sessions renew automatically while the panel is open', async ({ page }) => {
   await page.clock.install();
   let valid = true, renewals = 0;
   await page.route('**/api/auth/discord/refresh', route => { valid = true; renewals++; return route.fulfill({ json: { schemaVersion: '1.0', renewed: true } }); });
@@ -94,11 +94,8 @@ test('idle permission checks do not renew but a user refresh can restore access'
   await expect(page.locator('[data-staff-workspace]')).toBeVisible();
   valid = false;
   await page.clock.fastForward(61000);
-  await expect(page.locator('[data-staff-workspace]')).toBeHidden();
-  expect(renewals).toBe(0);
-  await page.getByRole('button', { name: 'Refresh dashboard' }).click();
   await expect(page.locator('[data-staff-workspace]')).toBeVisible();
-  expect(renewals).toBe(1);
+  await expect.poll(() => renewals).toBe(1);
 });
 
 test('login errors use safe messages and discard supplied URL text', async ({ page }) => {

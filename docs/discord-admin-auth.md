@@ -42,7 +42,7 @@ State, flow token and session token are independent random 32-byte values encode
 
 Authorization URLs use exactly `https://discord.com/oauth2/authorize`, `response_type=code`, `scope=identify`, the registered `redirect_uri`, application `client_id`, and state. Each field occurs once. Optional `prompt` can only be `consent`; other fields, scopes, credentials and fragments are rejected.
 
-Attempts expire within five minutes and are atomically single-use. Sessions expire within fifteen minutes without sliding renewal. Session reads return the original expiry, the verified Discord user ID and role `administrator`; capabilities may be narrower than that role's existing ceiling. Kinetic checks active enrollment and current Administrator permission in the enrolled guild before every staff request and queued operation execution.
+Attempts expire within five minutes and are atomically single-use. Sessions expire within fifteen minutes without sliding renewal. Session reads return the original expiry, the verified Discord user ID and role `administrator`; capabilities may be narrower than that role's existing ceiling. Kinetic checks active enrollment and current Administrator permission in the enrolled guild at sign-in, remembered renewal, administrative mutations and queued operation execution; ordinary navigation uses the active fifteen-minute server session and checks enrollment and revocation locally.
 
 Use 401 for invalid/expired identity or attempts, 403 for denied access, 429 for rate limits and 503 for unavailable dependencies. Missing enrollment can return `403 { code: 'ENROLLMENT_REQUIRED' }`; the website displays bot-command instructions. Backend error text is never copied into the login page.
 

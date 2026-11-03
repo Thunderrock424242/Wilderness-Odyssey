@@ -24,9 +24,9 @@ export const artifactSummarySchema = z.object({
 }).refine(value => !['log', 'crash', 'session'].includes(value.kind) || value.redacted);
 export const serverProfileSchema = z.object({ id, scope: z.literal('server'), capturedAt: timestamp, durationSeconds: count.nullable(), bytes: count.max(1024 * 1024) });
 export const playtestSessionSchema = z.object({
-  id, campaignId: id, testerId: id, build: z.string().min(1).max(120), reportedModVersion: z.string().max(120).nullable().optional(), startedAt: timestamp, endedAt: timestamp.nullable(),
-  durationSeconds: count.nullable(), mode: z.enum(['singleplayer', 'multiplayer', 'unknown']), state: z.enum(['recording', 'ended', 'interrupted']),
-  sparkStatus: z.enum(['recording', 'unavailable', 'busy', 'saved', 'failed', 'idle']), droppedArtifacts: count.nullable(), uploadErrors: count.nullable(),
+  id, campaignId: id, testerId: id, build: z.string().min(1).max(120), reportedModVersion: z.string().max(120).nullable().optional(), startedAt: timestamp.nullable(), endedAt: timestamp.nullable(),
+  durationSeconds: count.nullable(), mode: z.enum(['singleplayer', 'multiplayer', 'unknown']), state: z.enum(['recording', 'ended', 'interrupted', 'unknown']),
+  sparkStatus: z.enum(['recording', 'unavailable', 'busy', 'saved', 'failed', 'idle', 'unknown']), droppedArtifacts: count.nullable(), uploadErrors: count.nullable(),
   notes: z.string().max(4000), revision, artifacts: z.array(artifactSummarySchema).max(100), sharedServerProfiles: z.array(serverProfileSchema).max(20),
 }).refine(value => value.sparkStatus !== 'saved' || value.artifacts.some(artifact => artifact.kind === 'spark'));
 export const campaignEnvelope = z.object({ schemaVersion: version, campaign: campaignSchema });
@@ -47,7 +47,7 @@ export const privateArtifactSchema = z.discriminatedUnion('encoding', [
 ]);
 export const createCampaignInput = z.object({ title: z.string().trim().min(1).max(120), build: z.string().trim().min(1).max(120), retentionDays: z.number().int().min(1).max(90) }).strict();
 export const collectionInput = z.object({ collect: z.boolean(), revision }).strict();
-export const invitationInput = z.object({ testerLabel: z.string().trim().min(1).max(100), testerId: id.optional(), expiresInHours: z.number().int().min(1).max(168), revision }).strict();
+export const invitationInput = z.object({ discordUserId: z.string().regex(/^\d{17,22}$/).optional(), testerLabel: z.string().trim().min(1).max(100), testerId: id.optional(), expiresInHours: z.number().int().min(1).max(168), revision }).strict();
 export const testerPermissionInput = z.object({ permission: z.enum(['allowed', 'paused', 'revoked']), revision }).strict();
 export const sessionNotesInput = z.object({ notes: z.string().max(4000), revision }).strict();
 export const deleteDataInput = z.object({ revision, confirmDelete: z.literal(true) }).strict();

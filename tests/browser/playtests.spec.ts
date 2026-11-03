@@ -93,7 +93,7 @@ test('nonstaff and missing backend cannot operate a fake dashboard', async ({ pa
 test('private invitations expire, remain out of storage, and the page supports keyboard and mobile', async ({ page }, info) => {
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
   await fixtures(page); await openHistory(page);
-  await page.getByLabel('Tester name').fill('New tester'); await page.getByRole('button', { name: 'Create private invitation' }).click();
+  await page.getByLabel('Tester name').fill('New tester'); await page.getByLabel('Discord user ID', { exact: true }).fill('937012682702352434'); await page.getByRole('button', { name: 'Create private invitation' }).click();
   await expect(page.getByLabel('Private invitation link')).toHaveValue(/\/playtest\/#/); await expect(page.locator('[data-invitation]')).toContainText('Expires');
   expect(await page.evaluate(() => JSON.stringify({ ...localStorage, ...sessionStorage }))).toBe('{}');
   await page.getByRole('button', { name: 'Clear invitation from this page' }).click();
@@ -133,7 +133,7 @@ test('returning testers use an explicit profile link in private invitations', as
   const state = await fixtures(page); await openHistory(page);
   await page.getByLabel('Existing tester (optional)').selectOption('tester-a');
   await expect(page.getByLabel('Tester name')).toHaveValue('Alex');
-  await page.getByRole('button', { name: 'Create private invitation' }).click(); await expect(page.getByLabel('Private invitation link')).toBeVisible();
+  await page.getByLabel('Discord user ID', { exact: true }).fill('937012682702352434'); await page.getByRole('button', { name: 'Create private invitation' }).click(); await expect(page.getByLabel('Private invitation link')).toBeVisible();
   expect(state.lastMutation).toMatchObject({ testerId: 'tester-a', testerLabel: 'Alex' });
 });
 test('unknown diagnostic counters remain unknown in session details', async ({ page }) => {
@@ -172,6 +172,6 @@ test('identically named returning testers have distinguishable profile choices',
   await page.goto('/admin/playtests/'); await page.getByRole('button', { name: 'Open Autumn playtest', exact: true }).click();
   await expect(page.getByRole('option', { name: 'Alex · Autumn playtest · profile tester-a', exact: true })).toHaveCount(1);
   await expect(page.getByRole('option', { name: 'Alex · Autumn playtest · profile tester-b', exact: true })).toHaveCount(1);
-  await page.getByLabel('Existing tester (optional)').selectOption('tester-b'); await page.getByRole('button', { name: 'Create private invitation' }).click();
+  await page.getByLabel('Existing tester (optional)').selectOption('tester-b'); await page.getByLabel('Discord user ID', { exact: true }).fill('937012682702352434'); await page.getByRole('button', { name: 'Create private invitation' }).click();
   await expect(page.getByLabel('Private invitation link')).toBeVisible(); expect(state.lastMutation).toMatchObject({ testerId: 'tester-b', testerLabel: 'Alex' });
 });

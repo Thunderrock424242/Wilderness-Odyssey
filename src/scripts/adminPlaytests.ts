@@ -152,7 +152,7 @@ one<HTMLFormElement>('[data-invitation-form]').addEventListener('submit', event 
   event.preventDefault(); const form = event.currentTarget as HTMLFormElement; if (!selected || !form.reportValidity()) return;
   const campaign = selected, data = new FormData(form); invite.replaceChildren(); invite.hidden = true;
   void run(async token => {
-    const value = await api.change('/playtests/' + campaign.id + '/invitations', s.invitationSchema, 'POST', { testerLabel: String(data.get('testerLabel')), ...(data.get('testerId') ? { testerId: String(data.get('testerId')) } : {}), expiresInHours: Number(data.get('expiresInHours')), revision: campaign.revision });
+    const value = await api.change('/playtests/' + campaign.id + '/invitations', s.invitationSchema, 'POST', { discordUserId: String(data.get('discordUserId')), testerLabel: String(data.get('testerLabel')), ...(data.get('testerId') ? { testerId: String(data.get('testerId')) } : {}), expiresInHours: Number(data.get('expiresInHours')), revision: campaign.revision });
     if (!current(token)) return;
     if (value.campaignId !== campaign.id || Date.parse(value.invitation.expiresAt) <= Date.now()) throw new AdminApiError('The invitation could not be verified. Refresh and create a new one.', 502);
     const link = new URL('/playtest/', location.origin); link.hash = new URLSearchParams({ invitation: value.invitation.code, api: value.invitation.publicApiOrigin }).toString();

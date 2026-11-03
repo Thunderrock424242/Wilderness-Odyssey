@@ -29,6 +29,12 @@ const runtime = new Miniflare(convertV4MiniflareOptions({
   serviceBindings: {
     BOT_API: async request => {
       requests++;
+      if (request.url === 'http://127.0.0.1:25599/api/playtest/v1/policy') {
+        assert.equal(request.headers.get('Authorization'), 'Bearer ' + 'a'.repeat(43));
+        assert.equal(request.headers.has('Cookie'), false);
+        assert.equal(request.headers.has('X-WO-Admin-Session'), false);
+        return Response.json({ schemaVersion: '1.0', enabled: false });
+      }
       assert.equal(request.url, 'http://127.0.0.1:25599/v1/public/status');
       assert.equal(request.headers.has('Cookie'), false);
       return Response.json({ ...status, privateDetail: 'must be stripped' });
@@ -44,6 +50,10 @@ try {
   assert.equal(denied.headers.get('Cache-Control'), 'no-store');
   const arbitrary = await runtime.dispatchFetch('https://gateway.example/v1/service/authenticate', { method: 'POST' });
   assert.equal(arbitrary.status, 404);
-  assert.equal(requests, 1);
-  console.log('Verified compiled gateway in workerd: projected status, fixed target, stripped cookies, unconfigured admin denial, and arbitrary-route denial. No live services contacted.');
+  const policy = await runtime.dispatchFetch('https://gateway.example/api/playtest/v1/policy', { headers: { Authorization: 'Bearer ' + 'a'.repeat(43), Cookie: 'private', 'X-WO-Admin-Session': 's'.repeat(43) } });
+  assert.equal(policy.status, 200);
+  assert.equal(policy.headers.get('Cache-Control'), 'no-store');
+  assert.deepEqual(await policy.json(), { schemaVersion: '1.0', enabled: false });
+  assert.equal(requests, 2);
+  console.log('Verified compiled gateway in workerd: projected status, fixed target, stripped cookies, unconfigured admin denial, arbitrary-route denial, and private installation policy forwarding. No live services contacted.');
 } finally { await runtime.dispose(); }
