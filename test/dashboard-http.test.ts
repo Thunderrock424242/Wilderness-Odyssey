@@ -13,6 +13,7 @@ import { IdentityService } from '../src/connected/identity';
 import { ModerationService } from '../src/connected/moderation';
 import { ServiceMonitor } from '../src/connected/monitor';
 import { PlaytesterChat } from '../src/connected/playtesterChat';
+import { configurationView } from '../src/connected/configurationView';
 const user = '123456789012345678', guild = '234567890123456789', redirectUri = 'https://staff.example/api/auth/discord/callback';
 async function fixture() {
   const db = new DatabaseSync(':memory:'), store = new ConnectedStore(db);
@@ -25,6 +26,7 @@ async function fixture() {
   }, async input => String(input).endsWith('/oauth2/token') ? Response.json({ access_token: 'discard', token_type: 'Bearer', scope: 'identify' }) : Response.json({ id: user, username: 'Admin' }));
   const identity = new IdentityService(store, 'official'), monitor = new ServiceMonitor(store, 'official'), moderation = new ModerationService(store, identity);
   const admin = new AdminService(store, monitor, moderation, undefined, (actor, capability, verifyDiscord) => auth.authorize(actor, capability, verifyDiscord), 'https://gateway.example');
+  admin.configuration = () => configurationView(config,admin.content.setup());
   const participant = new ParticipantService(store, config.discord!, async input => String(input).endsWith('/oauth2/token') ? Response.json({ access_token: 'discard', token_type: 'Bearer', scope: 'identify' }) : Response.json({ id: user, username: 'Tester' }));
   const chat = new PlaytesterChat(store,async actor => { await auth.authorize(actor,'server:write');return {owner:actor.subject === user,userId:actor.subject!}; },async () => {},async (_user,_body,verify) => {await verify();},'https://discord.gg/example');
   const handler = new ConnectedHttp(config, store, monitor, identity, moderation, admin, auth, participant,undefined,chat);
@@ -57,7 +59,7 @@ test('website playtest routes expose capabilities, persist campaigns and reuse t
     const created = await f.call('/playtests', { title: 'Live backend integration', build: '0.2', retentionDays: 7 }, sessionToken, { 'idempotency-key': 'website-playtest-create-001' });
     assert.equal(created.status, 200);
     f.outage(true);
-    for (const path of ['/session', '/playtests', '/content/transmissions', '/incidents']) assert.equal((await f.call(path, undefined, sessionToken)).status, 200, path);
+    for (const path of ['/session', '/playtests', '/content/transmissions', '/incidents', '/configuration', '/content/setup']) assert.equal((await f.call(path, undefined, sessionToken)).status, 200, path);
     assert.equal((await f.call('/playtests', { title: 'Rejected during outage', build: '0.3', retentionDays: 7 }, sessionToken, { 'idempotency-key': 'website-playtest-create-002' })).status, 503);
     await f.auth.enroll(user, guild, false);
     assert.equal((await f.call('/session', undefined, sessionToken)).status, 401);
@@ -245,5 +247,50 @@ test('playtest administration and downloads require signed machine identity and 
     assert.equal((await f.call('/playtest/artifacts/12345678-1234-4234-8234-123456789012/download', undefined, sessionToken)).status, 403);
     assert.equal((await f.call('/playtest/campaigns', undefined, sessionToken)).status, 401);
     assert.equal(f.store.records('pt_campaign').length, 1);
+  } finally { await f.close(); }
+});
+
+test('active administrator reuses verified identity for own participant home without enrollment', async () => {
+  const f = await fixture();
+  try {
+    await f.auth.enroll(user, guild, true);
+    const { sessionToken } = await (await f.login()).json() as { sessionToken: string };
+    f.handler.participant!.createCampaign('private', 'Private');
+    const other = '345678901234567890';
+    f.handler.participant!.claim(other, f.handler.participant!.invite(other, 'private', 'other-admin-home-invite', 24).token);
+    const response = await f.call('/participant/session', undefined, sessionToken);
+    assert.equal(response.status, 200);
+    assert.deepEqual((await response.json() as { campaignIds: string[] }).campaignIds, []);
+    const home = await f.call('/participant/home', undefined, sessionToken);
+    assert.equal(home.status, 200);
+    assert.deepEqual((await home.json() as { user: { id: string }; campaigns: unknown[] }), {
+      schemaVersion: '1.0', user: { id: user, displayName: 'Admin' },
+      stats: { recordedSeconds: 0, sessions: 0, unknownDurationSessions: 0 }, campaigns: [], invitations: [],
+    });
+    assert.equal((f.db.prepare('SELECT count(*) AS n FROM cs_participant_sessions').get() as { n: number }).n, 0);
+    assert.equal((f.db.prepare('SELECT count(*) AS n FROM cs_participant_memberships WHERE user_id=?').get(user) as { n: number }).n, 0);
+    f.auth.logout(sessionToken);
+    assert.equal((await f.call('/participant/home', undefined, sessionToken)).status, 401);
+  } finally { await f.close(); }
+});
+
+test('shared participant access rejects expired and disabled admin sessions and preserves separate tester identity', async () => {
+  const f = await fixture();
+  try {
+    await f.auth.enroll(user, guild, true);
+    const { sessionToken } = await (await f.login()).json() as { sessionToken: string };
+    const start = f.handler.participant!.start({ redirectUri });
+    const testerLogin = await f.handler.participant!.callback({ redirectUri, code: 'code', state: new URL(start.authorizationUrl).searchParams.get('state'), flowToken: start.flowToken });
+    const tester = '345678901234567890';
+    f.db.prepare('UPDATE cs_participant_sessions SET user_id=?,name=?').run(tester, 'Separate tester');
+    const separate = await f.call('/participant/session', undefined, sessionToken, { 'x-wo-participant-session': testerLogin.sessionToken });
+    assert.equal(separate.status, 200);
+    assert.equal((await separate.json() as { user: { id: string } }).user.id, tester);
+    f.db.prepare('UPDATE cs_dashboard_sessions SET expires_at=0').run();
+    assert.equal((await f.call('/participant/session', undefined, sessionToken)).status, 401);
+    const fresh = await (await f.login()).json() as { sessionToken: string };
+    await f.auth.enroll(user, guild, false);
+    assert.equal((await f.call('/participant/home', undefined, fresh.sessionToken)).status, 401);
+    assert.equal((await f.call('/participant/session', undefined, fresh.sessionToken, { 'x-wo-participant-session': testerLogin.sessionToken })).status, 200);
   } finally { await f.close(); }
 });

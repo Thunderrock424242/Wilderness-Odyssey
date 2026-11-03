@@ -68,7 +68,11 @@ export class ParticipantService {
     if (!parsed.success) return deny(401, 'Sign in with Discord.');
     const row = this.store.db.prepare('SELECT * FROM cs_participant_sessions WHERE digest=? AND expires>?').get(tokenDigest(parsed.data), this.store.clock()) as { user_id: string; name: string; expires: number } | undefined;
     if (!row) return deny(401, 'Your session expired. Sign in again.');
-    return s.participantSessionSchema.parse({ schemaVersion: '1.0', user: { id: row.user_id, displayName: row.name }, guildId: this.options.guildId, expiresAt: new Date(row.expires).toISOString(), campaignIds: this.memberships(row.user_id).map(member => member.campaign_id) });
+    return this.verifiedSession({ id: row.user_id, displayName: row.name }, new Date(row.expires).toISOString());
+  }
+  // Identity must come from a backend-validated session; membership stays independent.
+  verifiedSession(user: { id: string; displayName: string }, expiresAt: string) {
+    return s.participantSessionSchema.parse({ schemaVersion: '1.0', user, guildId: this.options.guildId, expiresAt, campaignIds: this.memberships(user.id).map(member => member.campaign_id) });
   }
   logout(value: unknown) {
     this.store.transaction(() => {

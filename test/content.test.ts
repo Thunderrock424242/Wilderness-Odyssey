@@ -9,6 +9,24 @@ export const transmission = { slug:'alpha',title:'Alpha update',description:'An 
 const snapshot = () => ({ sourceRevision:'a'.repeat(40),transmissions:[transmission],roadmap:[],gallery:[],assets:['/images/logo.png'],site:{ name:'Wilderness Odyssey',tagline:'Explore',description:'A wilderness modpack',status:'Testing',version:'0.1',minecraftVersion:'1.21.1',neoForgeVersion:'1',downloadStatus:'Testing',featuredTransmission:'alpha',links:{ curseForge:'https://example.com/pack',discord:'https://discord.gg/example',github:'https://github.com/example/repo' },social:{ title:'Wilderness Odyssey',description:'Explore the wilderness',image:'/images/logo.png' },footer:'Wilderness Odyssey',author:'Staff' } });
 function fixture() { const db = new DatabaseSync(':memory:'),store = new ConnectedStore(db),service = new ContentService(store); return { db,store,service }; }
 
+test('authenticated source setup imports published records once and preserves unrelated private drafts', async () => {
+  const f = fixture();
+  try {
+    const initial = await f.service.handle(actor,'GET','/content/setup',undefined,{},'') as { imported:boolean };
+    assert.equal(initial.imported,false);
+    await f.service.handle(actor,'POST','/content/transmissions',{content:{...transmission,slug:'private-draft'},revision:null,sourceRevision:null},{},'private-before-import-01');
+    const input = { acknowledgePublicSource:true,snapshot:snapshot() }, key = 'bootstrap-source-import-01';
+    const imported = await f.service.handle(actor,'POST','/content/source',input,{},key) as {imported:boolean;transmissionCount:number;pageCount:number};
+    assert.equal(imported.imported,true);
+    assert.equal(imported.transmissionCount,2);
+    assert.equal(imported.pageCount,3);
+    assert.deepEqual(await f.service.handle(actor,'POST','/content/source',input,{},key),imported);
+    await assert.rejects(f.service.handle(actor,'POST','/content/source',input,{},'bootstrap-source-import-02'));
+    assert.equal(f.service.transmission('private-draft').sourceRevision,null);
+    await assert.rejects(f.service.handle({id:'viewer',role:'viewer'},'POST','/content/source',input,{},'bootstrap-source-import-03'));
+  } finally {f.db.close();}
+});
+
 test('source import preserves public content and source revisions and cannot overwrite drafts', async () => {
   const f = fixture();
   try {

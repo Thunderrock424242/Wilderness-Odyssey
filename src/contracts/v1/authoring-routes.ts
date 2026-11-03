@@ -7,6 +7,8 @@ function route(method:string,path:string,capability:Capability,output:z.ZodType,
   return { method,pattern:new RegExp('^' + path.replace(':id','[a-zA-Z0-9_-]{1,96}').replace(':kind','(?:site|roadmap|gallery)') + '$'),capability,input,output,bodyLimit };
 }
 export const authoringRoutes = [
+  route('GET','/content/setup','content:read',c.contentSetupSchema),
+  route('POST','/content/source','content:write',c.contentSetupSchema,c.contentImportInput,2 * 1024 * 1024),
   route('GET','/content/transmissions','content:read',c.transmissionListSchema),
   route('GET','/content/transmissions/:id','content:read',c.transmissionEnvelope),
   route('POST','/content/transmissions','content:write',c.contentMutationSchema,c.contentSaveInput,2 * 1024 * 1024),

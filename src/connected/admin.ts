@@ -8,18 +8,25 @@ import { ModerationService } from './moderation';
 import { PlaytestAdmin } from './playtestAdmin';
 import { ContentService } from './content';
 import { PlaytestWebsite } from './playtestWebsite';
+import { configurationSchema } from '../contracts/v1/configuration';
 export type Capabilities = { actions: string[]; models: z.infer<typeof s.modelsSchema>; aiRequestsRevision: string };
 export interface RemoteControl { capabilities(): Promise<Capabilities> }
 export type StaffRecheck = (actor: Actor, capability: s.Capability, verifyDiscord?: boolean) => Promise<Actor>;
 type Revisioned = { id: string; revision: string; revokedAt?: string | null; state?: string };
 function changed(expected: string, actual: string): void { if (expected !== actual) throw new ServiceError(409, 'REVISION_CONFLICT', 'This record changed. Refresh it before trying again.'); }
 export class AdminService {
+  configuration?: () => unknown;
   readonly playtest: PlaytestAdmin;
   readonly content: ContentService;
   readonly playtestWebsite: PlaytestWebsite;
   constructor(readonly store: ConnectedStore, readonly monitor: ServiceMonitor, readonly moderation: ModerationService, readonly remote?: RemoteControl, readonly recheck?: StaffRecheck, publicApiOrigin?: string) { this.playtest = new PlaytestAdmin(store); this.content = new ContentService(store); this.playtestWebsite = new PlaytestWebsite(store, publicApiOrigin); }
   async handle(actor: Actor, method: string, path: string, body: unknown, query: unknown = {}, key = ''): Promise<unknown> {
     if (this.recheck) actor = await this.recheck(actor, 'status:read', method !== 'GET');
+    if (path === '/configuration' && method === 'GET') {
+      authorize(actor,'configuration:read'); z.object({}).strict().parse(query);
+      if (!this.configuration) throw new ServiceError(503,'CONFIGURATION_UNAVAILABLE','Runtime configuration is unavailable.');
+      return configurationSchema.parse(this.configuration());
+    }
     if (path === '/playtests' || path.startsWith('/playtests/')) return this.playtestWebsite.handle(actor, method, path, body, query, key);
     if (path.startsWith('/content/')) return this.content.handle(actor,method,path,body,query,key);
     if (path.startsWith('/playtest/')) return this.playtest.handle(actor, method, path.slice('/playtest'.length), body, query, key);

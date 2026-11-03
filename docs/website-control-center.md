@@ -10,6 +10,10 @@ The Discord command also supports `/playtester invite campaign:CAMPAIGN account_
 
 ## Initialize the hosted editor
 
+The dashboard now provides a one-time import in **Admin guide & setup** (`/admin/help/`). Review the acknowledgement and select **Import missing website content**. Pages supplies its own build's public source; the browser cannot upload arbitrary replacement source. The bot preserves unrelated private drafts and refuses to overwrite matching slugs or an earlier import. The same page reports whether reviewed GitHub publication is configured. This import prepares both the transmission archive and site/roadmap/gallery forms; it does not publish changes.
+
+The operator steps below remain available for recovery or larger source snapshots.
+
 Saving new transmission drafts works without repository credentials. To edit existing website content and structured pages, first import the public source once. Do this from the actual website revision intended for publication, not an unrelated branch or an unpushed revision:
 
 1. Back up the existing bot database using `connected:operator backup`.

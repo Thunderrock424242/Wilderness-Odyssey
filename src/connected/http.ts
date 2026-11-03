@@ -128,7 +128,9 @@ export class ConnectedHttp {
               result = action === 'start' ? this.participant.start(body) : await this.participant.callback(body);
             } else {
               const body = method === 'POST' ? await readJson(request, 16384) : undefined;
-              const session = this.participant.session(credential);
+              const session = credential !== undefined
+                ? this.participant.session(credential)
+                : await this.dashboard.session(request.headers['x-wo-admin-session']).then(session => this.participant!.verifiedSession(session.user, session.expiresAt));
               if (method === 'GET' && action === 'session') result = session;
               else if (method === 'GET' && action === 'home') result = this.participant.home(session.user.id, session.user.displayName);
               else if (method === 'GET' && action === 'history') result = this.participant.history(session.user.id, query.cursor);

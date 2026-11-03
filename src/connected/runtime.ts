@@ -18,6 +18,7 @@ import type { Capability } from '../contracts/v1/admin';
 import { ContentPublishing } from './contentPublishing';
 import { GitHubContentRepository } from './contentRepository';
 import { PlaytesterChat, CHAT_GUIDE } from './playtesterChat';
+import { configurationView } from './configurationView';
 async function boundedDiscord<T>(work: Promise<T>): Promise<T> {
   let timer!: NodeJS.Timeout;
   const timeout = new Promise<never>((_resolve, reject) => { timer = setTimeout(() => reject(new ServiceError(503, 'DISCORD_TIMEOUT', 'Discord delivery could not be confirmed.')), 3000); });
@@ -69,6 +70,7 @@ export class ConnectedRuntime {
     },'https://discord.gg/XHSFDb7EM5');
     this.main = new MainServerClient(config, fetch, (actor, capability) => this.authorizeStaff(actor, capability));
     this.admin = new AdminService(this.store, this.monitor, this.moderation, config.mainOrigin ? this.main : undefined, (actor, capability, verifyDiscord) => this.authorizeStaff(actor, capability, verifyDiscord), config.playtestPublicApiOrigin);
+    this.admin.configuration = () => configurationView(config,this.admin.content.setup());
     if (config.contentRepository) {
       this.publishing = new ContentPublishing(this.admin.content,new GitHubContentRepository(config.contentRepository,this.admin.content),(actor) => this.authorizeStaff(actor,'content:publish'));
       this.admin.content.publisher = this.publishing;

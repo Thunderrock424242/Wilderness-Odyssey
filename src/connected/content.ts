@@ -5,7 +5,7 @@ import { authoringRoutes } from '../contracts/v1/authoring-routes';
 import { ConnectedStore, authorize, ServiceError, type Actor } from './store';
 import { transmissionImages } from './contentValidation';
 
-const snapshotSchema = z.object({ sourceRevision:z.string().regex(/^[a-f0-9]{40}$/),transmissions:z.array(c.transmissionInputSchema).max(1000),site:c.siteDataSchema,roadmap:c.roadmapDataSchema,gallery:c.galleryDataSchema,assets:z.array(c.imagePath).max(10000) }).strict();
+const snapshotSchema = c.contentSourceSnapshotSchema;
 type PageKind = c.PageDocument['kind'];
 export type Publication = z.infer<typeof c.publicationSchema>;
 export type ContentPublisher = { request(actor:Actor,kind:'transmissions'|'pages',id:string,input:unknown,key:string):Promise<Publication>; status(actor:Actor,id:string):Promise<Publication> };
@@ -29,7 +29,12 @@ export class ContentService {
     const input = route.input?.parse(body);
     const parts = path.split('/').filter(Boolean), id = parts[2];
     let result:unknown;
-    if (parts[1] === 'publications' || parts[3] === 'publication') {
+    if (path === '/content/setup') result = this.setup();
+    else if (path === '/content/source') result = this.once(actor,method + path,key,input,() => {
+      this.importSnapshot(c.contentImportInput.parse(input).snapshot,actor.id);
+      return this.setup();
+    });
+    else if (parts[1] === 'publications' || parts[3] === 'publication') {
       if (!this.publisher) throw new ServiceError(503,'PUBLICATION_UNAVAILABLE','Repository publication needs host configuration. Your saved drafts are preserved.');
       result = parts[1] === 'publications' ? await this.publisher.status(actor,id!) : await this.publisher.request(actor,parts[1] as 'transmissions'|'pages',id!,input,key);
     } else if (parts[1] === 'transmissions') {
@@ -66,6 +71,9 @@ export class ContentService {
     return route.output.parse(result);
   }
   transmission(id:string):c.Transmission { return this.store.record<c.Transmission>('content_transmission',c.contentId.parse(id)) ?? missing(); }
+  setup():z.infer<typeof c.contentSetupSchema> {
+    return c.contentSetupSchema.parse({schemaVersion:'1.0',imported:!!this.store.get('content_source_imported'),sourceRevision:this.store.get('content_source_imported'),transmissionCount:this.store.records('content_transmission',undefined,1000).length,pageCount:this.store.records('content_page',undefined,3).length,publicationConfigured:!!this.publisher});
+  }
   private summaries():unknown[] {
     const rows = this.store.db.prepare("SELECT json_set(json_remove(data,'$.bodyMarkdown','$.galleryImages'),'$.galleryImageCount',json_array_length(data,'$.galleryImages')) AS data FROM cs_records WHERE kind='content_transmission' ORDER BY rowid DESC LIMIT 1000").all() as {data:string}[];
     return rows.map(row => JSON.parse(row.data) as unknown);
