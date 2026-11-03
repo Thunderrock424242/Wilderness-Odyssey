@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { adminRoutes } from '../../contracts/v1/routes';
 import { authoringRoutes } from '../../contracts/v1/authoring-routes';
 import { playtestRoutes } from '../../contracts/v1/playtest-routes';
+import { chatRoutes } from '../../contracts/v1/playtester-chat';
 import { discordStartInput, discordStartSchema, discordCallbackInput, discordCallbackSchema, discordSessionSchema, logoutSchema, rememberRefreshInput, rememberRefreshSchema } from '../../contracts/v1/auth';
 import { mediaSchema } from '../../contracts/v1/content';
 import { publicStatusSchema } from '../../contracts/v1/status';
@@ -15,6 +16,7 @@ export type BotRoute = {
   bodyLimit: number;
   responseLimit: number;
   media?: boolean;
+  attachment?: boolean;
 };
 const authRoutes = [
   { path: '/auth/discord/start', input: discordStartInput, output: discordStartSchema },
@@ -28,6 +30,9 @@ export function selectRoute(method: string, pathname: string): BotRoute | undefi
   if (method === 'GET' && pathname === '/v1/public/status') return { public: true, output: publicStatusSchema, bodyLimit: 0, responseLimit: 65536 };
   if (!pathname.startsWith('/v1/admin/')) return;
   const path = pathname.slice('/v1/admin'.length);
+  if (method === 'GET' && /^\/playtester-chat\/attachments\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(path)) return { attachment: true, bodyLimit: 0, responseLimit: 5 * 1024 * 1024 };
+  const chat = chatRoutes.find(item => item.method === method && item.pattern.test(path));
+  if (chat) return { ...chat, bodyLimit: chat.input ? chat.bodyLimit : 0, responseLimit: 1024 * 1024 };
   if (path.startsWith('/participant/')) {
     const action = path.slice('/participant/'.length);
     const definitions: Record<string, { method: string; input?: z.ZodType; output: z.ZodType; query?: z.ZodType }> = {

@@ -1,0 +1,29 @@
+---
+import AuthoringLayout from '../../../layouts/AuthoringLayout.astro';
+---
+<AuthoringLayout title="Playtester inbox" capability="server:write">
+  <p>Private bot DM conversations shared with the owner’s chosen Discord administrator team. Downloaded logs and profiles remain private. Refresh to check new messages and delivery status.</p>
+  <div class="chat-grid">
+    <section class="ops-card"><h2>Conversations</h2><div data-chat-threads></div><button type="button" data-chat-more hidden>Load more conversations</button></section>
+    <section class="ops-card" aria-labelledby="conversation-title"><h2 id="conversation-title" data-chat-title>Choose a conversation</h2><div data-chat-thread hidden>
+      <div class="staff-actions"><button type="button" data-chat-refresh>Refresh conversation</button><button type="button" data-chat-older hidden>Load earlier messages</button></div>
+      <div data-chat-messages class="chat-messages" aria-label="Conversation messages"></div>
+      <form data-chat-reply><label>Reply to tester<textarea name="body" maxlength="1800" required></textarea></label><button type="submit">Queue reply</button></form>
+    </div><p data-chat-receipt role="status"></p></section>
+  </div>
+  <section class="ops-card"><h2>Campaign updates</h2><p>Queues a DM for campaign members who accept updates. Delivery may fail when DMs are disabled. A queued receipt does not confirm delivery.</p>
+    <form data-chat-broadcast><label>Campaign<select name="campaignId" required data-chat-campaign></select></label><label>Campaign update<textarea name="body" maxlength="1600" required></textarea></label><button type="submit">Queue campaign update</button></form>
+    <p data-broadcast-receipt role="status"></p><button type="button" data-broadcast-refresh hidden>Refresh delivery</button>
+  </section>
+  <section class="ops-card" data-chat-owner hidden><h2>Owner: inbox administrators</h2><p>Only the owner can approve or revoke inbox access. Approval applies to current Discord administrators; dashboard permissions are still required.</p>
+    <div data-chat-admins></div><form data-chat-access><label>Administrator Discord account ID<input name="userId" inputmode="numeric" pattern="[0-9]{17,22}" maxlength="22" required /></label><button type="submit">Approve administrator</button></form><p data-access-receipt role="status"></p>
+  </section>
+  <script src="../../../scripts/playtesterChat.ts"></script>
+</AuthoringLayout>
+<style>
+  .chat-grid { display: grid; grid-template-columns: minmax(15rem, 1fr) minmax(0, 2fr); gap: 1rem; }
+  .chat-messages { max-height: 36rem; overflow-y: auto; overflow-wrap: anywhere; }
+  .chat-messages :global(article) { border-bottom: 1px solid var(--ops-border, #46504b); padding: 1rem 0; }
+  .chat-messages :global(p) { white-space: pre-wrap; }
+  @media (max-width: 800px) { .chat-grid { grid-template-columns: minmax(0, 1fr); } }
+</style>

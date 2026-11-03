@@ -13,6 +13,7 @@ import { failure, GatewayError, httpsUrl, json, readJson } from './http';
 import { kinetic } from './kinetic-client';
 import { handleParticipant } from './participant-gateway';
 import { handleRemembered } from './remembered-auth';
+import { handleChat, isChatPath } from './chat-gateway';
 
 type Dependencies = { fetch?: typeof fetch; jwks?: JWTVerifyGetKey };
 export async function handleGateway(request: Request, env: GatewayEnv, dependencies: Dependencies = {}) {
@@ -25,6 +26,7 @@ export async function handleGateway(request: Request, env: GatewayEnv, dependenc
     if (env.STAFF_AUTH_MODE === 'disabled' && (url.pathname.startsWith('/api/admin/') || url.pathname.startsWith('/api/auth/'))) {
       throw new GatewayError(503, 'STAFF_NOT_CONFIGURED', 'Staff sign-in has not been connected. The public website is available.');
     }
+    if (isChatPath(url.pathname)) return await handleChat(request, env, dependencies);
     if (isPlaytestPath(url.pathname)) return await handlePlaytests(request, env, dependencies);
     if (isAuthoringPath(url.pathname)) return await handleAuthoring(request, env, dependencies);
     if (url.pathname.startsWith('/api/auth/')) return await handleDiscordAuth(request, env, upstream);

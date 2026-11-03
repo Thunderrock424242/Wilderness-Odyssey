@@ -4,6 +4,7 @@ import AuthoringLayout from '../../../layouts/AuthoringLayout.astro';
 <AuthoringLayout title="Playtester website access" capability="server:write">
   <p>Invite a specific Discord account to its own website home. Website invitations are separate from game installation enrollment and diagnostic consent.</p>
   <p>In Discord you can select the person directly with <code>/playtester invite account: campaign:</code>. The bot DMs a claim link that only that account can use.</p>
+  <p>Joining the Discord server is recommended, not mandatory for playtesting. Bot DM conversations and attachments are shared with the owner’s chosen administrator team in the <a href="/admin/playtester-chat/">playtester inbox</a>. Testers choose a campaign with <code>chat CAMPAIGN_ID</code>, pause or resume sharing with <code>chat off</code> and <code>chat start</code>, and control campaign DMs with <code>updates off</code> / <code>updates on</code>.</p>
   <section class="ops-card"><h2>Invite a Discord account</h2><form data-member-invite>
     <label>Discord account ID<input name="discordUserId" inputmode="numeric" pattern="[0-9]{17,22}" maxlength="22" required /></label>
     <label>Existing playtest campaign ID<input name="campaignId" pattern="[A-Za-z0-9_-]{1,100}" maxlength="100" required /></label>

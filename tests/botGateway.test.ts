@@ -29,6 +29,22 @@ async function request(path = '/v1/admin/session', options: { audience?: string;
   return new Request('https://gateway.example' + path, { ...init, headers });
 }
 describe('bot gateway', () => {
+  it('allowlists private inbox routes and bounded attachment bytes with safe headers', async () => {
+    const { env, fetcher } = fixture();
+    const id = '08abc53c-80d9-4ccc-a7aa-4cf293ab93a9';
+    const headers = { 'X-WO-Admin-Session': 's'.repeat(43) };
+    fetcher.mockResolvedValue(Response.json({ schemaVersion: '1.0', owner: false, admins: [], campaigns: [], threads: [], nextCursor: null, secret: 'do-not-project' }));
+    const home = await handleBotGateway(await request('/v1/admin/playtester-chat', {}, { headers }), env, { jwks });
+    expect(home.status).toBe(200); expect(await home.text()).not.toContain('do-not-project');
+    fetcher.mockResolvedValue(new Response(new Uint8Array([0, 1, 255]), { headers: { 'Content-Type': 'application/x-spark-sampler', 'Set-Cookie': 'private', 'Content-Disposition': 'inline' } }));
+    const download = await handleBotGateway(await request('/v1/admin/playtester-chat/attachments/' + id, {}, { headers }), env, { jwks });
+    expect(download.status).toBe(200); expect([...new Uint8Array(await download.arrayBuffer())]).toEqual([0, 1, 255]); expect(download.headers.get('Cache-Control')).toBe('no-store'); expect(download.headers.get('Content-Disposition')).toContain(id + '.sparkprofile'); expect(download.headers.has('Set-Cookie')).toBe(false);
+    expect(fetcher.mock.calls.at(-1)![0].headers.get('X-WO-Admin-Session')).toBe('s'.repeat(43));
+    expect((await handleBotGateway(await request('/v1/admin/playtester-chat/attachments/' + id + '?url=bad'), env, { jwks })).status).toBe(400);
+    expect((await handleBotGateway(await request('/v1/admin/playtester-chat/attachments/not-an-id'), env, { jwks })).status).toBe(404);
+    fetcher.mockResolvedValue(new Response('x', { headers: { 'Content-Type': 'text/plain', 'Content-Length': String(5 * 1024 * 1024 + 1) } }));
+    expect((await handleBotGateway(await request('/v1/admin/playtester-chat/attachments/' + id), env, { jwks })).status).toBe(502);
+  });
   it('projects public status through a fixed VPC target without forwarding credentials', async () => {
     const { env, fetcher } = fixture();
     fetcher.mockResolvedValue(Response.json({ ...status, privateAddress: 'private' }));

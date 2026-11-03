@@ -5,6 +5,14 @@ import type { StaffCredential } from '../contracts/v1/auth';
 
 export async function kinetic<T>(path: string, schema: ZodType<T>, credential: StaffCredential | undefined, env: GatewayEnv, upstream: typeof fetch, options: RequestInit & { responseLimit?: number } = {}) {
   const { responseLimit, ...init } = options;
+  const response = await kineticResponse(path, credential, env, upstream, init);
+  const parsed = schema.safeParse(await readJson(response, responseLimit));
+  if (!parsed.success) throw new GatewayError(502, 'INVALID_RESPONSE', 'The administration service returned an unsupported response.');
+  return parsed.data;
+}
+
+// Shared trusted transport for schema-validated JSON and bounded private downloads.
+export async function kineticResponse(path: string, credential: StaffCredential | undefined, env: GatewayEnv, upstream: typeof fetch, init: RequestInit = {}) {
   const base = httpsUrl(env.KINETIC_ADMIN_ORIGIN, true);
   if (!env.KINETIC_ACCESS_CLIENT_ID || !env.KINETIC_ACCESS_CLIENT_SECRET) throw new GatewayError(503, 'NOT_CONFIGURED', 'The administration service has not been connected yet.');
   const headers = new Headers(init.headers);
@@ -33,7 +41,5 @@ export async function kinetic<T>(path: string, schema: ZodType<T>, credential: S
     } else await response.body?.cancel();
     throw new GatewayError(status, 'BACKEND_' + status, messages[status] ?? 'The administration service returned an unexpected response.');
   }
-  const parsed = schema.safeParse(await readJson(response, responseLimit));
-  if (!parsed.success) throw new GatewayError(502, 'INVALID_RESPONSE', 'The administration service returned an unsupported response.');
-  return parsed.data;
+  return response;
 }

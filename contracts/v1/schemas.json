@@ -336,6 +336,603 @@
     ],
     "additionalProperties": false
   },
+  "playtesterChat": {
+    "backendPrefix": "/v1/admin/playtester-chat",
+    "browserPrefix": "/api/admin/v1/playtester-chat",
+    "capability": "server:write",
+    "authentication": "Discord administrator session and backend owner selection",
+    "routes": [
+      {
+        "method": "GET",
+        "pattern": "^\\/playtester-chat$",
+        "input": null,
+        "query": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "cursor": {
+              "type": "string",
+              "pattern": "^\\d{1,16}$"
+            }
+          },
+          "additionalProperties": false
+        },
+        "output": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "schemaVersion": {
+              "type": "string",
+              "const": "1.0"
+            },
+            "owner": {
+              "type": "boolean"
+            },
+            "admins": {
+              "maxItems": 100,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string",
+                    "pattern": "^\\d{17,22}$"
+                  },
+                  "approvedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                  }
+                },
+                "required": [
+                  "userId",
+                  "approvedAt"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "campaigns": {
+              "maxItems": 100,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_-]{1,100}$"
+                  },
+                  "title": {
+                    "type": "string",
+                    "maxLength": 120
+                  }
+                },
+                "required": [
+                  "id",
+                  "title"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "threads": {
+              "maxItems": 50,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "campaignId": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_-]{1,100}$"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "pattern": "^\\d{17,22}$"
+                  },
+                  "lastMessageAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                  }
+                },
+                "required": [
+                  "campaignId",
+                  "userId",
+                  "lastMessageAt"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "nextCursor": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{1,16}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "schemaVersion",
+            "owner",
+            "admins",
+            "campaigns",
+            "threads",
+            "nextCursor"
+          ],
+          "additionalProperties": false
+        }
+      },
+      {
+        "method": "GET",
+        "pattern": "^\\/playtester-chat\\/threads\\/[A-Za-z0-9_-]{1,100}\\/\\d{17,22}$",
+        "input": null,
+        "query": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "before": {
+              "type": "string",
+              "pattern": "^\\d{1,16}$"
+            }
+          },
+          "additionalProperties": false
+        },
+        "output": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "schemaVersion": {
+              "type": "string",
+              "const": "1.0"
+            },
+            "messages": {
+              "maxItems": 50,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^\\d{1,16}$"
+                  },
+                  "campaignId": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_-]{1,100}$"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "pattern": "^\\d{17,22}$"
+                  },
+                  "authorId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^\\d{17,22}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "tester",
+                      "staff",
+                      "update"
+                    ]
+                  },
+                  "body": {
+                    "type": "string",
+                    "maxLength": 4000
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "received",
+                      "queued",
+                      "sending",
+                      "sent",
+                      "failed",
+                      "unknown",
+                      "cancelled"
+                    ]
+                  },
+                  "attachments": {
+                    "maxItems": 3,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        },
+                        "name": {
+                          "type": "string",
+                          "maxLength": 160
+                        },
+                        "size": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 5242880
+                        },
+                        "kind": {
+                          "type": "string",
+                          "enum": [
+                            "text",
+                            "spark"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "size",
+                        "kind"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "campaignId",
+                  "userId",
+                  "authorId",
+                  "direction",
+                  "body",
+                  "createdAt",
+                  "status",
+                  "attachments"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "nextCursor": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{1,16}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "schemaVersion",
+            "messages",
+            "nextCursor"
+          ],
+          "additionalProperties": false
+        }
+      },
+      {
+        "method": "POST",
+        "pattern": "^\\/playtester-chat\\/threads\\/[A-Za-z0-9_-]{1,100}\\/\\d{17,22}\\/reply$",
+        "input": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1800
+            }
+          },
+          "required": [
+            "body"
+          ],
+          "additionalProperties": false
+        },
+        "query": null,
+        "output": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "schemaVersion": {
+              "type": "string",
+              "const": "1.0"
+            },
+            "message": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^\\d{1,16}$"
+                },
+                "campaignId": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{1,100}$"
+                },
+                "userId": {
+                  "type": "string",
+                  "pattern": "^\\d{17,22}$"
+                },
+                "authorId": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{17,22}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "direction": {
+                  "type": "string",
+                  "enum": [
+                    "tester",
+                    "staff",
+                    "update"
+                  ]
+                },
+                "body": {
+                  "type": "string",
+                  "maxLength": 4000
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "received",
+                    "queued",
+                    "sending",
+                    "sent",
+                    "failed",
+                    "unknown",
+                    "cancelled"
+                  ]
+                },
+                "attachments": {
+                  "maxItems": 3,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                      },
+                      "name": {
+                        "type": "string",
+                        "maxLength": 160
+                      },
+                      "size": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 5242880
+                      },
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "text",
+                          "spark"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "size",
+                      "kind"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "campaignId",
+                "userId",
+                "authorId",
+                "direction",
+                "body",
+                "createdAt",
+                "status",
+                "attachments"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "schemaVersion",
+            "message"
+          ],
+          "additionalProperties": false
+        }
+      },
+      {
+        "method": "POST",
+        "pattern": "^\\/playtester-chat\\/access$",
+        "input": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "userId": {
+              "type": "string",
+              "pattern": "^\\d{17,22}$"
+            },
+            "approved": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "userId",
+            "approved"
+          ],
+          "additionalProperties": false
+        },
+        "query": null,
+        "output": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "schemaVersion": {
+              "type": "string",
+              "const": "1.0"
+            },
+            "saved": {
+              "type": "boolean",
+              "const": true
+            }
+          },
+          "required": [
+            "schemaVersion",
+            "saved"
+          ],
+          "additionalProperties": false
+        }
+      },
+      {
+        "method": "POST",
+        "pattern": "^\\/playtester-chat\\/broadcasts$",
+        "input": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "campaignId": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,100}$"
+            },
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1600
+            }
+          },
+          "required": [
+            "campaignId",
+            "body"
+          ],
+          "additionalProperties": false
+        },
+        "query": null,
+        "output": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "schemaVersion": {
+              "type": "string",
+              "const": "1.0"
+            },
+            "broadcastId": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "recipients": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000
+            }
+          },
+          "required": [
+            "schemaVersion",
+            "broadcastId",
+            "recipients"
+          ],
+          "additionalProperties": false
+        }
+      },
+      {
+        "method": "GET",
+        "pattern": "^\\/playtester-chat\\/broadcasts\\/[a-f0-9-]{36}$",
+        "input": null,
+        "query": null,
+        "output": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "schemaVersion": {
+              "type": "string",
+              "const": "1.0"
+            },
+            "broadcastId": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "counts": {
+              "type": "object",
+              "properties": {
+                "queued": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "sending": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "sent": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "failed": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "unknown": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "cancelled": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "queued",
+                "sending",
+                "sent",
+                "failed",
+                "unknown",
+                "cancelled"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "schemaVersion",
+            "broadcastId",
+            "counts"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "attachments": {
+      "path": "/attachments/:uuid",
+      "maximumBytes": 5242880,
+      "contentTypes": [
+        "text/plain; charset=utf-8",
+        "application/x-spark-sampler"
+      ],
+      "cache": "no-store"
+    }
+  },
   "playtests": {
     "integrationStatus": "backend-implementation-required",
     "routes": [

@@ -112,6 +112,12 @@ async function forward(request: Request, env: BotGatewayEnv, route: BotRoute, ur
     }
     try {
       const bytes = await boundedBytes(upstream, route.responseLimit, signal);
+      if (route.attachment) {
+        const type = upstream.headers.get('Content-Type') ?? '';
+        if (!['text/plain', 'text/plain; charset=utf-8', 'application/x-spark-sampler'].includes(type)) throw new Error();
+        const id = url.pathname.split('/').at(-1);
+        return new Response(bytes, { headers: { 'Content-Type': type, 'Content-Disposition': 'attachment; filename="chat-' + id + (type === 'application/x-spark-sampler' ? '.sparkprofile' : '.txt') + '"', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'none'; sandbox; frame-ancestors 'none'", 'Referrer-Policy': 'no-referrer' } });
+      }
       if (route.media && !route.output) {
         const type = upstream.headers.get('Content-Type') ?? '';
         if (!imageTypes.includes(type)) throw new Error();
