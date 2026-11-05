@@ -24,7 +24,8 @@ export function initializeAether(): void {
   const memory = config.aether.memoryEnabled
     ? new AetherSqliteMemory(getDb())
     : new DisabledAetherMemory();
-  const modelProvider = createAetherModelProvider(config.aether.aiProvider);
+  const modelProvider = createAetherModelProvider(config.aether.aiProvider, config.aether.remote,
+    (requestId, category) => logger.warn({service: 'aether-inference', operation: 'chat', requestId, category}, 'Aether inference request failed.'));
   const lore = createLoreSource(config.aether.loreFile);
   const minecraftBridge = config.aether.minecraftBridgeEnabled
     && config.aether.minecraftBridgeSecret
@@ -98,7 +99,7 @@ export function getAetherStatus(): AetherCoreStatus {
       aiProvider: {
         name: config.aether.aiProvider,
         available: false,
-        fallbackAvailable: true
+        fallbackAvailable: config.aether.aiProvider !== 'remote'
       },
       memoryProvider: {
         name: config.aether.memoryEnabled ? 'sqlite' : 'disabled',

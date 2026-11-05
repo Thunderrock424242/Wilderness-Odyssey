@@ -1,0 +1,39 @@
+# API gateway template. Merge into reviewed private host configuration.
+# No activation or hosting capacity is implied by this file.
+server:
+  bind: 127.0.0.1
+  port: 8085
+  request_timeout_seconds: 10
+ollama:
+  url: http://127.0.0.1:11434
+  model: qwen3.5:4b
+  timeout_seconds: 30
+  context_tokens: 8192
+  max_output_tokens: 256
+limits:
+  max_concurrent_generations: 1
+  max_queue_size: 2
+  requests_per_minute: 30
+  max_request_bytes: 65536
+  http_workers: 8
+logging:
+  log_requests: false
+  log_player_messages: false
+  log_responses: false
+security:
+  minecraft_server_id: wilderness-server
+  state_directory: /srv/aether/gateway-state
+  inference_token_env: AETHER_INFERENCE_TOKEN
+  monitoring_token_env: AETHER_MONITORING_TOKEN
+  administration_token_env: AETHER_ADMINISTRATION_TOKEN
+  administration_enabled: false
+  service_write_enabled: false
+playground:
+  state_directory: /srv/aether/playground-state
+  sandbox_enabled: false
+  training_enabled: false
+activation:
+  hosting_verified: false
+  capacity_verified: false
+  inference_enabled: false
+  verified_model: ''

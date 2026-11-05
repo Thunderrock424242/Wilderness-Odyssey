@@ -1,0 +1,29 @@
+{
+  "request": {
+    "schemaVersion": "1.0",
+    "requestId": "00000000-0000-4000-8000-000000000001",
+    "serverId": "official-server",
+    "surface": "discord",
+    "principalId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "scopeId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "message": "Hello explorer"
+  },
+  "response": {
+    "schemaVersion": "1.0",
+    "requestId": "00000000-0000-4000-8000-000000000001",
+    "serverId": "official-server",
+    "model": "qwen3.5:4b",
+    "success": true,
+    "response": "Hello explorer."
+  },
+  "invalidPatches": [
+    { "world": "minecraft:overworld" },
+    { "message": "" },
+    { "message": "\u0000" },
+    { "requestId": "invalid" },
+    { "surface": "browser" },
+    { "scopeId": "user-name" },
+    { "principalId": 123 },
+    { "schemaVersion": "2.0" }
+  ]
+}

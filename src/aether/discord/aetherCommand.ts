@@ -136,7 +136,9 @@ export const aetherCommand: SlashCommand = {
     }
 
     if (subcommand === 'status') {
-      await interaction.reply({ embeds: [connectedStatusEmbed(), statusEmbed()], flags: 'Ephemeral' });
+      await interaction.deferReply({ flags: 'Ephemeral' });
+      await getAetherCore()?.refreshAvailability();
+      await interaction.editReply({ embeds: [connectedStatusEmbed(), statusEmbed()], allowedMentions: { parse: [] } });
       return;
     }
 
@@ -292,7 +294,7 @@ async function routeQuestion(
   const response = await getAetherCore()!.routeRequest(
     buildRequest(interaction, message, agentHint, attachments)
   );
-  await interaction.editReply({ embeds: [responseEmbed(response.agentName, response.responseText)] });
+  await interaction.editReply({ embeds: [responseEmbed(response.agentName, response.responseText)], allowedMentions: { parse: [] } });
 }
 
 function buildRequest(
@@ -342,7 +344,7 @@ function statusEmbed() {
         name: 'AI provider',
         value: status.aiProvider.available
           ? `${status.aiProvider.name} available`
-          : `${status.aiProvider.name} unavailable; scripted fallback ready`,
+          : `${status.aiProvider.name} unavailable or not recently verified${status.aiProvider.fallbackAvailable ? '; scripted fallback ready' : '; no model answer available'}`,
         inline: true
       },
       { name: 'Memory', value: `${status.memoryProvider.name}: ${status.memoryProvider.available ? 'available' : 'unavailable'}`, inline: true },

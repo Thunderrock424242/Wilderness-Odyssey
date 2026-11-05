@@ -1,11 +1,14 @@
+import { loadRemoteConfig, type AetherRemoteConfig } from './providers/remoteConfig';
+
 const SUPPORTED_DIAGNOSTIC_TYPES = new Set(['txt', 'log', 'md', 'json', 'crash']);
 
-export type AetherAiProviderName = 'disabled' | 'scripted';
+export type AetherAiProviderName = 'disabled' | 'scripted' | 'remote';
 
 export interface AetherConfig {
   enabled: boolean;
   commandEnabled: boolean;
   aiProvider: AetherAiProviderName;
+  remote?: AetherRemoteConfig;
   memoryEnabled: boolean;
   minecraftBridgeEnabled: boolean;
   minecraftBridgeSecret?: string;
@@ -41,11 +44,16 @@ export function loadAetherConfig(env: NodeJS.ProcessEnv): AetherConfig {
   );
 
   const rawProvider = env.AETHER_AI_PROVIDER?.trim().toLowerCase() || 'scripted';
-  const aiProvider: AetherAiProviderName = rawProvider === 'scripted' || rawProvider === 'disabled'
+  const aiProvider: AetherAiProviderName = rawProvider === 'scripted' || rawProvider === 'disabled' || rawProvider === 'remote'
     ? rawProvider
     : 'disabled';
-  if (rawProvider !== 'scripted' && rawProvider !== 'disabled') {
+  if (!['scripted', 'disabled', 'remote'].includes(rawProvider)) {
     issues.push('AETHER_AI_PROVIDER is unsupported; the AI provider was disabled.');
+  }
+
+  const remote = aiProvider === 'remote' ? loadRemoteConfig(env) : undefined;
+  if (aiProvider === 'remote' && !remote) {
+    issues.push('Remote Aether inference settings are invalid or missing; hosted chat is unavailable.');
   }
 
   const minecraftBridgeSecret = trimmed(env.AETHER_MINECRAFT_BRIDGE_SECRET);
@@ -58,6 +66,7 @@ export function loadAetherConfig(env: NodeJS.ProcessEnv): AetherConfig {
     enabled,
     commandEnabled,
     aiProvider,
+    remote,
     memoryEnabled,
     minecraftBridgeEnabled,
     minecraftBridgeSecret,

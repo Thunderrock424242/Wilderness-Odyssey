@@ -84,7 +84,7 @@ export class AetherCore {
       aiProvider: {
         name: this.modelProvider.getProviderName(),
         available: this.modelProvider.isAvailable(),
-        fallbackAvailable: true
+        fallbackAvailable: this.config.aiProvider !== 'remote'
       },
       memoryProvider: {
         name: this.memory.getProviderName(),
@@ -99,6 +99,10 @@ export class AetherCore {
       configurationIssues: [...this.config.issues],
       failureReason: this.failureReason
     };
+  }
+
+  async refreshAvailability(): Promise<void> {
+    await this.modelProvider.refreshAvailability?.();
   }
 
   async routeRequest(request: AetherRequest): Promise<AetherResponse> {
