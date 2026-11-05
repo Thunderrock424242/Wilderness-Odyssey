@@ -1,0 +1,13 @@
+name = "Hybrid API [HAPI]"
+filename = "hapi-neoforge-1.21.1-1.1.3.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "18a1da3fba0b84ab6a17c74081feb2dd4aff2475"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9063597
+project-id = 883374

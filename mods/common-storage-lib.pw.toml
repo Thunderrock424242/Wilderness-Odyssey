@@ -1,0 +1,13 @@
+name = "Common Storage Lib"
+filename = "common-storage-lib-neoforge-1.21.1-0.0.10.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "e0ba85038480d50a3816d5920014bfcccdbe7329"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8421542
+project-id = 1028211

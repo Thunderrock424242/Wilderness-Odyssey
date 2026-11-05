@@ -1,0 +1,13 @@
+name = "This Rocks! (Forge)"
+filename = "ThisRocks-1.21-1.8.0.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "8d9648356383b115c308db3355d3e41b2724f2b0"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 5460165
+project-id = 558126

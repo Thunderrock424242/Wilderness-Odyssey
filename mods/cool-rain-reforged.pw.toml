@@ -1,0 +1,13 @@
+name = "Cool Rain Reforged"
+filename = "coolrain-1.21.1-NeoForge-1.0.2.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "2f41f15cb7b6c46aeeae95c29c1f3a9c1d53f327"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8819888
+project-id = 1346978

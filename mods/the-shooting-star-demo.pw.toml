@@ -1,0 +1,13 @@
+name = "The Shooting Star [Demo]"
+filename = "the-shooting-star-demo-1.5.2-neoforge.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "f8be738d3c2f4bd3ee27012d2c3675c255f0b647"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9438871
+project-id = 1719195

@@ -1,0 +1,13 @@
+name = "MemGuard"
+filename = "memguard-1.0.4.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "b4963223c151fe380bf6ad6ffe8a732d37ec442c"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8192435
+project-id = 1468440

@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "punchy"
-filename = "punchy-2.8f-neoforge-1.21.1.jar"
-side = "client"
-pin = true
+name = "Punchy! - First person animations"
+filename = "punchy-3.1b-neoforge-1.21.1.jar"
+side = "both"
 
 [download]
-hash-format = "sha256"
-hash = "da1b35797ae52ab607c9ffdd6c334bd678600a6af814a411d6882deb82a4e305"
+hash-format = "sha1"
+hash = "e1dd21e15c04101b05a5d6dd11369780a7a4a38a"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
+file-id = 9408722
 project-id = 1374153
-file-id = 9172981

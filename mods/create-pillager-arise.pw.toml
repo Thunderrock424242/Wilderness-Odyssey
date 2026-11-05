@@ -1,0 +1,13 @@
+name = "Create: Pillager Arise"
+filename = "create_pillagers_arise NeoForge 1.21.1-132.36.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "ffc083a957c3e527d9aabf3fb851b780ef443b5a"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8329999
+project-id = 1094958

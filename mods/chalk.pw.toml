@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "chalk"
-filename = "chalk-neoforge-1.21.1-2.0.2.jar"
+name = "Chalk"
+filename = "chalk-neoforge-1.21.1-2.0.3.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "8a2772c5df0947ae96a543cd492a0308c53814d0522a9dd213e52d73ca2e1a66"
+hash-format = "sha1"
+hash = "6e7eff0cd223915e6cf26fa1c54eb95bde4fcd7a"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
+file-id = 9395344
 project-id = 533748
-file-id = 8821479

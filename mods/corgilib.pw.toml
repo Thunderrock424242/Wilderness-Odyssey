@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "corgilib"
+name = "CorgiLib"
 filename = "Corgilib-NeoForge-1.21.1-5.0.0.10.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "ae720bcc5bdff1483b0bfc7502ff885b5f27e4aaef920ba23c0f6d012c390f82"
+hash-format = "sha1"
+hash = "78a1b2f0b4e2b816aeffb0e6a2cc0062aa343e46"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 693313
 file-id = 9113612
+project-id = 693313

@@ -28,5 +28,6 @@ accumulation:
 integration:
   accumulationWinterOnly: false
 debug:
+  preventWorldgenLogSpam: true
   forceVanillaIceSnowLogic: false
   mobSpawningCommand: false

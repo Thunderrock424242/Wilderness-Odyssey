@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "catalogue"
+name = "Catalogue"
 filename = "catalogue-neoforge-1.21.1-1.11.2.jar"
-side = "client"
-pin = true
+side = "both"
 
 [download]
-hash-format = "sha256"
-hash = "b3c958772c61354fccf04b52264f2e398c8bf9a28d192d675bf82359b647ef43"
+hash-format = "sha1"
+hash = "6d67f855c20bc6392763cfb22e1152da4e8015b4"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 459701
 file-id = 6926815
+project-id = 459701

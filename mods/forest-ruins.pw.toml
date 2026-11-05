@@ -1,0 +1,13 @@
+name = "Forest Ruins"
+filename = "forest_ruins-1.0.0-neoforge-1.21.1.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "b39ccca610288d0e00b8048abf479c67abe776bf"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 6557260
+project-id = 1271504

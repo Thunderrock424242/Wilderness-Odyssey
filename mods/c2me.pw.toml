@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "c2me"
-filename = "c2me-neoforge-mc1.21.1-0.4.0-alpha.0.123.jar"
+name = "Concurrent Chunk Management Engine"
+filename = "c2me-neoforge-mc1.21.1-0.4.0-alpha.0.124.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "ba33f46c615192494ad1c1ede8a85a1a884736eb4ac5b8bb24b357deb0692809"
+hash-format = "sha1"
+hash = "469497c209e77742a85020845a361851f14d99e2"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
+file-id = 9344813
 project-id = 533097
-file-id = 9131675

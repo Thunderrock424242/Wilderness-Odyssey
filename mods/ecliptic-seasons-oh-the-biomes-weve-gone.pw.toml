@@ -1,0 +1,13 @@
+name = "Ecliptic Seasons - Oh The Biomes We've Gone"
+filename = "EclipticSeasonsBWG-1.0.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "303ecce67dc408b9044c7af42afa4a34f4bcc88d"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 6999824
+project-id = 1347591

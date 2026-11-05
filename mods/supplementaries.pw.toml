@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "supplementaries"
+name = "Supplementaries"
 filename = "supplementaries-1.21.1-4.0.2-neoforge.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "2c2e0c98e0cc21874d8b2130bc773a2a5a6cadd854b9c8163d0e1f32e2ddffb0"
+hash-format = "sha1"
+hash = "af25cb08a82c72b3fb67508071ce627714bd2b57"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 412082
 file-id = 9211734
+project-id = 412082

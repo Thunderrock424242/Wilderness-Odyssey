@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "jei"
-filename = "jei-1.21.1-neoforge-19.64.0.455.jar"
+name = "Just Enough Items (JEI)"
+filename = "jei-1.21.1-neoforge-19.70.0.469.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "f7a9de3d7ee07eed8d293a1a1a0f6afaac556eb43c103523457bd07ebb551e7b"
+hash-format = "sha1"
+hash = "363f10ce1d8918381a125cc1e8d800caf1bcb40e"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
+file-id = 9393327
 project-id = 238222
-file-id = 9205121

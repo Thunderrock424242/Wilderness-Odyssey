@@ -1,0 +1,13 @@
+name = "Create: AeroWarptics"
+filename = "aerowarptics-1.3.0.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "1f09a04ce7d09145090ba1f6f2063568f34031b4"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8787426
+project-id = 1659672

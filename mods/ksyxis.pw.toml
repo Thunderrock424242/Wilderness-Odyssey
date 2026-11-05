@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "ksyxis"
+name = "Ksyxis"
 filename = "Ksyxis-1.4.6.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "e044b1b25227ceb49e3fa592543af602034a0a6a85b57edfeb41668f3bedf111"
+hash-format = "sha1"
+hash = "6de6271329e0c83e3ccc0512a0d3cfcc3e790d3f"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 537533
 file-id = 9102078
+project-id = 537533

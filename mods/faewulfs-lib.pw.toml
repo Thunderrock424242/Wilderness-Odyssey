@@ -1,0 +1,13 @@
+name = "Faewulf's Lib"
+filename = "faewulf_lib-neoforge-1.21.1-1.4.0.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "0636e05620724793507bfe23772c3f4adfcccedb"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8586114
+project-id = 1209568

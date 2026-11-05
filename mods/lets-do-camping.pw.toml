@@ -1,0 +1,13 @@
+name = "[Let's Do] Camping"
+filename = "letsdo-camping-neoforge-2.1.6.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "380d7eaa159dcff3dafa2bc433dee504f3cc9d41"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9205308
+project-id = 1072398

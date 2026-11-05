@@ -49,3 +49,5 @@ __pycache__/
 *.pem
 /config/resourceful-config-web.json
 /config/WildernessOdysseyAPI/conflict_log.txt
+
+/mods/mod_searcher_working/

@@ -1,0 +1,13 @@
+name = "Burnt + Additions"
+filename = "burnt-1.10.5.3-neoforge-1.21.1.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "83163da0772db9137eb10a31b756fc9018f92509"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9313775
+project-id = 998916

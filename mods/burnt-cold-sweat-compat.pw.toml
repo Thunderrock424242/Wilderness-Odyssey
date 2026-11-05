@@ -1,0 +1,13 @@
+name = "Burnt: Cold Sweat Compat"
+filename = "burnt_coldsweat_compat-1.0.0.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "f9756c5554f35ece7a2495b4b8142085b0c1fd94"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 7920464
+project-id = 1512898

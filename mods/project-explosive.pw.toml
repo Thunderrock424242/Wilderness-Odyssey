@@ -1,0 +1,13 @@
+name = "Project: Explosive"
+filename = "projectexplosive-0.7.2-beta.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "6a68e51285ad7d30f57da468197f4164b044854e"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9117332
+project-id = 1736831

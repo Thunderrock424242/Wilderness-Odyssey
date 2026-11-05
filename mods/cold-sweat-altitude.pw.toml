@@ -1,0 +1,13 @@
+name = "Cold Sweat: Altitude"
+filename = "coldsweat_altitude-0.8.2.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "28f49899378dbd0868b3440183b6ea5d1685e01a"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9409293
+project-id = 1528631

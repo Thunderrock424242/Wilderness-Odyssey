@@ -1,0 +1,13 @@
+name = "Tick Tok lib"
+filename = "ticktoklib-1.4.3.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "e4ef0b4c5bcd53646fecbea547b4a5e4e8fbf21b"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8685795
+project-id = 1298954

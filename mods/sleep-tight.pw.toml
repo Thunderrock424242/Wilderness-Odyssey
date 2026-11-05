@@ -1,0 +1,13 @@
+name = "Sleep Tight"
+filename = "sleep_tight-1.21-1.6.4-neoforge.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "7adb7bac37b4d33b7e231791495b046075d74a8f"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9434225
+project-id = 817564

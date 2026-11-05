@@ -1,0 +1,13 @@
+name = "Torches Reimagined"
+filename = "§eTorches§8-§eReimagined§0_§8[v1.10]§0.zip"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "ad11f146736e4cbecb427e87edb7770393382fc4"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9290731
+project-id = 531730

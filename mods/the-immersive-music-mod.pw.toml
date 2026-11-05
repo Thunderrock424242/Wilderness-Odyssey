@@ -1,0 +1,13 @@
+name = "The Immersive Music Mod"
+filename = "timm-1.1-neoforge-1.21.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "85f907fcbebc25bba32e0af4abcdc55205c45146"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 7266606
+project-id = 1066903

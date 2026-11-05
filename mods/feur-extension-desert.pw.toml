@@ -1,0 +1,13 @@
+name = "Feur - Extension Desert"
+filename = "feur_extension_desert-1.21.1-neoforge.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "105dc3d36bf2f5847bfba124342b2d3f61aef06b"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 7232473
+project-id = 1117054

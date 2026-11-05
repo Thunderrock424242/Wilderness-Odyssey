@@ -1,0 +1,13 @@
+name = "Fish N' Ships"
+filename = "fish_n_ships-neoforge-1.21.1-1.1.0.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "36284a10930aab1ce5cb120a8a07130969ca6f87"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8868643
+project-id = 1603064

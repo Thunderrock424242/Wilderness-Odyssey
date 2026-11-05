@@ -1,0 +1,13 @@
+name = "MMV - Moog's Missing Villages"
+filename = "MoogsMissingVillages-universal-1.21-2.2.0.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "1b7ea6160c160efda3dc7a97f8c028c25f9f1a12"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8939031
+project-id = 1153951

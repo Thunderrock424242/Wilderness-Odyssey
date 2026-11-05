@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "geophilic"
+name = "Geophilic – Vanilla Biome Overhauls"
 filename = "Geophilic v3.7.mod.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "9e6a98b438e078f2e4f5b79f71bfc715a730369f8cf42fd287c6e43c7441cfae"
+hash-format = "sha1"
+hash = "4d668978e18b450c030ed4be096fce52d3a9ceca"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 711216
 file-id = 8966202
+project-id = 711216

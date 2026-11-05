@@ -1,0 +1,13 @@
+name = "Countered's Terrain Slabs"
+filename = "terrain_slabs-neoforge-3.1.2.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "e29950d38f3eef292ba22c7bfa86c6dae11395df"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8216091
+project-id = 1125437

@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "naturalist"
-filename = "naturalist-2.0.5-neoforge-1.21.1.jar"
+name = "Naturalist"
+filename = "naturalist-2.0.7-neoforge-1.21.1.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "8a35e7effd69323e7e03d43fc116ddc846f2ca72744d80f52ac75bd251e36ab6"
+hash-format = "sha1"
+hash = "a7f9f6d9991880c377d2248af5c1ea05a0aa1039"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
+file-id = 9280587
 project-id = 627986
-file-id = 9004373

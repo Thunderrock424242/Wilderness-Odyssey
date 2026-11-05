@@ -1,0 +1,13 @@
+name = "Exposure: Expanded"
+filename = "exposure_expanded-neoforge-1.0.1.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "a64e3b59d385f472c583cc4ed3e9353538a9290d"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 6959722
+project-id = 1266524

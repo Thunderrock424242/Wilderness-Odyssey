@@ -1,0 +1,13 @@
+name = "Create: Going Nuclear"
+filename = "goingnuclear-0.512-6.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "892454326cb2dd96c17a3b5645840dd64ca22fd6"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9373354
+project-id = 1732437

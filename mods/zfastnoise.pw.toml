@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "zfastnoise"
+name = "Fast Noise"
 filename = "zfastnoise-1.0.13+1.21.1+neoforge.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "36ee58475c46c56e76c199eebe48dc95aacaa1133512617dcc46053339c2fb5d"
+hash-format = "sha1"
+hash = "7b9f0b4d62a6e30505f8e64ebb58dfd2dc46c81e"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 1460602
 file-id = 8393202
+project-id = 1460602

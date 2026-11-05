@@ -1,0 +1,13 @@
+name = "Music Maker"
+filename = "xercamusic-neoforge-1.21.1-1.2.1.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "c2bfac538479c7cac8d1d4b77012d571a33e4f0b"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8519624
+project-id = 341448

@@ -8,6 +8,8 @@ cacheMultipartPredicates = true
 multipartDeduplication = true
 #Deduplicate cached data for blockstates, most importantly collision and render shapes
 blockstateCacheDeduplication = true
+#Save memory overhead from empty data component maps/patched
+dataComponentPatch = true
 #Avoid creation of new strings when creating ModelResourceLocations
 modelResourceLocations = true
 #Use smaller data structures for "simple" models, especially models with few side-specific faces

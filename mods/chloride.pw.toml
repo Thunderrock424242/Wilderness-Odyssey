@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "chloride"
+name = "(Sodium) Chloride"
 filename = "chloride-NEOFORGE-mc1.21.1-v1.8.1.jar"
-side = "client"
-pin = true
+side = "both"
 
 [download]
-hash-format = "sha256"
-hash = "d0b0a80a241078f917afb96e53821d7c70c38faebaca9adee0c86a9a8cb482c1"
+hash-format = "sha1"
+hash = "50454011525e2862678b15d94484fd32a5a54dfb"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 931925
 file-id = 8462029
+project-id = 931925

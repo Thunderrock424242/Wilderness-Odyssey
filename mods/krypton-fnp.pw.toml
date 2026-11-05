@@ -1,0 +1,13 @@
+name = "Krypton Reno"
+filename = "krypton_fnp-neoforge-1.21.1-0.2.28.1-1.21.1.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "3b9253fcfaa11586ce528fbc0a26175991c9408f"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 7461802
+project-id = 1269169

@@ -1,0 +1,13 @@
+name = "Camera Monitoring: CCTV System Fully Customizable + Screens"
+filename = "cameramonitoring-neoforge-1.21.1-1.5.7.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "bea44b8c0079196c6f09060f3ff707a1420e8070"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9435155
+project-id = 1686878

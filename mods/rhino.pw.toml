@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "rhino"
+name = "Rhino"
 filename = "rhino-2101.2.8-build.91.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "1d53d962aa4dac54bcbb4f998c1845980cf194318f1d6b1580ea6ac15cce5ef3"
+hash-format = "sha1"
+hash = "56eab1d464ed0811c64040c64bd047df5cbc3aad"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 416294
 file-id = 8463898
+project-id = 416294

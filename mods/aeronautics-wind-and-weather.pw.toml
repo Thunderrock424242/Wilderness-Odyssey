@@ -1,0 +1,13 @@
+name = "Create: Atmospherics"
+filename = "create_atmospherics-2.0.0-oceans-e638ce3.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "5754db2123349c56bd30ef5bf2a1cf631ddeedec"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9423710
+project-id = 1612709

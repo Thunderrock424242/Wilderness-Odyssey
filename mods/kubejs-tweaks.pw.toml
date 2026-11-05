@@ -1,0 +1,13 @@
+name = "KubeJS Tweaks"
+filename = "kubejstweaks-1.0.7.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "c5d664b4c1e109c1e1c8c3a74c950acba14c059f"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9360127
+project-id = 1306367

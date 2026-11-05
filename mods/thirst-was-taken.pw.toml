@@ -1,0 +1,13 @@
+name = "Thirst Was Taken"
+filename = "ThirstWasTaken-1.21.1-2.1.5.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "ad7216deed0920177e63a7242b9a8bc06b713b6b"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 7017923
+project-id = 679270

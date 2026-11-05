@@ -1,0 +1,13 @@
+name = "Biome Music"
+filename = "biomemusic-1.21.1-4.1.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "2d049c15c1dedf4b7054b933b871ff29f7c3040b"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8318257
+project-id = 840873

@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "fancymenu"
+name = "FancyMenu"
 filename = "fancymenu_neoforge_3.9.14_MC_1.21.1.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "92f74ef89381ea1f74e1145feab6db4ce4638804b1fb43622302d0a647fc0a66"
+hash-format = "sha1"
+hash = "cafbef98afb4f60adea426b950c5452655040c40"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 367706
 file-id = 9002957
+project-id = 367706

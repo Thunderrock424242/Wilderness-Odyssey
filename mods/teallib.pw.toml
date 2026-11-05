@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "teallib"
+name = "Teal Lib"
 filename = "teallib-1.3.teal.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "297004b131df16839a09f97ecd703ea20e89937289e5613d3711e385f9377218"
+hash-format = "sha1"
+hash = "b186cdfd311158858429e494ecd11e2157274eff"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 1597849
 file-id = 8507094
+project-id = 1597849

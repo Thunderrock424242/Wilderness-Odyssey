@@ -1,0 +1,13 @@
+name = "Structures+ — Better Structures & Exploration"
+filename = "Structures-v3.1.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "1764bcc675a3270af877528287af43a11e9d1a56"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9394717
+project-id = 1437556

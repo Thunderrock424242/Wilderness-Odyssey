@@ -1,0 +1,13 @@
+name = "Serene Seasons API Stub (Ecliptic Seasons Bridge)"
+filename = "ecliptic-seasons-serene-api-bridge-1.21.1-neoforge-10.1.0.3-patch11-1.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "370b428a00a0f15da161355f1b0585d2b2f3d87e"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8828410
+project-id = 1476693

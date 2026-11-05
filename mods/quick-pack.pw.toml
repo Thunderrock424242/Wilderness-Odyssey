@@ -1,0 +1,13 @@
+name = "quick pack"
+filename = "quick-pack-neoforge-1.5.1+1.21.1.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "23a1fc2cde064de0d1d3568e8102c4b346a203b3"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9005037
+project-id = 1380888

@@ -1,0 +1,13 @@
+name = "Mielon's The Sift"
+filename = "mielon's-the-sift-1.1.0-mc1.21.1-neo.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "185aa30047a23391ee3cc7cbaf63e50a920fb991"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9011966
+project-id = 1691925

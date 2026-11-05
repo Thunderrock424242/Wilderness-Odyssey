@@ -1,0 +1,13 @@
+name = "Sculk Relics"
+filename = "sculkrelics-1.0.2.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "e281cc76c1b7effe5a9df73bd08d51e4913ece95"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9093591
+project-id = 1727282

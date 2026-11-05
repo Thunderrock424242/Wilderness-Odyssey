@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "netherportalfix"
+name = "NetherPortalFix"
 filename = "netherportalfix-neoforge-1.21.1-21.1.1.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "c1077de0c7f1ff5289d1852e0674d9c477247d4318c9809b21c60e56a31ae31a"
+hash-format = "sha1"
+hash = "7cf40ec774392823e709da7659a6d4a5a04c8c9d"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 241160
 file-id = 5623547
+project-id = 241160

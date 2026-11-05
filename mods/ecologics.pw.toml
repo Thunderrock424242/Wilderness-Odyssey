@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "ecologics"
-filename = "ecologics-1.21.1-2.3.7.jar"
+name = "Ecologics"
+filename = "Ecologics-NeoForge-1.21.1-2.3.10.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "1fb3ce04b425018154a63d8719bfcf1418734ea7e36b71bd10e7aa0c773cbeae"
+hash-format = "sha1"
+hash = "83464d419de7c9a8edb1d70cbd1cf50ebe1225d6"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
+file-id = 9430002
 project-id = 570463
-file-id = 8415537

@@ -1,0 +1,13 @@
+name = "Cinematic Respawn"
+filename = "cinematic_respawn-1.21.1-neoforge-1.4.3.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "33f72c4fabeca4b13d70c0095efc7e82dba12313"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 9334940
+project-id = 1579853

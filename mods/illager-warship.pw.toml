@@ -1,0 +1,13 @@
+name = "Illager Warship"
+filename = "illagerwarship-1.0.1-neoforge-1.21.1.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "538db7de4264f6d07ca2a5e7a947777ad8216225"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 6561660
+project-id = 1091632

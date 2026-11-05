@@ -1,0 +1,13 @@
+name = "Item Descriptions"
+filename = "item_descriptions-2.8.0+1.21.1-neoforge.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "fd8df1a7398539d66ecbcf406d22b8408d2d4808"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8228839
+project-id = 1101501

@@ -1,0 +1,13 @@
+name = "Feur - Extension Fossil"
+filename = "feur_extension_fossil-1.21.1-neoforge.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "30a858670a165b446c20a3760f9df19f1ac86421"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 7163026
+project-id = 1117070

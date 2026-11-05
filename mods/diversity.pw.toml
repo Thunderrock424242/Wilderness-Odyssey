@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "diversity"
+name = "Diversity!"
 filename = "diversity-neoforge-1.21.1-2.5.3.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "39da87a4c78b8ca3c4dc64c263d3889bf3cf36ecb74dccb426e35024043784c2"
+hash-format = "sha1"
+hash = "6ec082811b561861c92419ee41daac1575d68745"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 1039632
 file-id = 6896469
+project-id = 1039632

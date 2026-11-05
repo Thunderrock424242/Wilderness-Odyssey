@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "patchouli"
+name = "Patchouli"
 filename = "Patchouli-1.21.1-93-NEOFORGE.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "959af52ed6640c316c3a8469203420be4aeea11ad6603890ba83bf48f5d9f993"
+hash-format = "sha1"
+hash = "5413bb9b8fc35ebe46b06b48bf9afafbd8471140"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 306770
 file-id = 7730942
+project-id = 306770

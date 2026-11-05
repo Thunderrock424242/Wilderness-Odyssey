@@ -1,0 +1,13 @@
+name = "Horses can Swim"
+filename = "horsescanswim-1.1.0.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "169bd0f8aee1bea73550da89af6bc33e02453688"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 5427645
+project-id = 937337

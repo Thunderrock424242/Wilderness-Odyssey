@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "quark"
-filename = "Quark-4.1-487.jar"
+name = "Quark"
+filename = "Quark-4.1-488.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "2a43e4fa6254aaaf755f4ece5230708a2a6d587d8092d4db3aa53626c7bb67ab"
+hash-format = "sha1"
+hash = "db882304edf822719b6f582b30a25c04b7f94889"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
+file-id = 9335735
 project-id = 243121
-file-id = 9074160

@@ -1,0 +1,13 @@
+name = "Ecliptic Seasons - Regions Unexplored"
+filename = "EclipticSeasonsRU-1.0.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "3f9e51f27ddaf0e808ddeb11cc23281b71c9cf98"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 7031081
+project-id = 1353228

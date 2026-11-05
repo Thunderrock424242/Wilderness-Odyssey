@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "cupboard"
+name = "Cupboard"
 filename = "cupboard-1.21.1-4.2.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "5162922647fe07c7b9f446870915b57ddd0ae9dcf56b243611130fea30f2f77a"
+hash-format = "sha1"
+hash = "6c2d786a161f49470dad92b2edaefdac38a1e79b"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 326652
 file-id = 8889050
+project-id = 326652

@@ -1,0 +1,13 @@
+name = "Animalia Exotica"
+filename = "animalia-neoforge-1.21.1-1.0.3.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "d8f593e6d1ddabab742ff2a978d32a30818b150d"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8833272
+project-id = 1567921

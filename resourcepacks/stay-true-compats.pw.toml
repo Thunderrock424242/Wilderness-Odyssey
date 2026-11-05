@@ -1,0 +1,13 @@
+name = "Stay True Compats Reforged"
+filename = "staytrue1.21-hotfix.zip"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "19dc5b98ed3fbbeb9027cba4ea41665239144169"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8725325
+project-id = 1154149

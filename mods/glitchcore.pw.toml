@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "glitchcore"
+name = "GlitchCore"
 filename = "GlitchCore-neoforge-1.21.1-2.1.0.2.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "d9ea421e7449a35cf3adc41c9f740156342b7b17a08b1be843660608af7b60f9"
+hash-format = "sha1"
+hash = "a31c3f36330f19aa538add3d727782a62c9c30ad"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 955399
 file-id = 8109792
+project-id = 955399

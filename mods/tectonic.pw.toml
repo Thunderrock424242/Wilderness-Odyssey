@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "tectonic"
+name = "Tectonic"
 filename = "tectonic-3.0.28-neoforge-21.1.jar"
 side = "both"
-pin = true
 
 [download]
-hash-format = "sha256"
-hash = "cf188c70e7dd94f6e3a81cef9fe99f1151f13217809f7576aaedb0c3e6547ae1"
+hash-format = "sha1"
+hash = "db15156eec4320c2997c4dd4948119472de01224"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 686836
 file-id = 8855043
+project-id = 686836

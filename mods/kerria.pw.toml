@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "kerria"
+name = "Kerria"
 filename = "Kerria-1.3.2+1.21.1-neoforge.jar"
-side = "client"
-pin = true
+side = "both"
 
 [download]
-hash-format = "sha256"
-hash = "b36fd0225f3bbad8abe7e410ee7c77c726c3642d1815ce0892aeca2bc9136330"
+hash-format = "sha1"
+hash = "abd5f8a438482e1791bef6a43a9182baef68f822"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 1503432
 file-id = 8361811
+project-id = 1503432

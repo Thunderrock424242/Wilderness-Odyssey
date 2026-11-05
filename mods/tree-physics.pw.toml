@@ -1,0 +1,13 @@
+name = "Tree Physics"
+filename = "treephysics-neoforge-1.21.1-2.4.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "3f7f2c9058876865aa5c7d8d0bb7467df3d94499"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8695244
+project-id = 1522010

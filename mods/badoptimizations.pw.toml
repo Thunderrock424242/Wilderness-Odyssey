@@ -1,14 +1,13 @@
-# Generated: server eligibility is unreviewed when inventory side=unknown.
-name = "badoptimizations"
+name = "BadOptimizations"
 filename = "BadOptimizations-2.4.1-1.21.1.jar"
-side = "client"
-pin = true
+side = "both"
 
 [download]
-hash-format = "sha256"
-hash = "22e2467892d3706f43d1cf2aa637785bb8601c20b0098a82ab956e6a8fc4d2ba"
+hash-format = "sha1"
+hash = "1461d8e46391efd32a3085150e86094c9f6f5c9d"
 mode = "metadata:curseforge"
 
+[update]
 [update.curseforge]
-project-id = 949555
 file-id = 7338300
+project-id = 949555

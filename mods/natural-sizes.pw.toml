@@ -1,0 +1,13 @@
+name = "Natural Sizes (Mob Scale Randomizer)"
+filename = "naturalsizes-1.2-neoforge-1.21.1.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "f4ba563db2120ced1d98dc31d3383d0a31614b3c"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 8596871
+project-id = 1516625
